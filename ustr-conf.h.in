@@ -22,6 +22,11 @@
 
 # define USTR_CONF_HAVE_64bit_SIZE_MAX     @HAVE_64bit_SIZE_MAX@
 # define USTR_CONF_HAVE_RETARDED_VSNPRINTF @HAVE_RETARDED_VSNPRINTF@
+# define USTR_CONF_HAVE_STDINT_H @HAVE_STDINT_H@
+# define USTR_CONF_HAVE_DYNAMIC_CONF 1
+
+# define USTR_CONF_USE_DYNAMIC_CONF  USTR_CONF_HAVE_DYNAMIC_CONF
+
 # define USTR_CONF_REF_BYTES   2
 # define USTR_CONF_EXACT_BYTES 0
 # define USTR_CONF_USE_SIZE    0
@@ -31,6 +36,7 @@
 
 #else
 /* Same defaults, but can be altered at will. */
+/* Note that you really shouldn't alter the _HAVE_* ones, but whatever */
 
 # ifndef USTR_CONF_HAVE_64bit_SIZE_MAX
 # define USTR_CONF_HAVE_64bit_SIZE_MAX     @HAVE_64bit_SIZE_MAX@
@@ -38,6 +44,14 @@
 # ifndef USTR_CONF_HAVE_RETARDED_VSNPRINTF
 # define USTR_CONF_HAVE_RETARDED_VSNPRINTF @HAVE_RETARDED_VSNPRINTF@
 # endif
+# ifndef USTR_CONF_HAVE_STDINT_H
+# define USTR_CONF_HAVE_STDINT_H @HAVE_STDINT_H@
+# endif
+# ifndef USTR_CONF_HAVE_DYNAMIC_CONF
+# define USTR_CONF_HAVE_DYNAMIC_CONF 1
+# endif
+
+/* no USE_DYNAMIC_CONF ... use default in ustr-main.h */
 
 # ifndef USTR_CONF_REF_BYTES
 # define USTR_CONF_REF_BYTES   2
@@ -57,8 +71,5 @@
 # endif
 
 #endif
-
-#define USTR_CONF_HAVE_STDINT_H @HAVE_STDINT_H@
-
 
 #endif

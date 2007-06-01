@@ -9,6 +9,8 @@
 
 USTR_CONF_E_PROTO int ustr_set_undef(struct Ustr **, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustr_set_empty(struct Ustr **)
+    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_set_buf(struct Ustr **, const void *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO int ustr_set_cstr(struct Ustr **, const char *)
@@ -23,6 +25,8 @@ USTR_CONF_E_PROTO int ustr_set_rep_chr(struct Ustr **, char, size_t)
 
 USTR_CONF_E_PROTO int ustrp_set_undef(void *, struct Ustrp **, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
+USTR_CONF_E_PROTO int ustrp_set_empty(void *, struct Ustrp **)
+    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_E_PROTO int ustrp_set_buf(void *, struct Ustrp **,const void *,size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_EI_PROTO int ustrp_set_cstr(void *, struct Ustrp **, const char *)
@@ -34,6 +38,10 @@ int ustrp_set_subustrp(void *, struct Ustrp**,const struct Ustrp*,size_t,size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_E_PROTO int ustrp_set_rep_chr(void *, struct Ustrp **, char, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
+
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+# include "ustr-set-internal.h"
+#endif
 
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-set-code.h"

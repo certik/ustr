@@ -1,4 +1,141 @@
+2007-06-01  James Antill  <james@and.org>
+
+	* examples/netstr.c (main): Add example program.
+
+	* ustr-main.h (USTRP_SC_INIT_AUTO): Add macro.
+
+2007-05-31  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustrp__reallocx): Allow reallocx to "grow", as long
+	as we don't have to change byte storage.
+	(ustrp__add): Cleanup code.
+
+	* ustr-import.in: Add io, gdb and cntl options.
+
+	* ustr-main-code.h (ustr_pool_sys_malloc): Always have the latest
+	allocation at the top of the list, strict FIFO now.
+	(ustr_pool_sys_realloc): Allow reallocation of the "last" -- top of the
+	list allocation.
+
+	* ustr-fmt-code.h (ustrp__add_vfmt_lim): Remove bad va_copy()/va_end()
+	calls on error/retard call path.
+	(ustrp__dupx_vfmt_lim): Remove bad va_copy()/va_end() calls on
+	error/retard call path.
+	(ustrp__set_vfmt_lim):  Remove bad va_copy()/va_end() calls on
+	error/retard call path.
+
+	* ustr-main-code.h (ustr_setf_enomem_err): Change namespace from
+	_set_ to _setf_, so it isn't confusing with ustr_set_fmt() etc.
+	(ustr_setf_enomem_clr, ustr_setf_share, ustr_setf_owner): Dito.
+
+	* ustr-main.h (ustr_rw): Remove function, as it's confusing with
+	ustr_owner()
+	(ustr_init_fixed, ustrp_init_fixed): Remove warn_unused_ret.
+
+	* ustr-main-code.h (ustrp_init_alloc): Fix inf. recursion typo.
+
+2007-05-30  James Antill  <james@and.org>
+
+	* ustr-set-code.h (ustr_set_empty, ustrp_set_empty): Add functions, 
+	work like add_empty.
+	(ustrp__set): Add enomem on failure to dup.
+	(ustrp__set_subustr): Add enomem on failure to dup.
+	
+	* ustr-cmp.h (ustr_cmp_fast_buf): Move function to be always inline.
+	(ustr_cmp_fast): Move function to be always inline.
+
+	* ustr-main-code.h (ustr_pool_sys_free): Add function.
+	(ustr_pool_sys_realloc, ustr_pool_sys_free): Change namespace from
+	"ustr_pool_api_" to "ustr_pool_sys_".
+	(ustrp__del): Fix bad usage of ustr_ro() to ustr_alloc()
+	(ustr__rw_add): Allow growing if byte storage size doesn't increase.
+	(ustr__treat_as_buf): Allow 0 length strings.
+	(ustr_sc_ensure_owner, ustrp_sc_ensure_owner): Add function, makes sure
+	the string passes the ustr_owner() test.
+
+	* ustr-import.in: Add missing compiler copy.
+	
+	* ustr-compiler.h: Remove COMPILE_ASSERT checks, for dynamic config.
+
+	* tst.h (USE_MALLOC_CHECK): Explicitly define the option.
+	(mc_malloc, mc_realloc, mc_free): Use the new USTR_CONF_USE_DYNAMIC_CONF
+	to change the malloc cbs with ustr_cntl_opt.
+	(main): Move from dup_buf() to sc_ensure_owner(), tweaks for
+	malloc-check.
+
+	* ustr-cntl-code.h (ustr_cntl_opt): Added function, allow some of the
+	global config. options to be runtime vars instead.
+
+	* ustr-cmp-code.h (ustr_cmp_subustr): Fix spurious ! C&P typo.
+	(ustr_cmp_fast_subustr): Fix spurious ! C&P typo.
+
+	* tst.h (USTR_CONF_FREE): Add file/line data.
+
+	* malloc-check.h (malloc_check_free): Add file/line params. to free.
+
+2007-05-28  James Antill  <james@and.org>
+
+	* ustr-fmt.h: Add warn_unused_ret() to all dup funcs.
+
+	* Makefile: Move all tests into seperate T dir, generate .c files
+	so that coverage "does the right thing"
+
+	* scripts/lcov.sh: Update lcov.sh to do the right thing, must be called
+	from Makefile now.
+
+	* malloc-check.h (malloc_check_assert): Use internal namespaced
+	assert().
+	(malloc_check_mem, malloc_check_alloc, malloc_check_sz_mem): Add
+	file/line params. to other functions.
+	(MALLOC_CHECK_TRACE): Add trace option.
+
+2007-05-27  James Antill  <james@and.org>
+
+	* ustr-io-code.h (ustrp__io_getline): Speed up getline.
+
+	* Makefile: Fixup SONAME, change cc to be default.
+
+2007-05-26  James Antill  <james@and.org>
+
+	* ustr-set-code.h (ustrp__set_undef): Cleanup code.
+
+	* ustr-io-code.h (ustrp__io_put): Don't allocate an entire new string, 
+	just the bits that'll be left over.
+
+	* Documentation/design.html: Use new USTR_BEG_FIXEDx constants in
+	examples.
+
+2007-05-25  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr__rw_add): Fixup tests for if we can reuse the
+	current Ustr, allow lbytes to be more than the minimum needed.
+
+	* ustr-io-code.h (ustr_io_get, ustrp_io_get)
+	(ustr_io_getfile, ustrp_io_getfile, ustr_io_getfilename)
+	(ustr_io_getfilename, ustrp_io_getfilename)
+	(ustr_io_getline, ustrp_io_getline)
+	(ustr_io_put, ustrp_io_put, ustr_io_putfilename)
+	(ustrp_io_putfilename): Added simple blocking stdio IO functions.
+
+	* ustr-fmt.h: Add USTR__COMPILE_ATTR_WARN_UNUSED_RET() to add _dup 
+	format functions.
+
+	* ustr-main.h: Remove USTR__COMPILE_ATTR_WARN_UNUSED_RET() from
+	ustr_init_fixed.
+
+	* ustr-set-internal.h: Add internal headers, to reduce obj size.
+
+	* ustr-main.h: Add internal headers, to reduce obj size.
+	(USTR_CONF_INCLUDE_INTERNAL_HEADERS): Add define on if you get internal
+	header code or not.
+
+	* ustr-main-code.h (ustr__sz_get): Fixed prototype.
+
+	* Makefile (VERS_ESONAME): Fix the SONAME to just .0
+
 2007-05-24  James Antill  <james@and.org>
+
+	* ustr-import.in: Add a gdb import only mode.
 
 	* ustr.spec: Fix typo of %{ver} to be %{version}.
 

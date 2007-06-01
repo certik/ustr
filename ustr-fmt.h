@@ -25,13 +25,17 @@ USTR_CONF_E_PROTO int ustr_add_vfmt(struct Ustr **, const char *, va_list)
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(2, 0);
 USTR_CONF_E_PROTO struct Ustr *ustr_dupx_vfmt_lim(size_t, size_t, int, int,
                                                   size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(6, 0);
 USTR_CONF_E_PROTO struct Ustr *ustr_dup_vfmt_lim(size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(2, 0);
 USTR_CONF_E_PROTO
 struct Ustr *ustr_dupx_vfmt(size_t, size_t, int, int, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(5, 0);
 USTR_CONF_E_PROTO struct Ustr *ustr_dup_vfmt(const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(1, 0);
 # ifdef USTR_SET_H
 USTR_CONF_E_PROTO
@@ -49,14 +53,18 @@ USTR_CONF_E_PROTO int ustrp_add_vfmt(void *,struct Ustrp **,const char*,va_list)
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_dupx_vfmt_lim(void *, size_t, size_t, int, int,
                                   size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_L((7)) USTR__COMPILE_ATTR_FMT(7, 0);
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_dup_vfmt_lim(void *, size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_L((3)) USTR__COMPILE_ATTR_FMT(3, 0);
 USTR_CONF_E_PROTO struct Ustrp *ustrp_dupx_vfmt(void *, size_t, size_t, int,
                                                 int, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_L((6)) USTR__COMPILE_ATTR_FMT(6, 0);
 USTR_CONF_E_PROTO struct Ustrp *ustrp_dup_vfmt(void *, const char *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_L((2)) USTR__COMPILE_ATTR_FMT(2, 0);
 # ifdef USTR_SET_H
 USTR_CONF_E_PROTO

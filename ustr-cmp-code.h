@@ -51,30 +51,8 @@ int ustr_cmp_subustr(const struct Ustr *s1,
 
   if (!ustr__valid_subustr(s2, pos, len))
     return (ustr_cmp(s1, USTR("")));
-  
-  return (!ustr_cmp_buf(s1, ustr_cstr(s2) + pos, len));
-}
 
-USTR_CONF_I_PROTO
-int ustr_cmp_fast_buf(const struct Ustr *s1, const void *buf, size_t len2)
-{
-  size_t len1 = 0;
-
-  USTR_ASSERT(ustr_assert_valid(s1) && buf);
-
-  len1 = ustr_len(s1);
-  if (len1 != len2)
-    return (len1 - len2);
-
-  return (memcmp(ustr_cstr(s1), buf, len1));
-}
-
-USTR_CONF_I_PROTO int ustr_cmp_fast(const struct Ustr *s1,const struct Ustr *s2)
-{
-  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
-  if (s1 == s2)
-    return (0);
-  return (ustr_cmp_fast_buf(s1, ustr_cstr(s2), ustr_len(s2)));
+  return (ustr_cmp_buf(s1, ustr_cstr(s2) + --pos, len));
 }
 
 USTR_CONF_I_PROTO
@@ -85,7 +63,7 @@ int ustr_cmp_fast_subustr(const struct Ustr *s1,
 
   if (!ustr__valid_subustr(s2, pos, len))
     return (ustr_cmp_fast(s1, USTR("")));
-  
-  return (!ustr_cmp_fast_buf(s1, ustr_cstr(s2) + pos, len));
+
+  return (ustr_cmp_fast_buf(s1, ustr_cstr(s2) + pos - 1, len));
 }
 

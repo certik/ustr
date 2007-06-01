@@ -1,11 +1,6 @@
 #include "tst.h"
 
-#if USTR_CONF_REF_BYTES != 2
-#error "Bad setup"
-#endif
-
 static const char *rf = __FILE__;
-
 
 #if USTR_CONF_HAVE_VA_COPY
 static Ustr *my_dup_fmt(const char *fmt, ...)
@@ -43,6 +38,9 @@ int tst(void)
   struct Ustr *tmp = NULL;
   Ustr *s3 = USTR1(\xb, "abcd 42 xyz");
   Ustr *s4 = ustr_dup_undef(18);
+
+  assert(!USTR_CONF_USE_DYNAMIC_CONF ||
+         ustr_cntl_opt(USTR_CNTL_OPT_SET_REF_BYTES, 2));
   
   ASSERT(ustr_len(s1) == 0);
   ASSERT(ustr_len(s2) == strlen("s2"));
@@ -147,9 +145,9 @@ int tst(void)
   ASSERT( ustr_ro(s2));
   ASSERT( ustr_shared(s2));
   ASSERT(!ustr_enomem(s2));
-  ASSERT(!ustr_set_enomem_err(s2));
+  ASSERT(!ustr_setf_enomem_err(s2));
   ASSERT(!ustr_enomem(s2));
-  ASSERT( ustr_set_enomem_clr(s2));
+  ASSERT( ustr_setf_enomem_clr(s2));
   ASSERT(!ustr_enomem(s2));
   
 #if USTR_CONF_HAVE_VA_COPY
@@ -159,24 +157,24 @@ int tst(void)
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_cmp_subustr_eq(USTR1(\x4, "abcd"), s2, 1, 4));
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
-  ASSERT(!ustr_set_share(s2));
+  ASSERT(!ustr_setf_share(s2));
   ustr_sc_free2(&s2, USTR(""));
   ASSERT(my_fmt(&s2, "abcd %.200d xyz", 42));
   ASSERT(s2);
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_cmp_subustr_eq(USTR1(\x4, "abcd"), s2, 1, 4));
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
-  ASSERT( ustr_set_share(s2));
-  ASSERT( ustr_set_owner(s2));
+  ASSERT( ustr_setf_share(s2));
+  ASSERT( ustr_setf_owner(s2));
   ASSERT(!ustr_reallocx(&s2, USTR_TRUE));
   ustr_sc_free2(&s2, ustr_dupx(1, 0, 0, 0, s2));
   
   ASSERT(!ustr_exact(s2));
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_size(s2) > 209);
-  ASSERT( ustr_set_share(s2));
+  ASSERT( ustr_setf_share(s2));
   ASSERT(!ustr_reallocx(&s2, USTR_TRUE));
-  ASSERT( ustr_set_owner(s2));
+  ASSERT( ustr_setf_owner(s2));
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_size(s2) > 209);
   ASSERT(!ustr_exact(s2));
@@ -192,13 +190,17 @@ int tst(void)
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_size(s2) == 209);
   ASSERT( ustr_exact(s2));
+  ASSERT( ustr_reallocx(&s2, USTR_FALSE));
+  ASSERT(ustr_len(s2) == 209);
+  ASSERT(ustr_size(s2) > 209);
+  ASSERT(!ustr_exact(s2));
   ASSERT(ustr_cmp_subustr_eq(USTR1(\x4, "abcd"), s2, 1, 4));
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
   ustr_sc_free2(&s2, USTR(""));
 #endif
 
-  ASSERT( ustr_set_share(USTR("")));
-  ASSERT(!ustr_set_owner(USTR("")));
+  ASSERT( ustr_setf_share(USTR("")));
+  ASSERT(!ustr_setf_owner(USTR("")));
   
   ASSERT(ustr_set_cstr(&s2, "abcd 42 xyz"));
   ASSERT(!ustr_cmp_fast_cstr(s2, "abcd 42 xyz"));
@@ -223,14 +225,14 @@ int tst(void)
   ustr_free(s3);
   
   ASSERT(!ustr_enomem(s2));
-  ASSERT(ustr_set_enomem_err(s2));
+  ASSERT(ustr_setf_enomem_err(s2));
   ASSERT( ustr_enomem(s2));
-  ASSERT(ustr_set_enomem_clr(s2));
+  ASSERT(ustr_setf_enomem_clr(s2));
   ASSERT(!ustr_enomem(s2));
   
   ASSERT(!ustr_shared(s2));
   ASSERT(ustr_set_fmt(&s2, "%x", 0xf0));
-  ASSERT( ustr_set_share(s2));
+  ASSERT( ustr_setf_share(s2));
   ASSERT( ustr_shared(s2));
   
   for (i = 0; i < 70000; ++i)
@@ -242,7 +244,7 @@ int tst(void)
   for (i = 0; i < 80000; ++i)
     ustr_free(s2);
   
-  ASSERT( ustr_set_owner(s2));
+  ASSERT( ustr_setf_owner(s2));
   ASSERT(!ustr_shared(s2));
   ASSERT( ustr_owner(s2));
 

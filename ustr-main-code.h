@@ -4,20 +4,6 @@
 #error " You should have already included ustr-main.h, or just include ustr.h."
 #endif
 
-#define USTR__PPTR(x) ((struct Ustr **) x) /* for converting a Ustrp** ...
-                                            * safe from aliasing, I think */
-
-/* default sized to 1 ... */
-#define USTR__DUPX_DEF                                  \
-    USTR_CONF_HAS_SIZE, USTR_CONF_REF_BYTES,            \
-    USTR_CONF_EXACT_BYTES, 0
-#define USTR__DUPX_FROM(x)                                              \
-    (ustr_sized(x) ? ustr__sz_get(x) : 0), USTR__REF_LEN(x),            \
-    ustr_exact(x), ustr_enomem(x)
-
- /* #include <stdio.h>
-    printf("sz=%zu rbytes=%zu exact=%s len=%zu --> rsz=%zu\n", sz, rbytes, exact ? "TRUE" : "FALSE", len, rsz); */
-
 USTR_CONF_I_PROTO struct Ustr_pool *ustr_pool_make(void)
 {
   struct Ustr_pool *ret = USTR_CONF_MALLOC(sizeof(struct Ustr_pool));
@@ -39,7 +25,7 @@ USTR_CONF_I_PROTO void ustr_pool_free(struct Ustr_pool *scan)
   do
   {
     struct Ustr_pool *scan_next = scan->next;
-    
+
     USTR_CONF_FREE(scan->ptr);
     USTR_CONF_FREE(scan);
 
@@ -58,8 +44,9 @@ USTR_CONF_I_PROTO void ustr_pool_clear(struct Ustr_pool *scan)
   scan->next = 0;
 }
 
-USTR_CONF_I_PROTO void *ustr_pool_api_malloc(struct Ustr_pool *p, size_t len)
+USTR_CONF_I_PROTO void *ustr_pool_sys_malloc(void *vp, size_t len)
 {
+  struct Ustr_pool *p = vp;
   void *ret = USTR_CONF_MALLOC(len);
   struct Ustr_pool *np = 0;
 
@@ -67,59 +54,64 @@ USTR_CONF_I_PROTO void *ustr_pool_api_malloc(struct Ustr_pool *p, size_t len)
   
   if (!ret)
     return (ret);
+  
+  if (p->ptr)
+  {
+    if (!(np = USTR_CONF_MALLOC(sizeof(struct Ustr_pool))))
+    {
+      USTR_CONF_FREE(ret);
+      return (0);
+    }
 
-  if (!p->ptr)
-    p->ptr = ret;
-  else if (!(np = USTR_CONF_MALLOC(sizeof(struct Ustr_pool))))
-  {
-    USTR_CONF_FREE(ret);
-    ret = 0;
-  }
-  else
-  {
     np->next = p->next;
-    np->ptr  = ret;
-
+    np->ptr  = p->ptr;
+      
     p->next  = np;
   }
+  p->ptr = ret;
   
   return (ret);
 }
 
 USTR_CONF_I_PROTO
-void *ustr_pool_api_realloc(struct Ustr_pool *p, void *old,
+void *ustr_pool_sys_realloc(void *vp, void *old,
                             size_t olen, size_t nlen)
 {
+  struct Ustr_pool *p = vp;
   void *ret = 0;
 
-  USTR_ASSERT(p);
+  USTR_ASSERT(p && old && p->ptr);
   
-  if (olen > nlen) /* always allow reductions */
+  if (p->ptr == old) /* let the last allocated Ustrp grow/shrink */
+  {
+    if ((ret = USTR_CONF_REALLOC(old, nlen)))
+      p->ptr = ret;
+  }
+  else if (olen >= nlen) /* always allow reductions/nothing */
     return (old);
-  
-  if ((ret = ustr_pool_api_malloc(p, nlen)))
+  else if ((ret = ustr_pool_sys_malloc(p, nlen)))
     memcpy(ret, old, olen);
   
   return (ret);
 }
 
+USTR_CONF_I_PROTO
+void ustr_pool_sys_free(void *p, void *old)
+{ /* does nothing */
+  (void) p;
+  (void) old;
+}
 
-USTR_CONF_e_PROTO size_t ustr__dupx_cmp_eq(size_t, size_t, size_t, size_t,
-                                           size_t, size_t, size_t, size_t)
-    USTR__COMPILE_ATTR_CONST() USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_i_PROTO
 size_t ustr__dupx_cmp_eq(size_t w1, size_t x1, size_t y1, size_t z1,
                          size_t w2, size_t x2, size_t y2, size_t z2)
 { return ((w1 == w2) && (!x1 == !x2) && (y1 == y2) && (z1 == z2)); }
 
-USTR_CONF_e_PROTO size_t ustr__sz_get(const struct Ustr *)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_e_PROTO size_t ustr__sz_get(const struct Ustr *s1)
+USTR_CONF_i_PROTO size_t ustr__sz_get(const struct Ustr *s1)
 {
   size_t lenn = 0;
   
-  USTR_ASSERT( ustr_rw(s1));
+  USTR_ASSERT(!ustr_ro(s1));
   USTR_ASSERT( ustr_sized(s1));
   
   lenn = USTR__LEN_LEN(s1);
@@ -127,8 +119,6 @@ USTR_CONF_e_PROTO size_t ustr__sz_get(const struct Ustr *s1)
   return (ustr__embed_val_get(s1->data + 1 + USTR__REF_LEN(s1) + lenn, lenn));
 }
 
-USTR_CONF_e_PROTO size_t ustr__nb(size_t num)
-    USTR__COMPILE_ATTR_CONST() USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_i_PROTO size_t ustr__nb(size_t num)
 {
   USTR_ASSERT((num <= (0xFFFFFFFF - (1 + 4 + 1))) ||
@@ -156,7 +146,7 @@ USTR_CONF_I_PROTO int ustr_assert_valid(const struct Ustr *s1)
     return (USTR_TRUE);
 
   /* just make sure for compound "bits" tests */
-  USTR_ASSERT(( ustr_alloc(s1) || ustr_sized(s1)) == ustr_rw(s1));
+  USTR_ASSERT(( ustr_alloc(s1) || ustr_sized(s1)) != ustr_ro(s1));
   USTR_ASSERT((!ustr_alloc(s1) && ustr_sized(s1)) == ustr_fixed(s1));
   USTR_ASSERT(( ustr_fixed(s1) && ustr_exact(s1)) == ustr_limited(s1));
   
@@ -179,8 +169,8 @@ USTR_CONF_I_PROTO int ustr_assert_valid(const struct Ustr *s1)
   USTR_ASSERT_RET(!sz || (oh <= sz),                       USTR_FALSE);
   USTR_ASSERT_RET(!sz || ((ustr_len(s1) + oh) <= sz),      USTR_FALSE);
   
-  USTR_ASSERT_RET( ustr_exact(s1)  || ustr_rw(s1),         USTR_FALSE);
-  USTR_ASSERT_RET(!ustr_enomem(s1) || ustr_rw(s1),         USTR_FALSE);
+  USTR_ASSERT_RET( ustr_exact(s1)  || !ustr_ro(s1),         USTR_FALSE);
+  USTR_ASSERT_RET(!ustr_enomem(s1) || !ustr_ro(s1),         USTR_FALSE);
 
   if (!USTR_CONF_USE_EOS_MARK)
   {
@@ -208,7 +198,7 @@ USTR_CONF_I_PROTO char *ustr_wstr(struct Ustr *s1)
   
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  USTR_ASSERT_RET(ustr_rw(s1), 0);
+  USTR_ASSERT_RET(!ustr_ro(s1), 0);
   
   lenn = USTR__LEN_LEN(s1);
   if (ustr_sized(s1))
@@ -245,7 +235,7 @@ USTR_CONF_I_PROTO int ustr_owner(const struct Ustr *s1)
   }
 }
 
-USTR_CONF_I_PROTO int ustr_set_enomem_err(struct Ustr *s1)
+USTR_CONF_I_PROTO int ustr_setf_enomem_err(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
   
@@ -255,7 +245,7 @@ USTR_CONF_I_PROTO int ustr_set_enomem_err(struct Ustr *s1)
   s1->data[0] |=  USTR__BIT_ENOMEM;
   return (USTR_TRUE);
 }
-USTR_CONF_I_PROTO int ustr_set_enomem_clr(struct Ustr *s1)
+USTR_CONF_I_PROTO int ustr_setf_enomem_clr(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
   
@@ -266,8 +256,6 @@ USTR_CONF_I_PROTO int ustr_set_enomem_clr(struct Ustr *s1)
   return (USTR_TRUE);
 }
 
-USTR_CONF_e_PROTO void ustr__embed_val_set(unsigned char *, size_t, size_t)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO void ustr__embed_val_set(unsigned char *data,
                                            size_t len, size_t val)
 {
@@ -295,8 +283,6 @@ USTR_CONF_i_PROTO void ustr__embed_val_set(unsigned char *data,
 }
 
 /* no warn here, because most callers already know it's not going to fail */
-USTR_CONF_e_PROTO int ustr__ref_set(struct Ustr *, size_t)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO int ustr__ref_set(struct Ustr *s1, size_t ref)
 {
   size_t len = 0;
@@ -314,7 +300,7 @@ USTR_CONF_i_PROTO int ustr__ref_set(struct Ustr *s1, size_t ref)
   return (USTR_TRUE);
 }
 
-USTR_CONF_I_PROTO int ustr_set_share(struct Ustr *s1)
+USTR_CONF_I_PROTO int ustr_setf_share(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
 
@@ -327,7 +313,7 @@ USTR_CONF_I_PROTO int ustr_set_share(struct Ustr *s1)
   USTR_ASSERT(ustr_assert_valid(s1));
   return (USTR_TRUE);
 }
-USTR_CONF_I_PROTO int ustr_set_owner(struct Ustr *s1)
+USTR_CONF_I_PROTO int ustr_setf_owner(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
 
@@ -340,24 +326,20 @@ USTR_CONF_I_PROTO int ustr_set_owner(struct Ustr *s1)
   return (USTR_TRUE);
 }
 
-USTR_CONF_e_PROTO void ustr__len_set(struct Ustr *s1, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO void ustr__len_set(struct Ustr *s1, size_t len)
 { /* can only validate after the right len is in place */
   unsigned char *data = s1->data;
   
-  USTR_ASSERT(ustr_rw(s1));
+  USTR_ASSERT(!ustr_ro(s1));
   ustr__embed_val_set(data + 1 + USTR__REF_LEN(s1), USTR__LEN_LEN(s1), len);
   USTR_ASSERT(ustr_assert_valid(s1));
 }
 
-USTR_CONF_e_PROTO void ustr__sz_set(struct Ustr *, size_t)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO void ustr__sz_set(struct Ustr *s1, size_t sz)
 { /* can't validate as this is called before anything is setup */
   size_t lenn = 0;
   
-  USTR_ASSERT(ustr_rw(s1));
+  USTR_ASSERT(!ustr_ro(s1));
   USTR_ASSERT(ustr_sized(s1));
 
   lenn = USTR__LEN_LEN(s1);
@@ -374,8 +356,6 @@ USTR_CONF_i_PROTO void ustr__sz_set(struct Ustr *s1, size_t sz)
       ustr__ref_set(s1, ref + 1);                  \
     }                                              \
     return (USTR_TRUE)
-USTR_CONF_e_PROTO int ustr__ref_add(struct Ustr *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO int ustr__ref_add(struct Ustr *s1)
 {
   size_t ref = 0;
@@ -404,8 +384,6 @@ USTR_CONF_i_PROTO int ustr__ref_add(struct Ustr *s1)
 }
 #undef USTR__REF_T_ADD
 
-USTR_CONF_e_PROTO size_t ustr__ref_del(struct Ustr *s1)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
@@ -434,7 +412,6 @@ USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
   }
 }
 
-USTR_CONF_e_PROTO void ustrp__free(void *, struct Ustr *);
 USTR_CONF_i_PROTO void ustrp__free(void *p, struct Ustr *s1)
 {
   if (!s1) return;
@@ -454,9 +431,6 @@ USTR_CONF_I_PROTO void ustrp_free(void *p, struct Ustrp *s1)
 { return (ustrp__free(p, &s1->s)); }
 
 /* shortcut -- needs to be here, as lots of things calls this */
-USTR_CONF_e_PROTO
-void ustrp__sc_free2(void *p, struct Ustr **ps1, struct Ustr *s2)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_i_PROTO
 void ustrp__sc_free2(void *p, struct Ustr **ps1, struct Ustr *s2)
 {
@@ -467,8 +441,6 @@ void ustrp__sc_free2(void *p, struct Ustr **ps1, struct Ustr *s2)
   *ps1 = s2;
 }
 
-USTR_CONF_e_PROTO size_t ustr__ns(size_t num)
-    USTR__COMPILE_ATTR_CONST() USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_i_PROTO size_t ustr__ns(size_t num)
 {
   size_t min_sz = 4;
@@ -497,10 +469,11 @@ USTR_CONF_I_PROTO size_t ustr_init_size(size_t sz, size_t rbytes, int exact,
   size_t sbytes = 0;
   size_t oh = 0;
   
-  USTR_ASSERT((rbytes == 0) || (rbytes == 1) || (rbytes == 2) || (rbytes == 4)||
-              (USTR_CONF_HAVE_64bit_SIZE_MAX && (rbytes == 8)));
-  USTR_ASSERT((lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
-              (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
+  USTR_ASSERT_RET((rbytes == 0) ||
+                  (rbytes == 1) || (rbytes == 2) || (rbytes == 4) ||
+                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (rbytes == 8)), 0);
+  USTR_ASSERT(    (lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
+                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
 
   if (!sz && ((lbytes == 8) || (rbytes == 8)))
     sz = 1;
@@ -527,8 +500,6 @@ USTR_CONF_I_PROTO size_t ustr_init_size(size_t sz, size_t rbytes, int exact,
 }
 
 /* NIL terminate -- with possible end marker */
-USTR_CONF_e_PROTO void ustr__terminate(unsigned char *, int, size_t)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO void ustr__terminate(unsigned char *ptr, int alloc,size_t len)
 {
   if (sizeof(USTR_END_ALOCDx) == 1)
@@ -553,11 +524,11 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   size_t oh = 0;
   const size_t eos_len = sizeof(USTR_END_ALOCDx);
   
-  USTR_ASSERT_RET((rbytes == 0) || (rbytes == 1) ||
-                  (rbytes == 2) || (rbytes == 4) ||
+  USTR_ASSERT_RET((rbytes == 0) ||
+                  (rbytes == 1) || (rbytes == 2) || (rbytes == 4) ||
                   (USTR_CONF_HAVE_64bit_SIZE_MAX && (rbytes == 8)), USTR_NULL);
-  USTR_ASSERT_RET((lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
-                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)), USTR_NULL);
+  USTR_ASSERT(    (lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
+                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
   USTR_ASSERT(data);
   USTR_ASSERT(exact == !!exact);
   USTR_ASSERT(emem  == !!emem);
@@ -604,7 +575,7 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   USTR_ASSERT(ustr_assert_valid(ret));
   USTR_ASSERT( ustr_alloc(ret));
   USTR_ASSERT(!ustr_fixed(ret));
-  USTR_ASSERT( ustr_rw(ret));
+  USTR_ASSERT(!ustr_ro(ret));
   USTR_ASSERT( ustr_enomem(ret) == !!emem);
   USTR_ASSERT( ustr_exact(ret)  == exact);
   USTR_ASSERT(!ustr_shared(ret));
@@ -615,7 +586,7 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
 USTR_CONF_I_PROTO
 struct Ustrp *ustrp_init_alloc(void *data, size_t rsz, size_t sz,
                                size_t rbytes, int exact, int emem, size_t len)
-{ return (USTRP(ustrp_init_alloc(data, rsz, sz, rbytes, exact, emem, len))); }
+{ return (USTRP(ustr_init_alloc(data, rsz, sz, rbytes, exact, emem, len))); }
 
 USTR_CONF_I_PROTO
 struct Ustr *ustr_init_fixed(void *data, size_t sz, int exact, size_t len)
@@ -640,7 +611,7 @@ struct Ustr *ustr_init_fixed(void *data, size_t sz, int exact, size_t len)
   USTR_ASSERT(ustr_assert_valid(ret));
   USTR_ASSERT( ustr_fixed(ret));
   USTR_ASSERT(!ustr_alloc(ret));
-  USTR_ASSERT( ustr_rw(ret));
+  USTR_ASSERT(!ustr_ro(ret));
   USTR_ASSERT( ustr_enomem(ret) == emem);
   USTR_ASSERT(!ustr_shared(ret));
   USTR_ASSERT( ustr_owner(ret));
@@ -710,9 +681,6 @@ USTR_CONF_I_PROTO size_t ustr_size_alloc(const struct Ustr *s1)
 /* ---------------- allocations ---------------- */
 /* NOTE: This is one of the two main "allocation" functions --
  * this is the only thing that calls MALLOC. */
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx_undef(void *, size_t, size_t, int, int, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dupx_undef(void *p, size_t sz, size_t rbytes, 
                                int exact, int emem, size_t len)
@@ -745,9 +713,6 @@ struct Ustr *ustrp__dupx_undef(void *p, size_t sz, size_t rbytes,
   return (ret);
 }
 
-USTR_CONF_e_PROTO
-int ustrp__rw_realloc(void *, struct Ustr **, int, size_t, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO
 int ustrp__rw_realloc(void *p, struct Ustr **ps1,
                       int sized, size_t osz, size_t nsz)
@@ -766,7 +731,7 @@ int ustrp__rw_realloc(void *p, struct Ustr **ps1,
   
   if (!ret)
   {
-    ustr_set_enomem_err(*ps1);
+    ustr_setf_enomem_err(*ps1);
     return (USTR_FALSE);
   }
   if (sized)
@@ -777,8 +742,6 @@ int ustrp__rw_realloc(void *p, struct Ustr **ps1,
   return (USTR_TRUE);
 }
 
-USTR_CONF_e_PROTO void ustr__memcpy(struct Ustr *, size_t,const void *,size_t)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO void ustr__memcpy(struct Ustr *s1, size_t off,
                                     const void *ptr, size_t len)
 { /* can't call ustr_wstr() if len == 0, as it might be RO */
@@ -788,8 +751,6 @@ USTR_CONF_i_PROTO void ustr__memcpy(struct Ustr *s1, size_t off,
   memcpy(ustr_wstr(s1) + off, ptr, len);
 }
 
-USTR_CONF_e_PROTO void ustr__memset(struct Ustr *, size_t, int, size_t)
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO void ustr__memset(struct Ustr *s1, size_t off,
                                     int chr, size_t len)
 { /* can't call ustr_wstr() if len == 0, as it might be RO */
@@ -802,8 +763,6 @@ USTR_CONF_i_PROTO void ustr__memset(struct Ustr *s1, size_t off,
 /* ---------------- del ---------------- */
 
 /* shrink the size of the Ustr to accomodate _just_ it's current len */
-USTR_CONF_e_PROTO int ustrp__reallocx(void *p, struct Ustr **ps1, int exact)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO int ustrp__reallocx(void *p, struct Ustr **ps1, int exact)
 {
   struct Ustr *s1 = USTR_NULL;
@@ -826,9 +785,12 @@ USTR_CONF_i_PROTO int ustrp__reallocx(void *p, struct Ustr **ps1, int exact)
     msz = ustr__ns(msz);
   sz  = ustr__sz_get(s1);
 
-  USTR_ASSERT(msz <= sz);
   if (msz == sz)
     return (USTR_TRUE);
+  
+  /* we'd have to copy the Ustr, to add extra bytes to szn/lenn */
+  if (USTR__LEN_LEN(s1) < ustr__nb(msz))
+    return (USTR_FALSE);
   
   ret = ustrp__rw_realloc(p, ps1, USTR_TRUE, sz, msz);
   USTR_ASSERT(ustr_assert_valid(*ps1));
@@ -849,8 +811,6 @@ USTR_CONF_I_PROTO int ustr_reallocx(struct Ustr **ps1, int exact)
 USTR_CONF_I_PROTO int ustrp_reallocx(void *p, struct Ustrp **ps1, int exact)
 { return (ustrp__reallocx(p, USTR__PPTR(ps1), exact)); }
 
-USTR_CONF_e_PROTO int ustrp__realloc(void *p, struct Ustr **ps1)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO int ustrp__realloc(void *p, struct Ustr **ps1)
 {
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
@@ -863,9 +823,6 @@ USTR_CONF_I_PROTO int ustrp_realloc(void *p, struct Ustrp **ps1)
 { return (ustrp__realloc(p, USTR__PPTR(ps1))); }
 
 /* Can we actually RW adding to this Ustr, at _this_ moment, _this_ len */
-USTR_CONF_e_PROTO int ustr__rw_add(struct Ustr *, size_t, size_t *, size_t *,
-                                   size_t *, size_t *, int *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO
 int ustr__rw_add(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
                  size_t *osz, size_t *nsz, int *alloc)
@@ -884,10 +841,11 @@ int ustr__rw_add(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
   lbytes = USTR__LEN_LEN(s1);
   if (*sz)
     sbytes = lbytes;
-  else if (ustr__nb(nlen) != lbytes)
-    return (USTR_FALSE);
   USTR_ASSERT(!*sz || (ustr__nb(*sz) == lbytes) ||
               ((ustr__nb(*sz) == 1) && (lbytes == 2))); /* 2 is the minimum */
+  
+  if (ustr__nb(nlen) > lbytes)
+    return (USTR_FALSE); /* in theory we could do better, but it's _hard_ */
   
   *oh  = 1 + USTR__REF_LEN(s1) + lbytes + sbytes + sizeof(USTR_END_ALOCDx);
   *nsz = *oh + nlen;
@@ -910,16 +868,13 @@ int ustr__rw_add(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
     return (USTR_TRUE);
   *alloc = USTR_TRUE; /* _do_   need to allocate/deallocate */
   
-  if ((lbytes != USTR__LEN_LEN(s1)) || !ustr_alloc(s1))
+  if (!ustr_alloc(s1))
     return (USTR_FALSE);
 
   return (USTR_TRUE);
 }
 
 /* Can we actually RW this Ustr, at _this_ moment, to _this_ len */
-USTR_CONF_e_PROTO int ustr__rw_del(struct Ustr *, size_t, size_t *,
-                                   size_t *, size_t *, size_t *, int *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO int
 ustr__rw_del(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
              size_t *osz, size_t *nsz, int *alloc)
@@ -938,8 +893,6 @@ ustr__rw_del(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
 /* NOTE: This is the main "deallocation" function (apart from plain free) --
  * this is one of only three things that removes data via. REALLOC.
  * Others are in ustr-set.h */
-USTR_CONF_e_PROTO int ustrp__del(void *p, struct Ustr **ps1, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO int ustrp__del(void *p, struct Ustr **ps1, size_t len)
 {
   struct Ustr *s1  = USTR_NULL;
@@ -959,7 +912,8 @@ USTR_CONF_i_PROTO int ustrp__del(void *p, struct Ustr **ps1, size_t len)
   s1   = *ps1;
   clen = ustr_len(s1);
   if (!(nlen = clen - len) && !ustr_fixed(*ps1) &&
-      (ustr_ro(s1) || ustr__dupx_cmp_eq(USTR__DUPX_DEF, USTR__DUPX_FROM(s1))))
+      (!ustr_alloc(s1) ||
+       ustr__dupx_cmp_eq(USTR__DUPX_DEF, USTR__DUPX_FROM(s1))))
   {
     ustrp__sc_free2(p, ps1, USTR(""));
     return (USTR_TRUE);
@@ -977,7 +931,7 @@ USTR_CONF_i_PROTO int ustrp__del(void *p, struct Ustr **ps1, size_t len)
       int emem = ustr_enomem(*ps1);
 
       if (!ustrp__rw_realloc(p, ps1, !!sz, osz, nsz) && !emem)
-        ustr_set_enomem_clr(*ps1);
+        ustr_setf_enomem_clr(*ps1);
     }
       
     ustr__terminate((*ps1)->data, ustr_alloc(*ps1), (oh - eos_len) + nlen);
@@ -1003,9 +957,6 @@ USTR_CONF_I_PROTO int ustr_del(struct Ustr **ps1, size_t len)
 USTR_CONF_I_PROTO int ustrp_del(void *p, struct Ustrp **ps1, size_t len)
 { return (ustrp__del(p, USTR__PPTR(ps1), len)); }
 
-USTR_CONF_e_PROTO size_t ustr__valid_subustr(const struct Ustr *, size_t,size_t)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO
 size_t ustr__valid_subustr(const struct Ustr *s1, size_t pos, size_t len)
 {
@@ -1025,9 +976,6 @@ size_t ustr__valid_subustr(const struct Ustr *s1, size_t pos, size_t len)
   return (clen);
 }
 
-USTR_CONF_e_PROTO
-int ustrp__del_subustr(void *p, struct Ustr **ps1, size_t pos, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO
 int ustrp__del_subustr(void *p, struct Ustr **ps1, size_t pos, size_t len)
 {
@@ -1107,9 +1055,6 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup_undef(size_t len)
 USTR_CONF_I_PROTO struct Ustrp *ustrp_dup_undef(void *p, size_t len)
 { return (ustrp_dupx_undef(p, USTR__DUPX_DEF, len)); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx_empty(void *, size_t, size_t, int, int)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dupx_empty(void *p, size_t sz, size_t rbytes, 
                                int exact, int emem)
@@ -1120,7 +1065,7 @@ struct Ustr *ustrp__dupx_empty(void *p, size_t sz, size_t rbytes,
   if (!s1 || emem)
     return (s1);
 
-  eret = ustr_set_enomem_clr(s1);
+  eret = ustr_setf_enomem_clr(s1);
   USTR_ASSERT(eret);
   
   return (s1);
@@ -1139,10 +1084,6 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup_empty(void)
 USTR_CONF_I_PROTO struct Ustrp *ustrp_dup_empty(void *p)
 { return (ustrp_dupx_empty(p, USTR__DUPX_DEF)); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx_buf(void *p, size_t sz, size_t rbytes, int exact,
-                             int emem, const void *data, size_t len)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dupx_buf(void *p, size_t sz, size_t rbytes, int exact,
                              int emem, const void *data, size_t len)
@@ -1173,8 +1114,6 @@ USTR_CONF_I_PROTO
 struct Ustrp *ustrp_dup_buf(void *p, const void *data, size_t len)
 { return (USTRP(ustrp_dupx_buf(p, USTR__DUPX_DEF, data, len))); }
 
-USTR_CONF_e_PROTO struct Ustr *ustrp__dup(void *p, const struct Ustr *s1)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO struct Ustr *ustrp__dup(void *p, const struct Ustr *s1)
 { /* This ignores the const argument, because it doesn't alter the data, or at
    * all when ustr_ro(). */
@@ -1188,10 +1127,6 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup(const struct Ustr *s1)
 USTR_CONF_I_PROTO struct Ustrp *ustrp_dup(void *p, const struct Ustrp *s1)
 { return (USTRP(ustrp__dup(p, &s1->s))); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx(void *p, size_t sz, size_t rbytes, int exact,
-                         int emem, const struct Ustr *s1)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dupx(void *p, size_t sz, size_t rbytes, int exact,
                          int emem, const struct Ustr *s1)
@@ -1220,11 +1155,6 @@ struct Ustrp *ustrp_dupx(void *p, size_t sz, size_t rbytes, int exact,
                          int emem, const struct Ustrp *s1)
 { return (USTRP(ustrp__dupx(p, sz, rbytes, exact, emem, &s1->s))); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx_subustr(void *,
-                                 size_t, size_t, int, int,
-                                 const struct Ustr *, size_t, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dupx_subustr(void *p,
                                  size_t sz, size_t rbytes, int exact, int emem,
@@ -1244,7 +1174,7 @@ struct Ustr *ustrp__dupx_subustr(void *p,
   if (len == clen)
     return (ustrp__dupx(p, sz, rbytes, exact, emem, s2));
   
-  return (ustrp__dupx_buf(p,sz,rbytes,exact,emem, ustr_cstr(s2) + pos - 1,len));
+  return (ustrp__dupx_buf(p,sz,rbytes,exact,emem, ustr_cstr(s2) + --pos, len));
 }
 USTR_CONF_I_PROTO
 struct Ustr *ustr_dupx_subustr(size_t sz, size_t rbytes, int exact, int emem,
@@ -1257,10 +1187,6 @@ struct Ustrp *ustrp_dupx_subustrp(void *p,
 { return (USTRP(ustrp__dupx_subustr(p, sz, rbytes, exact, emem,
                                     &s2->s, pos, len))); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dup_subustr(void *p, const struct Ustr *s2,
-                                size_t pos, size_t len)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dup_subustr(void *p, const struct Ustr *s2,
                                 size_t pos, size_t len)
@@ -1278,11 +1204,6 @@ struct Ustrp *ustrp_dup_subustrp(void *p, const struct Ustrp *s2,
                                  size_t pos, size_t len)
 { return (USTRP(ustrp__dup_subustr(p, &s2->s, pos, len))); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx_rep_chr(void *p,
-                                 size_t sz, size_t rbytes, int exact, int emem,
-                                 char chr, size_t len)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dupx_rep_chr(void *p,
                                  size_t sz, size_t rbytes, int exact, int emem,
@@ -1318,8 +1239,6 @@ USTR_CONF_I_PROTO struct Ustrp *ustrp_dup_rep_chr(void *p, char chr, size_t len)
 /* NOTE: This is one of the two main "allocation" functions --
  * this is one of three things funcs that gets more data via. REALLOC.
  * Others are in ustr-set.h */
-USTR_CONF_e_PROTO int ustrp__add_undef(void *, struct Ustr **, size_t)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO int ustrp__add_undef(void *p, struct Ustr **ps1, size_t len)
 {
   struct Ustr *s1  = USTR_NULL;
@@ -1356,7 +1275,7 @@ USTR_CONF_i_PROTO int ustrp__add_undef(void *p, struct Ustr **ps1, size_t len)
 
   if (ustr_limited(s1))
   {
-    ustr_set_enomem_err(s1);
+    ustr_setf_enomem_err(s1);
     return (USTR_FALSE);
   }
   
@@ -1375,7 +1294,7 @@ USTR_CONF_i_PROTO int ustrp__add_undef(void *p, struct Ustr **ps1, size_t len)
   return (USTR_TRUE);
 
  fail_enomem:
-  ustr_set_enomem_err(s1);
+  ustr_setf_enomem_err(s1);
   return (USTR_FALSE);
 }
 USTR_CONF_I_PROTO int ustr_add_undef(struct Ustr **ps1, size_t len)
@@ -1383,9 +1302,6 @@ USTR_CONF_I_PROTO int ustr_add_undef(struct Ustr **ps1, size_t len)
 USTR_CONF_I_PROTO int ustrp_add_undef(void *p, struct Ustrp **ps1, size_t len)
 { return (ustrp__add_undef(p, USTR__PPTR(ps1), len)); }
 
-USTR_CONF_e_PROTO
-int ustrp__add_buf(void *p, struct Ustr **ps1, const void *s2, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_i_PROTO
 int ustrp__add_buf(void *p, struct Ustr **ps1, const void *s2, size_t len)
 {
@@ -1410,10 +1326,6 @@ int ustrp_add_buf(void *p, struct Ustrp **ps1, const void *s2, size_t len)
 { return (ustrp__add_buf(p, USTR__PPTR(ps1), s2, len)); }
 
 /* don't allocate, unless we have to ... also could be limited */
-USTR_CONF_e_PROTO int ustr__treat_as_buf(const struct Ustr *, size_t,
-                                         const struct Ustr *, size_t)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO int ustr__treat_as_buf(const struct Ustr *s1, size_t len1,
                                          const struct Ustr *s2, size_t len2)
 {
@@ -1426,15 +1338,12 @@ USTR_CONF_i_PROTO int ustr__treat_as_buf(const struct Ustr *s1, size_t len1,
   if (ustr_owner(s1) && (ustr_size(s1) >= (len1 + len2)))
     return (USTR_TRUE);
 
-  if (len1 && ustr_alloc(s1) && (s1 != s2))
+  if (ustr_alloc(s1) && (s1 != s2))
     return (USTR_TRUE);
   
   return (USTR_FALSE);
 }
 
-USTR_CONF_e_PROTO
-int ustrp__add(void *p, struct Ustr **ps1, const struct Ustr *s2)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_i_PROTO
 int ustrp__add(void *p, struct Ustr **ps1, const struct Ustr *s2)
 {
@@ -1457,25 +1366,23 @@ int ustrp__add(void *p, struct Ustr **ps1, const struct Ustr *s2)
   if (!len1)
   {  
     if (!ustr_alloc(*ps1))
-    {
-      if (!(ret = ustrp__dup(p, s2)))
-        return (USTR_FALSE);
-    }
+      ret = ustrp__dup(p, s2);
     else
-      if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
-        return (USTR_FALSE);
+      ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2);
+    
+    if (!ret)
+      return (USTR_FALSE);
   }
   else
   {
     if (!ustr_alloc(*ps1))
-    {
-      if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_DEF, len1 + len2)))
-        return (USTR_FALSE);
-    }
+      ret = ustrp__dupx_undef(p, USTR__DUPX_DEF,        len1 + len2);
     else
-      if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), len1 + len2)))
-        return (USTR_FALSE);
+      ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), len1 + len2);
 
+    if (!ret)
+      return (USTR_FALSE);
+    
     ustr__memcpy(ret,    0, ustr_cstr(*ps1), len1);
     ustr__memcpy(ret, len1, ustr_cstr(s2),   len2);
   }
@@ -1489,10 +1396,6 @@ USTR_CONF_I_PROTO
 int ustrp_add(void *p, struct Ustrp **ps1, const struct Ustrp *s2)
 { return (ustrp__add(p, USTR__PPTR(ps1), &s2->s)); }
 
-USTR_CONF_e_PROTO
-int ustrp__add_subustr(void *p, struct Ustr **ps1,
-                       const struct Ustr *s2, size_t pos, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_i_PROTO
 int ustrp__add_subustr(void *p, struct Ustr **ps1,
                        const struct Ustr *s2, size_t pos, size_t len)
@@ -1530,9 +1433,6 @@ int ustrp_add_subustrp(void *p, struct Ustrp **ps1, const struct Ustrp *s2,
                        size_t pos, size_t len)
 { return (ustrp__add_subustr(p, USTR__PPTR(ps1), &s2->s, pos, len)); }
 
-USTR_CONF_e_PROTO
-int ustrp__add_rep_chr(void *p, struct Ustr **ps1, char chr, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO
 int ustrp__add_rep_chr(void *p, struct Ustr **ps1, char chr, size_t len)
 {
@@ -1564,8 +1464,6 @@ USTR_CONF_I_PROTO void ustrp_sc_free2(void *p,
                                       struct Ustrp **ps1, struct Ustrp *s2)
 { ustrp__sc_free2(p, USTR__PPTR(ps1), &s2->s); }
 
-USTR_CONF_e_PROTO void ustrp__sc_free(void *p, struct Ustr **ps1)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO void ustrp__sc_free(void *p, struct Ustr **ps1)
 {
   USTR_ASSERT(ps1);
@@ -1578,8 +1476,6 @@ USTR_CONF_I_PROTO void ustr_sc_free(struct Ustr **ps1)
 USTR_CONF_I_PROTO void ustrp_sc_free(void *p, struct Ustrp **ps1)
 { ustrp__sc_free(p, USTR__PPTR(ps1)); }
 
-USTR_CONF_e_PROTO void ustrp__sc_free_shared(void *, struct Ustr **)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO void ustrp__sc_free_shared(void *p, struct Ustr **ps1)
 {
   USTR_ASSERT(ps1);
@@ -1589,7 +1485,7 @@ USTR_CONF_i_PROTO void ustrp__sc_free_shared(void *p, struct Ustr **ps1)
   
   USTR_ASSERT(ustr_shared(*ps1));
 
-  ustr_set_owner(*ps1);
+  ustr_setf_owner(*ps1);
   ustrp__free(p, *ps1);
   *ps1 = USTR_NULL;
 }
@@ -1598,8 +1494,6 @@ USTR_CONF_I_PROTO void ustr_sc_free_shared(struct Ustr **ps1)
 USTR_CONF_I_PROTO void ustrp_sc_free_shared(void *p, struct Ustrp **ps1)
 { ustrp__sc_free_shared(p, USTR__PPTR(ps1)); }
 
-USTR_CONF_e_PROTO void ustrp__sc_del(void *p, struct Ustr **ps1)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO void ustrp__sc_del(void *p, struct Ustr **ps1)
 {
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
@@ -1616,11 +1510,6 @@ USTR_CONF_I_PROTO void ustr_sc_del(struct Ustr **ps1)
 USTR_CONF_I_PROTO void ustrp_sc_del(void *p, struct Ustrp **ps1)
 { ustrp__sc_del(p, USTR__PPTR(ps1)); }
 
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__sc_dupx(void *p,
-                            size_t sz, size_t rbytes, int exact, int emem,
-                            struct Ustr **ps1)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__sc_dupx(void *p,
                             size_t sz, size_t rbytes, int exact, int emem,
@@ -1648,8 +1537,6 @@ struct Ustrp *ustrp_sc_dupx(void *p, size_t sz, size_t rbytes, int exact,
                             int emem, struct Ustrp **ps1)
 { return (USTRP(ustrp__sc_dupx(p, sz, rbytes, exact, emem, USTR__PPTR(ps1)))); }
 
-USTR_CONF_e_PROTO struct Ustr *ustrp__sc_dup(void *p, struct Ustr **ps1)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_i_PROTO struct Ustr *ustrp__sc_dup(void *p, struct Ustr **ps1)
 {
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
@@ -1663,3 +1550,40 @@ USTR_CONF_I_PROTO struct Ustr *ustr_sc_dup(struct Ustr **ps1)
 { return (ustrp__sc_dup(0, ps1)); }
 USTR_CONF_I_PROTO struct Ustrp *ustrp_sc_dup(void *p, struct Ustrp **ps1)
 { return (USTRP(ustrp__sc_dup(p, USTR__PPTR(ps1)))); }
+
+USTR_CONF_i_PROTO int ustrp__sc_ensure_owner(void *p, struct Ustr **ps1)
+{
+  struct Ustr *ret = USTR_NULL;
+  size_t len = 0;
+  
+  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+
+  if (ustr_owner(*ps1))
+    return (USTR_TRUE);
+
+  len = ustr_len(*ps1);
+  if (!ustr_alloc(*ps1))
+  {
+    if (!len)
+      ret = ustrp__dupx_empty(p, USTR__DUPX_DEF);
+    else
+      ret = ustrp__dupx_buf(p, USTR__DUPX_DEF, ustr_cstr(*ps1), len);
+  }
+  else
+    if (!len)
+      ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));
+    else
+      ret = ustrp__dupx_buf(p,   USTR__DUPX_FROM(*ps1), ustr_cstr(*ps1), len);
+  
+  if (!ret)
+    return (USTR_FALSE);
+      
+  ustrp__sc_free2(p, ps1, ret);
+
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_sc_ensure_owner(struct Ustr **ps1)
+{ return (ustrp__sc_ensure_owner(0, ps1)); }
+USTR_CONF_I_PROTO int ustrp_sc_ensure_owner(void *p, struct Ustrp **ps1)
+{ return (ustrp__sc_ensure_owner(p, USTR__PPTR(ps1))); }
+

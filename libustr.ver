@@ -31,7 +31,6 @@
   ustr_overhead;
   ustr_owner;
   ustr_ro;
-  ustr_rw;
   ustr_shared;
   ustr_size;
   ustr_size_alloc;
@@ -45,21 +44,20 @@
   ustrp_overhead;
   ustrp_owner;
   ustrp_ro;
-  ustrp_rw;
   ustrp_shared;
   ustrp_size;
   ustrp_size_alloc;
   ustrp_sized;
 
-  ustr_set_enomem_err;
-  ustr_set_enomem_clr;
-  ustr_set_share;
-  ustr_set_owner;
+  ustr_setf_enomem_err;
+  ustr_setf_enomem_clr;
+  ustr_setf_share;
+  ustr_setf_owner;
 
-  ustrp_set_enomem_err;
-  ustrp_set_enomem_clr;
-  ustrp_set_share;
-  ustrp_set_owner;
+  ustrp_setf_enomem_err;
+  ustrp_setf_enomem_clr;
+  ustrp_setf_share;
+  ustrp_setf_owner;
 
   ustr_free;
 
@@ -147,6 +145,7 @@
   ustr_sc_del;
   ustr_sc_dupx;
   ustr_sc_dup;
+  ustr_sc_ensure_owner
   ustr_sc_free;
   ustr_sc_free2;
   ustr_sc_free_shared;
@@ -154,6 +153,7 @@
   ustrp_sc_del;
   ustrp_sc_dupx;
   ustrp_sc_dup;
+  ustrp_sc_ensure_owner
   ustrp_sc_free;
   ustrp_sc_free2;
   ustrp_sc_free_shared;

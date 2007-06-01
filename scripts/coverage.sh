@@ -5,11 +5,10 @@ if false; then
 elif [ -f ./Makefile ]; then
 	doln=false
 else
-  echo "Not in right place, goto to the root."
+  echo "Not in right place, goto the root."
   exit 1;
 fi
 
 make clean
 make  CFLAGS="-g -fprofile-arcs -ftest-coverage -O0" \
-     LDFLAGS="-g -fprofile-arcs -ftest-coverage -O0" check
-./scripts/lcov.sh
+     LDFLAGS="-g -fprofile-arcs -ftest-coverage -O0" check-lcov

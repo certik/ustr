@@ -1,10 +1,12 @@
 #include "tst.h"
 
+static const char *rf = __FILE__;
+
 int tst(void)
 {
   char buf_s3[1024];
   Ustr *s3 = USTR(buf_s3);
-  char buf_s4[15 + sizeof(USTR_END_FIXEDx)] = "x123456abcd";
+  char buf_s4[15 + sizeof(USTR_END_FIXEDx)] = USTR_BEG_FIXED2 "abcd";
   Ustr *s4 = USTR_SC_INIT_AUTO(buf_s4, USTR_TRUE, 4);
 
   memset(buf_s3, 'x', sizeof(buf_s3));

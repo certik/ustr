@@ -1,5 +1,7 @@
 #include "tst.h"
 
+static const char *rf = __FILE__;
+
 int tst(void)
 {
   Ustr_pool *pool = ustr_pool_make();

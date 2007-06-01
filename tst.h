@@ -23,7 +23,7 @@
 /* doesn't work on ctst_*.c cotst_*.c -- as they alloc. from the lib. */
 #define USTR_CONF_MALLOC(x)     malloc_check_malloc(x,     __FILE__, __LINE__)
 #define USTR_CONF_REALLOC(x, y) malloc_check_realloc(x, y, __FILE__, __LINE__)
-#define USTR_CONF_FREE(x)       malloc_check_free(x)
+#define USTR_CONF_FREE(x)       malloc_check_free(x, __FILE__, __LINE__)
 
 #if !defined(USTR_DEBUG) || USTR_DEBUG
 # define ustr_assert(x)        assert(x)
@@ -48,6 +48,8 @@
 
 #define MALLOC_CHECK__ATTR_H() /* do nothing */
 
+#define USE_MALLOC_CHECK 1
+
 #include "malloc-check.h"
 
 MALLOC_CHECK_DECL();
@@ -63,10 +65,27 @@ static struct Ustr *s2 = USTR1(\x02, "s2");
 
 static const char *rf;
 
+#if USTR_CONF_USE_DYNAMIC_CONF
+static void *mc_malloc(size_t x)
+{ return (malloc_check_malloc(x, "mc_malloc", 1)); }
+static void *mc_realloc(void *p, size_t x)
+{ return (malloc_check_realloc(p, x, "mc_realloc", 1)); }
+static void mc_free(void *x)
+{ malloc_check_free(x, "mc_malloc", 1); }
+#endif
+
 int main(void)
 {
   int ret = -1;
 
+#if USTR_CONF_USE_DYNAMIC_CONF
+  {
+    static const struct Ustr_cntl_mem mc_mem = {mc_malloc, mc_realloc, mc_free};
+    
+    ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_SET_MEM, &mc_mem));
+  }
+#endif
+  
   /* puts((const char *)s2); */
   ASSERT(!ustr_size(s1));
   ASSERT(!ustr_size(s2));
@@ -75,8 +94,9 @@ int main(void)
   ASSERT( ustr_dup(s1) == s1);
   ASSERT( ustr_dup(s2) == s2);
   
-  s2 = ustr_dup_buf(ustr_cstr(s2), ustr_len(s2));
+  ASSERT(ustr_sc_ensure_owner(&s2));
   ASSERT(s2);
+  ASSERT(!ustr_ro(s2));
   
   if ((ret = tst()) && (ret != EXIT_FAILED_OK))
     fprintf(stderr, "Error(%s) value = %x\n", rf, ret);
@@ -84,7 +104,7 @@ int main(void)
   {
     ustr_free(s1);
     ustr_free(s2);
-    malloc_check_empty();
+    MALLOC_CHECK_EMPTY();
   }
   
   switch (ret)

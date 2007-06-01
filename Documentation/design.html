@@ -208,11 +208,11 @@ Ustr *s2 = USTR1(\x4, <span class="str">"abcd"</span>);
 <li> <b>Fixed/auto sized strings.</b>: These can seamlessly convert into
 allocated strings, if you add too much data. Ie. 
 <pre class="c2html">
-  <span class="char">char</span> buf_s3[128] = <span class="str">"x123456abcd"</span>;
+  <span class="char">char</span> buf_s3[128] = <span class="str">"x112233abcd"</span>;
   <span class="comment">/*                  x       = the info byte
-                       12     = reference count storage - always two bytes
-                         34   = len storage  - always same size as the size
-                           56 = size storage - uses 2, 4 or 8 bytes depending on sizeof() */</span>
+                       11     = reference count storage - always two bytes
+                         22   = len storage  - always same size as the size
+                           33 = size storage - uses 2, 4 or 8 bytes depending on sizeof() */</span>
   Ustr *s3 = USTR_SC_INIT_AUTO(buf_s3, USTR_FALSE, 4); <span class="comment">/* s3 is now the string "abcd" */</span>
 </pre>
 <!-- C to html convertion of stdin -->
@@ -220,7 +220,7 @@ allocated strings, if you add too much data. Ie.
 </li>
 <li> <b>Fixed/auto sized limited strings.</b>: These will fail to go beyond their specified size (this failure can be checked with ustr_enomem(), just like allocated strings). Ie. 
 <pre class="c2html">
-  <span class="char">char</span> buf_s3[32] = <span class="str">"x123456abcd"</span>;
+  <span class="char">char</span> buf_s3[32] = USTR_BEG_FIXED2 <span class="str">"abcd"</span>;
   Ustr *s3 = USTR_SC_INIT_AUTO(buf_s3, USTR_TRUE, 4); <span class="comment">/* s3 is now the string "abcd" */</span>
 </pre>
 <!-- C to html convertion of stdin -->
@@ -288,7 +288,7 @@ allocated strings, if you add too much data. Ie.
     <address><a href="mailto:james-web@and.org">James Antill</a></address>
 <!-- Created: Wed May 23 19:10:32 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Wed May 23 20:36:45 EDT 2007
+Last modified: Sat May 26 17:13:01 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>

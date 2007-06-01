@@ -1,9 +1,9 @@
 
 VERS=0.99
-VERS_FULL=$(VERS).1
+VERS_FULL=$(VERS).2
 VERS_BSO =1.0
-VERS_ESONAME =0.0.1
-VERS_ESO     =$(VERS_ESONAME).0.1
+VERS_ESONAME =0
+VERS_ESO     =$(VERS_ESONAME).0.2
 
 DESTDIR =
 datadir=/usr/share
@@ -13,7 +13,7 @@ SHRDIR=$(datadir)/ustr-$(VERS_FULL)
 DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
 
 
-CC = gcc
+CC = cc
 AR = ar
 RANLIB = ranlib
 
@@ -24,21 +24,30 @@ WARNS = -W -Wall -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-ali
 DBG_CFLAGS = $(CFLAGS) $(WARNS) -O1 -ggdb3
 
 # Inline tst_*.c and otst_*.c files.
-CFLG_C = -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1 -DUSTR_CONF_REF_BYTES=4
+CFLG_TST =
+
+CFLG_TST_C = $(CFLG_TST) \
+             -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1 -DUSTR_CONF_REF_BYTES=4
 
 # Optimized o*.c files
-CFLG_O = -DUSTR_DEBUG=0
+CFLG_TST_O  = -DUSTR_DEBUG=0 $(CFLG_TST)
+CFLG_TST_CO = -DUSTR_DEBUG=0 $(CFLG_TST_C)
 
-CFLG_LIB_OPT = $(CFLG_O) -DNDEBUG
-CFLG_LIB_DBG =
+# fread64/etc.
+CFLG_LIB = -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+
+CFLG_LIB_OPT = $(CFLG_LIB) -DUSTR_DEBUG=0 -DNDEBUG
+CFLG_LIB_DBG = $(CFLG_LIB)
 
 DOCS = TODO \
        Documentation/strdup\ vs.\ ustr.gnumeric \
        Documentation/index.html \
        Documentation/design.html
 
-TST_ALL =  tst_0_sizes  tst_0_nothing  ctst_0_nothing \
-          otst_0_sizes otst_0_nothing octst_0_nothing \
+TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
+          otst_0_sizes otst_0_manual octst_0_cntl \
+           tst_0_nothing  ctst_0_nothing \
+          otst_0_nothing octst_0_nothing \
            tst_1_basic  tst_2_small  tst_3_medium  ctst_3_medium \
           otst_1_basic otst_2_small otst_3_medium octst_3_medium \
            tst_4_grow  ctst_4_grow  tst_5_shrink  ctst_5_shrink \
@@ -52,41 +61,53 @@ TST_ALL =  tst_0_sizes  tst_0_nothing  ctst_0_nothing \
            tst_9_pool  ctst_9_pool \
           otst_9_pool octst_9_pool \
            tst_10_b  ctst_10_b \
-          otst_10_b octst_10_b
+          otst_10_b octst_10_b \
+           tst_11_io  ctst_11_io \
+          otst_11_io octst_11_io \
+           tst_12_fmt  ctst_12_fmt \
+          otst_12_fmt octst_12_fmt
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-conf.h ustr-conf-debug.h \
            ustr-b.h \
+           ustr-cmp.h \
+           ustr-cntl.h \
+           ustr-fmt.h \
+           ustr-io.h \
            ustr-main.h \
            ustr-set.h \
-           ustr-fmt.h \
-           ustr-cmp.h \
-           ustr-srch.h \
-           ustr-spn.h
+           ustr-spn.h \
+           ustr-srch.h
 
-SRC_SRCS = ustr-main-code.h \
-           ustr-set-code.h \
+SRC_SRCS = ustr-cmp-code.h \
+           ustr-cntl-code.h \
            ustr-fmt-code.h \
-           ustr-cmp-code.h \
-           ustr-srch-code.h \
+           ustr-io-code.h \
+           ustr-main-code.h \
+           ustr-main-internal.h \
+           ustr-set-code.h \
+           ustr-set-internal.h \
            ustr-spn-code.h \
+           ustr-srch-code.h \
            \
-           ustr-main-dbg-code.c \
+           ustr-b-dbg-code.c \
+           ustr-cmp-dbg-code.c \
            ustr-set-dbg-code.c \
            ustr-fmt-dbg-code.c \
-           ustr-cmp-dbg-code.c \
-           ustr-srch-dbg-code.c \
-           ustr-b-dbg-code.c \
+           ustr-io-dbg-code.c \
+           ustr-main-dbg-code.c \
            ustr-spn-dbg-code.c \
+           ustr-srch-dbg-code.c \
            \
+           ustr-b-opt-code.c \
+           ustr-cmp-opt-code.c \
+           ustr-fmt-opt-code.c \
+           ustr-io-opt-code.c \
            ustr-main-opt-code.c \
            ustr-set-opt-code.c \
-           ustr-fmt-opt-code.c \
-           ustr-cmp-opt-code.c \
-           ustr-srch-opt-code.c \
-           ustr-b-opt-code.c \
-           ustr-spn-opt-code.c
+           ustr-spn-opt-code.c \
+           ustr-srch-opt-code.c
 XSRC_SRCS = .gdbinit
 
 DBG_LIB_SHAREDEV    = libustr-debug.so
@@ -108,46 +129,50 @@ OBJS_C_DBG_ALL = $(DBG_LIB_STATIC)
 OBJS_C_OPT_ALL = $(OPT_LIB_STATIC)
 
 LIB_SHARED_DBG = \
-  ustr-main-code-so-dbg.o \
   ustr-b-code-so-dbg.o \
   ustr-cmp-code-so-dbg.o \
   ustr-fmt-code-so-dbg.o \
+  ustr-io-code-so-dbg.o \
+  ustr-main-code-so-dbg.o \
   ustr-set-code-so-dbg.o \
-  ustr-srch-code-so-dbg.o \
-  ustr-spn-code-so-dbg.o
+  ustr-spn-code-so-dbg.o \
+  ustr-srch-code-so-dbg.o
 LIB_STATIC_DBG = \
-  ustr-main-code-a-dbg.o \
   ustr-b-code-a-dbg.o \
   ustr-cmp-code-a-dbg.o \
   ustr-fmt-code-a-dbg.o \
+  ustr-io-code-a-dbg.o \
+  ustr-main-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
-  ustr-srch-code-a-dbg.o \
-  ustr-spn-code-a-dbg.o
+  ustr-spn-code-a-dbg.o \
+  ustr-srch-code-a-dbg.o
 
 LIB_SHARED_OPT = \
-  ustr-main-code-so-opt.o \
   ustr-b-code-so-opt.o \
   ustr-cmp-code-so-opt.o \
   ustr-fmt-code-so-opt.o \
+  ustr-io-code-so-opt.o \
+  ustr-main-code-so-opt.o \
   ustr-set-code-so-opt.o \
-  ustr-srch-code-so-opt.o \
-  ustr-spn-code-so-opt.o
+  ustr-spn-code-so-opt.o \
+  ustr-srch-code-so-opt.o
 LIB_STATIC_OPT = \
-  ustr-main-code-a-opt.o \
   ustr-b-code-a-opt.o \
   ustr-cmp-code-a-opt.o \
   ustr-fmt-code-a-opt.o \
+  ustr-io-code-a-opt.o \
+  ustr-main-code-a-opt.o \
   ustr-set-code-a-opt.o \
-  ustr-srch-code-a-opt.o \
-  ustr-spn-code-a-opt.o
+  ustr-spn-code-a-opt.o \
+  ustr-srch-code-a-opt.o
 
-all: ustr-import $(DBG_LIB_STATIC) $(TST_ALL)
+all: ustr-import $(DBG_LIB_STATIC)
 		@echo Done static
 
 all-shared: all $(LIB_SHARED)
 		@echo Done shared
 
-install: all $(TST_ALL) ustr.pc ustr-debug.pc
+install: all ustr.pc ustr-debug.pc
 		@echo Making directories
 		install -d $(DESTDIR)$(libdir)
 		install -d $(DESTDIR)/usr/include
@@ -172,12 +197,14 @@ clean:
 		rm -f $(TST_ALL)
 		rm -f *.o
 		rm -f perf-sizes perf-sizes32 perf-sizes64
-		rm -f *.gcda *.gcno
+		rm -f *.gcda *.gcno *.gcov
+		rm -f tst_*.c ctst_*.c otst_*.c octst_*.c
 
 distclean: clean
 		rm -f ustr-import
 		rm -f autoconf_64b autoconf_vsnprintf
 		rm -f ustr-conf.h ustr-conf-debug.h
+		rm -rf lcov-output
 
 
 ustr-import: ustr-import.in autoconf_64b autoconf_vsnprintf
@@ -241,62 +268,72 @@ ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 
 %-code-a-opt.o:  %-opt-code.c %-code.h %.h $(DEPS_C_ALL)
 		@echo Compiling for A OPT lib: $<
-		@$(CC) $(CFLAGS)     $(CFLG_LIB_OPT) -o $@ -c $<
+		@$(CC) $(CFLAGS)           $(CFLG_LIB_OPT) -o $@ -c $<
 
 %-code-a-dbg.o:  %-dbg-code.c %-code.h %.h $(DEPS_C_ALL)
 		@echo Compiling for A DBG lib: $<
-		@$(CC) $(DBG_CFLAGS) $(CFLG_LIB_DBG) -o $@ -c $<
+		@$(CC) $(DBG_CFLAGS)       $(CFLG_LIB_DBG) -o $@ -c $<
 
 
 perf-sizes: perf-sizes.c $(OBJS_C_OPT_ALL)
 		$(CC) $(WARNS) -O2 -g $(LDFLAGS) -o $@ $^
 
 perf-sizes32: perf-sizes.c $(OBJS_C_OPT_ALL)
-		$(CC) $(WARNS) -O2 -g -m32 -o $@ $^
+		$(CC) $(WARNS) -O2 -g  $(LDFLAGS) -m32 -o $@ $^
 
 perf-sizes64: perf-sizes.c $(OBJS_C_OPT_ALL)
-		$(CC) $(WARNS) -O2 -g -m64 -o $@ $^
+		$(CC) $(WARNS) -O2 -g  $(LDFLAGS) -m64 -o $@ $^
+
+# We "generate" the test files ... because "make clean" still makes the
+# dir. reable. And it helps coverage testing.
+tst_%.c: T/tst_%.c T/ctst_%.c
+		@cat $^ > $@
+otst_%.c: T/tst_%.c T/ctst_%.c
+		@cat $^ > $@
+ctst_%.c: T/ctst_%.c
+		@cat $^ > $@
+octst_%.c: T/ctst_%.c
+		@cat $^ > $@
 
 # Debugging tst and "compiled" tst (links with libustr-debug)
 tst_%.o: tst_%.c tst.h $(DEPS_NONC_ALL)
 		@echo Compiling: $@
-		@$(CC) $(DBG_CFLAGS) $(CFLG_C) -o $@ -c $<
+		@$(CC) $(DBG_CFLAGS) $(CFLG_TST_C) -o $@ -c $<
 
 tst_%: tst_%.o
-		@echo Linking: $@
 		@$(CC) $(LDFLAGS)  -o $@ $<
 
 ctst_%.o: ctst_%.c tst.h $(DEPS_C_ALL)
 		@echo Compiling: $@
-		@$(CC) $(DBG_CFLAGS) -o $@ -c $<
+		@$(CC) $(DBG_CFLAGS) $(CFLG_TST) -o $@ -c $<
 
 ctst_%: ctst_%.o $(OBJS_C_DBG_ALL)
-		@echo Linking: $@
 		@$(CC) $(LDFLAGS) -o $@ $^
 
 # Optimized tst and "compiled" tst (links with libustr)
-otst_%.o: tst_%.c tst.h $(DEPS_NONC_ALL)
+otst_%.o: otst_%.c tst.h $(DEPS_NONC_ALL)
 		@echo Compiling: $@
-		@$(CC) $(CFLAGS) $(CFLG_O) $(CFLG_C) -o $@ -c $<
+		@$(CC) $(CFLAGS) $(CFLG_TST_CO) -o $@ -c $<
 
 otst_%: otst_%.o
-		@echo Linking: $@
 		@$(CC) $(LDFLAGS)  -o $@ $<
 
-octst_%.o: ctst_%.c tst.h $(DEPS_C_ALL)
+octst_%.o: octst_%.c tst.h $(DEPS_C_ALL)
 		@echo Compiling: $@
-		@$(CC) $(CFLAGS) $(CFLG_O) -o $@ -c $<
+		@$(CC) $(CFLAGS) $(CFLG_TST_O) -o $@ -c $<
 
 octst_%: octst_%.o $(OBJS_C_OPT_ALL)
-		@echo Linking: $@
 		@$(CC) $(LDFLAGS) -o $@ $^
 
+
+check-lcov: check ./scripts/lcov.sh
+		./scripts/lcov.sh
 
 # --------------------------------
 # Borrowed from automake output...
 # --------------------------------
 PACKAGE_BUGREPORT = "james@and.org"
-check: all
+check: all $(TST_ALL)
 	@failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[        ]'; \
 	list=' $(TST_ALL) '; \
         if test -n "$$list"; then \

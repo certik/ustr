@@ -1,16 +1,39 @@
 #include "tst.h"
 
+static const char *rf = __FILE__;
+
 int tst(void)
 {
   Ustr_pool *pool = ustr_pool_make();
   Ustrp *sp1 = ustrp_dup_empty(pool);
   Ustrp *sp2 = USTRP1(\x2, "s2");
-  
+  char buf_spa[1024];
+  Ustrp *spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_FALSE, 0);
+
+  ASSERT( ustrp_size_alloc(sp1));
+  ASSERT(!ustrp_size_alloc(sp2));
+  ASSERT(spa);
+  ASSERT(!ustrp_alloc(spa));
+  ASSERT( ustrp_owner(spa));
+  ASSERT(!ustrp_ro(spa));
+  ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
+  ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
+  ASSERT(spa == ustrp_init_alloc(spa, sizeof(buf_spa), sizeof(buf_spa),
+                                 1, 1, 0, 0));
+  ASSERT( ustrp_alloc(spa)); /* it _thinks so_ */
+  ASSERT( ustrp_owner(spa));
+  ASSERT(!ustrp_ro(spa));
+  ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
+  ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
+  ASSERT((spa = ustrp_dup_undef(pool, 0)));
+  ASSERT(!ustrp_alloc(spa));
+  ASSERT(!ustrp_owner(spa));
+  ASSERT( ustrp_ro(spa));
   ASSERT(pool);
-  ASSERT(ustrp_rw(sp1));
+  ASSERT(!ustrp_ro(sp1));
   ASSERT(ustrp_len(sp1) == 0);
   ASSERT((sp1 = ustrp_dup_fmt_lim(pool, 4000, "%.5000x", 0xdeadbeef)));
-  ASSERT(ustrp_rw(sp1));
+  ASSERT(!ustrp_ro(sp1));
   ASSERT(ustrp_len(sp1) == 4000);
   ASSERT((sp1 = ustrp_dup_fmt(pool,           "%.5000x", 0xdeadbeef)));
   ASSERT(ustrp_len(sp1) == 5000);
@@ -62,17 +85,40 @@ int tst(void)
 
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT_PEQ(sp1, USTRP1(\x1, "2"));
-  ustrp_sc_free2(pool, &sp1, USTRP1(\x1, "c"));
+  ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
+  ASSERT_PEQ(sp1, USTRP1(\x2, "22"));
+  ASSERT( ustrp_add_rep_chr(pool, &sp1, 'x', 18));
+  ASSERT_PEQ(sp1, USTRP1(\x14, "22xxxxxxxxxxxxxxxxxx"));
+
+  /* throw away a Ustrp, so sp1 isn't the last */
+  ASSERT(ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 2, 1));
+
+  ASSERT(ustrp_del(pool, &sp1, 15));
+  ASSERT_PEQ(sp1, USTRP1(\x5, "22xxx"));
+  ASSERT( ustrp_add_rep_chr(pool, &sp1, 'y', 13));
+  ASSERT_PEQ(sp1, USTRP1(\x12, "22xxxyyyyyyyyyyyyy"));
+
+  ustrp_free(pool, sp1);
+  sp1 = USTRP1(\x1, "c");
   
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 1, 1));
   ASSERT_PEQ(sp1, USTRP1(\x2, "cs"));
-  ASSERT(ustrp_set_share(sp1));
+  ASSERT(ustrp_setf_share(sp1));
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT_PEQ(sp1, USTRP1(\x3, "cs2"));
-  ustrp_sc_free2(pool, &sp1, ustrp_dupx(pool, 0, 1, 0, 1, USTRP("")));
+  ustrp_sc_free2(pool, &sp1, ustrp_dupx(pool, 1, 1, 1, 1, USTRP("")));
   ASSERT_PEQ(sp1, USTRP(""));
-  ASSERT(ustrp_set_share(sp1));
+  ASSERT(ustrp_setf_share(sp1));
+  ASSERT(!ustrp_owner(sp1));
+  ASSERT( ustrp_shared(sp1));
+  ASSERT( ustrp_enomem(sp1));
+  ASSERT(!ustrp_reallocx(pool, &sp1, USTR_FALSE));
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
+  ASSERT( ustrp_owner(sp1));
+  ASSERT(!ustrp_shared(sp1));
+  ASSERT( ustrp_enomem(sp1));
+  ASSERT( ustrp_reallocx(pool, &sp1, USTR_FALSE));
+  ASSERT_PEQ(sp1, USTRP1(\x1, "2"));
   
   ustrp_sc_free2(pool, &sp1, USTRP(""));
   

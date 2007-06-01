@@ -16,7 +16,7 @@ usesz=0
 
 function usage
 {
-  echo " Format: $0 [-d] [-d] [-c] [-b x] [-s] [-e] all | <section> ..." 1>&2
+  echo " Format: $0 [-d] [-d] [-c] [-b x] [-s] [-e] gdb | all | <section> ..." 1>&2
   echo "     List of options:" 1>&2
   echo "         -d   = Turn debugging on, assert() trigger etc." 1>&2
   echo "         -d   = Turn extra debugging on" 1>&2
@@ -27,7 +27,10 @@ function usage
   echo "     List of sections:" 1>&2
   echo "         b    = strcat() binary numbers in NBO format" 1>&2
   echo "         cmp  = Comparing, strcmp() for Ustr's" 1>&2
+  echo "         cntl = Control options dynamically" 1>&2
   echo "         fmt  = Formatted output, sprintf() for Ustr's" 1>&2
+  echo "         gdb  = Copy just the .gdbinit file to the local dir" 1>&2
+  echo "         io   = IO routines" 1>&2
   echo "         main = The core, strcat() and delete for Ustr's" 1>&2
   echo "         set  = strcpy() for Ustr's" 1>&2
   echo "         spn  = Spanning, strspn() / strcspn() for Ustr's" 1>&2
@@ -67,18 +70,25 @@ fi
 all=false
 b=false
 cmp=false
+cntl=false
 fmt=false
+io=false
 main=false
 set=false
 spn=false
 srch=false
+
+gdb=false
 
 for i in $@; do
   case "$i" in
     all)  all=true                        ;;
     b)    b=true;               main=true ;;
     cmp)  cmp=true;             main=true ;;
+    cntl) cntl=true             main=true ;;
     fmt)  fmt=true;             main=true ;;
+    gdb)  gdb=true;                       ;;
+    io)   io=true;              main=true ;;
     main)                       main=true ;;
     set)  set=true;             main=true ;;
     spn)  spn=true;  srch=true; main=true ;;
@@ -90,18 +100,30 @@ for i in $@; do
 done
 
 if $all; then
-  cmp=true
   b=true
+  cmp=true
+  cntl=true
   fmt=true
+  io=true
   main=true
   set=true
   spn=true
   srch=true
 fi
 
-if ! $main; then
-  usage
+if $gdb; then
+  cp "$SHRDIR/.gdbinit" .
+  if ! $main; then
+    exit;
+  fi
+else
+  if ! $main; then
+    usage
+  fi
+  cp "$SHRDIR/.gdbinit" .
 fi
+
+
 
 # ---------------------------------------------
 # Copy all the files locally...
@@ -111,7 +133,12 @@ function copy
   name="$1"
   cp "$INCDIR/ustr-$name.h" .
   if $cfiles && test -f "$SHRDIR/ustr-$name-code.h"; then
+    if test -f "$SHRDIR/ustr-$name-internal.h"; then
+      cp "$SHRDIR/ustr-$name-internal.h" .
+    fi
+
     cp "$SHRDIR/ustr-$name-code.h" .
+
     if $dbg; then
       cp "$SHRDIR/ustr-$name-dbg-code.c" .
     else
@@ -119,8 +146,6 @@ function copy
     fi
   fi
 }
-
-cp "$SHRDIR/.gdbinit" .
 
 if $b; then
   copy b
@@ -130,12 +155,21 @@ if $cmp; then
   copy cmp
 fi
 
+if $cntl; then
+  copy cntl
+fi
+
 # conf is generated from scratch
 
 if $fmt; then
   copy fmt
 fi
 
+if $io; then
+  copy io
+fi
+
+copy compiler
 copy main
 
 if $set; then
@@ -197,6 +231,21 @@ if $cfiles; then
   echo >> $outname
   echo "# define USTR_CONF_HAVE_64bit_SIZE_MAX $autoconf_64b" >> $outname
   echo "# define USTR_CONF_HAVE_RETARDED_VSNPRINTF $autoconf_vsnprintf" >> $outname
+if [ -f "/usr/include/stdint.h" ]; then
+  echo "# define USTR_CONF_HAVE_STDINT_H 1" >> $outname
+else
+  echo "# define USTR_CONF_HAVE_STDINT_H 0" >> $outname
+fi
+
+if $cntl; then
+  echo "# define USTR_CONF_HAVE_DYNAMIC_CONF 1" >> $outname
+else
+  echo "# define USTR_CONF_HAVE_DYNAMIC_CONF 0" >> $outname
+fi
+  echo >> $outname
+  echo "# define USTR_CONF_USE_DYNAMIC_CONF  USTR_CONF_HAVE_DYNAMIC_CONF" >> $outname
+
+
   echo >> $outname
   echo "# define USTR_CONF_REF_BYTES   $defbytes" >> $outname
   echo "# define USTR_CONF_EXACT_BYTES $exact"    >> $outname
@@ -220,6 +269,7 @@ fi
   echo "#else" >> $outname
 else
   echo "/* Same defaults, but can be altered at will. */" >> $outname
+  echo "/* Note that you really shouldn't alter the _HAVE_* ones. */" >> $outname
   echo >> $outname
   echo "# ifndef USTR_CONF_HAVE_64bit_SIZE_MAX"               >> $outname
   echo "# define USTR_CONF_HAVE_64bit_SIZE_MAX $autoconf_64b" >> $outname
@@ -227,6 +277,22 @@ else
   echo "# ifndef USTR_CONF_HAVE_RETARDED_VSNPRINTF"           >> $outname
   echo "# define USTR_CONF_HAVE_RETARDED_VSNPRINTF $autoconf_vsnprintf" >> $outname
   echo "# endif" >> $outname
+  echo "# ifndef USTR_CONF_HAVE_STDINT_H" >> $outname
+if [ -f "/usr/include/stdint.h" ]; then
+  echo "# define USTR_CONF_HAVE_STDINT_H 1" >> $outname
+else
+  echo "# define USTR_CONF_HAVE_STDINT_H 0" >> $outname
+fi
+  echo "# endif" >> $outname
+  echo "# ifndef USTR_CONF_HAVE_DYNAMIC_CONF" >> $outname
+if $cntl; then
+  echo "# define USTR_CONF_HAVE_DYNAMIC_CONF 1" >> $outname
+else
+  echo "# define USTR_CONF_HAVE_DYNAMIC_CONF 0" >> $outname
+fi
+  echo "# endif" >> $outname
+  echo >> $outname
+  echo "/* no USE_DYNAMIC_CONF ... leave as default */" >> $outname
   echo >> $outname
   echo "# ifndef USTR_CONF_REF_BYTES"           >> $outname
   echo "# define USTR_CONF_REF_BYTES $defbytes" >> $outname
@@ -258,11 +324,6 @@ fi
   echo >> $outname
   echo "#endif" >> $outname
   echo >> $outname
-fi
-
-if [ -f "/usr/include/stdint.h" ]; then
-  echo "/* We found the file /usr/include/stdint.h at import time */" >> $outname
-  echo "#define USTR_CONF_HAVE_STDINT_H 1" >> $outname
 fi
 
 echo >> $outname
@@ -319,15 +380,25 @@ echo >> $outname
 # Everything deps. on MAIN
 echo '#include "ustr-main.h"'   >> $outname
 
+if $b; then
+  echo '#include "ustr-b.h"' >> $outname
+fi
+
 if $cmp; then
   echo '#include "ustr-cmp.h"'  >> $outname
 fi
+
+# ustr-cntl is hacked into ustr-main.h ... for various reasons.
 
 if $set; then
   echo '#include "ustr-set.h"'  >> $outname
 fi
 if $fmt; then # FMT kind of deps. on SET
   echo '#include "ustr-fmt.h"'  >> $outname
+fi
+
+if $io; then
+  echo '#include "ustr-io.h"' >> $outname
 fi
 
 if $srch; then

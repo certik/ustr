@@ -7,62 +7,7 @@
  * There are extra functions in various ustr-*.h files
  * If you require more, see Vstr etc. */
 
-#ifndef USTR_CONF_INCLUDE_CODEONLY_HEADERS /* include headers which are .c's */
-#define USTR_CONF_INCLUDE_CODEONLY_HEADERS 1
-#endif
-
-#ifndef USTR_CONF_REF_BYTES /* how many bytes to use up for references */
-#define USTR_CONF_REF_BYTES 2
-#endif
-
-#ifndef USTR_CONF_HAS_SIZE /* Include a size value */
-#define USTR_CONF_HAS_SIZE 0
-#endif
-
-#ifndef USTR_CONF_EXACT_BYTES /* don't get a little extra space from malloc() */
-#define USTR_CONF_EXACT_BYTES 0
-#endif
-
-/* so you can use something else, if you want */
-#ifndef USTR_CONF_MALLOC
-#define USTR_CONF_MALLOC(x)     malloc(x)
-#endif
-#ifndef USTR_CONF_REALLOC
-#define USTR_CONF_REALLOC(x, y) realloc((x), (y))
-#endif
-#ifndef USTR_CONF_FREE
-#define USTR_CONF_FREE(x)       free(x)
-#endif
-
-#ifndef USTR_CONF_POOL_MALLOC
-#define USTR_CONF_POOL_MALLOC(p, x)        ustr_pool_api_malloc((p), (x))
-#endif
-#ifndef USTR_CONF_POOL_REALLOC
-#define USTR_CONF_POOL_REALLOC(p, x, y, z) ustr_pool_api_realloc((p),(x),(y),z)
-#endif
-#ifndef USTR_CONF_POOL_FREE
-#define USTR_CONF_POOL_FREE(p, x)          /* do nothing */
-#endif
-
-#ifndef USTR_CONF_USE_ASSERT
-# ifdef NDEBUG
-#define USTR_CONF_USE_ASSERT 0
-# else
-#define USTR_CONF_USE_ASSERT 1
-# endif
-#endif
-
-#ifndef USTR_CONF_USE_EOS_MARK
-#define USTR_CONF_USE_EOS_MARK 0
-#endif
-
-#ifndef USTR_CONF_COMPILE_TYPEDEF /* include a typedef for Ustr */
-#define USTR_CONF_COMPILE_TYPEDEF 1
-#endif
-
-#ifndef USTR_CONF_COMPILE_USE_ATTRIBUTES /* use GCC attributes, for speed/warns */
-#define USTR_CONF_COMPILE_USE_ATTRIBUTES 1
-#endif
+/* ---- BEG: always static config. ---- */
 
 #ifndef USTR_CONF_HAVE_STDINT_H
 #define USTR_CONF_HAVE_STDINT_H 0
@@ -77,6 +22,19 @@
 # define USTR__SIZE_MAX ((size_t)-1)
 #endif
 #include <limits.h> /* CHAR_BIT */
+
+#define USTR_FALSE 0
+#define USTR_TRUE  1
+#define USTR_NULL  ((struct Ustr *) 0)
+#define USTRP_NULL ((struct Ustrp *)0)
+
+#ifndef USTR_CONF_USE_ASSERT
+# ifdef NDEBUG
+#define USTR_CONF_USE_ASSERT 0
+# else
+#define USTR_CONF_USE_ASSERT 1
+# endif
+#endif
 
 #if !defined(ustr_assert)     || !defined(USTR_ASSERT) || \
     !defined(ustr_assert_ret) || !defined(USTR_ASSERT_RET)
@@ -103,22 +61,110 @@
 # endif
 #endif
 
+#ifndef USTR_CONF_USE_EOS_MARK /* include an "end of string" mark */
+#define USTR_CONF_USE_EOS_MARK 0
+#endif
+
+#ifndef USTR_CONF_COMPILE_TYPEDEF /* include a typedef for Ustr */
+#define USTR_CONF_COMPILE_TYPEDEF 1
+#endif
+
+#ifndef USTR_CONF_INCLUDE_CODEONLY_HEADERS /* include headers which are .c's */
+#define USTR_CONF_INCLUDE_CODEONLY_HEADERS 1
+#endif
+
+#ifndef USTR_CONF_INCLUDE_INTERNAL_HEADERS /* internal functions */
+# if USTR_CONF_INCLUDE_CODEONLY_HEADERS
+#define USTR_CONF_INCLUDE_INTERNAL_HEADERS 1
+#else
+#define USTR_CONF_INCLUDE_INTERNAL_HEADERS 0
+#endif
+#endif
+
+#ifndef USTR_CONF_COMPILE_USE_ATTRIBUTES /* GCC attributes, for speed/warns */
+#define USTR_CONF_COMPILE_USE_ATTRIBUTES 1
+#endif
+
+#include "ustr-compiler.h"
+
+#ifndef USTR_CONF_USE_DYNAMIC_CONF /* make some _CONF settings into variables */
+# if ! USTR_CONF_INCLUDE_CODEONLY_HEADERS && USTR_CONF_HAVE_DYNAMIC_CONF
+#define USTR_CONF_USE_DYNAMIC_CONF 1
+# else
+#define USTR_CONF_USE_DYNAMIC_CONF 0
+# endif
+#endif
+/* ---- END: always static config. ---- */
+
+/* hackish ... this has to be before ustr-cntl-code.h ... hackish */
+USTR_CONF_E_PROTO void *ustr_pool_sys_malloc(void *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
+USTR_CONF_E_PROTO
+void *ustr_pool_sys_realloc(void *, void *, size_t, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
+/* NOTE: ustr_pool_sys_free doesn't do anything -- it's too simple */
+USTR_CONF_E_PROTO void ustr_pool_sys_free(void *, void *)
+    USTR__COMPILE_ATTR_NONNULL_A();
+
+#if USTR_CONF_USE_DYNAMIC_CONF
+# include "ustr-cntl.h"
+#endif
+
+/* ---- BEG: static/dynamic config. ---- */
+#ifndef USTR_CONF_REF_BYTES /* how many bytes to use up for references */
+#define USTR_CONF_REF_BYTES 2
+#endif
+
+#ifndef USTR_CONF_HAS_SIZE /* Include a size value */
+#define USTR_CONF_HAS_SIZE 0
+#endif
+
+#ifndef USTR_CONF_EXACT_BYTES /* don't get a little extra space from malloc() */
+#define USTR_CONF_EXACT_BYTES 0
+#endif
+
+/* so you can use something else, if you want */
+#ifndef USTR_CONF_MALLOC
+#define USTR_CONF_MALLOC(x)     malloc(x)
+#endif
+#ifndef USTR_CONF_REALLOC
+#define USTR_CONF_REALLOC(x, y) realloc((x), (y))
+#endif
+#ifndef USTR_CONF_FREE
+#define USTR_CONF_FREE(x)       free(x)
+#endif
+
+#ifndef USTR_CONF_POOL_MALLOC
+#define USTR_CONF_POOL_MALLOC(p, x)        ustr_pool_sys_malloc((p), (x))
+#endif
+#ifndef USTR_CONF_POOL_REALLOC
+#define USTR_CONF_POOL_REALLOC(p, x, y, z) ustr_pool_sys_realloc((p),(x),(y),z)
+#endif
+#ifndef USTR_CONF_POOL_FREE
+#define USTR_CONF_POOL_FREE(p, x)          ustr_pool_sys_free((p),(x))
+#endif
+/* ---- END: static/dynamic config. ---- */
+
+
 #define USTR__COMPILE_ASSERT(x, y)                \
     extern char ustr__compiler_assert_ ## y[1 - 2*!(x)]
 
 USTR__COMPILE_ASSERT(CHAR_BIT == 8, num_char_bits);
 
-#define USTR_FALSE 0
-#define USTR_TRUE  1
-#define USTR_NULL  ((struct Ustr *) 0)
-#define USTRP_NULL ((struct Ustrp *)0)
+#if USTR_CONF_HAVE_64bit_SIZE_MAX
+USTR__COMPILE_ASSERT(USTR__SIZE_MAX >= 0xFFFFFFFFFFFFFFFFULL,
+                     small_size_t_limit64);
+#else
+USTR__COMPILE_ASSERT(USTR__SIZE_MAX >= 0xFFFFFFFFUL, small_size_t_limit32);
+#endif
 
-
-struct Ustr_pool 
-{ /* simplest pool implementation, evar! */
- struct Ustr_pool *next;
- void *ptr;
-};
+#if ! USTR_CONF_USE_DYNAMIC_CONF
+# if !((USTR_CONF_REF_BYTES == 0) || (USTR_CONF_REF_BYTES == 1) || \
+       (USTR_CONF_REF_BYTES == 2) || (USTR_CONF_REF_BYTES == 4) || \
+       (USTR_CONF_HAVE_64bit_SIZE_MAX && (USTR_CONF_REF_BYTES == 8)))
+#  error "Bad size for USTR_CONF_REF_BYTES"
+# endif
+#endif
 
 
 /* As the saying goes:
@@ -199,9 +245,11 @@ USTR__COMPILE_ASSERT(sizeof(struct Ustrp) == sizeof(struct Ustr),
 #define USTR__BITS_LIMITED                     USTR__BIT_HAS_SZ
 
 /* constant string macros */
-#define USTR_BEG_RO1  "\x01"
-#define USTR_BEG_RO2  "\x02"
-#define USTR_BEG_RO4  "\x03"
+#define USTR_BEG_RO1     "\x01"
+#define USTR_BEG_RO2     "\x02"
+#define USTR_BEG_RO4     "\x03"
+#define USTR_BEG_FIXED2  "x112233"
+#define USTR_BEG_FIXED4  "x1122223333"         /* Likely? */
 #if USTR_CONF_USE_EOS_MARK /* i == 0b_0110_1001 */
 # define USTR_END_CONSTx "\0<ii-CONST_EOS-ii>"
 # define USTR_END_ALOCDx "\0<ii-ALOCD_EOS-ii>"
@@ -308,18 +356,24 @@ USTR__COMPILE_ASSERT((sizeof(USTR_END_CONSTx) == sizeof(USTR_END_FIXEDx)),
  *     {0xA9, 0x03, 0xEB, 0x10, 'a', 'b', [...], 'o', 'p', 0x00, <x>, <x>, <x>}
  */
 #if USTR_CONF_COMPILE_TYPEDEF
-typedef struct Ustr Ustr;
-typedef struct Ustrp Ustrp;
+typedef struct Ustr      Ustr;
+typedef struct Ustrp     Ustrp;
 typedef struct Ustr_pool Ustr_pool;
 #endif
 
-#define USTR_SC_INIT_AUTO(x, y, z)                              \
+struct Ustr_pool 
+{ /* simplest pool implementation, evar! */
+ struct Ustr_pool *next;
+ void *ptr;
+};
+
+#define USTR_SC_INIT_AUTO(x, y, z)              \
     ustr_init_fixed(x, sizeof(x), y, z)
+#define USTRP_SC_INIT_AUTO(x, y, z)             \
+    ustrp_init_fixed(x, sizeof(x), y, z)
 
 #define USTR__REF_LEN(x)     ustr__pow2(ustr_sized(x), (x)->data[0] >> 2)
 #define USTR__LEN_LEN(x)     ustr__pow2(ustr_sized(x), (x)->data[0])
-
-#include "ustr-compiler.h"
 
 /* ---------------- Ustr "pool" because ther'es no stdlib. ---------------- */
 USTR_CONF_E_PROTO struct Ustr_pool *ustr_pool_make(void)
@@ -328,13 +382,6 @@ USTR_CONF_E_PROTO void ustr_pool_free(struct Ustr_pool *);
 
 USTR_CONF_E_PROTO void ustr_pool_clear(struct Ustr_pool *)
     USTR__COMPILE_ATTR_NONNULL_A();
-
-USTR_CONF_E_PROTO void *ustr_pool_api_malloc(struct Ustr_pool *, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
-USTR_CONF_E_PROTO
-void *ustr_pool_api_realloc(struct Ustr_pool *, void *, size_t, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
-/* NOTE: ustr_pool_api_free doesn't exist -- it's too simple */
 
 /* This converts a number n to 2**(n-1) -- for small values > 0.
  * Where  n==0 means 0.
@@ -375,9 +422,6 @@ USTR_CONF_EI_PROTO int ustr_exact(const struct Ustr *)
 USTR_CONF_EI_PROTO int ustr_sized(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO int ustr_rw(const struct Ustr *)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO int ustr_ro(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
@@ -397,14 +441,14 @@ USTR_CONF_E_PROTO  int ustr_owner(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
-USTR_CONF_E_PROTO int ustr_set_enomem_err(struct Ustr *)
+USTR_CONF_E_PROTO int ustr_setf_enomem_err(struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_E_PROTO int ustr_set_enomem_clr(struct Ustr *)
+USTR_CONF_E_PROTO int ustr_setf_enomem_clr(struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
 
-USTR_CONF_E_PROTO int ustr_set_share(struct Ustr *)
+USTR_CONF_E_PROTO int ustr_setf_share(struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_E_PROTO int ustr_set_owner(struct Ustr *)
+USTR_CONF_E_PROTO int ustr_setf_owner(struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
 
 USTR_CONF_E_PROTO size_t ustr_overhead(const struct Ustr *)
@@ -431,14 +475,14 @@ struct Ustr *ustr_init_alloc(void *, size_t, size_t, size_t, int, int, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
 struct Ustr *ustr_init_fixed(void *, size_t, int, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_init_alloc(void *, size_t, size_t, size_t, int, int, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_init_fixed(void *, size_t, int, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 /* ---------------- add ---------------- */
 
@@ -575,6 +619,8 @@ USTR_CONF_E_PROTO struct Ustrp *ustrp_dup_rep_chr(void *, char, size_t)
 
 /* ---------------- shortcut ---------------- */
 
+USTR_CONF_E_PROTO int ustr_sc_ensure_owner(struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO void ustr_sc_free(struct Ustr **)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO void ustr_sc_free2(struct Ustr **, struct Ustr *)
@@ -589,6 +635,8 @@ struct Ustr *ustr_sc_dupx(size_t, size_t, int, int, struct Ustr **)
 USTR_CONF_E_PROTO struct Ustr *ustr_sc_dup(struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
+USTR_CONF_E_PROTO int ustrp_sc_ensure_owner(void *, struct Ustrp **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_E_PROTO void ustrp_sc_free(void *, struct Ustrp **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_E_PROTO void ustrp_sc_free2(void *, struct Ustrp **, struct Ustrp *)
@@ -614,10 +662,8 @@ USTR_CONF_II_PROTO int ustr_enomem(const struct Ustr *s1)
 { return (!!(s1->data[0] & USTR__BIT_ENOMEM)); }
 
 /* these are compound bit tests */
-USTR_CONF_II_PROTO int ustr_rw(const struct Ustr *s1)
-{ return (!!(s1->data[0] & USTR__BITS_RW)); }
 USTR_CONF_II_PROTO int ustr_ro(const struct Ustr *s1)
-{ return (!ustr_rw(s1)); }
+{ return (!(s1->data[0] & USTR__BITS_RW)); }
 USTR_CONF_II_PROTO int ustr_fixed(const struct Ustr *s1)
 { return (( s1->data[0] & USTR__BITS_RW) == USTR__BITS_FIXED); }
 USTR_CONF_II_PROTO int ustr_limited(const struct Ustr *s1)
@@ -691,6 +737,10 @@ USTR_CONF_II_PROTO const char *ustr_cstr(const struct Ustr *s1)
   return ((const char *)(s1->data + 1 + USTR__REF_LEN(s1) + lenn));
 }
 
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+# include "ustr-main-internal.h"
+#endif
+
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-main-code.h"
 #endif
@@ -753,11 +803,6 @@ USTR_CONF_EI_PROTO int ustrp_sized(const struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO int ustrp_sized(const struct Ustrp *s1)
 { return (ustr_sized(&s1->s)); }
-USTR_CONF_EI_PROTO int ustrp_rw(const struct Ustrp *)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_rw(const struct Ustrp *s1)
-{ return (ustr_rw(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_ro(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
@@ -789,23 +834,23 @@ USTR_CONF_EI_PROTO int ustrp_owner(const struct Ustrp *)
 USTR_CONF_II_PROTO int ustrp_owner(const struct Ustrp *s1)
 { return (ustr_owner(&s1->s)); }
 
-USTR_CONF_EI_PROTO int ustrp_set_enomem_err(struct Ustrp *)
+USTR_CONF_EI_PROTO int ustrp_setf_enomem_err(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_set_enomem_err(struct Ustrp *s1)
-{ return (ustr_set_enomem_err(&s1->s)); }
-USTR_CONF_EI_PROTO int ustrp_set_enomem_clr(struct Ustrp *)
+USTR_CONF_II_PROTO int ustrp_setf_enomem_err(struct Ustrp *s1)
+{ return (ustr_setf_enomem_err(&s1->s)); }
+USTR_CONF_EI_PROTO int ustrp_setf_enomem_clr(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_set_enomem_clr(struct Ustrp *s1)
-{ return (ustr_set_enomem_clr(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_setf_enomem_clr(struct Ustrp *s1)
+{ return (ustr_setf_enomem_clr(&s1->s)); }
 
-USTR_CONF_EI_PROTO int ustrp_set_share(struct Ustrp *)
+USTR_CONF_EI_PROTO int ustrp_setf_share(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_set_share(struct Ustrp *s1)
-{ return (ustr_set_share(&s1->s)); }
-USTR_CONF_EI_PROTO int ustrp_set_owner(struct Ustrp *)
+USTR_CONF_II_PROTO int ustrp_setf_share(struct Ustrp *s1)
+{ return (ustr_setf_share(&s1->s)); }
+USTR_CONF_EI_PROTO int ustrp_setf_owner(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_set_owner(struct Ustrp *s1)
-{ return (ustr_set_owner(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_setf_owner(struct Ustrp *s1)
+{ return (ustr_setf_owner(&s1->s)); }
 
 USTR_CONF_EI_PROTO size_t ustrp_overhead(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()

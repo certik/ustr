@@ -158,19 +158,3 @@
 # define USTR__COMPILE_ATTR_UNUSED(x) ustr__UNUSED_ ## x
 #endif
 
-#if USTR_CONF_HAVE_64bit_SIZE_MAX
-USTR__COMPILE_ASSERT(USTR__SIZE_MAX >= 0xFFFFFFFFFFFFFFFFULL,
-                     small_size_t_limit64);
-# if !((USTR_CONF_REF_BYTES == 0) ||                              \
-       (USTR_CONF_REF_BYTES == 1) || (USTR_CONF_REF_BYTES == 2) ||  \
-       (USTR_CONF_REF_BYTES == 4) || (USTR_CONF_REF_BYTES == 8))
-#  error "Bad size for USTR_CONF_REF_BYTES"
-# endif
-#else
-USTR__COMPILE_ASSERT(USTR__SIZE_MAX >= 0xFFFFFFFFUL, small_size_t_limit32);
-# if !((USTR_CONF_REF_BYTES == 0) ||                              \
-       (USTR_CONF_REF_BYTES == 1) || (USTR_CONF_REF_BYTES == 2) ||  \
-       (USTR_CONF_REF_BYTES == 4))
-#  error "Bad size for USTR_CONF_REF_BYTES"
-# endif
-#endif

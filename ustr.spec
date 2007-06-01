@@ -1,7 +1,7 @@
 
 Name: ustr
-Version: 0.99.1
-Release: 2%{?dist}
+Version: 0.99.2
+Release: 1%{?dist}
 Summary: String library, very very low memory overhead, simple to import.
 Group: System Environment/Libraries
 License: MIT, LGPL, BSD

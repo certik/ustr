@@ -93,15 +93,8 @@ USTR_CONF_i_PROTO int ustrp__add_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
-  if (rc == -1)
-  {
-    va_copy(nap, ap);
-    rc = ustr__retard_vfmt_ret(fmt, nap);
-    va_end(ap);
-
-    if (rc == -1)
-      return (USTR_FALSE);
-  }
+  if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
+    return (USTR_FALSE);
 
   if (lim && ((size_t)rc > lim))
     rc = lim;
@@ -208,15 +201,8 @@ struct Ustr *ustrp__dupx_vfmt_lim(void *p, size_t sz, size_t rbytes, int exact,
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
-  if (rc == -1)
-  {
-    va_copy(nap, ap);
-    rc = ustr__retard_vfmt_ret(fmt, nap);
-    va_end(ap);
-
-    if (rc == -1)
-      return (USTR_FALSE);
-  }
+  if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
+    return (USTR_FALSE);
 
   if (lim && ((size_t)rc > lim))
     rc = lim;
@@ -395,15 +381,8 @@ USTR_CONF_i_PROTO int ustrp__set_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
-  if (rc == -1)
-  {
-    va_copy(nap, ap);
-    rc = ustr__retard_vfmt_ret(fmt, nap);
-    va_end(ap);
-
-    if (rc == -1)
-      return (USTR_FALSE);
-  }
+  if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
+    return (USTR_FALSE);
 
   if (lim && ((size_t)rc > lim))
     rc = lim;

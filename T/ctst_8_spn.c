@@ -1,5 +1,7 @@
 #include "tst.h"
 
+static const char *rf = __FILE__;
+
 int tst(void)
 {
   Ustr *s3 = ustr_dup_cstr("abcdefg xxxx xxxx xxxx xxxx1234yyyy yyyy yyyy zzz");

@@ -23,11 +23,11 @@ USTR_CONF_EI_PROTO int ustr_cmp_cstr(const struct Ustr *, const char *)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 /* faster compare, sorts in a very non-human way */
-USTR_CONF_E_PROTO int ustr_cmp_fast_buf(const struct Ustr*, const void*, size_t)
+USTR_CONF_EI_PROTO int ustr_cmp_fast_buf(const struct Ustr*, const void*,size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
-USTR_CONF_E_PROTO int ustr_cmp_fast(const struct Ustr *, const struct Ustr *)
+USTR_CONF_EI_PROTO int ustr_cmp_fast(const struct Ustr *, const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_cmp_fast_subustr(const struct Ustr *,
@@ -52,6 +52,28 @@ USTR_CONF_EI_PROTO int ustr_cmp_subustr_eq(const struct Ustr *,
 USTR_CONF_EI_PROTO int ustr_cmp_cstr_eq(const struct Ustr *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+
+USTR_CONF_II_PROTO
+int ustr_cmp_fast_buf(const struct Ustr *s1, const void *buf, size_t len2)
+{
+  size_t len1 = 0;
+
+  USTR_ASSERT(ustr_assert_valid(s1) && buf);
+
+  len1 = ustr_len(s1);
+  if (len1 != len2)
+    return (len1 - len2);
+
+  return (memcmp(ustr_cstr(s1), buf, len1));
+}
+
+USTR_CONF_II_PROTO int ustr_cmp_fast(const struct Ustr *s1,const struct Ustr*s2)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+  if (s1 == s2)
+    return (0);
+  return (ustr_cmp_fast_buf(s1, ustr_cstr(s2), ustr_len(s2)));
+}
 
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-cmp-code.h"
