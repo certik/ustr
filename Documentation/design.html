@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Design of ustr, the micro string API - for C</title>
+    <link rel="stylesheet" type="text/css" href="http://www.and.org/f_c-1.0.css"
+
+    <style>
+      body { width 85% };
+
+      A       { background: #FFF; color: #44F; }
+      A:hover {                   color: #20b2aa; }
+
+      A.anchor       { color: #000; }
+      A.anchor:hover { color: #000; }
+
+      P { text-indent: 2em; }
+
+      ul li                       { list-style-type: lower-roman; }
+    </style>
+
+  </head>
+
+  <body>
+    <h1>Design of ustr, the micro string API - for C</h1>
+
+<ul>
+<li><a href="#nonmagic">Non-Magic version of a ustr</a> </li>
+<li><a href="#magic">Magic/real version of ustr</a> </li>
+<li><a href="#unused">Unused bit patterns for a ustr</a> </li>
+<li><a href="#english">English description of struct Ustr</a> </li>
+<li><a href="#possibilities">Number of options for strings</a> </li>
+</ul>
+
+<h2 id="nonmagic"> Non-Magic version of a ustr </h2>
+
+<pre class="c2html">
+<span class="comment">/* As the saying goes:
+ *   "you can tell a lot about the code from the data structure".
+ *
+ * So this is the non-magic version of struct Ustr:
+ *
+ * struct Ustr
+ * {
+ *   const char *ptr;
+ *   size_t reference_count;
+ *   size_t length;
+ *   size_t size;
+ *
+ *   unsigned char flag_is_readonly            : 1;
+ *   unsigned char flag_is_fixed               : 1;
+ *   unsigned char flag_exact_byte_allocations : 1;
+ *   unsigned char flag_has_enomem_error       : 1;
+ *   unsigned char flag_fail_on_alloc          : 1;
+ * };
+ *
+ * ...however this "eats" memory for "small" strings, which is one reason given
+ * why people don't use a real string ADT.
+ *
+ */</span>
+</pre>
+
+<h2 id="magic"> Magic/real version of ustr </h2>
+
+<pre class="c2html">
+struct Ustr 
+{
+ <span class="unsigned">unsigned</span> <span class="char">char</span> data[1];
+ <span class="comment">/* 0b_wxzy_nnoo =&gt;
+  * 
+  *    w         = allocated
+  *     x        = has size
+  *      y       = round up allocations (off == exact allocations)
+  *       z      = memory error
+  *         nn   = refn
+  *           oo = lenn
+  *
+  * 0b_0000_0000 = "", const, no alloc fail, no mem err, refn=0, lenn=0 */</span>
+};
+
+struct Ustrp
+{ <span class="comment">/* This is just used as a way to catch errors at compile time with static
+   * typing. You might think we'd define Ustrp to be identical to Ustr, and
+   * just cast however aliasing rules screw us over if we do that. */</span>
+  struct Ustr s;
+};
+</pre>
+
+<h2 id="unused"> Unused bit patterns for a ustr </h2>
+
+<pre class="c2html">
+<span class="comment">/* Unused bit patterns for data[0]:
+ *
+ * 0bxxxx_x100 == lenn = 0
+ * 0bxxxx_1x00
+ * 0bxxx1_xx00
+ * 0bxx1x_xx00
+ *              0bx1xx_xx00 =&gt; is used in sized
+ * 0b1xxx_xx00
+ *
+ * 0bx1xx_xx11 == 128bit size_t, yeh!
+ * 0bx1xx_11xx
+ *
+ * 0b0xxx_x1xx == refn values for const/fixed
+ * 0b0xxx_1xxx
+ *
+ * 0b00x1_xxxx == mem error for const
+ * 0b001x_xxxx == not exact for const
+ *
+ */</span>
+</pre>
+
+<h2 id="english">English description of struct Ustr </h2>
+
+<pre class="c2html">
+<span class="comment">/*
+ *    ================ English description of struct Ustr ================
+ *
+ *  This strucure is very magic, as an optimization "" is a valid "structure"
+ * for an empty string, ustr_len("") == 0, ustr_size("") == 0,
+ * ustr_cstr("") == "".
+ *  This also works for other "static data strings" if they start with the first
+ * four bits as 0 ... although for C const strings using this, the length has
+ * to be manually defined correctly at compile time.
+ *
+ *  However it is also a "space efficient" String ADT, with a managed length,
+ * _either_ with or without reference counts (so that ustr_dup() doesn't copy)
+ * and with or without a stored size (so growing/shrinking a lot doesn't
+ * cause lots of malloc/realloc usage). Note that for lengths of strings, or
+ * reference counts that need &gt;= 8 bytes of storage the Ustr _much_ contain
+ * a stored size.
+ * 
+ *  It can also track memory allocation errors over multiple function calls.
+ *
+ *  If the first byte == 0, then it's "" as above.
+ *  Otherwise the first byte contains four flags, and 2 numbers (2 bits each).
+ *
+ *  The 1st flag says if the string is allocated. The 2nd flag says if it has a
+ * stored size. The 3rd flag says if it isn't using "exact allocations", if it
+ * is ustr_len() + ustr_overhead() == ustr_size_alloc(), otherwise there might
+ * be room to grow without doing a memory allocation call[1]. The 4th flag says
+ * if this Ustr has had a memory allocation error.
+ * The two numbers are the mappings for the length of the reference count, and
+ * the length of the length. Note that this mapping changes if the 2nd flag is
+ * set.
+ *
+ * [1] There is an implied "size" of the string, based an how big it is. This
+ * is a concession for speed efficiency, although it only grows at 1.5x
+ * not 2x which is the norm. (again, to reduce memory waste). Again if this is
+ * too much overhead, just use exact sized allocations.
+ *
+ *  Also NOTE if the 1st and 2nd flags are set, this means that the Ustr is in
+ * fixed storge (like an auto array). Also if the 1st, 2nd and 3rd flags are
+ * set, this means that the Ustr is limited, Ie. it's in fixed storge and
+ * _cannot_ grow (all allocation attempts will fail).
+ *
+ *
+ *  Next, possibly, comes the reference count (of the given length[2]).
+ *  Next, if not "", comes the length of the data (of the given length[2]).
+ *  Next, if non-zero length, comes the data, which can include NIL bytes.
+ *  And finally, if not "", a NIL byte, to make sure it's always a valid C-Style
+ * string (although obviously any embeded NIL bytes will make it look shorter
+ * if something else just uses strlen(ustr_cstr())).
+ *
+ * [2] The sizes can currently be 1, 2, 4 or 8 bytes. Depending on the mapping
+ * of the value in the first byte (length changes dynamically, as you add data).
+ *
+ *  Examples:
+ *
+ *  The allocated string "a", using exact allocations and no reference
+ * counting, is the 4 bytes:
+ *
+ *     {0x81, 0x01, 'a', 0x00}
+ *
+ *
+ *  The allocated string "ab", using non-exact allocations and 1 byte reference
+ * counting (shared by 13 users), is the 6 bytes (there is no waste due to
+ * non-exact allocations):
+ *
+ *     {0xA5, 0x0D, 0x02, 'a', 'b', 0x00}
+ *
+ *
+ *  The allocated string "abcdefghijklmnop" (16 bytes, and a NIL), with
+ * non-exact allocations 2 byte reference counting (shared by 1,003 users), is
+ * the 24 bytes (with 3 bytes of "unused" space at the end):
+ *
+ *     {0xA9, 0x03, 0xEB, 0x10, 'a', 'b', [...], 'o', 'p', 0x00, &lt;x&gt;, &lt;x&gt;, &lt;x&gt;}
+ */</span>
+</pre>
+<!-- C to html convertion of stdin -->
+<!--   done on Wed May 23 19:14:40 2007 -->
+
+<h2 id="possibilities"> Number of options for strings </h2>
+
+<p> This design allows 83 different combinations of options for your string
+ types:
+</p>
+
+<ul>
+<li> <b>Constant/read-only strings.</b>: Ie. 
+<pre class="c2html">
+Ustr *s1 = USTR(<span class="str">""</span>);
+Ustr *s2 = USTR1(\x4, <span class="str">"abcd"</span>);
+</pre>
+<!-- C to html convertion of stdin -->
+<!--   done on Wed May 23 19:18:26 2007 -->
+</li>
+<hr> <!-- not sure this is allowed, but seems to work -->
+<li> <b>Fixed/auto sized strings.</b>: These can seamlessly convert into
+allocated strings, if you add too much data. Ie. 
+<pre class="c2html">
+  <span class="char">char</span> buf_s3[128] = <span class="str">"x123456abcd"</span>;
+  <span class="comment">/*                  x       = the info byte
+                       12     = reference count storage - always two bytes
+                         34   = len storage  - always same size as the size
+                           56 = size storage - uses 2, 4 or 8 bytes depending on sizeof() */</span>
+  Ustr *s3 = USTR_SC_INIT_AUTO(buf_s3, USTR_FALSE, 4); <span class="comment">/* s3 is now the string "abcd" */</span>
+</pre>
+<!-- C to html convertion of stdin -->
+<!--   done on Wed May 23 19:19:30 2007 -->
+</li>
+<li> <b>Fixed/auto sized limited strings.</b>: These will fail to go beyond their specified size (this failure can be checked with ustr_enomem(), just like allocated strings). Ie. 
+<pre class="c2html">
+  <span class="char">char</span> buf_s3[32] = <span class="str">"x123456abcd"</span>;
+  Ustr *s3 = USTR_SC_INIT_AUTO(buf_s3, USTR_TRUE, 4); <span class="comment">/* s3 is now the string "abcd" */</span>
+</pre>
+<!-- C to html convertion of stdin -->
+<!--   done on Wed May 23 19:19:30 2007 -->
+</li>
+<hr>
+<hr>
+<li> <b>Allocated, no reference counts</b>: This is the lowest overhead,
+ meaning that ustr_dup() etc. will always have to create a new string and do a
+ copy. <i>For this loss of functionality you gain a single byte</i>. Although
+ if you never share the strings and have very small string lengths this
+ <i>could</i> be significant (0% overhead for an 8 byte string, total overhead
+ being 37.5% or 50% with allocation rounding). </li>
+<li> <b>Allocated, uint8_t reference counts</b>: If you anticipate a low
+ (1-255 users) amount of sharing, and a very low average string size. You can
+ allocate just a single byte to the reference count (less than 10% overhead for
+ an 8 byte string, total overhead being 50%).
+ </li>
+<li> <b>Allocated, uint16_t reference counts</b>: This is what I'd consider
+ "normal" usage, it allows a string to be duplicated at no cost upto 65,535
+ times, and the reference count is only going to take up 2 bytes (less than 20%
+ overhead for an 8 byte string, total overhead being 62.5% or 100% with
+ allocation rounding). <i>Note this is the default allocation policy</i></li>
+<li> <b>Allocated, uint32_t reference counts</b>: This might be useful if you
+ want to share the string in a <i>lot</i> of places, it allows a string to be
+ duplicated at no cost upto 4,294,967,295 times, but the reference count is
+ going to take up 4 bytes (less than 40% overhead for an 8 byte string, total
+ overhead being 87.5% or 100% with allocation rounding).</li>
+<li> <b>Allocated, uint64_t reference counts</b>: This is available, allowing
+ a string to be duplicated at no cost upto 18,446,744,073,709,551,615 times, 
+ but the reference count is going to take up 8 bytes (less than 100% overhead
+ for an 8 byte string, total overhead being 137.5% or 200% with allocation
+ rounding).
+<i>Note that this is only allowed on a 64bit machine.</i></li>
+
+<li> <b>Allocated, infinite reference count</b>: If you have an allocates string
+ which has any size of reference count you can call ustr_set_share() and the
+ string will allow an infinite amount of duplication, but can never be free'd
+ no matter how many times someone calls ustr_free(). The string can also not be
+ altered anymore. Calling ustr_set_owner() returns the reference count to 1, 
+ and calling ustr_free_shared() will free the string.
+</li>
+
+<li> <b>Pool allocated</b>: If you use the ustrp_*() calls instead of
+ ustr_*() calls, you will get strings allocated from a "pool" of memory which
+ can be free'd at once (note that ustrp_free() probably does nothing, in this
+ case). </li>
+
+<li> <b>Allocated, with explicit size</b>: For slightly extra overhead you can
+ have explicitly sized allocated strings, these will have ustr_size() expand as
+ needed ... but they will <b>not</b> implicitly reclaim that memory (you have
+ to call ustr_realloc()). They are useful if you need to add significant amounts
+ of data and then delete it before adding more. </li>
+
+<li> <b>Allocated, with exact size</b>: For slightly less extra overhead you can
+ have exactly sized allocated strings, these do not add any extra space when
+ the strings need to be resized. Thus if you need to store a 4 byte string,
+ using uint16_t reference counts and no stored size, you will allocate 9 bytes
+ instead of 12 bytes. However to then add a single byte the system allocation
+ functions will need to be called. </li>
+
+</ul>
+
+    <hr>
+    <address><a href="mailto:james-web@and.org">James Antill</a></address>
+<!-- Created: Wed May 23 19:10:32 EDT 2007 -->
+<!-- hhmts start -->
+Last modified: Wed May 23 20:36:45 EDT 2007
+<!-- hhmts end -->
+  </body>
+</html>

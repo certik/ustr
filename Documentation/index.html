@@ -1,0 +1,742 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Micro String API - for C</title>
+    <link rel="stylesheet" type="text/css" href="http://www.and.org/f_c-1.0.css"
+>
+
+    <style>
+      body { width 85% };
+
+      A       { background: #FFF; color: #44F; }
+      A:hover {                   color: #20b2aa; }
+
+      A.anchor       { color: #000; }
+      A.anchor:hover { color: #000; }
+
+      P { text-indent: 2em; }
+
+      ul li                       { list-style-type: lower-roman; }
+
+      td.heading { background: #DDD; }
+
+      table.stats   { border-bottom: solid; margin-bottom: 2em; }
+
+      td.st       { text-align: left;  font-weight: bold; }
+
+      table.stats tr.r1 { background: #eee; }
+      table.stats tr.r2 { }
+      table.stats tr.r1:hover { background: #ccc; }
+      table.stats tr.r2:hover { background: #ccc; }
+
+      table.stats td.bad   { color: #f00; }
+      table.stats td.good  { color: #0f0; }
+      table.stats td.ok    { color: #00f; }
+      table.stats td.vgood { color: #0f0; font-weight: bold; text-decoration: underline; }
+    </style>
+  </head>
+
+  <body>
+    <h1>Micro String API - for C</h1>
+
+<h2> Download </h2>
+
+<p> You can get the beta release of 1.0 <A href="0.99.1">here</A>, the main
+ reason it's "beta" is due to missing documentation.</p>
+
+<h2> About </h2>
+
+<p> A few years ago now I wrote a very extensive String API for C, called
+ <a href="http://www.and.org/vstr/">Vstr</a>,
+ it was designed to perform extremely well for IO like patterns as that was
+ my planned usage (for instance
+ <a href="http://www.and.org/and-httpd/">And-httpd, my Web server</a>). It
+ works very well, for that usage. </p>
+<p>Also due to the extensivness of the API I basically used it everywhere, even
+ though there are some things it is somewhat "overkill" for, and I wanted
+ other people to use it so I didn't have to resort to using string.h when
+ creating patches for their code. However more than a few C coders I speak to
+ have one of a few reasons why they don't want to use Vstr. The ustr API
+ should solve all of these problems, and hopefully fill in all the gaps where
+ Vstr is the 500lb hammer. </p>
+
+<p> You can see the developers design documentation
+ <a href="design">here</a>. Also here's the file of
+ <a href="gdbinit.txt">GDB init functions</a>, to help with debugging.
+ And the here are links to
+ <a href="TODO">TODO</a>, <a href="NEWS">NEWS</a>, <a href="THANKS">THANKS</a>,
+ <a href="AUTHORS">AUTHORS</a> and the "<a href="LICENSE">LICENSE</a>", such
+ as it is.</p>
+
+<h2> List of problems with String APIs, in C </h2>
+
+<p> These are the primary reasons I've seen given why developers don't want to
+put "any" string API into their code:</p>
+
+<ul>
+<li> It's "too hard", politically, to put into an existing projects build
+ system.  </li>
+<li> String ADTs take up too much memory. </li>
+<li> It's too hard to integrate into existing code/APIs that uses plain C-style
+ strings significantly. </li>
+<li> We can "often" use stack space for a string, if we do it ourself,
+ which (we understand) is much faster. </li>
+<li> Need/want to initialize strings as they are declared. </li>
+<li> License isn't compatible with our code. </li>
+<li> The current code may be unsafe and hard to audit, but it's "optimized"
+ to use the C-style string format/design. </li>
+<li> While development might be harder "debugging is easier". </li>
+</ul>
+
+<p> So instead of using a String ADT (any String ADT), the common solution is
+ to just try and get by using (char *)'s and string.h. With "certain bits"
+ using strdup() and/or some size_t's with a stored length. This ad hoc approach
+ is <a href="http://www.and.org/vstr/security">very bad</a>, for everybody.
+ Needless to say, ustr solves all of the above problems while being
+ <b>significantly faster and safer</b> than just using string.h.
+</p>
+
+<h2> List of solutions to problems with String APIs, in C </h2>
+
+<ul>
+<li> <b>Too hard to get into the build system</b>:
+ <a class="ans" href="#ans-build">This is usually due to
+ a "dependancies are bad" so we disallow them rule. Or sometimes that requiring
+ pkg-config etc. in the build isn't an option.</a> </li>
+
+<li>  <b>String ADTs take too much memory</b>: 
+ <a class="ans" href="#ans-too-much-memory"> This is most pronounced with
+ "very small strings", due to the "overhead" of storing the legnth/size/etc.
+ for strings in the 1-100.</a> </li>
+
+<li> <b>Too hard to integrate into the code</b>:
+ <a class="ans" href="#ans-integration"> This is a common problem when the
+ String API uses something other than a simple pointer + length to represent the
+ string. The internal representation then needs to be converted, and the failure
+ to convert needs to be dealt with in the code.</a> </li>
+
+<li> <b>Allocations on the stack</b>:
+ <a class="ans" href="#ans-stack"> This is a problem when you want to use one
+ set of string APIs, but in some cases you need the efficiency of using fixed
+ sized storage (like stack allocations). This is esp. important in certain
+ places like signal handlers, where it's not possible to call malloc().</a></li>
+
+<li> <b>Initialization at declarations time</b>:
+ <a class="ans" href="#ans-initialize"> This can be a large maintenance burden,
+ if you have strings in a struct or an array which either aren't changed or
+ are changed rarley (like default values for configuration).</a></li>
+
+<li> <b>License</b>:
+ <a class="ans" href="#ans-license"> LGPL/GPL just doesn't work in many situations.</a></li>
+
+<li> <b>Hand optimization of string.h usage</b>:
+ <a class="ans" href="#ans-opts"> Sometimes an algorithm will be more efficient
+ if you travel the string until you reach the NIL byte, instead of using a
+ predefined length. Also you may think there are inefficiencies in growing a
+ string vs. pre-calculating the correct size and allocating that once.</a></li>
+
+<li> <b>Debugging</b>:
+ <a class="ans" href="#ans-debug"> Sometimes a problem with string with a
+ string API is that it's hard to see the values in a debugger.</a></li>
+
+</ul>
+
+<h2 id="ans-build"> Solving the build problem </h2>
+
+
+<p> To use ustr with all of the shipped modules, you can just (after install
+ ustr) goto your source dir. and run:
+</p>
+
+<pre>
+ustr-import all
+</pre>
+
+<p> And include the following line in any source files you want to use
+ ustr from:
+</p>
+
+<pre>
+#include "<a href="http://www.and.org/ustr/">ustr.h</a>"
+</pre>
+
+<p> You do not have to worry about linking with anything or having symbols
+ appear in your library that you don't want ... it will "just work". If you
+ don't want copies of each function you are using to appear in each file it is
+ used from you can pass the "-c" option to ustr-import and compile
+ the .c files.
+ You <b>can</b> also link against the ustr shared library, if you don't mind
+ adding a very simple dependency (it is much simpler than Vstr, for example, 
+ and so is very likely to just run anywhere your code does).
+</p>
+
+<p> Note that if you wish to look at some ustr using code now, you can see some
+ <a href="#examples">example code</a>  or look at the distributed
+ example/unit-test code at the end of this page.
+</p>
+
+
+<h2 id="ans-too-much-memory"> Solving the memory overhead problem </h2>
+
+<p> This is best illistrated by example. Say you build a "simple" string API,
+it just has the basics: automatic grow and shrink and reference counts for
+ zero copy duplication. The default assumption is that as you are adding data
+ to the string you don't want to spend all your time in realloc() so you also
+ expand the size of the string by powers of 2.
+</p>
+
+<p> This is about the most common string API that people implement on their own,
+ a rough structure would look like:
+</p>
+
+
+<pre class="c2html">
+struct Simple_str
+{
+  <span class="char">char</span> *ptr;
+  <span class="sizet">size_t</span> reference_count;
+  <span class="sizet">size_t</span> length;
+  <span class="sizet">size_t</span> size;
+};
+</pre>
+
+<p> However this strucutre itself is 16 bytes (in a 32bit environment) or
+ 32bytes (in a 64bit environment), and to allocate a new string requires two
+ allocations (one for the string, and one for the data in the -&gt;ptr
+ argument).</p>
+<p> This means that to create a new string containing one byte you
+ have to do two allocations and allocate roughly 34bytes ... giving a 1700%
+ increase over plain strdup().</p>
+<p>
+ By comparison ustr does one allocation of 6bytes by default, in
+ a both 32bit and 64bit environments, and it can drop that down to 4 bytes,
+ again even in a 64bit environment (and, in a 64bit environment, you
+ can have a &gt; 4GB ustr so you aren't losing any features).
+ 
+</p>
+<p>
+ Although, to be fair, by default ustr only
+ allocates 2bytes for it's reference count. However that's 65,535 references to
+ the same string -- and ustr has a helper function so that if you need 70,000
+ references to a string it'll only need to allocate 2 strings, and another one
+ so that you can mark a string as "shared" so it will act like a
+ <a href="#ans-initialize">read-only string</a> until it has been set back to
+ "owned".
+</p>
+
+<p> For a Gnumeric spreadsheet comparing all string length values upto 260
+ between strdup(), ustr and a "Simple str" click
+ <a href="strdup%20vs.%20ustr.gnumeric">here</a>. I've also listed of some
+ common "small" string lengths below with their percentage overhead
+ vs. strdup().
+</p>
+
+<table class="stats">
+<tr>
+
+     <td class="heading">Ave. range of string sizes</td> 
+     <td class="heading">Ave. Simple_str - 32bit overhead</td> 
+     <td class="heading">Ave. Simple_str - 64bit overhead</td> 
+     <td class="heading">Ave. ustr overhead</td> 
+</tr>
+
+<tr>
+   <td>1-9 bytes</td>
+   <td class="bad">327.27%</td>
+   <td class="bad">618.18%</td>
+   <td class="ok">85.45%</td>
+</tr>
+
+<tr>
+   <td>1-19 bytes</td>
+   <td class="bad">194.76%</td>
+   <td class="bad">347.14%</td>
+   <td class="ok">55.24%</td>
+</tr>
+
+<tr>
+   <td>1-29 bytes</td>
+   <td class="bad">239.57%</td>
+   <td class="bad">236.34%</td>
+   <td class="good">45.81%</td>
+</tr>
+
+<tr>
+   <td>1-39 bytes</td>
+   <td class="bad">123.78%</td>
+   <td class="bad">201.83%</td>
+   <td class="good">41.22%</td>
+</tr>
+
+<tr> 
+   <td>1-79 bytes</td>
+   <td class="ok">87.01%</td>
+   <td class="bad">126.51%</td>
+   <td class="good">32.53%</td>
+</tr>
+
+<tr> 
+   <td>1-89 bytes</td>
+   <td class="ok">83.13%</td>
+   <td class="bad">118.29%</td>
+   <td class="good">28.3%</td>
+</tr>
+
+<tr> 
+   <td>1-198 bytes</td>
+   <td class="ok">62.23%</td>
+   <td class="bad">78.23%</td>
+   <td class="vgood">23.85%</td>
+</tr>
+</table>
+
+<p> Here is a list of the first 18 string lengths, and some later ones using the
+ different options for ustr:
+</p>
+
+
+
+<table class="stats">
+<tr>
+     <td class="heading">String</td> 
+     <td class="heading">Alloc. C-string</td> 
+     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==<span title="(default)">4</span></td> 
+     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==2</td> 
+     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==1</td> 
+     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==<span title="No sharing of strings">0</span></td> 
+ </tr>
+
+ <tr class="r1">
+     <td>""</td> 
+     <td>1 byte</td> 
+
+     <td class="good" title="-100%">0/0</td> <!-- ref=4 -->
+     <td class="good" title="-100%">0/0</td> <!-- ref=2 -->
+     <td class="good" title="-100%">0/0</td> <!-- ref=1 -->
+     <td class="good" title="-100%">0/0</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"1"</td> 
+     <td>2 bytes</td> 
+
+     <td class="bad" title="300% overhead">8/8</td> <!-- ref=4 -->
+     <td class="ok" title="200% overhead">6/6</td> <!-- ref=2 -->
+     <td class="ok" title="200% overhead">6/5</td> <!-- ref=1 -->
+     <td class="ok" title="100% overhead">4/4</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"12"</td> 
+     <td>3 bytes</td> 
+
+     <td class="bad" title="300% overhead">12/9</td> <!-- ref=4 -->
+     <td class="ok" title="266.67% overhead">8/7</td> <!-- ref=2 -->
+     <td class="ok" title="100% overhead">6/6</td> <!-- ref=1 -->
+     <td class="ok" title="100% overhead">6/5</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123"</td> 
+     <td>4 bytes</td> 
+
+     <td class="bad" title="200% overhead">12/10</td> <!-- ref=4 -->
+     <td class="ok" title="100% overhead">8/8</td> <!-- ref=2 -->
+     <td class="ok" title="100% overhead">8/7</td> <!-- ref=1 -->
+     <td class="good" title="50% overhead">6/6</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"1234"</td> 
+     <td>5 bytes</td> 
+
+     <td class="ok" title="140% overhead">12/11</td> <!-- ref=4 -->
+     <td class="ok" title="140% overhead">12/9</td> <!-- ref=2 -->
+     <td class="good" title="60% overhead">8/8</td> <!-- ref=1 -->
+     <td class="good" title="60% overhead">8/7</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"12345"</td> 
+     <td>6 bytes</td> 
+
+     <td class="ok" title="100% overhead">12/12</td> <!-- ref=4 -->
+     <td class="ok" title="100% overhead">12/10</td> <!-- ref=2 -->
+     <td class="ok" title="100% overhead">12/9</td> <!-- ref=1 -->
+     <td class="good" title="33.33% overhead">8/8</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456"</td> 
+     <td>7 bytes</td> 
+
+     <td class="ok" title="128.57% overhead">16/13</td> <!-- ref=4 -->
+     <td class="good" title="71.43% overhead">12/11</td> <!-- ref=2 -->
+     <td class="good" title="71.43% overhead">12/10</td> <!-- ref=1 -->
+     <td class="good" title="71.43% overhead">12/9</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"1234567"</td> 
+     <td>8 bytes</td> 
+
+     <td class="ok" title="100% overhead">16/14</td> <!-- ref=4 -->
+     <td class="ok" title="50% overhead">12/12</td> <!-- ref=2 -->
+     <td class="ok" title="50% overhead">12/11</td> <!-- ref=1 -->
+     <td class="ok" title="50% overhead">12/10</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"12345678"</td> 
+     <td>9 bytes</td> 
+
+     <td class="good" title="77.78% overhead">16/15</td> <!-- ref=4 -->
+     <td class="good" title="77.78% overhead">16/13</td> <!-- ref=2 -->
+     <td class="good" title="33.33% overhead">12/12</td> <!-- ref=1 -->
+     <td class="good" title="33.33% overhead">12/11</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789"</td> 
+     <td>10 bytes</td> 
+
+     <td class="good" title="60% overhead">16/16</td> <!-- ref=4 -->
+     <td class="good" title="60% overhead">16/14</td> <!-- ref=2 -->
+     <td class="good" title="60% overhead">16/13</td> <!-- ref=1 -->
+     <td class="good" title="20% overhead">12/12</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 "</td> 
+     <td>11 bytes</td> 
+
+     <td class="ok" title="118.18% overhead">24/17</td> <!-- ref=4 -->
+     <td class="good" title="45.45% overhead">16/15</td> <!-- ref=2 -->
+     <td class="good" title="45.45% overhead">16/14</td> <!-- ref=1 -->
+     <td class="good" title="45.45% overhead">16/13</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1"</td> 
+     <td>12 bytes</td> 
+
+     <td class="ok" title="100% overhead">24/18</td> <!-- ref=4 -->
+     <td class="good" title="33.33% overhead">16/16</td> <!-- ref=2 -->
+     <td class="good" title="33.33% overhead">16/15</td> <!-- ref=1 -->
+     <td class="good" title="33.33% overhead">16/14</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 12"</td> 
+     <td>13 bytes</td> 
+
+     <td class="good" title="84.62% overhead">24/19</td> <!-- ref=4 -->
+     <td class="good" title="84.62% overhead">24/17</td> <!-- ref=2 -->
+     <td class="good" title="23.08% overhead">16/16</td> <!-- ref=1 -->
+     <td class="good" title="23.08% overhead">16/15</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 123"</td> 
+     <td>14 bytes</td> 
+
+     <td class="good" title="71.43% overhead">24/20</td> <!-- ref=4 -->
+     <td class="good" title="71.43% overhead">24/18</td> <!-- ref=2 -->
+     <td class="good" title="71.43% overhead">24/17</td> <!-- ref=1 -->
+     <td class="good" title="14.29% overhead">16/16</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234"</td> 
+     <td>15 bytes</td> 
+
+     <td class="good" title="60% overhead">24/21</td> <!-- ref=4 -->
+     <td class="good" title="60% overhead">24/19</td> <!-- ref=2 -->
+     <td class="good" title="60% overhead">24/18</td> <!-- ref=1 -->
+     <td class="good" title="60% overhead">24/17</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 12345"</td> 
+     <td>16 bytes</td> 
+
+     <td class="good" title="50% overhead">24/22</td> <!-- ref=4 -->
+     <td class="good" title="50% overhead">24/20</td> <!-- ref=2 -->
+     <td class="good" title="50% overhead">24/19</td> <!-- ref=1 -->
+     <td class="good" title="50% overhead">24/18</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 123456"</td> 
+     <td>17 bytes</td> 
+
+     <td class="good" title="41.18% overhead">24/23</td> <!-- ref=4 -->
+     <td class="good" title="41.18% overhead">24/21</td> <!-- ref=2 -->
+     <td class="good" title="41.18% overhead">24/20</td> <!-- ref=1 -->
+     <td class="good" title="41.18% overhead">24/19</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234567"</td> 
+     <td>18 bytes</td> 
+
+     <td class="good" title="33.33% overhead">24/24</td> <!-- ref=4 -->
+     <td class="good" title="33.33% overhead">24/22</td> <!-- ref=2 -->
+     <td class="good" title="33.33% overhead">24/21</td> <!-- ref=1 -->
+     <td class="good" title="33.33% overhead">24/20</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 123456789 123456"</td> 
+     <td>26 bytes</td> 
+
+     <td class="good" title="84.62% overhead">48/32</td> <!-- ref=4 -->
+     <td class="good" title="23.08% overhead">32/30</td> <!-- ref=2 -->
+     <td class="good" title="23.08% overhead">32/29</td> <!-- ref=1 -->
+     <td class="good" title="23.08% overhead">32/28</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234..."</td> 
+     <td>42 bytes</td> 
+
+     <td class="good" title="52.38% overhead">64/48</td> <!-- ref=4 -->
+     <td class="good" title="14.29% overhead">48/46</td> <!-- ref=2 -->
+     <td class="good" title="14.29% overhead">48/45</td> <!-- ref=1 -->
+     <td class="good" title="14.29% overhead">48/44</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...89"</td> 
+     <td>250 bytes</td> 
+
+     <td class="vgood" title="2.4 overhead">256/256</td> <!-- ref=4 -->
+     <td class="vgood" title="2.4% overhead">256/254</td> <!-- ref=2 -->
+     <td class="vgood" title="2.4% overhead">256/253</td> <!-- ref=1 -->
+     <td class="vgood" title="2.4% overhead">256/252</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...89"</td> 
+     <td>251 bytes</td> 
+
+     <td class="good" title="52.99% overhead">384/258</td> <!-- ref=4 -->
+     <td class="vgood" title="2.00% overhead">256/255</td> <!-- ref=2 -->
+     <td class="vgood" title="2.00% overhead">256/254</td> <!-- ref=1 -->
+     <td class="vgood" title="2.00% overhead">256/253</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...45"</td> 
+     <td>256 bytes</td> 
+
+     <td class="good" title="50% overhead">384/263</td> <!-- ref=4 -->
+     <td class="good" title="50% overhead">384/261</td> <!-- ref=2 -->
+     <td class="good" title="50% overhead">384/260</td> <!-- ref=1 -->
+     <td class="good" title="50% overhead">384/259</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...56"</td> 
+     <td>257 bytes</td> 
+
+     <td class="good" title="49.42% overhead">384/265</td> <!-- ref=4 -->
+     <td class="good" title="49.42% overhead">384/263</td> <!-- ref=2 -->
+     <td class="good" title="49.42% overhead">384/262</td> <!-- ref=1 -->
+     <td class="good" title="49.42% overhead">384/261</td> <!-- ref=0 -->
+ </tr>
+
+</table>
+
+<h2 id="ans-integration"> Solving the integration problem </h2>
+
+<p> This problem is mostly solved by having ustr's store their data as a valid
+ C-style string at all times (although it can have NIL bytes in it, which will
+ confuse other APIs if you <b>only</b> pass the ustr_cstr() value.
+</p>
+
+<p> Also as you will see below it is trivial to "port" designs using common
+ methods to use ustr.
+</p>
+
+<h2 id="ans-stack"> Solving the stack allocation problem </h2>
+
+<p> There is a simple solution to this problem, ustr strings can be allocated on
+ the stack. For example:
+</p>
+
+<pre class="c2html">
+<span class="char">char</span> buf_store[1024];
+Ustr *s1 = USTR_SC_INIT_AUTO(buf_store, <span class="false">FALSE</span>, <span class="num0">0</span>);
+</pre>
+
+<p> The second argument says if the ustr should should be of limited size (and
+ so fail if too much data is added to it) or not and thus it should
+ automatically be converted to heap based storage if you try and add too much
+ data to it (and thus needing to be ustr_free()d).
+ So you can still do that, if you think you need to ... and it'll now be
+ managed, faster and safer.
+</p>
+
+<p> You can call ustr_free() on ustr's on the stack, and
+ they will <b>not</b> be passed to free. Also if they get duplicated the
+ duplication comes from the heap (you cannot create references to a fixed ustr).
+</p>
+
+<h2 id="ans-initialize"> Solving the initialization problem </h2>
+
+<p> There is a simple solution to this problem, ustr strings can be
+ constant C-strings. For example:
+</p>
+
+<pre class="c2html">
+Ustr *s1 = USTR(<span class="str">""</span>);
+Ustr *s2 = USTR1(\xF, <span class="str">"123456789 12345"</span>);
+Ustr *s3 = USTR1(\x18, <span class="str">"123456789 123456789 1234"</span>);      <span class="comment">/* 24 byte length */</span>
+Ustr *s4 = USTR2(\x1, \x44, <span class="str">"1234589 12"</span> ... <span class="str">"89 1234"</span>); <span class="comment">/* 324 byte length */</span>
+</pre>
+
+<p> As with the stack based ustr's, calling ustr_free() doesn't actually free
+ these strings. Also as they are read-only strings, calling ustr_dup() on them
+ will just return the pointer itself (Ie. no allocations happen). Apart from
+ that they act as ustr's in every way. This means that you can initialize
+ things to default values in other structs/arrays, and then add/delete/alter
+ data in them like normal ustr's.
+</p>
+
+<p> Note that although the length is specified manually above when ustr is
+ running in debugging mode it will validate all strings, and will instantly
+spot a badly defined read-only ustr ... allowing you to fix the problem.
+</p>
+
+<h2 id="ans-license"> Solving the LICENSE problem </h2>
+
+<p> The License for the code is MIT, new-BSD, LGPL, etc. ... if you need
+  another license to help compatibility, just ask for it. It's basically
+  public domain, without all the legal problems for everyone that trying to
+  make something public domain entails.
+  </p>
+
+<h2 id="ans-opts"> The "optimization" of string.h usage </h2>
+
+ <p> With ustr, due to it keeping the data as a valid C-style string
+ all the time, you can just call ustr_cstr(), to get a (const char *), or
+ ustr_wstr(), to get a (char *), at any time. Use whatever algorithm you need
+ to.
+</p>
+
+<p> If you are worried about the "inefficiency" of growing the string to the
+ correct size you can also pre-allocate a ustr of the size you think you need,
+ thus using a single malloc() call (and memcpy()'s to add the data). This is
+ basically as fast is it could be made to go by hand ... and it'll now be
+ managed and safer.
+</p>
+
+<p> One point worth highlighting here is that people often assume they know
+ where the performance problems are going to be, however I've seen benchmark
+ runs of C-style string using code where the function that used the most CPU
+ time was <b>strcmp</b>(). For certain workloads general C-style strings are
+ horribly inefficient at answering the question "are these two strings equal",
+ ustr solves that problem with <b>ustr_cmp_eq</b>() and in a similar vein also
+ provides <b>ustr_fast_cmp</b>() for when you need to sort the strings but
+ don't care what order the sort is in.
+</p>
+
+
+<h2 id="ans-debug"> GDB macros for easy debugging </h2>
+
+ <p> The big problem here is that when you have a core dump you can't call any
+ functions to find out data about the string. Thus. I've written some gdb
+ macros <a href="gdbinit.txt">here</a> which mean all you have to do is type
+ "pustr_all s1" etc.
+</p>
+
+<h2 id="example"> A Significant example of usage, with comments </h2>
+
+<pre class="c2html">
+Ustr *s1 = USTR(<span class="str">""</span>);          <span class="comment">/* == "", always works */</span>
+Ustr *s2 = ustr_dup(s1);      <span class="comment">/* == "", always works */</span>
+Ustr *s3 = ustr_dup_cstr(<span class="str">""</span>); <span class="comment">/* == "", always works */</span>
+
+ustr_cmp_eq(s1, s2); <span class="comment">/* == TRUE */</span>
+ustr_cmp_eq(s1, s3); <span class="comment">/* == TRUE */</span>
+
+if (ustr_shared(s2)) <span class="comment">/* This is  TRUE, as a constant/read-only string cannot be free'd */</span>
+  <span class="comment">/* whatever */</span> ;
+
+if (ustr_ro(s2))    <span class="comment">/* This is  TRUE */</span>
+  <span class="comment">/* whatever */</span> ;
+
+if (!ustr_add_fmt(&amp;s2, <span class="str">"%s %d %c%d"</span>, <span class="str">"x"</span>, 4, <span class="num0">0</span>, 8))
+  <span class="comment">/* error */</span> ;
+
+if (ustr_owner(s1)) <span class="comment">/* This will return FALSE, as noone owns the "" read-only string */</span>
+  <span class="comment">/* whatever */</span> ;
+if (ustr_owner(s2)) <span class="comment">/* This will return  TRUE, as we've now got allocated memory for s2 */</span>
+  <span class="comment">/* whatever */</span> ;
+
+foo_API(ustr_cstr(s1), ustr_len(s1)); <span class="comment">/* == "", 0 */</span>
+foo_API(ustr_cstr(s2), ustr_len(s2)); <span class="comment">/* == "x 4 \0008", 6 */</span>
+
+s3 = ustr_dup(s2); <span class="comment">/* don't need to free s3 as it's empty */</span>
+                   <span class="comment">/* don't need to check for errors as s2 == s3 */</span>
+
+if (ustr_owner(s2))  <span class="comment">/* This will now return FALSE, we've got two references: s2 and s3 */</span>
+  <span class="comment">/* whatever */</span> ;
+if (ustr_shared(s2)) <span class="comment">/* This is FALSE, it's a non-shared string referenced by both s2 and s3 */</span>
+  <span class="comment">/* whatever */</span> ;
+
+ustr_free(s2); <span class="comment">/* free'd one reference to the data pointed to by both s2 and s3 */</span>
+
+ustr_set_share(s2);  <span class="comment">/* Make s2/s3 "shared" data,
+                        so it always has infinite references */</span>
+
+if (ustr_shared(s2)) <span class="comment">/* This is  TRUE */</span>
+  <span class="comment">/* whatever */</span> ;
+if (ustr_ro(s2))     <span class="comment">/* This is FALSE */</span>
+  <span class="comment">/* whatever */</span> ;
+
+s3 = ustr_dup(s2); <span class="comment">/* This is the same as s3 = s2; */</span>
+ustr_free(s2);     <span class="comment">/* These do nothing */</span>
+ustr_free(s2);
+ustr_free(s2);
+ustr_free(s2);
+
+if (!ustr_add_cstr(&amp;s3, <span class="str">"abcd"</span>))
+  <span class="comment">/* error */</span> ;
+
+ustr_add_cstr(&amp;s3, <span class="str">"1234"</span>);
+ustr_add_cstr(&amp;s3, <span class="str">"xyz"</span>);
+
+if (ustr_enomem(s3)) <span class="comment">/* check for errors on the last 2 ustr_add_cstr() functions at once
+                        ustr_owner(x) has to be true for this to be reliable,
+                        hence the explicit first check */</span>
+  <span class="comment">/* error */</span> ;
+
+ustr_set_owner(s2); <span class="comment">/* Make s2 be "non-shared" and have a single owner */</span>
+ustr_set_owner(s1); <span class="comment">/* This fails, as you can't make a read-only string be "non-shared" */</span>
+
+ustr_sc_del(&amp;s2); <span class="comment">/* free'd s2 and set s2 = USTR("") */</span>
+
+ustr_cmp_eq(s1, s2); <span class="comment">/* == TRUE */</span>
+
+s2 = USTR1(\x0b, "Hello world"); <span class="comment">/* Constant string with data */</span>
+
+if (ustr_shared(s2)) <span class="comment">/* This is  TRUE */</span>
+  <span class="comment">/* whatever */</span> ;
+if (ustr_ro(s2))     <span class="comment">/* This is  TRUE */</span>
+  <span class="comment">/* whatever */</span> ;
+
+<span class="comment">/* don't need to "free" anything else */</span>
+</pre>
+
+<p> You can look at/download the code and some test code <a href="http://www.and.org/ustr/src">here</a>.
+
+    <hr>
+    <address><a href="mailto:james-web@and.org">James Antill</a></address>
+<!-- Created: Thu May 10 02:10:59 EDT 2007 -->
+<!-- hhmts start -->
+Last modified: Sat May 19 02:31:57 EDT 2007
+<!-- hhmts end -->
+  </body>
+</html>

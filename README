@@ -1,0 +1,29 @@
+
+ Compile with:
+
+make
+
+ Compile and Run test suite with:
+
+make check
+
+ Install all important files with:
+
+make install
+
+ Cleanup:
+
+make clean
+
+ Full cleanup, incl. .in -> real convertion etc:
+
+make distclean
+
+
+
+...after it's installed you can use it with either pkg-config, just linking with
+-lustr or -lustr-debug ... and including ustr.h or ustr-debug.h.
+
+ Or you can use "ustr-import all", and use the headers only.
+
+ See example code etc. at: http://www.and.org/ustr/

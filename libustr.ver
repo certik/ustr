@@ -1,0 +1,290 @@
+ USTR_1.0 {
+    global:
+
+  ustr__pow2;
+  ustr__embed_val_get;
+  ustr__ref_get;
+
+  ustr_pool_api_malloc;
+  ustr_pool_api_realloc;
+  ustr_pool_clear;
+  ustr_pool_free;
+  ustr_pool_make;
+
+  ustr_assert_valid;
+
+  ustrp_assert_valid;
+
+  ustr_cstr;
+  ustr_len;
+  ustr_wstr;
+
+  ustrp_cstr;
+  ustrp_len;
+  ustrp_wstr;
+
+  ustr_alloc;
+  ustr_enomem;
+  ustr_exact;
+  ustr_fixed;
+  ustr_limited;
+  ustr_overhead;
+  ustr_owner;
+  ustr_ro;
+  ustr_rw;
+  ustr_shared;
+  ustr_size;
+  ustr_size_alloc;
+  ustr_sized;
+
+  ustrp_alloc;
+  ustrp_enomem;
+  ustrp_exact;
+  ustrp_fixed;
+  ustrp_limited;
+  ustrp_overhead;
+  ustrp_owner;
+  ustrp_ro;
+  ustrp_rw;
+  ustrp_shared;
+  ustrp_size;
+  ustrp_size_alloc;
+  ustrp_sized;
+
+  ustr_set_enomem_err;
+  ustr_set_enomem_clr;
+  ustr_set_share;
+  ustr_set_owner;
+
+  ustrp_set_enomem_err;
+  ustrp_set_enomem_clr;
+  ustrp_set_share;
+  ustrp_set_owner;
+
+  ustr_free;
+
+  ustrp_free;
+
+  ustr_init_size;
+  ustr_init_alloc;
+  ustr_init_fixed;
+
+  ustrp_init_alloc;
+  ustrp_init_fixed;
+
+  ustr_reallocx;
+  ustr_realloc;
+
+  ustrp_reallocx;
+  ustrp_realloc;
+
+  ustr_add;
+  ustr_add_buf;
+  ustr_add_cstr;
+  ustr_add_rep_chr;
+  ustr_add_subustr;
+  ustr_add_undef;
+
+  ustrp_add;
+  ustrp_add_buf;
+  ustrp_add_cstr;
+  ustrp_add_rep_chr;
+  ustrp_add_subustrp;
+  ustrp_add_undef;
+
+  ustr_dup;
+  ustr_dup_buf;
+  ustr_dup_cstr;
+  ustr_dup_empty;
+  ustr_dup_rep_chr;
+  ustr_dup_subustr;
+  ustr_dup_undef;
+
+  ustrp_dup;
+  ustrp_dup_buf;
+  ustrp_dup_cstr;
+  ustrp_dup_empty;
+  ustrp_dup_rep_chr;
+  ustrp_dup_subustrp;
+  ustrp_dup_undef;
+
+  ustr_dupx;
+  ustr_dupx_buf;
+  ustr_dupx_cstr;
+  ustr_dupx_empty;
+  ustr_dupx_rep_chr;
+  ustr_dupx_subustr;
+  ustr_dupx_undef;
+
+  ustrp_dupx;
+  ustrp_dupx_buf;
+  ustrp_dupx_cstr;
+  ustrp_dupx_empty;
+  ustrp_dupx_rep_chr;
+  ustrp_dupx_subustrp;
+  ustrp_dupx_undef;
+
+  ustr_set;
+  ustr_set_buf;
+  ustr_set_cstr;
+  ustr_set_rep_chr;
+  ustr_set_subustr;
+  ustr_set_undef;
+
+  ustrp_set;
+  ustrp_set_buf;
+  ustrp_set_cstr;
+  ustrp_set_rep_chr;
+  ustrp_set_subustrp;
+  ustrp_set_undef;
+
+  ustr_del;
+  ustr_del_subustr;
+
+  ustrp_del;
+  ustrp_del_subustrp;
+
+  ustr_sc_del;
+  ustr_sc_dupx;
+  ustr_sc_dup;
+  ustr_sc_free;
+  ustr_sc_free2;
+  ustr_sc_free_shared;
+
+  ustrp_sc_del;
+  ustrp_sc_dupx;
+  ustrp_sc_dup;
+  ustrp_sc_free;
+  ustrp_sc_free2;
+  ustrp_sc_free_shared;
+
+  ustr_add_fmt;
+  ustr_add_fmt_lim;
+  ustr_add_vfmt;
+  ustr_add_vfmt_lim;
+  ustr_dup_fmt;
+  ustr_dup_fmt_lim;
+  ustr_dup_vfmt;
+  ustr_dup_vfmt_lim;
+  ustr_dupx_fmt;
+  ustr_dupx_fmt_lim;
+  ustr_dupx_vfmt;
+  ustr_dupx_vfmt_lim;
+  ustr_set_fmt;
+  ustr_set_fmt_lim;
+  ustr_set_vfmt;
+  ustr_set_vfmt_lim;
+
+  ustrp_add_fmt;
+  ustrp_add_fmt_lim;
+  ustrp_add_vfmt;
+  ustrp_add_vfmt_lim;
+  ustrp_dup_fmt;
+  ustrp_dup_fmt_lim;
+  ustrp_dup_vfmt;
+  ustrp_dup_vfmt_lim;
+  ustrp_dupx_fmt;
+  ustrp_dupx_fmt_lim;
+  ustrp_dupx_vfmt;
+  ustrp_dupx_vfmt_lim;
+  ustrp_set_fmt;
+  ustrp_set_fmt_lim;
+  ustrp_set_vfmt;
+  ustrp_set_vfmt_lim;
+
+  ustr_cmp;
+  ustr_cmp_buf;
+  ustr_cmp_cstr;
+  ustr_cmp_fast;
+  ustr_cmp_fast_buf;
+  ustr_cmp_fast_cstr;
+  ustr_cmp_fast_subustr;
+  ustr_cmp_eq;
+  ustr_cmp_buf_eq;
+  ustr_cmp_cstr_eq;
+  ustr_cmp_subustr;
+  ustr_cmp_subustr_eq;
+
+  ustrp_cmp;
+  ustrp_cmp_buf;
+  ustrp_cmp_cstr;
+  ustrp_cmp_fast;
+  ustrp_cmp_fast_buf;
+  ustrp_cmp_fast_cstr;
+  ustrp_cmp_fast_subustrp;
+  ustrp_cmp_eq;
+  ustrp_cmp_buf_eq;
+  ustrp_cmp_cstr_eq;
+  ustrp_cmp_subustrp;
+  ustrp_cmp_subustrp_eq;
+
+  ustr_srch_buf_fwd;
+  ustr_srch_buf_rev;
+  ustr_srch_chr_fwd;
+  ustr_srch_chr_rev;
+  ustr_srch_cstr_fwd;
+  ustr_srch_cstr_rev;
+  ustr_srch_fwd;
+  ustr_srch_rev;
+
+  ustrp_srch_buf_fwd;
+  ustrp_srch_buf_rev;
+  ustrp_srch_chr_fwd;
+  ustrp_srch_chr_rev;
+  ustrp_srch_cstr_fwd;
+  ustrp_srch_cstr_rev;
+  ustrp_srch_fwd;
+  ustrp_srch_rev;
+
+  ustr_spn_chr_fwd;
+  ustr_spn_chr_rev;
+  ustr_spn_chrs_fwd;
+  ustr_spn_chrs_rev;
+  ustr_spn_cstr_chrs_fwd;
+  ustr_spn_cstr_chrs_rev;
+  ustr_spn_ustr_chrs_fwd;
+  ustr_spn_ustr_chrs_rev;
+
+  ustrp_spn_chr_fwd;
+  ustrp_spn_chr_rev;
+  ustrp_spn_chrs_fwd;
+  ustrp_spn_chrs_rev;
+  ustrp_spn_cstr_chrs_fwd;
+  ustrp_spn_cstr_chrs_rev;
+  ustrp_spn_ustrp_chrs_fwd;
+  ustrp_spn_ustrp_chrs_rev;
+
+  ustr_cspn_chr_fwd;
+  ustr_cspn_chr_rev;
+  ustr_cspn_chrs_fwd;
+  ustr_cspn_chrs_rev;
+  ustr_cspn_cstr_chrs_fwd;
+  ustr_cspn_cstr_chrs_rev;
+  ustr_cspn_ustr_chrs_fwd;
+  ustr_cspn_ustr_chrs_rev;
+
+  ustrp_cspn_chr_fwd;
+  ustrp_cspn_chr_rev;
+  ustrp_cspn_chrs_fwd;
+  ustrp_cspn_chrs_rev;
+  ustrp_cspn_cstr_chrs_fwd;
+  ustrp_cspn_cstr_chrs_rev;
+  ustrp_cspn_ustrp_chrs_fwd;
+  ustrp_cspn_ustrp_chrs_rev;
+
+  ustr_add_b_uint16;
+  ustr_add_b_uint32;
+  ustr_add_b_uint64;
+
+  ustrp_add_b_uint16;
+  ustrp_add_b_uint32;
+  ustrp_add_b_uint64;
+
+  ustr_parse_b_uint16;
+  ustr_parse_b_uint32;
+  ustr_parse_b_uint64;
+
+  ustrp_parse_b_uint16;
+  ustrp_parse_b_uint32;
+  ustrp_parse_b_uint64;
+};

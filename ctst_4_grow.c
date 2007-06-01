@@ -1,0 +1,111 @@
+#include "tst.h"
+
+#if USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES != 2)
+#error "Bad setup"
+#endif
+
+static const char *rf = __FILE__;
+
+int tst(void)
+{
+  struct Ustr *s3 = ustr_dup_cstr("s3 abcd s2");
+  struct Ustr *s4 = ustr_dup_empty(); /* always allocs */
+  int num = -1;
+  
+  ASSERT(s3);
+  ASSERT(s4);
+  ASSERT(ustr_cmp_eq(s1, s4));
+  
+  ASSERT(ustr_len(s1)  ==  0);
+  ASSERT(ustr_len(s2)  ==  2);
+  ASSERT(ustr_len(s3)  == 10);
+  ASSERT(ustr_len(s4)  ==  0);
+  
+  ASSERT(ustr_size(s1) ==  0);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s2) ==  2);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s3) == 12);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s4) ==  0);
+
+  ASSERT(ustr_srch_fwd(s3, s2) == 9);
+  ASSERT(ustr_srch_rev(s3, s2) == 9);
+  ASSERT(ustr_srch_fwd(s2, s3) == 0);
+  ASSERT(ustr_srch_rev(s2, s3) == 0);
+  
+  ASSERT(ustr_add_cstr(&s2, "x"));
+  ASSERT(ustr_len(s2)  ==   3);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s2) ==   4);
+  ASSERT(ustr_add_cstr(&s2, "y"));
+  ASSERT(ustr_len(s2)  ==   4);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s2) ==   4);
+  ASSERT(ustr_add_cstr(&s2, "z"));
+  ASSERT(ustr_len(s2)  ==   5);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s2) ==   8);
+  ASSERT(ustr_add_rep_chr(&s2, '-', 11));
+  ASSERT(ustr_len(s2)  ==  16);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s2) ==  20);
+  ASSERT(ustr_cmp_cstr_eq(s2,   "s2xyz-----------"));
+  ASSERT(!strcmp(ustr_cstr(s2), "s2xyz-----------"));
+  
+  ASSERT(ustr_srch_fwd(s3, s2) == 0);
+  ASSERT(ustr_srch_rev(s3, s2) == 0);
+  ASSERT(ustr_srch_fwd(s2, s3) == 0);
+  ASSERT(ustr_srch_rev(s2, s3) == 0);
+
+  /* NOTE: Using system *printf, so can't use %zu as Solaris is retarded */
+  ASSERT(ustr_add_fmt(&s1, "%s abcd %13.100s %d %c %lu%n",
+                      "------abc------", "", 42, 0,
+                      (unsigned long)ustr_len(s3), &num) != -1);
+  ASSERT((unsigned)num == ustr_len(s1));
+  ASSERT(42  == num);
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(44  == ustr_size(s1));
+
+  ASSERT(ustr_add_fmt(&s4, "%2$d%1$u", 2, 4));
+
+  ASSERT(ustr_srch_cstr_fwd(s1, "abcd") == 17);
+  ASSERT(ustr_srch_cstr_rev(s1, "abcd") == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, "abc")  ==  7);
+  ASSERT(ustr_srch_cstr_rev(s1, "abc")  == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, "10")  == 41);
+  ASSERT(ustr_srch_cstr_rev(s1, "10")  == 41);
+  ASSERT(ustr_srch_chr_fwd(s1, 0)  == 39);
+  ASSERT(ustr_srch_chr_rev(s1, 0)  == 39);
+  ASSERT(ustr_srch_fwd(s1, s4) == 36);
+
+  /*  puts(ustr_cstr(s4)); */
+  
+  ustr_sc_free(&s3);
+
+  ASSERT((s3 = ustr_dup(s4)));
+  ASSERT(ustr_add_fmt(&s4, "x"));
+
+  ustr_sc_free(&s4);
+  ustr_sc_free(&s3);
+
+  /*
+  ASSERT(!ustr_assert_valid(USTR1(\x000F, "123456789 123456")));
+  ASSERT(!ustr_assert_valid(USTR1(\x000F, "123456789 1234\0xxx"))); */
+  ASSERT( ustr_assert_valid(USTR1(\x000F, "123456789 12345")));
+
+  /*    ASSERT(!ustr_assert_valid(USTR1(\x000F, "123456789 12345\0xxx")));  */
+  
+  s3 = ustr_dupx(0, 2, 0, 1, USTR1(\x000F, "123456789 12345"));
+
+  ASSERT(ustr_cmp_cstr_eq(s3, "123456789 12345"));
+  ASSERT(ustr_cmp_eq(s3, USTR1(\x000F, "123456789 12345")));
+  ASSERT(!ustr_ro(s3));
+  if (!USTR_CONF_USE_EOS_MARK && (USTR_CONF_REF_BYTES == 1))
+  ASSERT(ustr_size(s3) == 19);
+  
+  ustr_sc_free(&s3);
+  
+  return (EXIT_SUCCESS);
+}
+

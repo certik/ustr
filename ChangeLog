@@ -1,0 +1,24 @@
+2007-05-24  James Antill  <james@and.org>
+
+	* ustr.spec: Fix typo of %{ver} to be %{version}.
+
+	* ustr-import.in: Copy .gdbinit on import.
+
+	* Makefile (install): Added .gdbinit to shared dir.
+
+	* ustr.spec: Added .gdbinit to -devel package
+
+	* Documentation/index.html: Tweaked documentation.
+	* Documentation/index.html: Added link to gnumeric file
+	* Documentation/index.html: Added link to .gdbinit file
+
+	* THANKS: Added Rik and Karl.
+
+2007-05-23  James Antill  <james@and.org>
+
+	* NEWS: Release 0.99.1
+
+2007-05-15  James Antill  <james@and.org>
+
+	* tst_4_grow.c (tst): Fix for Solaris's retarded printf.
+	* ctst_4_grow.c (tst): Fix for Solaris's retarded printf.

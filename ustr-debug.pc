@@ -1,0 +1,6 @@
+Name: Ustr
+Description: String Library
+Version: 0.99.0
+
+Cflags: 
+Libs: -lustr-debug
