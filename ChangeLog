@@ -1,3 +1,7 @@
+2007-06-02  James Antill  <james@and.org>
+
+	* Documentation/index.html: Add info. about development tree.
+
 2007-06-01  James Antill  <james@and.org>
 
 	* Documentation/constants.txt: Start documentation on constants.
