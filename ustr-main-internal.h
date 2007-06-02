@@ -12,7 +12,7 @@
 /* default sized to 1 ... */
 #define USTR__DUPX_DEF                                  \
     USTR_CONF_HAS_SIZE, USTR_CONF_REF_BYTES,            \
-    USTR_CONF_EXACT_BYTES, 0
+    USTR_CONF_EXACT_BYTES, USTR_FALSE
 #define USTR__DUPX_FROM(x)                                              \
     (ustr_sized(x) ? ustr__sz_get(x) : 0), USTR__REF_LEN(x),            \
     ustr_exact(x), ustr_enomem(x)

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Ustr - 0.99.2 reference documentation -- constants</title>
+    <style type="text/css">
+      A:visited { color: #ff4040; }
+      A:hover { color: #20b2aa; }
+
+      P { text-indent: 1em; }
+
+      body     { background: #FFF; color: #000; }
+
+      h2.ind   { background: #DDF; }
+
+      td.title { background: #DFD; }
+      td.sect  { background: #DDF; }
+      td.obj   { background: #DDD; }
+
+      ul li                       { list-style-type: lower-roman; }
+      ul li:hover                 { list-style-type: square; }
+      ul:hover li                 { list-style-type: decimal; }
+      ul li:hover ul li.obj       { list-style-type: decimal; }
+      ul li:hover ul li.obj:hover { list-style-type: square; }
+    </style>
+
+  </head>
+  <body>
+<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.2 reference documentation -- constants (3)</h1>
+</td></tr></table><table width="90%"><tr><td>
+<h2 class="ind">Index of sections</h2>
+<ul>
+<li><a href="#indx-Compile%20switch%20constants">Compile switch constants (2)</a>
+<li><a href="#indx-Constants%20passed%20to%20ustr_cntl_opt%28%29">Constants passed to ustr_cntl_opt() (1)</a></ul>
+<h2 class="ind">Index of sections, and their contents</h2>
+<ul>
+<li><a id="indx-Compile%20switch%20constants" href="#Compile%20switch%20constants">Compile switch constants</a>
+<ul>
+<li class="obj"><a href="#USTR_CONF_COMPILE_USE_ATTRIBUTES">USTR_CONF_COMPILE_USE_ATTRIBUTES</a>
+<li class="obj"><a href="#USTR_CONF_COMPILE_TYPEDEF">USTR_CONF_COMPILE_TYPEDEF</a>
+</ul><li><a id="indx-Constants%20passed%20to%20ustr_cntl_opt%28%29" href="#Constants%20passed%20to%20ustr_cntl_opt%28%29">Constants passed to ustr_cntl_opt()</a>
+<ul>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_REF_BYTES">USTR_CNTL_OPT_GET_REF_BYTES</a>
+</ul></ul>
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Compile%20switch%20constants">Compile switch constants</a></h2>
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CONF_COMPILE_USE_ATTRIBUTES">USTR_CONF_COMPILE_USE_ATTRIBUTES</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This switch controls whether gcc type __attribute__() statements are used in
+ the public headers headers for the library. If the value is 1 then if they are
+ supported by the compiler that built the library they will be used, if the
+ value is 0 they won't be used at all.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CONF_COMPILE_TYPEDEF">USTR_CONF_COMPILE_TYPEDEF</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This switch controls whether typedef will be used for the structs in the
+ public headers for the library. If the value is 1 then they will be used,
+ if the value is 0 they won't be used at all (and your code will have to use
+ struct tags instead -- note all libraries using ustr should compile without
+ this option set).
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20passed%20to%20ustr_cntl_opt%28%29">Constants passed to
+			 	<a id="ustr_cntl_opt()"><a href="functions#ustr_cntl_opt%28%29">ustr_cntl_opt()</a></a>
+
+		      </a></h2>
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_REF_BYTES">USTR_CNTL_OPT_GET_REF_BYTES</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Number of bytes for default reference count in Ustr<br>Type<strong>[1]</strong>: size_t *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the default number of bytes used for a reference count
+ when creating Ustr's.
+
+
+</td></tr></table>
+</body></html>

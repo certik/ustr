@@ -1,0 +1,58 @@
+.TH ustr_const 3 "01-Jun-2007" "Ustr 0.99.2" "Ustr String Library"
+.SH "SYNOPSIS"
+.in \w'  'u
+#include "ustr.h"
+.sp
+.NH
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_CONF_COMPILE_USE_ATTRIBUTES\fR
+.br
+.ti \w'  'u
+\fBUSTR_CONF_COMPILE_TYPEDEF\fR
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_REF_BYTES\fR
+
+.ti
+.HY
+.SH "DESCRIPTION"
+.SH Compile switch constants
+
+.br
+\fBConstant: \fR USTR_CONF_COMPILE_USE_ATTRIBUTES
+
+.br
+\fBExplanation:\fR
+
+.br
+  This switch controls whether gcc type __attribute__() statements are used in the public headers headers for the library. If the value is 1 then if they are supported by the compiler that built the library they will be used, if the value is 0 they won't be used at all.
+
+.br
+\fBConstant: \fR USTR_CONF_COMPILE_TYPEDEF
+
+.br
+\fBExplanation:\fR
+
+.br
+  This switch controls whether typedef will be used for the structs in the public headers for the library. If the value is 1 then they will be used, if the value is 0 they won't be used at all (and your code will have to use struct tags instead -- note all libraries using ustr should compile without this option set).
+
+.SH Constants passed to ustr_cntl_opt()
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_REF_BYTES
+
+.br
+Parameter\fB[1]\fR: Number of bytes for default reference count in Ustr
+.br
+Type\fB[1]\fR: size_t *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the default number of bytes used for a reference count when creating Ustr's.
+.SH "SEE ALSO"
+.BR ustr (3)

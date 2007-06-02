@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Ustr - 0.99.2 reference documentation -- functions</title>
+    <style type="text/css">
+      A:visited { color: #ff4040; }
+      A:hover { color: #20b2aa; }
+
+      P { text-indent: 1em; }
+
+      body     { background: #FFF; color: #000; }
+
+      h2.ind   { background: #DDF; }
+
+      td.title { background: #DFD; }
+      td.sect  { background: #DDF; }
+      td.obj   { background: #DDD; }
+
+      ul li                       { list-style-type: lower-roman; }
+      ul li:hover                 { list-style-type: square; }
+      ul:hover li                 { list-style-type: decimal; }
+      ul li:hover ul li.obj       { list-style-type: decimal; }
+      ul li:hover ul li.obj:hover { list-style-type: square; }
+    </style>
+
+  </head>
+  <body>
+<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.2 reference documentation -- functions (2)</h1>
+</td></tr></table><table width="90%"><tr><td>
+<h2 class="ind">Index of sections</h2>
+<ul>
+<li><a href="#indx-Creating%20Ustr%20functions">Creating Ustr functions (2)</a></ul>
+<h2 class="ind">Index of sections, and their contents</h2>
+<ul>
+<li><a id="indx-Creating%20Ustr%20functions" href="#Creating%20Ustr%20functions">Creating Ustr functions</a>
+<ul>
+<li class="obj"><a href="#ustr_dup_empty%28%29">ustr_dup_empty()</a>
+<li class="obj"><a href="#ustr_dup_undef%28%29">ustr_dup_undef()</a>
+</ul></ul>
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20Ustr%20functions">Creating Ustr functions</a></h2>
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dup_empty%28%29">ustr_dup_empty()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function creates an empty Ustr, owned by you, that is allocated
+ from system memory, or return NULL.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  It can be useful to ensure that the Ustr is in system memory, so that you can
+ add things to it and check for errors with <a href="functions#ustr_enomem%28%29">ustr_enomem()</a>.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dup_undef%28%29">ustr_dup_undef()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Length of new undefined data<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function creates a Ustr, owned by you, with the specified amount of data,
+ allocated from system memory, that is writable. Or it'll return NULL on
+ failure.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Like most ustr functions if the specified length of the ustr is zero, the
+ returned value will just be a duplicate of a read-only C-nil-string "".
+
+
+
+</td></tr></table>
+</body></html>

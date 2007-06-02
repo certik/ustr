@@ -1,0 +1,78 @@
+.TH ustr 3 "01-Jun-2007" "Ustr 0.99.2" "Ustr String Library"
+.SH "SYNOPSIS"
+.in \w'  'u
+#include "ustr.h"
+.sp
+.NH
+.sp
+.br
+.in \w'  struct Ustr *\fBustr_dup_empty\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dup_empty\fR(void);
+.br
+.in \w'  struct Ustr *\fBustr_dup_undef\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dup_undef\fR(size_t);
+
+.ti
+.HY
+.SH "DESCRIPTION"
+ A very simple overview is that you can use ustr_dup_cstr() to convert a C-style
+to a Ustr, and ustr_cstr() to convert it back. You can also use USTR1() to
+create constant/read-only strings, and USTR_SC_INIT_AUTO() to create strings
+that use stack space upto a certain amount.
+ Use is somewhat unique in that, by default, it has an average overhead of only
+55% overhead over strdup(), for strings in the range of 0 to 20 bytes. Or, to
+put it another way it only uses 8 bytes to store a 2 byte string where
+strdup() uses 3.
+.SH Creating Ustr functions
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dup_empty()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Nothing
+.br
+Type\fB[1]\fR: void
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function creates an empty Ustr, owned by you, that is allocated from system memory, or return NULL.
+.sp
+\fBNote:\fR
+
+.br
+  It can be useful to ensure that the Ustr is in system memory, so that you can add things to it and check for errors with ustr_enomem().
+.ti -2
+.br
+\fBFunction: \fR ustr_dup_undef()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Length of new undefined data
+.br
+Type\fB[1]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function creates a Ustr, owned by you, with the specified amount of data, allocated from system memory, that is writable. Or it'll return NULL on failure.
+.sp
+\fBNote:\fR
+
+.br
+  Like most ustr functions if the specified length of the ustr is zero, the returned value will just be a duplicate of a read-only C-nil-string "".
+
+.SH "SEE ALSO"
+.BR ustr_const (3)

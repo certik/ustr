@@ -1,0 +1,35 @@
+Section: Compile switch constants
+
+Constant: USTR_CONF_COMPILE_USE_ATTRIBUTES
+
+ Explanation:
+
+  This switch controls whether gcc type __attribute__() statements are used in
+ the public headers headers for the library. If the value is 1 then if they are
+ supported by the compiler that built the library they will be used, if the
+ value is 0 they won't be used at all.
+
+
+Constant: USTR_CONF_COMPILE_TYPEDEF
+
+ Explanation:
+
+  This switch controls whether typedef will be used for the structs in the
+ public headers for the library. If the value is 1 then they will be used,
+ if the value is 0 they won't be used at all (and your code will have to use
+ struct tags instead -- note all libraries using ustr should compile without
+ this option set).
+
+
+Section: Constants passed to ustr_cntl_opt()
+
+Constant: USTR_CNTL_OPT_GET_REF_BYTES
+
+ Parameter[1]: Number of bytes for default reference count in Ustr
+ Type[1]: size_t *
+
+ Explanation:
+
+  This option will get the default number of bytes used for a reference count
+ when creating Ustr's.
+

@@ -1,5 +1,13 @@
 2007-06-01  James Antill  <james@and.org>
 
+	* Documentation/constants.txt: Start documentation on constants.
+
+	* Documentation/functions.txt: Start documentation on functions.
+
+	* Documentation/txt2man.pl: Import perl script from Vstr.
+
+	* Documentation/txt2html.pl: Import perl script from Vstr.
+
 	* ustr-srch-code.h (ustr_srch_buf_rev): Fix buf=1 using _fwd typo.
 
 	* ustr-spn.h (ustr_spn_fwd, ustr_spn_rev): Remove _ustr and _cstr

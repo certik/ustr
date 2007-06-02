@@ -1,0 +1,38 @@
+Section: Creating Ustr functions
+
+Function: ustr_dup_empty()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Nothing
+ Type[1]: void
+
+ Explanation:
+
+  This function creates an empty Ustr, owned by you, that is allocated
+ from system memory, or return NULL.
+
+ Note:
+
+  It can be useful to ensure that the Ustr is in system memory, so that you can
+ add things to it and check for errors with ustr_enomem().
+
+Function: ustr_dup_undef()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Length of new undefined data
+ Type[1]: size_t
+
+ Explanation:
+
+  This function creates a Ustr, owned by you, with the specified amount of data,
+ allocated from system memory, that is writable. Or it'll return NULL on
+ failure.
+
+ Note:
+
+  Like most ustr functions if the specified length of the ustr is zero, the
+ returned value will just be a duplicate of a read-only C-nil-string "".
+
+
