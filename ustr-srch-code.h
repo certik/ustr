@@ -131,7 +131,7 @@ USTR_CONF_I_PROTO size_t ustr_srch_buf_rev(const struct Ustr *s1,
   if (vlen == 0)
     return (len ? len : 1);
   if (vlen == 1)
-    return (ustr_srch_chr_fwd(s1, ((const char *)val)[0]));
+    return (ustr_srch_chr_rev(s1, ((const char *)val)[0]));
 
   tmp = cstr;
   while (((len - (tmp - cstr)) >= vlen) &&
@@ -145,4 +145,28 @@ USTR_CONF_I_PROTO size_t ustr_srch_buf_rev(const struct Ustr *s1,
 
   len = prev - cstr;
   return (len + 1);
+}
+
+USTR_CONF_I_PROTO
+size_t ustr_srch_subustr_fwd(const struct Ustr *s1,
+                             const struct Ustr *s2, size_t pos, size_t len)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+  
+  if (!ustr__valid_subustr(s2, pos, len))
+    return (ustr_srch_buf_fwd(s1, "", 0));
+  
+  return (ustr_srch_buf_fwd(s1, ustr_cstr(s2) + --pos, len));
+}
+
+USTR_CONF_I_PROTO
+size_t ustr_srch_subustr_rev(const struct Ustr *s1,
+                             const struct Ustr *s2, size_t pos, size_t len)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+  
+  if (!ustr__valid_subustr(s2, pos, len))
+    return (ustr_srch_buf_rev(s1, "", 0));
+  
+  return (ustr_srch_buf_rev(s1, ustr_cstr(s2) + --pos, len));  
 }

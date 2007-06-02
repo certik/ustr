@@ -98,6 +98,89 @@ int tst(void)
   ASSERT( ustrp_add_rep_chr(pool, &sp1, 'y', 13));
   ASSERT_PEQ(sp1, USTRP1(\x12, "22xxxyyyyyyyyyyyyy"));
 
+  /* test some of the data ... */
+
+  /* spn */
+  ASSERT(ustrp_spn_chr_fwd(sp1, 'x') == 0);
+  ASSERT(ustrp_spn_chr_fwd(sp1, '2') == 2);
+  ASSERT(ustrp_spn_cstr_fwd(sp1, "2") == 2);
+  ASSERT(ustrp_spn_cstr_fwd(sp1, "22") == 2);
+  ASSERT(ustrp_spn_cstr_fwd(sp1, "2x") == 5);
+  ASSERT(ustrp_spn_cstr_fwd(sp1, "x2") == 5);
+  ASSERT(ustrp_spn_cstr_fwd(sp1, "x2y") == 18);
+  ASSERT(ustrp_spn_fwd(sp1, USTRP1(\x2, "22")) == 2);
+  ASSERT(ustrp_spn_fwd(sp1, USTRP1(\x2, "2x")) == 5);
+  ASSERT(ustrp_spn_fwd(sp1, USTRP1(\x2, "x2")) == 5);
+  ASSERT(ustrp_spn_fwd(sp1, USTRP1(\x3, "x2y")) == 18);
+  ASSERT(ustrp_spn_cstr_rev(sp1, "x2") == 0);
+  ASSERT(ustrp_spn_cstr_rev(sp1, "x2y") == 18);
+  ASSERT(ustrp_spn_cstr_rev(sp1, "2y") == 13);
+  ASSERT(ustrp_spn_cstr_rev(sp1, "y") == 13);
+  ASSERT(ustrp_spn_rev(sp1, USTRP1(\x2, "x2")) == 0);
+  ASSERT(ustrp_spn_rev(sp1, USTRP1(\x3, "x2y")) == 18);
+  ASSERT(ustrp_spn_rev(sp1, USTRP1(\x2, "2y")) == 13);
+  ASSERT(ustrp_spn_rev(sp1, USTRP1(\x1, "y")) == 13);
+  ASSERT(ustrp_spn_chr_rev(sp1, 'x') == 0);
+  ASSERT(ustrp_spn_chr_rev(sp1, 'y') == 13);
+  ASSERT(ustrp_spn_cstr_rev(sp1, "yx") == 16);
+  ASSERT(ustrp_spn_cstr_rev(sp1, "xy") == 16);
+
+  /* cspn */
+  ASSERT(ustrp_cspn_chr_fwd(sp1, 'y') == 5);
+  ASSERT(ustrp_cspn_chr_fwd(sp1, 'x') == 2);
+  ASSERT(ustrp_cspn_chr_fwd(sp1, '2') == 0);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "2") == 0);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "y") == 5);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "22") == 0);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "x") == 2);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "xx") == 2);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "yx") == 2);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "xy") == 2);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "yz") == 5);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "zy") == 5);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x1, "2")) == 0);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x1, "y")) == 5);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "22")) == 0);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x1, "x")) == 2);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "xx")) == 2);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "yx")) == 2);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "xy")) == 2);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "yz")) == 5);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "zy")) == 5);
+  ASSERT(ustrp_cspn_cstr_rev(sp1, "2x") == 13);
+  ASSERT(ustrp_cspn_cstr_rev(sp1, "x2") == 13);
+  ASSERT(ustrp_cspn_cstr_rev(sp1, "2") == 16);
+  ASSERT(ustrp_cspn_cstr_rev(sp1, "2a") == 16);
+  ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x2, "2x")) == 13);
+  ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x2, "x2")) == 13);
+  ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x1, "2")) == 16);
+  ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x2, "2a")) == 16);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "a") == 18);
+  ASSERT(ustrp_cspn_cstr_rev(sp1, "a") == 18);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x1, "a")) == 18);
+  ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x1, "a")) == 18);
+  ASSERT(ustrp_cspn_cstr_fwd(sp1, "abc") == 18);
+  ASSERT(ustrp_cspn_cstr_rev(sp1, "abc") == 18);
+  ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x3, "abc")) == 18);
+  ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x3, "abc")) == 18);
+  
+  /* srch */
+  ASSERT(ustrp_srch_cstr_fwd(sp1, "xy") == 5);
+  ASSERT(ustrp_srch_cstr_rev(sp1, "xy") == 5);
+  ASSERT(ustrp_srch_fwd(sp1, USTRP1(\x2, "xy")) == 5);
+  ASSERT(ustrp_srch_rev(sp1, USTRP1(\x2, "xy")) == 5);
+  ASSERT(ustrp_srch_subustrp_fwd(sp1, USTRP1(\x2, "xy"), 1, 2) ==  5);
+  ASSERT(ustrp_srch_subustrp_rev(sp1, USTRP1(\x2, "xy"), 1, 2) ==  5);
+  ASSERT(ustrp_srch_subustrp_fwd(sp1, USTRP1(\x2, "xy"), 1, 1) ==  3);
+  ASSERT(ustrp_srch_subustrp_rev(sp1, USTRP1(\x2, "xy"), 1, 1) ==  5);
+  ASSERT(ustrp_srch_subustrp_fwd(sp1, USTRP1(\x2, "xy"), 2, 1) ==  6);
+  ASSERT(ustrp_srch_subustrp_rev(sp1, USTRP1(\x2, "xy"), 2, 1) == 18);
+  ASSERT(ustrp_srch_chr_fwd(sp1, 'x') ==  3);
+  ASSERT(ustrp_srch_chr_rev(sp1, 'x') ==  5);
+  ASSERT(ustrp_srch_chr_fwd(sp1, 'y') ==  6);
+  ASSERT(ustrp_srch_chr_rev(sp1, 'y') == 18);
+  
+  /* do some more stuff... */
   ustrp_free(pool, sp1);
   sp1 = USTRP1(\x1, "c");
   

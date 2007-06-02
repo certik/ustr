@@ -240,37 +240,37 @@
   ustr_spn_chr_rev;
   ustr_spn_chrs_fwd;
   ustr_spn_chrs_rev;
-  ustr_spn_cstr_chrs_fwd;
-  ustr_spn_cstr_chrs_rev;
-  ustr_spn_ustr_chrs_fwd;
-  ustr_spn_ustr_chrs_rev;
+  ustr_spn_cstr_fwd;
+  ustr_spn_cstr_rev;
+  ustr_spn_fwd;
+  ustr_spn_rev;
 
   ustrp_spn_chr_fwd;
   ustrp_spn_chr_rev;
   ustrp_spn_chrs_fwd;
   ustrp_spn_chrs_rev;
-  ustrp_spn_cstr_chrs_fwd;
-  ustrp_spn_cstr_chrs_rev;
-  ustrp_spn_ustrp_chrs_fwd;
-  ustrp_spn_ustrp_chrs_rev;
+  ustrp_spn_cstr_fwd;
+  ustrp_spn_cstr_rev;
+  ustrp_spn_fwd;
+  ustrp_spn_rev;
 
   ustr_cspn_chr_fwd;
   ustr_cspn_chr_rev;
   ustr_cspn_chrs_fwd;
   ustr_cspn_chrs_rev;
-  ustr_cspn_cstr_chrs_fwd;
-  ustr_cspn_cstr_chrs_rev;
-  ustr_cspn_ustr_chrs_fwd;
-  ustr_cspn_ustr_chrs_rev;
+  ustr_cspn_cstr_fwd;
+  ustr_cspn_cstr_rev;
+  ustr_cspn_fwd;
+  ustr_cspn_rev;
 
   ustrp_cspn_chr_fwd;
   ustrp_cspn_chr_rev;
   ustrp_cspn_chrs_fwd;
   ustrp_cspn_chrs_rev;
-  ustrp_cspn_cstr_chrs_fwd;
-  ustrp_cspn_cstr_chrs_rev;
-  ustrp_cspn_ustrp_chrs_fwd;
-  ustrp_cspn_ustrp_chrs_rev;
+  ustrp_cspn_cstr_fwd;
+  ustrp_cspn_cstr_rev;
+  ustrp_cspn_fwd;
+  ustrp_cspn_rev;
 
   ustr_add_b_uint16;
   ustr_add_b_uint32;

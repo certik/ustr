@@ -37,6 +37,17 @@ USTR_CONF_EI_PROTO size_t ustr_srch_cstr_rev(const struct Ustr *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
+USTR_CONF_E_PROTO
+size_t ustr_srch_subustr_fwd(const struct Ustr *,
+                             const struct Ustr *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+size_t ustr_srch_subustr_rev(const struct Ustr *,
+                             const struct Ustr *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-srch-code.h"
 #endif
@@ -99,6 +110,25 @@ size_t ustrp_srch_rev(const struct Ustrp *, const struct Ustrp *)
 USTR_CONF_II_PROTO
 size_t ustrp_srch_rev(const struct Ustrp *s1, const struct Ustrp *s2)
 { return (ustrp_srch_buf_rev(s1, ustrp_cstr(s2), ustrp_len(s2))); }
+
+USTR_CONF_EI_PROTO
+size_t ustrp_srch_subustrp_fwd(const struct Ustrp *,
+                               const struct Ustrp *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_II_PROTO
+size_t ustrp_srch_subustrp_fwd(const struct Ustrp *s1,
+                               const struct Ustrp *s2, size_t pos, size_t len)
+{ return (ustr_srch_subustr_fwd(&s1->s, &s2->s, pos, len)); }
+USTR_CONF_EI_PROTO
+size_t ustrp_srch_subustrp_rev(const struct Ustrp *,
+                               const struct Ustrp *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_II_PROTO
+size_t ustrp_srch_subustrp_rev(const struct Ustrp *s1,
+                               const struct Ustrp *s2, size_t pos, size_t len)
+{ return (ustr_srch_subustr_rev(&s1->s, &s2->s, pos, len)); }
 
 USTR_CONF_EI_PROTO size_t ustrp_srch_cstr_fwd(const struct Ustrp *,const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()

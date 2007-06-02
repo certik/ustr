@@ -1,5 +1,20 @@
 2007-06-01  James Antill  <james@and.org>
 
+	* ustr-srch-code.h (ustr_srch_buf_rev): Fix buf=1 using _fwd typo.
+
+	* ustr-spn.h (ustr_spn_fwd, ustr_spn_rev): Remove _ustr and _cstr
+	namespaces.
+	(ustr_cspn_fwd, ustr_cspn_rev): Remove _ustr and _cstr namespaces.
+	(ustr_spn_cstr_fwd, ustr_spn_cstr_rev): Remove _ustr and _cstr
+	namespaces.
+
+	* ustr-srch-code.h (ustr_srch_subustr_fwd): Add function.
+	(ustr_srch_subustr_rev): Add function.
+
+	* TODO: Remove old cntl/srch_subustr data from TODO.
+
+	* scripts/clean.sh: Remove coverage data, and examples too.
+
 	* examples/netstr.c (main): Add example program.
 
 	* ustr-main.h (USTRP_SC_INIT_AUTO): Add macro.

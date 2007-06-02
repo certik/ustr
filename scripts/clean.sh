@@ -11,6 +11,7 @@ fi
 
 # Remove arch stuff
 make distclean
+( cd examples; make clean )
 
 rm -rf ,,*
 
@@ -19,4 +20,6 @@ if [ "x$1" = "xfull" ]; then
 fi
 
 rm -f  gmon.out
+rm -f  lib-all.info
+rm -f  lib-all-ustr.info
 

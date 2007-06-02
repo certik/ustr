@@ -1,11 +1,4 @@
 
- srch_*subustr*
-
- Do a runtime config. for some things. ... makes real shared lib. more useful.
- ustr_cntl() and defines.
-  rbytes, has sz, and exact.
-  Possibly also the alloc calls.
-
  Other sections:
 
  ss_parse_* (numbers, with seperators ... ala. vstr)
