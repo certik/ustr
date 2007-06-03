@@ -1,6 +1,7 @@
 Name: Ustr
 Description: String Library
-Version: 0.99.0
+# FIXME: More C&P of VERSION
+Version: 0.99.2
 
 Cflags: 
 Libs: -lustr-debug

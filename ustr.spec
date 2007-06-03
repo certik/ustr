@@ -1,5 +1,6 @@
 
 Name: ustr
+# FIXME: More C&P of VERSION
 Version: 0.99.2
 Release: 1%{?dist}
 Summary: String library, very very low memory overhead, simple to import.

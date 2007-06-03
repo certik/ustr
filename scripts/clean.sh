@@ -2,7 +2,7 @@
 
 if false; then
  echo "Not reached."
-elif [ -f ./Makefile ]; then
+elif [ -f ./ustr.pc ]; then
 	doln=false
 else
   echo "Not in right place, goto to the root."

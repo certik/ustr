@@ -1,7 +1,8 @@
 #! /bin/bash -e
 
 pkg=ustr
-v="0.99.1"
+# FIXME: More C&P of VERSION
+v="0.99.2"
 
 if [ ! -f ustr-main.h ]; then
   if [ -f ustr/ustr-main.h ]; then
@@ -20,6 +21,7 @@ cp -a $s ./$pkg-$v
 cd ./$pkg-$v
 
 ./scripts/clean.sh full
+( cd Documentation && make )
 
 rm -rf tmp
 

@@ -5,8 +5,9 @@
   ustr__embed_val_get;
   ustr__ref_get;
 
-  ustr_pool_api_malloc;
-  ustr_pool_api_realloc;
+  ustr_pool_sys_malloc;
+  ustr_pool_sys_realloc;
+  ustr_pool_sys_free;
   ustr_pool_clear;
   ustr_pool_free;
   ustr_pool_make;
@@ -125,6 +126,7 @@
   ustr_set;
   ustr_set_buf;
   ustr_set_cstr;
+  ustr_set_empty;
   ustr_set_rep_chr;
   ustr_set_subustr;
   ustr_set_undef;
@@ -132,6 +134,7 @@
   ustrp_set;
   ustrp_set_buf;
   ustrp_set_cstr;
+  ustrp_set_empty;
   ustrp_set_rep_chr;
   ustrp_set_subustrp;
   ustrp_set_undef;
@@ -145,7 +148,7 @@
   ustr_sc_del;
   ustr_sc_dupx;
   ustr_sc_dup;
-  ustr_sc_ensure_owner
+  ustr_sc_ensure_owner;
   ustr_sc_free;
   ustr_sc_free2;
   ustr_sc_free_shared;
@@ -226,6 +229,8 @@
   ustr_srch_cstr_rev;
   ustr_srch_fwd;
   ustr_srch_rev;
+  ustr_srch_subustr_fwd;
+  ustr_srch_subustr_rev;
 
   ustrp_srch_buf_fwd;
   ustrp_srch_buf_rev;
@@ -235,6 +240,8 @@
   ustrp_srch_cstr_rev;
   ustrp_srch_fwd;
   ustrp_srch_rev;
+  ustrp_srch_subustrp_fwd;
+  ustrp_srch_subustrp_rev;
 
   ustr_spn_chr_fwd;
   ustr_spn_chr_rev;

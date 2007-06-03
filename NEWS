@@ -1,3 +1,10 @@
+0.99.2 - 2007-06-03
+ Added IO functions.
+ Added runtime configuration for libraries.
+ Many bugfixes.
+ Cleanup documentation.
+ Added some examples.
+ Started API reference documentation.
 
 0.99.1 - 2007-05-23
  First real release.
