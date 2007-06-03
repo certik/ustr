@@ -4,6 +4,29 @@
 
 2007-06-03  James Antill  <james@and.org>
 
+	* ustr-import.in: Split *-code.h and *-opt-code.c / *-dbg-code.c. Also
+	fix non-cfile imports.
+
+	* scripts/clean.sh: Remove .git data
+
+	* libustr.ver: Fix typo
+
+	* Makefile (SRC_SRCS): Install ustr-b-code.h, to help people make
+	readable Makefiles
+
+	* examples/Makefile: Import a bunch of stuff from top level Makefile
+	to show people how to do it.
+
+	* Makefile (all): Fix make all to build opt static libs.
+
+	* Makefile (install): Fix install of man pages.
+
+	* Documentation/index.html: Update link to 0.99.2
+
+	* Makefile (SRC_SRCS): Install ustr-io-internal.h
+
+	* Makefile (install): Fix install permissions for ustr-import.
+
 	* ustr-debug.pc: Update for 0.99.2 release.
 
 	* ustr.pc: Update for 0.99.2 release.

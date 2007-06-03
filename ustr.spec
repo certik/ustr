@@ -60,7 +60,8 @@ make check
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install bindir=%{_bindir} datadir=%{_datadir} libdir=%{_libdir} DESTDIR=$RPM_BUILD_ROOT
+make install bindir=%{_bindir}   mandir=%{_mandir} \
+             datadir=%{_datadir} libdir=%{_libdir} DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,19 +81,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ustr-%{version}/.gdbinit
 %{_bindir}/ustr-import
 /usr/include/ustr.h
-/usr/include/ustr-conf.h
-/usr/include/ustr-b.h
-/usr/include/ustr-main.h
-/usr/include/ustr-set.h
-/usr/include/ustr-fmt.h
-/usr/include/ustr-cmp.h
-/usr/include/ustr-srch.h
-/usr/include/ustr-spn.h
+/usr/include/ustr-*.h
 %{_libdir}/pkgconfig/ustr.pc
 %{_libdir}/libustr.so
 %doc
 %{_datadir}/doc/ustr-devel-%{version}/*
-# Need man pages etc.
+%{_mandir}/man3/*
 
 %files static
 %{_libdir}/libustr.a
@@ -108,6 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jun  3 2007 James Antill <james@and.org> - 0.99.2-1
+- Upgrade to 0.99.2
+
 * Thu May 24 2007 James Antill <james@and.org> - 0.99.1-2
 - Fix ver typo to be version.
 

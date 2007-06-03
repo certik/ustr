@@ -156,7 +156,7 @@
   ustrp_sc_del;
   ustrp_sc_dupx;
   ustrp_sc_dup;
-  ustrp_sc_ensure_owner
+  ustrp_sc_ensure_owner;
   ustrp_sc_free;
   ustrp_sc_free2;
   ustrp_sc_free_shared;

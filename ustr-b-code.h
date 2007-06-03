@@ -1,1 +1,1 @@
-# error " This is just here to make the Makefile happy, it should not be installed. "
+# error " This is just here to make Makefiles happy, it should not be used."

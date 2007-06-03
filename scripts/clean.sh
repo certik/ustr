@@ -13,7 +13,10 @@ fi
 make distclean
 ( cd examples; make clean )
 
+# Arch
 rm -rf ,,*
+# git
+rm -rf .git
 
 if [ "x$1" = "xfull" ]; then
   rm -rf lcov-output

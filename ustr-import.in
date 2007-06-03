@@ -132,13 +132,15 @@ function copy
 {
   name="$1"
   cp "$INCDIR/ustr-$name.h" .
-  if $cfiles && test -f "$SHRDIR/ustr-$name-code.h"; then
-    if test -f "$SHRDIR/ustr-$name-internal.h"; then
-      cp "$SHRDIR/ustr-$name-internal.h" .
-    fi
+  if test -f "$SHRDIR/ustr-$name-internal.h"; then
+    cp "$SHRDIR/ustr-$name-internal.h" .
+  fi
 
+  if test -f "$SHRDIR/ustr-$name-code.h"; then
     cp "$SHRDIR/ustr-$name-code.h" .
+  fi
 
+  if $cfiles && test -f "$SHRDIR/ustr-$name-opt-code.c"; then
     if $dbg; then
       cp "$SHRDIR/ustr-$name-dbg-code.c" .
     else
@@ -267,7 +269,8 @@ fi
   echo >> $outname
 
   echo "#else" >> $outname
-else
+fi
+
   echo "/* Same defaults, but can be altered at will. */" >> $outname
   echo "/* Note that you really shouldn't alter the _HAVE_* ones. */" >> $outname
   echo >> $outname
@@ -321,6 +324,7 @@ else
 fi
   echo "# endif" >> $outname
 
+if $cfiles; then
   echo >> $outname
   echo "#endif" >> $outname
   echo >> $outname

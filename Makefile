@@ -11,7 +11,7 @@ libdir=/usr/lib
 bindir=/usr/bin
 SHRDIR=$(datadir)/ustr-$(VERS_FULL)
 DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
-EXAMDIR=$(datadir)/ustr-devel-$(VERS_FULL)/examples
+EXAMDIR=$(datadir)/ustr-$(VERS_FULL)/examples
 mandir=$(datadir)/doc/man
 
 CC = cc
@@ -91,10 +91,12 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-spn.h \
            ustr-srch.h
 
-SRC_SRCS = ustr-cmp-code.h \
+SRC_SRCS = ustr-b-code.h \
+           ustr-cmp-code.h \
            ustr-cntl-code.h \
            ustr-fmt-code.h \
            ustr-io-code.h \
+           ustr-io-internal.h \
            ustr-main-code.h \
            ustr-main-internal.h \
            ustr-set-code.h \
@@ -177,7 +179,7 @@ LIB_STATIC_OPT = \
   ustr-spn-code-a-opt.o \
   ustr-srch-code-a-opt.o
 
-all: ustr-import $(DBG_LIB_STATIC)
+all: ustr-import $(LIB_STATIC)
 		@echo Done static
 
 all-shared: all $(LIB_SHARED)
@@ -190,7 +192,7 @@ install: all ustr.pc ustr-debug.pc
 		install -d $(DESTDIR)$(SHRDIR)
 		install -d $(DESTDIR)$(DOCSHRDIR)
 		install -d $(DESTDIR)$(EXAMDIR)
-		install -d $(DESTDIR)$(mandir)
+		install -d $(DESTDIR)$(mandir)/man3
 		install -d $(DESTDIR)$(bindir)
 		install -d $(DESTDIR)$(libdir)/pkgconfig
 		@echo Installing files
@@ -203,8 +205,8 @@ install: all ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(DOCSHRDIR) $(DOCS)
 		install -m 644 -t $(DESTDIR)$(EXAMDIR) $(EXAMPLES)
-		install -m 644 -t $(DESTDIR)$(mandir) $(MAN_PAGES)
-		install -m 644 -t $(DESTDIR)$(bindir) ustr-import
+		install -m 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES)
+		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
 		install -m 644 -t $(DESTDIR)/usr/lib/pkgconfig ustr.pc ustr-debug.pc
 
 clean:
@@ -348,7 +350,7 @@ check-lcov: check ./scripts/lcov.sh
 # Borrowed from automake output...
 # --------------------------------
 PACKAGE_BUGREPORT = "james@and.org"
-check: all $(TST_ALL)
+check: $(DBG_LIB_STATIC) $(TST_ALL)
 	@failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[        ]'; \
 	list=' $(TST_ALL) '; \
         if test -n "$$list"; then \
