@@ -11,7 +11,8 @@ libdir=/usr/lib
 bindir=/usr/bin
 SHRDIR=$(datadir)/ustr-$(VERS_FULL)
 DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
-
+EXAMDIR=$(datadir)/ustr-devel-$(VERS_FULL)/examples
+mandir=$(datadir)/doc/man
 
 CC = cc
 AR = ar
@@ -42,7 +43,17 @@ CFLG_LIB_DBG = $(CFLG_LIB)
 DOCS = TODO \
        Documentation/strdup\ vs.\ ustr.gnumeric \
        Documentation/index.html \
+       Documentation/functions.html \
+       Documentation/constants.html \
        Documentation/design.html
+
+MAN_PAGES = \
+       Documentation/ustr.3 \
+       Documentation/ustr_const.3
+
+EXAMPLES = examples/Makefile \
+       examples/hello_world.c \
+       examples/netstr.c
 
 TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_0_sizes otst_0_manual octst_0_cntl \
@@ -178,6 +189,8 @@ install: all ustr.pc ustr-debug.pc
 		install -d $(DESTDIR)/usr/include
 		install -d $(DESTDIR)$(SHRDIR)
 		install -d $(DESTDIR)$(DOCSHRDIR)
+		install -d $(DESTDIR)$(EXAMDIR)
+		install -d $(DESTDIR)$(mandir)
 		install -d $(DESTDIR)$(bindir)
 		install -d $(DESTDIR)$(libdir)/pkgconfig
 		@echo Installing files
@@ -189,6 +202,8 @@ install: all ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(DOCSHRDIR) $(DOCS)
+		install -m 644 -t $(DESTDIR)$(EXAMDIR) $(EXAMPLES)
+		install -m 644 -t $(DESTDIR)$(mandir) $(MAN_PAGES)
 		install -m 644 -t $(DESTDIR)$(bindir) ustr-import
 		install -m 644 -t $(DESTDIR)/usr/lib/pkgconfig ustr.pc ustr-debug.pc
 

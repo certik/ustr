@@ -1,3 +1,22 @@
+2007-06-03  James Antill  <james@and.org>
+
+	* Makefile (install): Install examples and html / man page API
+	references.
+
+	* examples/hello_world.c (main): Added very simple example.
+
+	* examples/netstr.c (cescape_decode): Add options for various stuff, 
+	add a cescape_decode() function.
+
+	* examples/Makefile (LDFLAGS): Change default CFLAGS/LDFLAGS to use
+	installed libustr.a/ustr.h.
+
+	* ustr-io.h (ustr_io_putfileline):  Add function.
+	(ustrp_io_putfileline):  Add function.
+
+	* ustr-io-code.h (ustr_io_putline): Add function.
+	(ustrp_io_putline): Add function.
+
 2007-06-02  James Antill  <james@and.org>
 
 	* Documentation/index.html: Add info. about development tree.

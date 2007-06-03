@@ -3,9 +3,9 @@ WARNS = -W -Wall -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-ali
 
 DEF_CFLAGS  = -O2 -g
 
-# Compile "inline" using parent dir.
-CFLAGS  = $(DEF_CFLAGS) -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1 -I..
-LDFLAGS = 
+## Compile "inline" using parent dir.
+#CFLAGS  = $(DEF_CFLAGS) -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1 -I..
+#LDFLAGS = 
 
 ## Compile "static" using parent dir.
 #CFLAGS  = $(DEF_CFLAGS) -I..
@@ -19,13 +19,13 @@ LDFLAGS =
 #CFLAGS  = $(DEF_CFLAGS) -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1
 #LDFLAGS =
 
-## Compile "normal" using /ustr/include/ustr*.h and /usr/lib/libustr.so
-#CFLAGS  = $(DEF_CFLAGS)
-#LDFLAGS = -lustr
+# Compile "normal" using /ustr/include/ustr*.h and /usr/lib/libustr.so
+CFLAGS  = $(DEF_CFLAGS)
+LDFLAGS = -lustr
 
 # This is a simple makefile for example programs...
 
-ALL = netstr
+ALL = netstr hello_world
 
 all: $(ALL)
 
@@ -33,4 +33,7 @@ clean:
 		rm -f *.o $(ALL)
 
 netstr: netstr.c
+		$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+
+hello_world: hello_world.c
 		$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<

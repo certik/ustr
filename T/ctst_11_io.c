@@ -9,11 +9,11 @@ static const Ustr *line2 = USTR1(\x1, "\n");
 static const Ustr *line3 = USTR1(\x22, "static const char *rf = __FILE__;\n");
 static const Ustr *line4 = USTR1(\x1, "\n");
 static const Ustr *line5 = USTR1(\xE, "/* 1234567 */\n");
-static const Ustr *line999 = USTR1(\xa1, /* 161 */
+static const Ustr *line999 = USTR1(\xa0, /* 160 */
 "123456789 " "123456789 " "123456789 " "123456789 " "123456789 "
 "123456789 " "123456789 " "123456789 " "123456789 " "123456789 "
 "123456789 " "123456789 " "123456789 " "123456789 " "123456789 "
-                                   "123456789 " "\n");
+"123456789 ");
 
 static void tst_getline(FILE *fp)
 {
@@ -137,7 +137,7 @@ int tst(void)
   ASSERT(ustrp_add(pool, &sp1, USTRP(line999)));
   ASSERT_PEQ(sp1, USTRP(line999));
   ASSERT( ustrp_len(sp1));
-  ASSERT(ustrp_io_putfile(pool, &sp1, fp));
+  ASSERT(ustrp_io_putfileline(pool, &sp1, fp));
   ASSERT(!ustrp_len(sp1));
   ASSERT(ustrp_io_putfile(pool, &sp1, fp));
   
@@ -145,6 +145,7 @@ int tst(void)
 
   tst_getline(fp);
   ASSERT(ustr_io_getline(&s1, fp));
+  ASSERT(ustr_del(&s1, 1)); /* remove \n */
   ASSERT_EQ(s1, line999);
   ustr_sc_del(&s1);
   ASSERT(ustr_io_getfile(&s1, fp));
@@ -159,11 +160,13 @@ int tst(void)
   ASSERT(ustr_add(&s1, line4));
   ASSERT(ustr_add(&s1, line5));
   ASSERT(ustr_add(&s1, line999));
+  ASSERT(ustr_add_cstr(&s1, "\n"));
 
   ASSERT(ustr_io_putfilename(&s1, ustr_cstr(s2), "wb"));
   
   tst_getline(fp);
   ASSERT(ustr_io_getline(&s1, fp));
+  ASSERT(ustr_del(&s1, 1)); /* remove \n */
   ASSERT_EQ(s1, line999);
   ASSERT(!ustr_io_getline(&s1, fp));
   ASSERT_EQ(s1, line999);

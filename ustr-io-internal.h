@@ -19,6 +19,8 @@ USTR_CONF_e_PROTO int ustrp__io_getline(void *, struct Ustr **, FILE *)
 
 USTR_CONF_e_PROTO int ustrp__io_put(void *, struct Ustr **, FILE *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO int ustrp__io_putline(void *, struct Ustr **, FILE *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_e_PROTO
 int ustrp__io_putfilename(void *, struct Ustr **, const char *, const char *)
    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));

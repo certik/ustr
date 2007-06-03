@@ -159,8 +159,10 @@ int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
 
   if (next && (ret == beglen))
     ustrp__sc_free2(p, ps1, next);
+  else if ((ret == beglen) && (beglen == clen))
+    ustrp__sc_del(p, ps1);
   else
-    ustrp__del_subustr(p, ps1, 1, ret); /* shouldn't need to check */
+    ustrp__del_subustr(p, ps1, 1, ret); /* don't need to check */
   
   return (ret == beglen);
 }
@@ -170,6 +172,28 @@ int ustr_io_put(struct Ustr **ps1, FILE *fp, size_t beglen)
 USTR_CONF_I_PROTO
 int ustrp_io_put(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
 { return (ustrp__io_put(p, USTR__PPTR(ps1), fp, beglen)); }
+
+/* We bow to retarded GLibc putc_unlocked */
+#ifdef putc_unlocked
+# define USTR__IO_PUTC(x, y) putc_unlocked(x, y)
+#else
+# define USTR__IO_PUTC(x, y) putc(x, y)
+#endif
+USTR_CONF_i_PROTO
+int ustrp__io_putline(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
+{
+  if (!ustrp__io_put(p, ps1, fp, beglen))
+    return (USTR_FALSE);
+
+  return (USTR__IO_PUTC('\n', fp) != EOF);
+}
+#undef USTR__IO_PUTC
+USTR_CONF_I_PROTO
+int ustr_io_putline(struct Ustr **ps1, FILE *fp, size_t beglen)
+{ return (ustrp__io_putline(0, ps1, fp, beglen)); }
+USTR_CONF_I_PROTO
+int ustrp_io_putline(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
+{ return (ustrp__io_putline(p, USTR__PPTR(ps1), fp, beglen)); }
 
 USTR_CONF_i_PROTO int ustrp__io_putfilename(void *p, struct Ustr **ps1,
                                             const char *name, const char *mode)
