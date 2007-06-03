@@ -4,6 +4,8 @@
 
 2007-06-03  James Antill  <james@and.org>
 
+	* Documentation/index.html: Fix HREF as well as title
+
 	* ustr-import.in: Split *-code.h and *-opt-code.c / *-dbg-code.c. Also
 	fix non-cfile imports.
 
