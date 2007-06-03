@@ -1,5 +1,8 @@
 2007-06-03  James Antill  <james@and.org>
 
+	* Documentation/index.html: Add link to functions/constatns API
+	references.
+
 	* Makefile (install): Install examples and html / man page API
 	references.
 
