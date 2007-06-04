@@ -78,7 +78,9 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
            tst_12_fmt  ctst_12_fmt \
           otst_12_fmt octst_12_fmt \
            tst_13_utf8  ctst_13_utf8 \
-          otst_13_utf8 octst_13_utf8
+          otst_13_utf8 octst_13_utf8 \
+           tst_14_cmp  ctst_14_cmp \
+          otst_14_cmp octst_14_cmp
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \

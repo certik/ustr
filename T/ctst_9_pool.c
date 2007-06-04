@@ -12,23 +12,60 @@ int tst(void)
 
   ASSERT( ustrp_size_alloc(sp1));
   ASSERT(!ustrp_size_alloc(sp2));
-  ASSERT(spa);
+  ASSERT(spa == (void *)buf_spa);
   ASSERT(!ustrp_alloc(spa));
   ASSERT( ustrp_owner(spa));
+  ASSERT( ustrp_fixed(spa));
+  ASSERT(!ustrp_limited(spa));
   ASSERT(!ustrp_ro(spa));
   ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
   ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
-  ASSERT(spa == ustrp_init_alloc(spa, sizeof(buf_spa), sizeof(buf_spa),
-                                 1, 1, 0, 0));
+
+  ASSERT( ustrp_set_rep_chr(pool, &spa, '-', 2000));
+  ASSERT(!ustrp_enomem(spa));
+  ASSERT(spa != (void *)buf_spa);
+  ASSERT(ustrp_set_empty(pool, &spa));
+
+  ASSERT((spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_TRUE, 0)));
+  ASSERT( ustrp_size_alloc(sp1));
+  ASSERT(!ustrp_size_alloc(sp2));
+  ASSERT(spa == (void *)buf_spa);
+  ASSERT(!ustrp_alloc(spa));
+  ASSERT( ustrp_owner(spa));
+  ASSERT( ustrp_fixed(spa));
+  ASSERT( ustrp_limited(spa));
+  ASSERT(!ustrp_ro(spa));
+  ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
+  ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
+
+  ASSERT(!ustrp_set_rep_chr(pool, &spa, '-', 2000));
+  ASSERT( ustrp_enomem(spa));
+  ASSERT(spa == (void *)buf_spa);
+  ASSERT(ustrp_set_empty(pool, &spa));
+  
+  ASSERT((spa = ustrp_init_alloc(buf_spa, sizeof(buf_spa), sizeof(buf_spa),
+                                 1, 1, 0, 0)));
+  ASSERT(spa == (void *)buf_spa);
   ASSERT( ustrp_alloc(spa)); /* it _thinks so_ */
   ASSERT( ustrp_owner(spa));
+  ASSERT(!ustrp_fixed(spa));
+  ASSERT(!ustrp_limited(spa));
   ASSERT(!ustrp_ro(spa));
   ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
   ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
+
+  /* this is a huge hack based on pool_free() being a noop */
+  ASSERT( ustrp_set_rep_chr(pool, &spa, '-', 2000));
+  ASSERT(!ustrp_enomem(spa));
+  ASSERT(spa != (void *)buf_spa);
+  ASSERT(ustrp_set_empty(pool, &spa));
+  
   ASSERT((spa = ustrp_dup_undef(pool, 0)));
   ASSERT(!ustrp_alloc(spa));
   ASSERT(!ustrp_owner(spa));
   ASSERT( ustrp_ro(spa));
+  ASSERT(ustrp_set_empty(pool, &spa));
+
   ASSERT(pool);
   ASSERT(!ustrp_ro(sp1));
   ASSERT(ustrp_len(sp1) == 0);

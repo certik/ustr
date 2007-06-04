@@ -60,7 +60,9 @@ USTR_CONF_i_PROTO int ustrp__set_empty(void *p, struct Ustr **ps1)
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
 
-  if (!ustr_alloc(*ps1))
+  if (ustr_fixed(*ps1))
+    return (ustrp__del(p, ps1, ustr_len(*ps1)));
+  else if (!ustr_alloc(*ps1))
     ret = ustrp__dupx_empty(p, USTR__DUPX_DEF);
   else
     ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));

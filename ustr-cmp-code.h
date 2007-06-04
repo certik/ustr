@@ -10,20 +10,20 @@ int ustr_cmp_buf(const struct Ustr *s1, const void *buf, size_t len2)
   size_t len1 = 0;
   size_t lenm = 0;
   int    ret = 0;
-  size_t def = 0;
+  int    def = 0;
   
   USTR_ASSERT(ustr_assert_valid(s1) && buf);
 
   len1 = ustr_len(s1);
   if (len1 == len2)
     return (memcmp(ustr_cstr(s1), buf, len1));
-  
+
   if (len1 > len2)
   {
     lenm = len2;
-    def  = 1;
+    def  =  1;
   }
-  if (len2 > len1)
+  else
   {
     lenm = len1;
     def  = -1;
@@ -66,6 +66,6 @@ int ustr_cmp_fast_subustr(const struct Ustr *s1,
   if (!ustr__valid_subustr(s2, pos, len))
     return (ustr_cmp_fast_buf(s1, "", 0));
 
-  return (ustr_cmp_fast_buf(s1, ustr_cstr(s2) + pos - 1, len));
+  return (ustr_cmp_fast_buf(s1, ustr_cstr(s2) + --pos, len));
 }
 

@@ -1,5 +1,9 @@
 2007-06-04  James Antill  <james@and.org>
 
+	* ustr-cmp.h (ustr_cmp_prefix_buf_eq, ustr_cmp_prefix_eq)
+	(ustr_cmp_prefix_cstr_eq, ustr_cmp_suffix_buf_eq)
+	(ustr_cmp_suffix_eq, ustr_cmp_suffix_cstr_eq): Add functions.
+
 	* scripts/git-push-web.sh: Add script.
 
 	* ustr-utf8.h (ustr_utf8_valid): Added function.
