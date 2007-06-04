@@ -2,8 +2,8 @@
 #ifndef USTR_SET_INTERNAL_H
 #define USTR_SET_INTERNAL_H 1
 
-#ifndef USTR_MAIN_H
-# error " You should have already included ustr-main.h, or just include ustr.h"
+#ifndef USTR_SET_H
+# error " You should have already included ustr-set.h, or just include ustr.h"
 #endif
 
 USTR_CONF_e_PROTO int ustrp__set_undef(void *p, struct Ustr **ps1, size_t nlen)

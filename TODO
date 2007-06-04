@@ -1,5 +1,10 @@
 
+ ustr_cmp_beg_lim ... like strncmp()?
+ ustr_cmp_prefix ... beg_lim on first arg
+ ustr_cmp_suffix ... end_lim on first arg
+
  Other sections:
 
  ss_parse_* (numbers, with seperators ... ala. vstr)
  ss_utf8_* (at least ustr_utf_len() and ustr_utf8_valid())
+          http://del.icio.us/james.antill/utf8+example+c

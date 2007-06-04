@@ -66,7 +66,7 @@
  <a href="design">here</a>. Also here's the file of
  <a href="gdbinit.txt">GDB init functions</a>, to help with debugging. There are
  <b>API references</b> for <a href="functions">functions</a> and
- <a href="constants">constants</a>.
+ <a href="constants">constants</a>. The <a href="cov/">unit testing coverage data</a> is available.
  And the here are links to
  <a href="TODO">TODO</a>, <a href="NEWS">NEWS</a>, <a href="THANKS">THANKS</a>,
  <a href="AUTHORS">AUTHORS</a> and the "<a href="LICENSE">LICENSE</a>", such
@@ -175,7 +175,7 @@ ustr-import all
 </p>
 
 <p> Note that if you wish to look at some ustr using code now, you can see some
- <a href="#examples">example code</a>  or look at the distributed
+ <a href="#example">example code</a>  or look at the distributed
  example/unit-test code at the end of this page.
 </p>
 
@@ -222,7 +222,8 @@ struct Simple_str
  Although, to be fair, by default ustr only
  allocates 2bytes for it's reference count. However that's 65,535 references to
  the same string -- and ustr has a helper function so that if you need 70,000
- references to a string it'll only need to allocate 2 strings, and another one
+ references to a string it'll only need to allocate 2 strings, and has another
+ helper function
  so that you can mark a string as "shared" so it will act like a
  <a href="#ans-initialize">read-only string</a> until it has been set back to
  "owned".
@@ -734,7 +735,8 @@ if (ustr_ro(s2))     <span class="comment">/* This is  TRUE */</span>
 <span class="comment">/* don't need to "free" anything else */</span>
 </pre>
 
-<p> You can look at/download the code and some test code <a href="http://www.and.org/ustr/src">here</a>.
+<p> You can look at/download <a href="http://www.and.org/ustr/src">the code here</a>
+ or  <a href="http://www.and.org/ustr/src/examples/">the code for the examples here</a>.
 
     <hr>
     <address><a href="mailto:james-web@and.org">James Antill</a></address>

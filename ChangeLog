@@ -1,3 +1,9 @@
+2007-06-04  James Antill  <james@and.org>
+
+	* ustr-io-internal.h: Fix #define protection C&P error.
+
+	* Documentation/index.html: Fixup documention for examples.
+
 2007-06-03  James Antill  <james@and.org>
 
 	* NEWS: Release 0.99.2.

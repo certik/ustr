@@ -1,9 +1,9 @@
 /* Copyright (c) 2007 James Antill -- See LICENSE file for terms. */
-#ifndef USTR_SET_INTERNAL_H
-#define USTR_SET_INTERNAL_H 1
+#ifndef USTR_IO_INTERNAL_H
+#define USTR_IO_INTERNAL_H 1
 
-#ifndef USTR_MAIN_H
-# error " You should have already included ustr-main.h, or just include ustr.h"
+#ifndef USTR_IO_H
+# error " You should have already included ustr-io.h, or just include ustr.h"
 #endif
 
 USTR_CONF_e_PROTO
