@@ -1,5 +1,7 @@
 2007-06-04  James Antill  <james@and.org>
 
+	* scripts/git-push-web.sh: Add script.
+
 	* ustr-utf8.h (ustr_utf8_valid): Added function.
 
 	* ustr-utf8-code.h (ustr_utf8_len): Added function.
