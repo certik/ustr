@@ -19,5 +19,6 @@
 #include "ustr-b.h"
 #include "ustr-io.h"
 #include "ustr-spn.h"
+#include "ustr-utf8.h"
 
 #endif

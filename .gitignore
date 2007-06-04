@@ -1,0 +1,14 @@
+/autoconf_64b
+/autoconf_vsnprintf
+/ctst_*
+/octst_*
+/tst_*
+/otst_*
+/lcov-output
+/lib-all-ustr.info
+/lib-all.info
+/ustr-conf-debug.h
+/ustr-conf.h
+/ustr-import
+examples/hello_world
+examples/netstr

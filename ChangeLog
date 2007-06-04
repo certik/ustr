@@ -1,5 +1,10 @@
 2007-06-04  James Antill  <james@and.org>
 
+	* ustr-utf8.h (ustr_utf8_valid): Added function.
+
+	* ustr-utf8-code.h (ustr_utf8_len): Added function.
+	(ustr_utf8_width): Added function.
+
 	* ustr-io-internal.h: Fix #define protection C&P error.
 
 	* Documentation/index.html: Fixup documention for examples.

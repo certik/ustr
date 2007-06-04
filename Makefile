@@ -76,7 +76,9 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
            tst_11_io  ctst_11_io \
           otst_11_io octst_11_io \
            tst_12_fmt  ctst_12_fmt \
-          otst_12_fmt octst_12_fmt
+          otst_12_fmt octst_12_fmt \
+           tst_13_utf8  ctst_13_utf8 \
+          otst_13_utf8 octst_13_utf8
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \
@@ -89,7 +91,8 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-main.h \
            ustr-set.h \
            ustr-spn.h \
-           ustr-srch.h
+           ustr-srch.h \
+           ustr-utf8.h
 
 SRC_SRCS = ustr-b-code.h \
            ustr-cmp-code.h \
@@ -103,6 +106,8 @@ SRC_SRCS = ustr-b-code.h \
            ustr-set-internal.h \
            ustr-spn-code.h \
            ustr-srch-code.h \
+           ustr-utf8-code.h \
+           ustr-utf8-internal.h \
            \
            ustr-b-dbg-code.c \
            ustr-cmp-dbg-code.c \
@@ -112,6 +117,7 @@ SRC_SRCS = ustr-b-code.h \
            ustr-main-dbg-code.c \
            ustr-spn-dbg-code.c \
            ustr-srch-dbg-code.c \
+           ustr-utf8-dbg-code.c \
            \
            ustr-b-opt-code.c \
            ustr-cmp-opt-code.c \
@@ -120,7 +126,8 @@ SRC_SRCS = ustr-b-code.h \
            ustr-main-opt-code.c \
            ustr-set-opt-code.c \
            ustr-spn-opt-code.c \
-           ustr-srch-opt-code.c
+           ustr-srch-opt-code.c \
+           ustr-utf8-opt-code.c
 XSRC_SRCS = .gdbinit
 
 DBG_LIB_SHAREDEV    = libustr-debug.so
@@ -149,7 +156,8 @@ LIB_SHARED_DBG = \
   ustr-main-code-so-dbg.o \
   ustr-set-code-so-dbg.o \
   ustr-spn-code-so-dbg.o \
-  ustr-srch-code-so-dbg.o
+  ustr-srch-code-so-dbg.o \
+  ustr-utf8-code-so-dbg.o
 LIB_STATIC_DBG = \
   ustr-b-code-a-dbg.o \
   ustr-cmp-code-a-dbg.o \
@@ -158,7 +166,8 @@ LIB_STATIC_DBG = \
   ustr-main-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
-  ustr-srch-code-a-dbg.o
+  ustr-srch-code-a-dbg.o \
+  ustr-utf8-code-a-dbg.o
 
 LIB_SHARED_OPT = \
   ustr-b-code-so-opt.o \
@@ -168,7 +177,8 @@ LIB_SHARED_OPT = \
   ustr-main-code-so-opt.o \
   ustr-set-code-so-opt.o \
   ustr-spn-code-so-opt.o \
-  ustr-srch-code-so-opt.o
+  ustr-srch-code-so-opt.o \
+  ustr-utf8-code-so-opt.o
 LIB_STATIC_OPT = \
   ustr-b-code-a-opt.o \
   ustr-cmp-code-a-opt.o \
@@ -177,7 +187,8 @@ LIB_STATIC_OPT = \
   ustr-main-code-a-opt.o \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \
-  ustr-srch-code-a-opt.o
+  ustr-srch-code-a-opt.o \
+  ustr-utf8-code-a-opt.o
 
 all: ustr-import $(LIB_STATIC)
 		@echo Done static

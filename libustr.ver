@@ -294,4 +294,12 @@
   ustrp_parse_b_uint16;
   ustrp_parse_b_uint32;
   ustrp_parse_b_uint64;
+
+  ustr_utf8_valid;
+  ustr_utf8_len;
+  ustr_utf8_width;
+
+  ustrp_utf8_valid;
+  ustrp_utf8_len;
+  ustrp_utf8_width;
 };
