@@ -33,12 +33,7 @@ USTR_CONF_i_PROTO int ustrp__set_undef(void *p, struct Ustr **ps1, size_t nlen)
   if (ustr_limited(s1))
     goto fail_enomem;
 
-  if (!ustr_alloc(s1))
-    ret = ustrp__dupx_undef(p, USTR__DUPX_DEF, nlen);
-  else
-    ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen);
-  
-  if (!ret)
+  if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen)))
     goto fail_enomem;
   
   ustrp__sc_free2(p, ps1, ret);
@@ -62,8 +57,6 @@ USTR_CONF_i_PROTO int ustrp__set_empty(void *p, struct Ustr **ps1)
 
   if (ustr_fixed(*ps1))
     return (ustrp__del(p, ps1, ustr_len(*ps1)));
-  else if (!ustr_alloc(*ps1))
-    ret = ustrp__dupx_empty(p, USTR__DUPX_DEF);
   else
     ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));
   
@@ -114,12 +107,7 @@ USTR_CONF_i_PROTO int ustrp__set(void *p,struct Ustr **ps1,const struct Ustr*s2)
   if (ustr__treat_as_buf(*ps1, 0, s2, ustr_len(s2)))
     return (ustrp__set_buf(p, ps1, ustr_cstr(s2), ustr_len(s2)));
 
-  if (!ustr_alloc(*ps1))
-    ret = ustrp__dup(p, s2);
-  else 
-    ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2);
-  
-  if (!ret)
+  if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
   {
     ustr_setf_enomem_err(*ps1);
     return (USTR_FALSE);

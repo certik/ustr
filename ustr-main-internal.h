@@ -14,8 +14,10 @@
     USTR_CONF_HAS_SIZE, USTR_CONF_REF_BYTES,            \
     USTR_CONF_EXACT_BYTES, USTR_FALSE
 #define USTR__DUPX_FROM(x)                                              \
-    (ustr_sized(x) ? ustr__sz_get(x) : 0), USTR__REF_LEN(x),            \
-    ustr_exact(x), ustr_enomem(x)
+    (ustr_alloc(x) ?                                                    \
+     (ustr_sized(x) ? ustr__sz_get(x) : 0) : USTR_CONF_HAS_SIZE),       \
+    (ustr_alloc(x) ? USTR__REF_LEN(x) : USTR_CONF_REF_BYTES),           \
+    (ustr_alloc(x) ? ustr_exact(x) : USTR_CONF_EXACT_BYTES), ustr_enomem(x)
 
  /* #include <stdio.h>
     printf("sz=%zu rbytes=%zu exact=%s len=%zu --> rsz=%zu\n", sz, rbytes, exact ? "TRUE" : "FALSE", len, rsz); */

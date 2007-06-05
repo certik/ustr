@@ -75,8 +75,12 @@ int tst(void)
   ASSERT(!ustrp_owner(spa));
   ASSERT( ustrp_ro(spa));
   ASSERT(ustrp_set(pool, &spa, spa));
-  ASSERT(ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 4));
   ASSERT(!ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 8));
+  ASSERT(ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 4));
+
+  ASSERT((spa = ustrp_dupx_empty(pool, 0, 1, 0, 0)));
+  ASSERT(ustrp_dup(pool, spa));
+  ASSERT(ustrp_set(pool, &spa, USTRP1(\x4, "abcd")));
   
   ASSERT(pool);
   ASSERT(!ustrp_ro(sp1));

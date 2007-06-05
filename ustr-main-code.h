@@ -912,8 +912,7 @@ USTR_CONF_i_PROTO int ustrp__del(void *p, struct Ustr **ps1, size_t len)
   s1   = *ps1;
   clen = ustr_len(s1);
   if (!(nlen = clen - len) && !ustr_fixed(*ps1) &&
-      (!ustr_alloc(s1) ||
-       ustr__dupx_cmp_eq(USTR__DUPX_DEF, USTR__DUPX_FROM(s1))))
+      ustr__dupx_cmp_eq(USTR__DUPX_DEF, USTR__DUPX_FROM(s1)))
   {
     ustrp__sc_free2(p, ps1, USTR(""));
     return (USTR_TRUE);
@@ -1136,14 +1135,8 @@ struct Ustr *ustrp__dupx(void *p, size_t sz, size_t rbytes, int exact,
   USTR_ASSERT(exact == !!exact);
   USTR_ASSERT(emem  == !!emem);
   
-  if (ustr_alloc(s1))
-  {
-    if (ustr__dupx_cmp_eq(sz, rbytes, exact, emem, USTR__DUPX_FROM(s1)))
-      return (ustrp__dup(p, s1));
-  }
-  else
-    if (ustr__dupx_cmp_eq(sz, rbytes, exact, emem, USTR__DUPX_DEF))
-      return (ustrp__dup(p, s1));
+  if (ustr__dupx_cmp_eq(sz, rbytes, exact, emem, USTR__DUPX_FROM(s1)))
+    return (ustrp__dup(p, s1));
   
   return (ustrp__dupx_buf(p, sz,rbytes,exact,emem, ustr_cstr(s1),ustr_len(s1)));
 }
@@ -1190,12 +1183,7 @@ struct Ustrp *ustrp_dupx_subustrp(void *p,
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__dup_subustr(void *p, const struct Ustr *s2,
                                 size_t pos, size_t len)
-{
-  if (ustr_alloc(s2))
-    return (ustrp__dupx_subustr(p, USTR__DUPX_FROM(s2), s2, pos, len));
-  else
-    return (ustrp__dupx_subustr(p, USTR__DUPX_DEF,      s2, pos, len));
-}
+{ return (ustrp__dupx_subustr(p, USTR__DUPX_FROM(s2), s2, pos, len)); }
 USTR_CONF_I_PROTO struct Ustr *ustr_dup_subustr(const struct Ustr *s2,
                                                 size_t pos, size_t len)
 { return (ustrp__dup_subustr(0, s2, pos, len)); }
@@ -1279,12 +1267,7 @@ USTR_CONF_i_PROTO int ustrp__add_undef(void *p, struct Ustr **ps1, size_t len)
     return (USTR_FALSE);
   }
   
-  if (ustr_alloc(s1))
-    ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen);
-  else
-    ret = ustrp__dupx_undef(p, USTR__DUPX_DEF,      nlen);
-
-  if (!ret)
+  if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen)))
     goto fail_enomem;
   
   ustr__memcpy(ret, 0, ustr_cstr(s1), ustr_len(s1));
@@ -1365,22 +1348,12 @@ int ustrp__add(void *p, struct Ustr **ps1, const struct Ustr *s2)
     
   if (!len1)
   {  
-    if (!ustr_alloc(*ps1))
-      ret = ustrp__dup(p, s2);
-    else
-      ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2);
-    
-    if (!ret)
+    if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
       return (USTR_FALSE);
   }
   else
   {
-    if (!ustr_alloc(*ps1))
-      ret = ustrp__dupx_undef(p, USTR__DUPX_DEF,        len1 + len2);
-    else
-      ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), len1 + len2);
-
-    if (!ret)
+    if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), len1 + len2)))
       return (USTR_FALSE);
     
     ustr__memcpy(ret,    0, ustr_cstr(*ps1), len1);
@@ -1541,10 +1514,7 @@ USTR_CONF_i_PROTO struct Ustr *ustrp__sc_dup(void *p, struct Ustr **ps1)
 {
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
-  if (ustr_alloc(*ps1))
-    return (ustrp__sc_dupx(p, USTR__DUPX_FROM(*ps1), ps1));
-
-  return (ustrp__sc_dupx(p, USTR__DUPX_DEF, ps1));
+  return (ustrp__sc_dupx(p, USTR__DUPX_FROM(*ps1), ps1));
 }
 USTR_CONF_I_PROTO struct Ustr *ustr_sc_dup(struct Ustr **ps1)
 { return (ustrp__sc_dup(0, ps1)); }
@@ -1562,18 +1532,10 @@ USTR_CONF_i_PROTO int ustrp__sc_ensure_owner(void *p, struct Ustr **ps1)
     return (USTR_TRUE);
 
   len = ustr_len(*ps1);
-  if (!ustr_alloc(*ps1))
-  {
-    if (!len)
-      ret = ustrp__dupx_empty(p, USTR__DUPX_DEF);
-    else
-      ret = ustrp__dupx_buf(p, USTR__DUPX_DEF, ustr_cstr(*ps1), len);
-  }
+  if (!len)
+    ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));
   else
-    if (!len)
-      ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));
-    else
-      ret = ustrp__dupx_buf(p,   USTR__DUPX_FROM(*ps1), ustr_cstr(*ps1), len);
+    ret = ustrp__dupx_buf(p,   USTR__DUPX_FROM(*ps1), ustr_cstr(*ps1), len);
   
   if (!ret)
     return (USTR_FALSE);

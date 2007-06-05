@@ -143,12 +143,7 @@ int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
     const char *ptr = ustr_cstr(*ps1) + beglen;
     size_t      len =      clen       - beglen;
     
-    if (!ustr_alloc(*ps1))
-      next = ustrp__dupx_buf(p, USTR__DUPX_DEF,        ptr, len);
-    else
-      next = ustrp__dupx_buf(p, USTR__DUPX_FROM(*ps1), ptr, len);
-
-    if (!next)
+    if (!(next = ustrp__dupx_buf(p, USTR__DUPX_FROM(*ps1), ptr, len)))
     {
       ustr_setf_enomem_err(*ps1);
       return (USTR_FALSE);

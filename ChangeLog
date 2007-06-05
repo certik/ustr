@@ -1,5 +1,23 @@
 2007-06-04  James Antill  <james@and.org>
 
+	* ustr-main-code.h (ustr_dup): Fix dupx'ing.
+	(ustrp__del): Fix dmpx_cmp/ing.
+	(ustrp__dupx): Fix dupx'ing.
+	(ustrp__dup_subustr): Fix dupx'ing.
+	(ustr_add_undef): Fix dupx'ing.
+	(ustrp__add): Fix dupx'ing.
+	(ustrp__sc_dup): Fix dupx'ing.
+	(ustrp__sc_ensure_owner): Fix dupx'ing.
+
+	* ustr-set-code.h (ustrp__set): Remove defunct DUPX_DEF.
+	(ustrp__set_undef): Remove defunct DUPX_DEF.
+	(ustrp__set_empty): Remove defunct DUPX_DEF.
+
+	* ustr-io-code.h (ustrp__io_put): Remove defunct DUPX_DEF.
+
+	* ustr-main-internal.h (USTR__DUPX_FROM): Change macro so it works for
+	everything, preserves enomem etc.
+
 	* ustr-cmp.h (ustr_cmp_prefix_buf_eq, ustr_cmp_prefix_eq)
 	(ustr_cmp_prefix_cstr_eq, ustr_cmp_suffix_buf_eq)
 	(ustr_cmp_suffix_eq, ustr_cmp_suffix_cstr_eq): Add functions.
