@@ -25,6 +25,7 @@ int tst(void)
   ASSERT(!ustrp_enomem(spa));
   ASSERT(spa != (void *)buf_spa);
   ASSERT(ustrp_set_empty(pool, &spa));
+  ASSERT(ustrp_set(pool, &spa, spa));
 
   ASSERT((spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_TRUE, 0)));
   ASSERT( ustrp_size_alloc(sp1));
@@ -42,6 +43,7 @@ int tst(void)
   ASSERT( ustrp_enomem(spa));
   ASSERT(spa == (void *)buf_spa);
   ASSERT(ustrp_set_empty(pool, &spa));
+  ASSERT(ustrp_set(pool, &spa, spa));
   
   ASSERT((spa = ustrp_init_alloc(buf_spa, sizeof(buf_spa), sizeof(buf_spa),
                                  1, 1, 0, 0)));
@@ -59,13 +61,23 @@ int tst(void)
   ASSERT(!ustrp_enomem(spa));
   ASSERT(spa != (void *)buf_spa);
   ASSERT(ustrp_set_empty(pool, &spa));
+  ASSERT(ustrp_set(pool, &spa, spa));
   
   ASSERT((spa = ustrp_dup_undef(pool, 0)));
   ASSERT(!ustrp_alloc(spa));
   ASSERT(!ustrp_owner(spa));
   ASSERT( ustrp_ro(spa));
   ASSERT(ustrp_set_empty(pool, &spa));
+  ASSERT(ustrp_set(pool, &spa, spa));
 
+  ASSERT((spa = ustrp_dup_undef(pool, 0)));
+  ASSERT(!ustrp_alloc(spa));
+  ASSERT(!ustrp_owner(spa));
+  ASSERT( ustrp_ro(spa));
+  ASSERT(ustrp_set(pool, &spa, spa));
+  ASSERT(ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 4));
+  ASSERT(!ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 8));
+  
   ASSERT(pool);
   ASSERT(!ustrp_ro(sp1));
   ASSERT(ustrp_len(sp1) == 0);
