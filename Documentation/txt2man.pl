@@ -25,7 +25,7 @@ my $hdr_date = `date '+%d-%b-%Y'`;
 chomp($hdr_date);
 
 # FIXME: More C&P of VERSION
-my $hdr_ver = "0.99.2";
+my $hdr_ver = "0.99.3";
 
 my $man_funcs_header = <<EOL;
 .TH ustr 3 "$hdr_date" "Ustr $hdr_ver" "Ustr String Library"
@@ -216,7 +216,7 @@ sub convert()
 	    if (/\.\.\.$/)
 	      {
 		$_ = ".Ve\n$_.Vb 4\n";
-		$in_pre_tag = "</pre>";
+		$in_pre_tag = "\n.Ve";
 	      }
 	    else
 	      {
@@ -239,6 +239,10 @@ sub convert()
 		    $_ = "\n.br\n" . $_;
 		  }
 	      }
+	  }
+        else
+          {
+		s/\\/\\\\/g;
 	  }
 
 	$in_const = $next_in_const;

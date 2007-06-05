@@ -1,4 +1,345 @@
-Section: Creating Ustr functions
+Section: Creating read-only Ustr functions
+
+
+Function: USTR()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to Ustr data
+ Type[1]: void *
+
+ Explanation:
+
+  This macro function is normally used with the empty string "".
+
+ Note:
+
+  There is basically just a simple cast behind the macro.
+
+
+Function: USTRP()
+ Returns: Ustrp string
+ Type: struct Ustrp *
+
+ Parameter[1]: Pointer to Ustr data
+ Type[1]: void *
+
+ Explanation:
+
+  This macro function is normally used with the empty string "".
+
+ Note:
+
+  There is basically just a simple cast behind the macro.
+
+
+Function: USTR1()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Data for Ustr string
+ Type[2]: const char[]
+
+ Explanation:
+
+  This macro function simplifies the creation of read-only Ustr string's. And
+ is normally used like...
+
+  USTR1(\x4, "abcd")
+
+ ...it is worth pointing out that running with debugging turned on
+ (USTR_CONF_USE_ASSERT) will complain if the length isn't encoded correctly, as
+ in...
+
+  USTR1(\x3, "abcd")
+
+ ...here ustr_assert_valid() will fail, which is called before most functions do
+ anything in debugging mode. Note also that extra debugging
+ (USTR_CONF_USE_EOS_MARK) will still catch cases like...
+
+  USTR1(\x3, "abc\0d")
+
+ ...at least using debugging is esp. important if you are putting UTF-8
+ characters into the strings.
+
+ Note:
+
+  Having ustr_ro() return true means that the Ustr cannot be written to without
+ be reallocated into allocation space ... not that ustr_add() etc. will fail.
+
+
+Function: USTR2()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 2nd byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 1st byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Data for Ustr string
+ Type[3]: const char[]
+
+ Explanation:
+
+  This function works in the same way as USTR1() but takes two length bytes, so
+ the read-only string can be upto 65,535 (2**16 - 1) bytes in length.
+
+
+Function: USTR4()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 4th byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 3rd byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Encoded 2nd byte of number of the length of Ustr string
+ Type[3]: symbol
+
+ Parameter[4]: Encoded 1st byte of number of the length of Ustr string
+ Type[4]: symbol
+
+ Parameter[5]: Data for Ustr string
+ Type[5]: const char[]
+
+ Explanation:
+
+  This function works in the same way as USTR1() but takes four length bytes, so
+ the read-only string can be upto 2**32 - 1 bytes in length.
+
+
+Function: USTR8()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 8th byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 7th byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Encoded 6th byte of number of the length of Ustr string
+ Type[3]: symbol
+
+ Parameter[4]: Encoded 5st byte of number of the length of Ustr string
+ Type[4]: symbol
+
+ Parameter[5]: Encoded 4th byte of number of the length of Ustr string
+ Type[5]: symbol
+
+ Parameter[6]: Encoded 3rd byte of number of the length of Ustr string
+ Type[6]: symbol
+
+ Parameter[7]: Encoded 2nd byte of number of the length of Ustr string
+ Type[7]: symbol
+
+ Parameter[8]: Encoded 1st byte of number of the length of Ustr string
+ Type[8]: symbol
+
+ Parameter[9]: Data for Ustr string
+ Type[9]: const char[]
+
+ Explanation:
+
+  This function works in the same way as USTR1() but takes eight length bytes,
+ so the read-only string can be upto 2**64 - 1 bytes in length.
+
+
+Function: USTRP1()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Data for Ustr string
+ Type[2]: const char[]
+
+ Explanation:
+
+  This function works like USTR1(), but returns a Ustrp instead.
+
+
+Function: USTRP2()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 2nd byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 1st byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Data for Ustr string
+ Type[3]: const char[]
+
+ Explanation:
+
+  This function works like USTR4(), but returns a Ustrp instead.
+
+
+Function: USTRP4()
+ Returns: Ustrp string
+ Type: struct Ustrp *
+
+ Parameter[1]: Encoded 4th byte of number of the length of Ustrp string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 3rd byte of number of the length of Ustrp string
+ Type[2]: symbol
+
+ Parameter[3]: Encoded 2nd byte of number of the length of Ustrp string
+ Type[3]: symbol
+
+ Parameter[4]: Encoded 1st byte of number of the length of Ustrp string
+ Type[4]: symbol
+
+ Parameter[5]: Data for Ustr string
+ Type[5]: const char[]
+
+ Explanation:
+
+  This function works like USTR2(), but returns a Ustrp instead.
+
+
+Function: USTRP8()
+ Returns: Ustrp string
+ Type: struct Ustrp *
+
+ Parameter[1]: Encoded 8th byte of number of the length of Ustrp string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 7th byte of number of the length of Ustrp string
+ Type[2]: symbol
+
+ Parameter[3]: Encoded 6th byte of number of the length of Ustrp string
+ Type[3]: symbol
+
+ Parameter[4]: Encoded 5st byte of number of the length of Ustrp string
+ Type[4]: symbol
+
+ Parameter[5]: Encoded 4th byte of number of the length of Ustrp string
+ Type[5]: symbol
+
+ Parameter[6]: Encoded 3rd byte of number of the length of Ustrp string
+ Type[6]: symbol
+
+ Parameter[7]: Encoded 2nd byte of number of the length of Ustrp string
+ Type[7]: symbol
+
+ Parameter[8]: Encoded 1st byte of number of the length of Ustrp string
+ Type[8]: symbol
+
+ Parameter[9]: Data for Ustrp string
+ Type[9]: const char[]
+
+ Explanation:
+
+  This function works like USTR8(), but returns a Ustrp instead.
+
+
+Section: Creating fixed Ustr functions
+
+Function: ustr_init_fixed()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to area of memory to use as a Ustr string
+ Type[1]: void *
+
+ Parameter[2]: Size of area of memory
+ Type[2]: size_t
+
+ Parameter[3]: Whether the fixed size Ustr should be limited
+ Type[3]: int
+
+ Parameter[4]: The initial length of the Ustr
+ Type[4]: size_t
+
+ Explanation:
+
+  This creates a new Ustr string, which is "fixed". This means the Ustr storage
+ is managed outside of the ustr_* API, it is often used for stack allocated
+ strings.
+  As you add data to the Ustr past the size allowed via. the fixed storge the
+ Ustr will automatically be converted into an allocated Ustr. So if this is
+ possible you should always call ustr_free(), as this does nothing if given a
+ fixed size Ustr.
+
+ Note:
+
+  For simplicity you probably want to use USTR_SC_INIT_AUTO() when possible.
+
+
+Function: USTR_SC_INIT_AUTO()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Area of memory to use as a Ustr string
+ Type[1]: char[]
+
+ Parameter[2]: Whether the fixed size Ustr should be limited
+ Type[2]: int
+
+ Parameter[3]: The initial length of the Ustr
+ Type[3]: size_t
+
+ Explanation:
+
+  This calls ustr_init_fixed() with sizeof() the area of memory (Parameter[1])
+ as the second argument.
+
+ Note:
+
+  This does mean that the first argument must be the correct size, as far as
+ sizeof() is concerned, as in...
+
+ char buf_sz[1024];
+ Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
+
+ ...so passing pointers to memory from malloc() will probably just return NULL.
+
+
+Section: Creating allocated Ustr functions
+
+Function: ustr_init_alloc()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to area of memory to use as a Ustr string
+ Type[1]: void *
+
+ Parameter[2]: Size of area of memory
+ Type[2]: size_t
+
+ Parameter[3]: Whether Ustr should store the size
+ Type[3]: size_t
+
+ Parameter[4]: Number of bytes to use for references
+ Type[4]: size_t
+
+ Parameter[5]: Whether the Ustr should use exact allocations
+ Type[5]: int
+
+ Parameter[6]: Whether the Ustr should have the "enomem" flag set
+ Type[6]: int
+
+ Parameter[7]: The initial length of the Ustr
+ Type[7]: size_t
+
+ Explanation:
+
+  This creates a new Ustr string, you should have allocated the data via. 
+ USTR_CONF_MALLOC() or bad things will happen if the Ustr string is ever free'd
+ or reallocated.
+
 
 Function: ustr_dup_empty()
  Returns: Ustr string
@@ -16,6 +357,7 @@ Function: ustr_dup_empty()
 
   It can be useful to ensure that the Ustr is in system memory, so that you can
  add things to it and check for errors with ustr_enomem().
+
 
 Function: ustr_dup_undef()
  Returns: Ustr string
@@ -35,4 +377,100 @@ Function: ustr_dup_undef()
   Like most ustr functions if the specified length of the ustr is zero, the
  returned value will just be a duplicate of a read-only C-nil-string "".
 
+
+Section: Simple Ustr pool API
+Function: ustr_pool_make()
+ Returns: Ustr pool object
+ Type: struct Ustr_pool *
+
+ Parameter[1]: Nothing
+ Type[1]: void
+
+ Explanation:
+
+  This allocates a new pool, from the simple pool API.
+
+Function: ustr_pool_free()
+ Returns: Nothing
+ Type: void
+
+ Parameter[1]: Ustr pool object
+ Type[1]: struct Ustr_pool *
+
+ Explanation:
+
+  This deallocates a new pool, from the simple pool API.
+
+
+Function: ustr_pool_clear()
+ Returns: Nothing
+ Type: void
+
+ Parameter[1]: Ustr pool object
+ Type[1]: struct Ustr_pool *
+
+ Explanation:
+
+  This allows all the data in the pool to be reused, it may also free some/all
+ of the data in the pool, from the simple pool API.
+
+
+Function: ustr_pool_sys_malloc()
+ Returns: Allocated data
+ Type: void *
+
+ Parameter[1]: Ustr pool object
+ Type[1]: void *
+
+ Parameter[2]: Length of new allocation
+ Type[2]: size_t
+
+ Explanation:
+
+  This works like malloc() but allocates at least size (Parameter[2]) memory
+ from the pool (Parameter[1]), or returns NULL on failure.
+
+
+Function: ustr_pool_sys_realloc()
+ Returns: Re-allocated data
+ Type: void *
+
+ Parameter[1]: Ustr pool object
+ Type[1]: void *
+
+ Parameter[2]: Pointer to the old data
+ Type[2]: void *
+
+ Parameter[3]: Length of old allocation
+ Type[3]: size_t
+
+ Parameter[4]: Length of new allocation
+ Type[4]: size_t
+
+ Explanation:
+
+  This works like realloc() but allocates at least size (Parameter[4]) memory
+ from the pool (Parameter[1]) and copies the old data into it, or returns NULL
+ on failure.
+
+ Note:
+
+  If the old data was the last thing allocated from the pool, it might be
+ resized on success.
+  If the old data was larger than the new data, the pointer to the old data is
+ returned.
+
+Function: ustr_pool_sys_free()
+ Returns: Nothing
+ Type: void
+
+ Parameter[1]: Ustr pool object
+ Type[1]: void *
+
+ Parameter[2]: Pointer to the data
+ Type[2]: void *
+
+ Explanation:
+
+  This function does nothing.
 

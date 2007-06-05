@@ -98,13 +98,15 @@
 
 /* hackish ... this has to be before ustr-cntl-code.h ... hackish */
 USTR_CONF_E_PROTO void *ustr_pool_sys_malloc(void *, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1))
+    USTR__COMPILE_ATTR_MALLOC();
 USTR_CONF_E_PROTO
 void *ustr_pool_sys_realloc(void *, void *, size_t, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1))
+    USTR__COMPILE_ATTR_MALLOC();
 /* NOTE: ustr_pool_sys_free doesn't do anything -- it's too simple */
 USTR_CONF_E_PROTO void ustr_pool_sys_free(void *, void *)
-    USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_NONNULL_L((1));
 
 #if USTR_CONF_USE_DYNAMIC_CONF
 # include "ustr-cntl.h"

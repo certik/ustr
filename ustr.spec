@@ -1,7 +1,7 @@
 
 Name: ustr
 # FIXME: More C&P of VERSION
-Version: 0.99.2
+Version: 0.99.3
 Release: 1%{?dist}
 Summary: String library, very very low memory overhead, simple to import.
 Group: System Environment/Libraries

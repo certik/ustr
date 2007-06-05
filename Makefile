@@ -1,9 +1,10 @@
 
+# FIXME: Lots of C&P of VERSION ... ustr*.pc, ustr.spec, Documentation/*.pl
 VERS=0.99
-VERS_FULL=$(VERS).2
+VERS_FULL=$(VERS).3
 VERS_BSO =1.0
 VERS_ESONAME =0
-VERS_ESO     =$(VERS_ESONAME).0.2
+VERS_ESO     =$(VERS_ESONAME).0.3
 
 DESTDIR =
 datadir=/usr/share

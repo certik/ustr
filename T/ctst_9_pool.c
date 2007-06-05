@@ -10,6 +10,9 @@ int tst(void)
   char buf_spa[1024];
   Ustrp *spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_FALSE, 0);
 
+  ASSERT(ustr_pool_sys_realloc(pool, NULL, 0, 0));
+  ASSERT(ustr_pool_sys_realloc(pool, NULL, 0, 1));
+  
   ASSERT( ustrp_size_alloc(sp1));
   ASSERT(!ustrp_size_alloc(sp2));
   ASSERT(spa == (void *)buf_spa);

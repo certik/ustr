@@ -1,10 +1,64 @@
-.TH ustr 3 "01-Jun-2007" "Ustr 0.99.2" "Ustr String Library"
+.TH ustr 3 "05-Jun-2007" "Ustr 0.99.3" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
 .sp
 .NH
 .sp
+.br
+.in \w'  struct Ustr *\fBUSTR\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR\fR(void *);
+.br
+.in \w'  struct Ustrp *\fBUSTRP\fR('u
+.ti \w'  'u
+struct Ustrp *\fBUSTRP\fR(void *);
+.br
+.in \w'  struct Ustr *\fBUSTR1\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR1\fR(symbol, const char[]);
+.br
+.in \w'  struct Ustr *\fBUSTR2\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR2\fR(symbol, symbol, const char[]);
+.br
+.in \w'  struct Ustr *\fBUSTR4\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR4\fR(symbol, symbol, symbol, symbol, const char[]);
+.br
+.in \w'  struct Ustr *\fBUSTR8\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR8\fR(symbol, symbol, symbol, symbol, symbol, symbol, symbol, symbol, const char[]);
+.br
+.in \w'  struct Ustr *\fBUSTRP1\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTRP1\fR(symbol, const char[]);
+.br
+.in \w'  struct Ustr *\fBUSTRP2\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTRP2\fR(symbol, symbol, const char[]);
+.br
+.in \w'  struct Ustrp *\fBUSTRP4\fR('u
+.ti \w'  'u
+struct Ustrp *\fBUSTRP4\fR(symbol, symbol, symbol, symbol, const char[]);
+.br
+.in \w'  struct Ustrp *\fBUSTRP8\fR('u
+.ti \w'  'u
+struct Ustrp *\fBUSTRP8\fR(symbol, symbol, symbol, symbol, symbol, symbol, symbol, symbol, const char[]);
+.sp
+.br
+.in \w'  struct Ustr *\fBustr_init_fixed\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_init_fixed\fR(void *, size_t, int, size_t);
+.br
+.in \w'  struct Ustr *\fBUSTR_SC_INIT_AUTO\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR_SC_INIT_AUTO\fR(char[], int, size_t);
+.sp
+.br
+.in \w'  struct Ustr *\fBustr_init_alloc\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_init_alloc\fR(void *, size_t, size_t, size_t, int, int, size_t);
 .br
 .in \w'  struct Ustr *\fBustr_dup_empty\fR('u
 .ti \w'  'u
@@ -13,6 +67,31 @@ struct Ustr *\fBustr_dup_empty\fR(void);
 .in \w'  struct Ustr *\fBustr_dup_undef\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_undef\fR(size_t);
+.sp
+.br
+.in \w'  struct Ustr_pool *\fBustr_pool_make\fR('u
+.ti \w'  'u
+struct Ustr_pool *\fBustr_pool_make\fR(void);
+.br
+.in \w'  void \fBustr_pool_free\fR('u
+.ti \w'  'u
+void \fBustr_pool_free\fR(struct Ustr_pool *);
+.br
+.in \w'  void \fBustr_pool_clear\fR('u
+.ti \w'  'u
+void \fBustr_pool_clear\fR(struct Ustr_pool *);
+.br
+.in \w'  void *\fBustr_pool_sys_malloc\fR('u
+.ti \w'  'u
+void *\fBustr_pool_sys_malloc\fR(void *, size_t);
+.br
+.in \w'  void *\fBustr_pool_sys_realloc\fR('u
+.ti \w'  'u
+void *\fBustr_pool_sys_realloc\fR(void *, void *, size_t, size_t);
+.br
+.in \w'  void \fBustr_pool_sys_free\fR('u
+.ti \w'  'u
+void \fBustr_pool_sys_free\fR(void *, void *);
 
 .ti
 .HY
@@ -25,7 +104,520 @@ that use stack space upto a certain amount.
 55% overhead over strdup(), for strings in the range of 0 to 20 bytes. Or, to
 put it another way it only uses 8 bytes to store a 2 byte string where
 strdup() uses 3.
-.SH Creating Ustr functions
+.SH Creating read-only Ustr functions
+
+
+.ti -2
+.br
+\fBFunction: \fR USTR()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Pointer to Ustr data
+.br
+Type\fB[1]\fR: void *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro function is normally used with the empty string "".
+.sp
+\fBNote:\fR
+
+.br
+  There is basically just a simple cast behind the macro.
+
+.ti -2
+.br
+\fBFunction: \fR USTRP()
+.br
+Returns: Ustrp string
+.br
+Type: struct Ustrp *
+
+.br
+Parameter\fB[1]\fR: Pointer to Ustr data
+.br
+Type\fB[1]\fR: void *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro function is normally used with the empty string "".
+.sp
+\fBNote:\fR
+
+.br
+  There is basically just a simple cast behind the macro.
+
+.ti -2
+.br
+\fBFunction: \fR USTR1()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Encoded number of the length of Ustr string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Data for Ustr string
+.br
+Type\fB[2]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro function simplifies the creation of read-only Ustr string's. And is normally used like...
+
+.Vb 4
+  USTR1(\\x4, "abcd")
+
+.Ve
+ ...it is worth pointing out that running with debugging turned on
+ (USTR_CONF_USE_ASSERT) will complain if the length isn't encoded correctly, as in...
+
+.Vb 4
+  USTR1(\\x3, "abcd")
+
+.Ve
+ ...here ustr_assert_valid() will fail, which is called before most functions do
+ anything in debugging mode. Note also that extra debugging (USTR_CONF_USE_EOS_MARK) will still catch cases like...
+
+.Vb 4
+  USTR1(\\x3, "abc\\0d")
+
+.Ve
+ ...at least using debugging is esp. important if you are putting UTF-8
+ characters into the strings.
+.sp
+\fBNote:\fR
+
+.br
+  Having ustr_ro() return true means that the Ustr cannot be written to without be reallocated into allocation space ... not that ustr_add() etc. will fail.
+
+.ti -2
+.br
+\fBFunction: \fR USTR2()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Encoded 2nd byte of number of the length of Ustr string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Encoded 1st byte of number of the length of Ustr string
+.br
+Type\fB[2]\fR: symbol
+
+.br
+Parameter\fB[3]\fR: Data for Ustr string
+.br
+Type\fB[3]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works in the same way as USTR1() but takes two length bytes, so the read-only string can be upto 65,535 (2**16 - 1) bytes in length.
+
+.ti -2
+.br
+\fBFunction: \fR USTR4()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Encoded 4th byte of number of the length of Ustr string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Encoded 3rd byte of number of the length of Ustr string
+.br
+Type\fB[2]\fR: symbol
+
+.br
+Parameter\fB[3]\fR: Encoded 2nd byte of number of the length of Ustr string
+.br
+Type\fB[3]\fR: symbol
+
+.br
+Parameter\fB[4]\fR: Encoded 1st byte of number of the length of Ustr string
+.br
+Type\fB[4]\fR: symbol
+
+.br
+Parameter\fB[5]\fR: Data for Ustr string
+.br
+Type\fB[5]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works in the same way as USTR1() but takes four length bytes, so the read-only string can be upto 2**32 - 1 bytes in length.
+
+.ti -2
+.br
+\fBFunction: \fR USTR8()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Encoded 8th byte of number of the length of Ustr string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Encoded 7th byte of number of the length of Ustr string
+.br
+Type\fB[2]\fR: symbol
+
+.br
+Parameter\fB[3]\fR: Encoded 6th byte of number of the length of Ustr string
+.br
+Type\fB[3]\fR: symbol
+
+.br
+Parameter\fB[4]\fR: Encoded 5st byte of number of the length of Ustr string
+.br
+Type\fB[4]\fR: symbol
+
+.br
+Parameter\fB[5]\fR: Encoded 4th byte of number of the length of Ustr string
+.br
+Type\fB[5]\fR: symbol
+
+.br
+Parameter\fB[6]\fR: Encoded 3rd byte of number of the length of Ustr string
+.br
+Type\fB[6]\fR: symbol
+
+.br
+Parameter\fB[7]\fR: Encoded 2nd byte of number of the length of Ustr string
+.br
+Type\fB[7]\fR: symbol
+
+.br
+Parameter\fB[8]\fR: Encoded 1st byte of number of the length of Ustr string
+.br
+Type\fB[8]\fR: symbol
+
+.br
+Parameter\fB[9]\fR: Data for Ustr string
+.br
+Type\fB[9]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works in the same way as USTR1() but takes eight length bytes, so the read-only string can be upto 2**64 - 1 bytes in length.
+
+.ti -2
+.br
+\fBFunction: \fR USTRP1()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Encoded number of the length of Ustr string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Data for Ustr string
+.br
+Type\fB[2]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like USTR1(), but returns a Ustrp instead.
+
+.ti -2
+.br
+\fBFunction: \fR USTRP2()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Encoded 2nd byte of number of the length of Ustr string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Encoded 1st byte of number of the length of Ustr string
+.br
+Type\fB[2]\fR: symbol
+
+.br
+Parameter\fB[3]\fR: Data for Ustr string
+.br
+Type\fB[3]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like USTR4(), but returns a Ustrp instead.
+
+.ti -2
+.br
+\fBFunction: \fR USTRP4()
+.br
+Returns: Ustrp string
+.br
+Type: struct Ustrp *
+
+.br
+Parameter\fB[1]\fR: Encoded 4th byte of number of the length of Ustrp string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Encoded 3rd byte of number of the length of Ustrp string
+.br
+Type\fB[2]\fR: symbol
+
+.br
+Parameter\fB[3]\fR: Encoded 2nd byte of number of the length of Ustrp string
+.br
+Type\fB[3]\fR: symbol
+
+.br
+Parameter\fB[4]\fR: Encoded 1st byte of number of the length of Ustrp string
+.br
+Type\fB[4]\fR: symbol
+
+.br
+Parameter\fB[5]\fR: Data for Ustr string
+.br
+Type\fB[5]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like USTR2(), but returns a Ustrp instead.
+
+.ti -2
+.br
+\fBFunction: \fR USTRP8()
+.br
+Returns: Ustrp string
+.br
+Type: struct Ustrp *
+
+.br
+Parameter\fB[1]\fR: Encoded 8th byte of number of the length of Ustrp string
+.br
+Type\fB[1]\fR: symbol
+
+.br
+Parameter\fB[2]\fR: Encoded 7th byte of number of the length of Ustrp string
+.br
+Type\fB[2]\fR: symbol
+
+.br
+Parameter\fB[3]\fR: Encoded 6th byte of number of the length of Ustrp string
+.br
+Type\fB[3]\fR: symbol
+
+.br
+Parameter\fB[4]\fR: Encoded 5st byte of number of the length of Ustrp string
+.br
+Type\fB[4]\fR: symbol
+
+.br
+Parameter\fB[5]\fR: Encoded 4th byte of number of the length of Ustrp string
+.br
+Type\fB[5]\fR: symbol
+
+.br
+Parameter\fB[6]\fR: Encoded 3rd byte of number of the length of Ustrp string
+.br
+Type\fB[6]\fR: symbol
+
+.br
+Parameter\fB[7]\fR: Encoded 2nd byte of number of the length of Ustrp string
+.br
+Type\fB[7]\fR: symbol
+
+.br
+Parameter\fB[8]\fR: Encoded 1st byte of number of the length of Ustrp string
+.br
+Type\fB[8]\fR: symbol
+
+.br
+Parameter\fB[9]\fR: Data for Ustrp string
+.br
+Type\fB[9]\fR: const char[]
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like USTR8(), but returns a Ustrp instead.
+
+.SH Creating fixed Ustr functions
+
+.ti -2
+.br
+\fBFunction: \fR ustr_init_fixed()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Pointer to area of memory to use as a Ustr string
+.br
+Type\fB[1]\fR: void *
+
+.br
+Parameter\fB[2]\fR: Size of area of memory
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Whether the fixed size Ustr should be limited
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: The initial length of the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This creates a new Ustr string, which is "fixed". This means the Ustr storage is managed outside of the ustr_* API, it is often used for stack allocated strings.
+.br
+  As you add data to the Ustr past the size allowed via. the fixed storge the Ustr will automatically be converted into an allocated Ustr. So if this is possible you should always call ustr_free(), as this does nothing if given a fixed size Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  For simplicity you probably want to use USTR_SC_INIT_AUTO() when possible.
+
+.ti -2
+.br
+\fBFunction: \fR USTR_SC_INIT_AUTO()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Area of memory to use as a Ustr string
+.br
+Type\fB[1]\fR: char[]
+
+.br
+Parameter\fB[2]\fR: Whether the fixed size Ustr should be limited
+.br
+Type\fB[2]\fR: int
+
+.br
+Parameter\fB[3]\fR: The initial length of the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This calls ustr_init_fixed() with sizeof() the area of memory (Parameter[1]) as the second argument.
+.sp
+\fBNote:\fR
+
+.br
+  This does mean that the first argument must be the correct size, as far as sizeof() is concerned, as in...
+
+.Vb 4
+ char buf_sz[1024];
+ Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
+
+.Ve
+ ...so passing pointers to memory from malloc() will probably just return NULL.
+
+
+.SH Creating allocated Ustr functions
+
+.ti -2
+.br
+\fBFunction: \fR ustr_init_alloc()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Pointer to area of memory to use as a Ustr string
+.br
+Type\fB[1]\fR: void *
+
+.br
+Parameter\fB[2]\fR: Size of area of memory
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Whether Ustr should store the size
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Number of bytes to use for references
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: Whether the Ustr should use exact allocations
+.br
+Type\fB[5]\fR: int
+
+.br
+Parameter\fB[6]\fR: Whether the Ustr should have the "enomem" flag set
+.br
+Type\fB[6]\fR: int
+
+.br
+Parameter\fB[7]\fR: The initial length of the Ustr
+.br
+Type\fB[7]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This creates a new Ustr string, you should have allocated the data via.  USTR_CONF_MALLOC() or bad things will happen if the Ustr string is ever free'd or reallocated.
 
 .ti -2
 .br
@@ -50,6 +642,7 @@ Type\fB[1]\fR: void
 
 .br
   It can be useful to ensure that the Ustr is in system memory, so that you can add things to it and check for errors with ustr_enomem().
+
 .ti -2
 .br
 \fBFunction: \fR ustr_dup_undef()
@@ -74,5 +667,149 @@ Type\fB[1]\fR: size_t
 .br
   Like most ustr functions if the specified length of the ustr is zero, the returned value will just be a duplicate of a read-only C-nil-string "".
 
+.SH Simple Ustr pool API
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_make()
+.br
+Returns: Ustr pool object
+.br
+Type: struct Ustr_pool *
+
+.br
+Parameter\fB[1]\fR: Nothing
+.br
+Type\fB[1]\fR: void
+
+.br
+\fBExplanation:\fR
+
+.br
+  This allocates a new pool, from the simple pool API.
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_free()
+.br
+Returns: Nothing
+.br
+Type: void
+
+.br
+Parameter\fB[1]\fR: Ustr pool object
+.br
+Type\fB[1]\fR: struct Ustr_pool *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This deallocates a new pool, from the simple pool API.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_clear()
+.br
+Returns: Nothing
+.br
+Type: void
+
+.br
+Parameter\fB[1]\fR: Ustr pool object
+.br
+Type\fB[1]\fR: struct Ustr_pool *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This allows all the data in the pool to be reused, it may also free some/all of the data in the pool, from the simple pool API.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_sys_malloc()
+.br
+Returns: Allocated data
+.br
+Type: void *
+
+.br
+Parameter\fB[1]\fR: Ustr pool object
+.br
+Type\fB[1]\fR: void *
+
+.br
+Parameter\fB[2]\fR: Length of new allocation
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This works like malloc() but allocates at least size (Parameter[2]) memory from the pool (Parameter[1]), or returns NULL on failure.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_sys_realloc()
+.br
+Returns: Re-allocated data
+.br
+Type: void *
+
+.br
+Parameter\fB[1]\fR: Ustr pool object
+.br
+Type\fB[1]\fR: void *
+
+.br
+Parameter\fB[2]\fR: Pointer to the old data
+.br
+Type\fB[2]\fR: void *
+
+.br
+Parameter\fB[3]\fR: Length of old allocation
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length of new allocation
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This works like realloc() but allocates at least size (Parameter[4]) memory from the pool (Parameter[1]) and copies the old data into it, or returns NULL on failure.
+.sp
+\fBNote:\fR
+
+.br
+  If the old data was the last thing allocated from the pool, it might be resized on success.
+.br
+  If the old data was larger than the new data, the pointer to the old data is returned.
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_sys_free()
+.br
+Returns: Nothing
+.br
+Type: void
+
+.br
+Parameter\fB[1]\fR: Ustr pool object
+.br
+Type\fB[1]\fR: void *
+
+.br
+Parameter\fB[2]\fR: Pointer to the data
+.br
+Type\fB[2]\fR: void *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function does nothing.
 .SH "SEE ALSO"
 .BR ustr_const (3)

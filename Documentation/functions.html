@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Ustr - 0.99.2 reference documentation -- functions</title>
+<title>Ustr - 0.99.3 reference documentation -- functions</title>
     <style type="text/css">
       A:visited { color: #ff4040; }
       A:hover { color: #20b2aa; }
@@ -25,19 +25,249 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.2 reference documentation -- functions (2)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.3 reference documentation -- functions (21)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
-<li><a href="#indx-Creating%20Ustr%20functions">Creating Ustr functions (2)</a></ul>
+<li><a href="#indx-Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions (10)</a>
+<li><a href="#indx-Creating%20fixed%20Ustr%20functions">Creating fixed Ustr functions (2)</a>
+<li><a href="#indx-Creating%20allocated%20Ustr%20functions">Creating allocated Ustr functions (3)</a>
+<li><a href="#indx-Simple%20Ustr%20pool%20API">Simple Ustr pool API (6)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
-<li><a id="indx-Creating%20Ustr%20functions" href="#Creating%20Ustr%20functions">Creating Ustr functions</a>
+<li><a id="indx-Creating%20read%2donly%20Ustr%20functions" href="#Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions</a>
 <ul>
+<li class="obj"><a href="#USTR%28%29">USTR()</a>
+<li class="obj"><a href="#USTRP%28%29">USTRP()</a>
+<li class="obj"><a href="#USTR1%28%29">USTR1()</a>
+<li class="obj"><a href="#USTR2%28%29">USTR2()</a>
+<li class="obj"><a href="#USTR4%28%29">USTR4()</a>
+<li class="obj"><a href="#USTR8%28%29">USTR8()</a>
+<li class="obj"><a href="#USTRP1%28%29">USTRP1()</a>
+<li class="obj"><a href="#USTRP2%28%29">USTRP2()</a>
+<li class="obj"><a href="#USTRP4%28%29">USTRP4()</a>
+<li class="obj"><a href="#USTRP8%28%29">USTRP8()</a>
+</ul><li><a id="indx-Creating%20fixed%20Ustr%20functions" href="#Creating%20fixed%20Ustr%20functions">Creating fixed Ustr functions</a>
+<ul>
+<li class="obj"><a href="#ustr_init_fixed%28%29">ustr_init_fixed()</a>
+<li class="obj"><a href="#USTR_SC_INIT_AUTO%28%29">USTR_SC_INIT_AUTO()</a>
+</ul><li><a id="indx-Creating%20allocated%20Ustr%20functions" href="#Creating%20allocated%20Ustr%20functions">Creating allocated Ustr functions</a>
+<ul>
+<li class="obj"><a href="#ustr_init_alloc%28%29">ustr_init_alloc()</a>
 <li class="obj"><a href="#ustr_dup_empty%28%29">ustr_dup_empty()</a>
 <li class="obj"><a href="#ustr_dup_undef%28%29">ustr_dup_undef()</a>
+</ul><li><a id="indx-Simple%20Ustr%20pool%20API" href="#Simple%20Ustr%20pool%20API">Simple Ustr pool API</a>
+<ul>
+<li class="obj"><a href="#ustr_pool_make%28%29">ustr_pool_make()</a>
+<li class="obj"><a href="#ustr_pool_free%28%29">ustr_pool_free()</a>
+<li class="obj"><a href="#ustr_pool_clear%28%29">ustr_pool_clear()</a>
+<li class="obj"><a href="#ustr_pool_sys_malloc%28%29">ustr_pool_sys_malloc()</a>
+<li class="obj"><a href="#ustr_pool_sys_realloc%28%29">ustr_pool_sys_realloc()</a>
+<li class="obj"><a href="#ustr_pool_sys_free%28%29">ustr_pool_sys_free()</a>
 </ul></ul>
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20Ustr%20functions">Creating Ustr functions</a></h2>
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions</a></h2>
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR%28%29">USTR()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to Ustr data<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro function is normally used with the empty string &quot;&quot;.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  There is basically just a simple cast behind the macro.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTRP%28%29">USTRP()</a>
+<br>Returns: <a href="design">Ustrp string</a><br>Type: struct Ustrp *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to Ustr data<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro function is normally used with the empty string &quot;&quot;.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  There is basically just a simple cast behind the macro.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR1%28%29">USTR1()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro function simplifies the creation of read-only <a href="design">Ustr string</a>'s. And
+ is normally used like...
+</p><pre>
+  USTR1(\x4, "abcd")
+
+</pre><p> ...it is worth pointing out that running with debugging turned on
+ (<a href="constants#USTR_CONF_USE_ASSERT">USTR_CONF_USE_ASSERT</a>) will complain if the length isn't encoded correctly, as
+ in...
+</p><pre>
+  USTR1(\x3, "abcd")
+
+</pre><p> ...here ustr_assert_valid() will fail, which is called before most functions do
+ anything in debugging mode. Note also that extra debugging
+ (USTR_CONF_USE_EOS_MARK) will still catch cases like...
+</p><pre>
+  USTR1(\x3, "abc\0d")
+
+</pre><p> ...at least using debugging is esp. important if you are putting UTF-8
+ characters into the strings.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Having <a href="functions#ustr_ro%28%29">ustr_ro()</a> return true means that the Ustr cannot be written to without
+ be reallocated into allocation space ... not that <a href="functions#ustr_add%28%29">ustr_add()</a> etc. will fail.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR2%28%29">USTR2()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works in the same way as USTR1() but takes two length bytes, so
+ the read-only string can be upto 65,535 (2**16 - 1) bytes in length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR4%28%29">USTR4()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 4th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 3rd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[4]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works in the same way as USTR1() but takes four length bytes, so
+ the read-only string can be upto 2**32 - 1 bytes in length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR8%28%29">USTR8()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 8th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 7th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Encoded 6th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 5st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[4]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Encoded 4th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Encoded 3rd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[6]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[7]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[7]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[8]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[8]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[9]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[9]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works in the same way as USTR1() but takes eight length bytes,
+ so the read-only string can be upto 2**64 - 1 bytes in length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTRP1%28%29">USTRP1()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like USTR1(), but returns a Ustrp instead.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTRP2%28%29">USTRP2()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like USTR4(), but returns a Ustrp instead.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTRP4%28%29">USTRP4()</a>
+<br>Returns: <a href="design">Ustrp string</a><br>Type: struct Ustrp *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 4th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 3rd byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[2]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[3]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[4]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like USTR2(), but returns a Ustrp instead.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTRP8%28%29">USTRP8()</a>
+<br>Returns: <a href="design">Ustrp string</a><br>Type: struct Ustrp *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 8th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[1]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 7th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[2]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Encoded 6th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[3]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 5st byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[4]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Encoded 4th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[5]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Encoded 3rd byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[6]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[7]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[7]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[8]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[8]</strong>: symbol
+</td></tr><tr><td>Parameter<strong>[9]</strong>: Data for <a href="design">Ustrp string</a><br>Type<strong>[9]</strong>: const char[]
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like USTR8(), but returns a Ustrp instead.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20fixed%20Ustr%20functions">Creating fixed Ustr functions</a></h2>
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_init_fixed%28%29">ustr_init_fixed()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to area of memory to use as a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Size of area of memory<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Whether the fixed size Ustr should be limited<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: The initial length of the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This creates a new <a href="design">Ustr string</a>, which is &quot;fixed&quot;. This means the Ustr storage
+ is managed outside of the ustr_* API, it is often used for stack allocated
+ strings.
+</p><p>  As you add data to the Ustr past the size allowed via. the fixed storge the
+ Ustr will automatically be converted into an allocated Ustr. So if this is
+ possible you should always call <a href="functions#ustr_free%28%29">ustr_free()</a>, as this does nothing if given a
+ fixed size Ustr.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  For simplicity you probably want to use <a href="functions#USTR_SC_INIT_AUTO%28%29">USTR_SC_INIT_AUTO()</a> when possible.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_SC_INIT_AUTO%28%29">USTR_SC_INIT_AUTO()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Area of memory to use as a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: char[]
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Whether the fixed size Ustr should be limited<br>Type<strong>[2]</strong>: int
+</td></tr><tr><td>Parameter<strong>[3]</strong>: The initial length of the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This calls <a href="functions#ustr_init_fixed%28%29">ustr_init_fixed()</a> with sizeof() the area of memory (Parameter[1])
+ as the second argument.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This does mean that the first argument must be the correct size, as far as
+ sizeof() is concerned, as in...
+</p><pre>
+ char buf_sz[1024];
+ Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
+
+</pre><p> ...so passing pointers to memory from malloc() will probably just return NULL.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20allocated%20Ustr%20functions">Creating allocated Ustr functions</a></h2>
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_init_alloc%28%29">ustr_init_alloc()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to area of memory to use as a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Size of area of memory<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Whether Ustr should store the size<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Number of bytes to use for references<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Whether the Ustr should use exact allocations<br>Type<strong>[5]</strong>: int
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Whether the Ustr should have the &quot;enomem&quot; flag set<br>Type<strong>[6]</strong>: int
+</td></tr><tr><td>Parameter<strong>[7]</strong>: The initial length of the Ustr<br>Type<strong>[7]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This creates a new <a href="design">Ustr string</a>, you should have allocated the data via. 
+ <a href="functions#USTR_CONF_MALLOC%28%29">USTR_CONF_MALLOC()</a> or bad things will happen if the <a href="design">Ustr string</a> is ever free'd
+ or reallocated.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_dup_empty%28%29">ustr_dup_empty()</a>
@@ -50,6 +280,7 @@
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  It can be useful to ensure that the Ustr is in system memory, so that you can
  add things to it and check for errors with <a href="functions#ustr_enomem%28%29">ustr_enomem()</a>.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_dup_undef%28%29">ustr_dup_undef()</a>
@@ -64,6 +295,67 @@
 </p><p>  Like most ustr functions if the specified length of the ustr is zero, the
  returned value will just be a duplicate of a read-only C-nil-string "".
 
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple Ustr pool API</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_make%28%29">ustr_pool_make()</a>
+<br>Returns: Ustr pool object<br>Type: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This allocates a new pool, from the simple pool API.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_free%28%29">ustr_pool_free()</a>
+<br>Returns: Nothing<br>Type: void
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This deallocates a new pool, from the simple pool API.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_clear%28%29">ustr_pool_clear()</a>
+<br>Returns: Nothing<br>Type: void
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This allows all the data in the pool to be reused, it may also free some/all
+ of the data in the pool, from the simple pool API.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_sys_malloc%28%29">ustr_pool_sys_malloc()</a>
+<br>Returns: Allocated data<br>Type: void *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new allocation<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This works like malloc() but allocates at least size (Parameter[2]) memory
+ from the pool (Parameter[1]), or returns NULL on failure.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_sys_realloc%28%29">ustr_pool_sys_realloc()</a>
+<br>Returns: Re-allocated data<br>Type: void *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the old data<br>Type<strong>[2]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of old allocation<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of new allocation<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This works like realloc() but allocates at least size (Parameter[4]) memory
+ from the pool (Parameter[1]) and copies the old data into it, or returns NULL
+ on failure.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  If the old data was the last thing allocated from the pool, it might be
+ resized on success.
+</p><p>  If the old data was larger than the new data, the pointer to the old data is
+ returned.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_sys_free%28%29">ustr_pool_sys_free()</a>
+<br>Returns: Nothing<br>Type: void
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the data<br>Type<strong>[2]</strong>: void *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function does nothing.
 
 
 </td></tr></table>

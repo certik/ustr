@@ -80,9 +80,12 @@ void *ustr_pool_sys_realloc(void *vp, void *old,
   struct Ustr_pool *p = vp;
   void *ret = 0;
 
-  USTR_ASSERT(p && old && p->ptr);
+  USTR_ASSERT(p && (old || !olen) && p->ptr);
+
+  if (!nlen)
+    ++nlen;
   
-  if (p->ptr == old) /* let the last allocated Ustrp grow/shrink */
+  if (old && (p->ptr == old)) /* let the last allocated Ustrp grow/shrink */
   {
     if ((ret = USTR_CONF_REALLOC(old, nlen)))
       p->ptr = ret;
