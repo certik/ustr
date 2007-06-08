@@ -129,8 +129,9 @@ int tst(void)
   ASSERT(ustr_set(&s1, line3));
   ASSERT(ustr_add(&s1, line4));
   ASSERT(ustr_add(&s1, line5));
+  ASSERT(ustr_del(&s1, 1)); /* remove \n */
   ASSERT( ustr_len(s1));  
-  ASSERT(ustr_io_putfile(&s1, fp));
+  ASSERT(ustr_io_putfileline(&s1, fp));
   ASSERT(!ustr_len(s1));  
   ASSERT((sp1 = ustrp_dup_empty(pool)));
   ASSERT(!ustrp_len(sp1));
@@ -175,11 +176,37 @@ int tst(void)
   ASSERT(ustr_io_getfile(&s1, fp));
   ASSERT(!ustr_len(s1));
 
+  rewind(fp);
+  
+  ASSERT(ustrp_io_getline(pool, &sp1, fp));
+  ASSERT_EQ(&sp1->s, line1);
+  ustrp_sc_del(pool, &sp1);
+  ASSERT(ustrp_io_getline(pool, &sp1, fp));
+  ASSERT_EQ(&sp1->s, line2);
+  ustrp_sc_del(pool, &sp1);
+  ASSERT(ustrp_io_getline(pool, &sp1, fp));
+  ASSERT_EQ(&sp1->s, line3);
+  ustrp_sc_del(pool, &sp1);
+  ASSERT(ustrp_io_getline(pool, &sp1, fp));
+  ASSERT_EQ(&sp1->s, line4);
+  ustrp_sc_del(pool, &sp1);
+  ASSERT(ustrp_io_getline(pool, &sp1, fp));
+  ASSERT_EQ(&sp1->s, line5);
+  ustrp_sc_del(pool, &sp1);
+  ASSERT(ustrp_io_getfile(pool, &sp1, fp));
+  ASSERT(ustrp_del(pool, &sp1, 1)); /* remove \n */
+  ASSERT_EQ(&sp1->s, line999);
+  ustrp_sc_del(pool, &sp1);
+  ASSERT(!ustrp_io_get(pool, &sp1, fp, 1));
+  ASSERT(!ustrp_len(sp1));
+  ASSERT(ustrp_io_getfile(pool, &sp1, fp));
+  ASSERT(!ustrp_len(sp1));
+  
+  fclose(fp);
+  
   remove(ustr_cstr(s2));
   ASSERT(!ustrp_io_getfilename(pool, &sp1, ustr_cstr(s2)));
 
-  rewind(fp);
-  
   ustrp_sc_free2(pool, &sp1, USTRP(""));
   ASSERT(!ustrp_len(sp1));
   ASSERT(ustrp_io_putfilename(pool, &sp1, ustr_cstr(s2), "wb"));
@@ -189,6 +216,8 @@ int tst(void)
   
   remove(ustr_cstr(s2));
 
+  ASSERT(!ustr_io_putfilename(&s2, "doesn't exist.txt", "rb"));
+  
   ustr_pool_free(pool);
 
   return (EXIT_SUCCESS);

@@ -678,6 +678,8 @@ size_t ustr__embed_val_get(const unsigned char *data, size_t len)
   
   switch (len)
   {
+    default:
+      USTR_ASSERT(!"Bad len");
     case 0: return (-1);
 
 #if USTR_CONF_HAVE_64bit_SIZE_MAX
@@ -695,9 +697,6 @@ size_t ustr__embed_val_get(const unsigned char *data, size_t len)
     case 1:
       ret |= (((size_t)data[0]) <<  0);
       break;
-      
-    default:
-      abort();
   }
 
   return (ret);

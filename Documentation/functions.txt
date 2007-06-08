@@ -341,6 +341,41 @@ Function: ustr_init_alloc()
  or reallocated.
 
 
+Function: ustr_dupx_empty()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Explanation:
+
+  This function creates an empty Ustr, owned by you, that is allocated
+ from system memory, or it returns NULL.
+  The size is the desired allocation size for the entire Ustr, including
+ overhead for metadata. This value will be rounded up, if it's too small, so
+ passing 1 as the size says you want a stored size but to allocate the smallest
+ amount of memory possible.
+
+ Note:
+
+  The reference byte count can only be one of the following values: 0, 1, 2 or
+ 4, or 8 (on environments with a 64bit size_t).
+  It can be useful to ensure that the Ustr is in system memory, so that you can
+ add things to it and check for errors with ustr_enomem().
+  If you chose to store the allocated size in the Ustr then the number of bytes
+ allocated for the reference count will be a minimum of 2.
+
+
 Function: ustr_dup_empty()
  Returns: Ustr string
  Type: struct Ustr *
@@ -350,13 +385,33 @@ Function: ustr_dup_empty()
 
  Explanation:
 
-  This function creates an empty Ustr, owned by you, that is allocated
- from system memory, or return NULL.
+  This function is the same as calling ustr_dupx_empty() with the current set
+ of default options.
 
- Note:
 
-  It can be useful to ensure that the Ustr is in system memory, so that you can
- add things to it and check for errors with ustr_enomem().
+Function: ustr_dupx_undef()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Length of new undefined data
+ Type[5]: size_t
+
+ Explanation:
+
+  This function works like you called ustr_dupx_empty() and then
+ ustr_add_undef().
 
 
 Function: ustr_dup_undef()
@@ -368,14 +423,26 @@ Function: ustr_dup_undef()
 
  Explanation:
 
-  This function creates a Ustr, owned by you, with the specified amount of data,
- allocated from system memory, that is writable. Or it'll return NULL on
- failure.
+  This function is the same as calling ustr_dupx_undef() with the current set
+ of default options.
 
- Note:
 
-  Like most ustr functions if the specified length of the ustr is zero, the
- returned value will just be a duplicate of a read-only C-nil-string "".
+Section: Adding data to Ustr functions
+Function: ustr_add_undef()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Length of new undefined data
+ Type[2]: size_t
+
+ Explanation:
+
+  The Ustr string is expanded (possibly reallocated) so that it can contain
+ length (Parameter[2]) extra data, if the length is not zero the Ustr will
+ be writable. Or it'll return USTR_FALSE (zero) on failure.
 
 
 Section: Simple Ustr pool API
@@ -428,7 +495,7 @@ Function: ustr_pool_sys_malloc()
  Explanation:
 
   This works like malloc() but allocates at least size (Parameter[2]) memory
- from the pool (Parameter[1]), or returns NULL on failure.
+ from the pool (Parameter[1]), or it returns NULL on failure.
 
 
 Function: ustr_pool_sys_realloc()
@@ -450,8 +517,8 @@ Function: ustr_pool_sys_realloc()
  Explanation:
 
   This works like realloc() but allocates at least size (Parameter[4]) memory
- from the pool (Parameter[1]) and copies the old data into it, or returns NULL
- on failure.
+ from the pool (Parameter[1]) and copies the old data into it, or it returns
+ NULL on failure.
 
  Note:
 

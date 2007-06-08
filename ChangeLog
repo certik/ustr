@@ -1,3 +1,11 @@
+2007-06-07  James Antill  <james@and.org>
+
+	* ustr-utf8-code.h (ustr__utf8_check): Fix major "porting" typo, tests
+	are good!
+
+	* ustr-utf8-internal.h (USTR__UTF8_WCHAR): Remove dep. on wchar.h for
+	wchar_t ... use our own "wchar" that is unsigned and 32 bits.
+
 2007-06-04  James Antill  <james@and.org>
 
 	* Documentation/functions.txt: Add some more functions.

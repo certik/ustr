@@ -205,14 +205,17 @@ int tst(void)
   ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x2, "zy")) == 5);
   ASSERT(ustrp_cspn_cstr_rev(sp1, "2x") == 13);
   ASSERT(ustrp_cspn_cstr_rev(sp1, "x2") == 13);
+  ASSERT(ustrp_cspn_chr_rev(sp1, '2') == 16);
   ASSERT(ustrp_cspn_cstr_rev(sp1, "2") == 16);
   ASSERT(ustrp_cspn_cstr_rev(sp1, "2a") == 16);
   ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x2, "2x")) == 13);
   ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x2, "x2")) == 13);
   ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x1, "2")) == 16);
   ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x2, "2a")) == 16);
+  ASSERT(ustrp_cspn_chr_fwd(sp1, 'a') == 18);
   ASSERT(ustrp_cspn_cstr_fwd(sp1, "a") == 18);
   ASSERT(ustrp_cspn_cstr_rev(sp1, "a") == 18);
+  ASSERT(ustrp_cspn_chr_rev(sp1, 'a') == 18);
   ASSERT(ustrp_cspn_fwd(sp1, USTRP1(\x1, "a")) == 18);
   ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x1, "a")) == 18);
   ASSERT(ustrp_cspn_cstr_fwd(sp1, "abc") == 18);
@@ -261,6 +264,24 @@ int tst(void)
   
   ustrp_sc_free2(pool, &sp1, USTRP(""));
   
+  ustr_pool_clear(pool);
+
+  ASSERT_PEQ(USTRP1(\x8, "1234567z"), ustrp_dup_cstr(pool, "1234567z"));
+  ASSERT(ustrp_assert_valid(sp1));
+  ASSERT((sp1 = ustrp_dupx_cstr(pool, 0, 0, USTR_TRUE, USTR_TRUE, "1234567z")));
+  ASSERT_PEQ(USTRP1(\x8, "1234567z"), sp1);
+  ASSERT(!ustrp_sized(sp1));
+  ASSERT(!ustrp_setf_share(sp1));
+  ASSERT( ustrp_setf_owner(sp1));
+  ASSERT(ustrp_exact(sp1));
+  ASSERT( ustrp_enomem(sp1));
+  ASSERT( ustrp_setf_enomem_clr(sp1));
+  ASSERT(!ustrp_enomem(sp1));
+  ASSERT( ustrp_setf_enomem_err(sp1));
+  ASSERT( ustrp_enomem(sp1));
+  ASSERT(ustrp_add_cstr(pool, &sp1, "abcd"));
+  ASSERT_PEQ(USTRP1(\xc, "1234567zabcd"), sp1);
+
   ustr_pool_free(pool);
   
   return (EXIT_SUCCESS);

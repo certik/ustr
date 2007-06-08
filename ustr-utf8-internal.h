@@ -6,22 +6,30 @@
 # error " You should have already included ustr-main.h, or just include ustr.h"
 #endif
 
-struct ustr__utf8_interval {
-  int first;
-  int last;
+struct ustr__utf8_interval
+{
+ unsigned int first;
+ unsigned int last;
 };
 
-#include <wchar.h>
+#if ! USTR_CONF_HAVE_STDINT_H
+# define USTR__UTF8_WCHAR unsigned long
+#else
+# ifndef USTR_B_H /* stdint.h already included */
+#  include <stdint.h> /* uint_*_t */
+# endif
+# define USTR__UTF8_WCHAR uint_least32_t
+#endif
 
 USTR_CONF_e_PROTO
-int ustr__utf8_bisearch(wchar_t ucs,
+int ustr__utf8_bisearch(USTR__UTF8_WCHAR ucs,
                         const struct ustr__utf8_interval *table, int max);
 USTR_CONF_e_PROTO
-ssize_t ustr__utf8_mk_wcwidth(wchar_t)
+ssize_t ustr__utf8_mk_wcwidth(USTR__UTF8_WCHAR)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 
 USTR_CONF_e_PROTO
-wchar_t ustr__utf8_check(const unsigned char **s1)
+USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **s1)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 

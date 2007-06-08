@@ -266,6 +266,12 @@ int tst(void)
   ASSERT( ustr_owner(tmp));
   ustr_free(tmp);
 
+  ustr_sc_free2(&s1, ustr_dupx_cstr(1, 1, 1, 1, "1234abcd"));
+  ASSERT_EQ(s1, USTR1(\x8, "1234abcd"));
+  ASSERT(ustr_enomem(s1));
+  ASSERT(ustr_sized(s1));
+  ASSERT(ustr_exact(s1));
+  
   return (EXIT_SUCCESS);
 }
 

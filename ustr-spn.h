@@ -132,28 +132,28 @@ size_t ustrp_spn_fwd(const struct Ustrp *, const struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_spn_fwd(const struct Ustrp *s1, const struct Ustrp *s2)
-{ return (ustrp_spn_chrs_fwd(s1, ustrp_cstr(s2), ustrp_len(s2))); }
+{ return (ustr_spn_fwd(&s1->s, &s2->s)); }
 USTR_CONF_EI_PROTO
 size_t ustrp_spn_rev(const struct Ustrp *, const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_spn_rev(const struct Ustrp *s1, const struct Ustrp *s2)
-{ return (ustrp_spn_chrs_rev(s1, ustrp_cstr(s2), ustrp_len(s2))); }
+{ return (ustr_spn_rev(&s1->s, &s2->s)); }
 USTR_CONF_EI_PROTO
 size_t ustrp_spn_cstr_fwd(const struct Ustrp *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_spn_cstr_fwd(const struct Ustrp *s1, const char *chrs)
-{ return (ustr_spn_chrs_fwd(&s1->s, chrs, strlen(chrs))); }
+{ return (ustrp_spn_chrs_fwd(s1, chrs, strlen(chrs))); }
 USTR_CONF_EI_PROTO
 size_t ustrp_spn_cstr_rev(const struct Ustrp *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_spn_cstr_rev(const struct Ustrp *s1, const char *chrs)
-{ return (ustr_spn_chrs_rev(&s1->s, chrs, strlen(chrs))); }
+{ return (ustrp_spn_chrs_rev(s1, chrs, strlen(chrs))); }
 
 USTR_CONF_EI_PROTO size_t ustrp_cspn_chr_fwd(const struct Ustrp *, char)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
@@ -185,27 +185,27 @@ size_t ustrp_cspn_fwd(const struct Ustrp *, const struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_cspn_fwd(const struct Ustrp *s1, const struct Ustrp *s2)
-{ return (ustrp_cspn_chrs_fwd(s1, ustrp_cstr(s2), ustrp_len(s2))); }
+{ return (ustr_cspn_fwd(&s1->s, &s2->s)); }
 USTR_CONF_EI_PROTO
 size_t ustrp_cspn_rev(const struct Ustrp *, const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_cspn_rev(const struct Ustrp *s1, const struct Ustrp *s2)
-{ return (ustrp_cspn_chrs_rev(s1, ustrp_cstr(s2), ustrp_len(s2))); }
+{ return (ustr_cspn_rev(&s1->s, &s2->s)); }
 USTR_CONF_EI_PROTO
 size_t ustrp_cspn_cstr_fwd(const struct Ustrp *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_cspn_cstr_fwd(const struct Ustrp *s1, const char *chrs)
-{ return (ustr_cspn_chrs_fwd(&s1->s, chrs, strlen(chrs))); }
+{ return (ustrp_cspn_chrs_fwd(s1, chrs, strlen(chrs))); }
 USTR_CONF_EI_PROTO
 size_t ustrp_cspn_cstr_rev(const struct Ustrp *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
 size_t ustrp_cspn_cstr_rev(const struct Ustrp *s1, const char *chrs)
-{ return (ustr_cspn_chrs_rev(&s1->s, chrs, strlen(chrs))); }
+{ return (ustrp_cspn_chrs_rev(s1, chrs, strlen(chrs))); }
 
 #endif
