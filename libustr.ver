@@ -302,4 +302,8 @@
   ustrp_utf8_valid;
   ustrp_utf8_len;
   ustrp_utf8_width;
+
+    local:
+  ustr__*;
+  ustrp__*;
 };

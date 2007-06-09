@@ -8,23 +8,35 @@
 
 USTR_CONF_EI_PROTO
 int ustr_utf8_valid(const struct Ustr *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
 size_t ustr_utf8_len(const struct Ustr *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
 ssize_t ustr_utf8_width(const struct Ustr *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+size_t ustr_utf8_chars2bytes(const struct Ustr *, size_t, size_t, size_t *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 
 USTR_CONF_EI_PROTO
 int ustrp_utf8_valid(const struct Ustrp *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 size_t ustrp_utf8_len(const struct Ustrp *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 ssize_t ustrp_utf8_width(const struct Ustrp *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustrp_utf8_chars2bytes(const struct Ustrp *, size_t, size_t, size_t *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
@@ -48,6 +60,10 @@ size_t ustrp_utf8_len(const struct Ustrp *s1)
 USTR_CONF_II_PROTO
 ssize_t ustrp_utf8_width(const struct Ustrp *s1)
 { return (ustr_utf8_width(&s1->s)); }
+USTR_CONF_II_PROTO
+size_t ustrp_utf8_chars2bytes(const struct Ustrp *s1, size_t pos, size_t len,
+                              size_t *ret_pos)
+{ return (ustr_utf8_chars2bytes(&s1->s, pos, len, ret_pos)); }
 
 
 #endif

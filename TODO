@@ -1,4 +1,9 @@
 
+ ustr_tolower / toupper / reverse ?
+
+ ustr_utf8_reverse
+ ustr_utf8_spn / cspn
+
  Other sections:
 
  ss_parse_* (numbers, with seperators ... ala. vstr)

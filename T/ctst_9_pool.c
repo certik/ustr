@@ -78,7 +78,8 @@ int tst(void)
   ASSERT(!ustrp_owner(spa));
   ASSERT( ustrp_ro(spa));
   ASSERT(ustrp_set(pool, &spa, spa));
-  ASSERT(!ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 8));
+  if (!USTR_DEBUG)
+    ASSERT(!ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 8));
   ASSERT(ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 4));
 
   ASSERT((spa = ustrp_dupx_empty(pool, 0, 1, 0, 0)));
@@ -102,9 +103,11 @@ int tst(void)
   ASSERT(ustrp_len(sp2) == 2);
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 1, 1));
   ASSERT(ustrp_len(sp1) == 1);
-  ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 3, 1));
+  if (!USTR_DEBUG)
+    ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 3, 1));
   ASSERT(ustrp_len(sp1) == 1);
-  ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 1, 3));
+  if (!USTR_DEBUG)
+    ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 1, 3));
   ASSERT(ustrp_len(sp1) == 1);
   ASSERT(ustrp_add_subustrp(pool, &sp1, sp2, 1, 2));
   ASSERT(ustrp_len(sp1) == 3);
@@ -126,19 +129,25 @@ int tst(void)
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 2, 1)));
   ASSERT(ustrp_len(sp1) == 1);
 
+  if (!USTR_DEBUG)
+  {
   ASSERT(!(sp1 = ustrp_dupx_subustrp(pool, 0, 0, 0, 0, sp2, 3, 1)));
   ASSERT(!(sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 3, 1)));
   ASSERT(!(sp1 = ustrp_dupx_subustrp(pool, 0, 0, 0, 0, sp2, 1, 3)));
   ASSERT(!(sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 1, 3)));
   ASSERT(!(sp1 = ustrp_dupx_subustrp(pool, 0, 0, 0, 0, sp2, 2, 2)));
   ASSERT(!(sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 2, 2)));
-
-  ustrp_sc_free2(pool, &sp1, USTRP(""));
+  }
   
+  ustrp_sc_free2(pool, &sp1, USTRP(""));
+
+  if (!USTR_DEBUG)
+  {
   ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 1, 3));
   ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 3, 1));
   ASSERT(!ustrp_add_subustrp(pool, &sp1, sp2, 2, 2));
-
+  }
+  
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT_PEQ(sp1, USTRP1(\x1, "2"));
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));

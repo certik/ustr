@@ -965,15 +965,14 @@ size_t ustr__valid_subustr(const struct Ustr *s1, size_t pos, size_t len)
   size_t clen = 0;
   
   USTR_ASSERT(ustr_assert_valid(s1));
-  USTR_ASSERT_RET(pos, USTR_FALSE);
+  USTR_ASSERT_RET(pos, 0);
   
   clen = ustr_len(s1);
-  if ((pos == 1) && (len == clen))
+  if (((pos == 1) || !len) && (len == clen))
     return (clen);
-  if (!pos || (clen < pos))
-    return (0);
-  if (clen < (len + --pos))
-    return (0);
+  
+  USTR_ASSERT_RET((clen >= pos), 0);
+  USTR_ASSERT_RET((clen >= (len + --pos)), 0);
 
   return (clen);
 }

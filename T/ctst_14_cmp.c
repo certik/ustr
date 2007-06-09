@@ -76,8 +76,10 @@ int tst(void)
   
   ASSERT(ustrp_cmp(sp3, sp1) ==  1);
   ASSERT(ustrp_cmp(sp1, sp3) == -1);
-  
+
+  if (!USTR_DEBUG)
   ASSERT(ustrp_cmp_subustrp(sp3, sp1, 1, 8) ==  1);
+  if (!USTR_DEBUG)
   ASSERT(ustrp_cmp_fast_subustrp(sp3, sp1, 1, 8) ==  1);
   ASSERT(ustrp_cmp_subustrp_eq(sp1, sp3, 1, 4));
   

@@ -1,3 +1,9 @@
+2007-06-08  James Antill  <james@and.org>
+
+	* ustr-utf8-code.h (ustr_utf8_chars2bytes): Added function.
+
+	* libustr.ver: Add local matches.
+
 2007-06-07  James Antill  <james@and.org>
 
 	* ustr-utf8-code.h (ustr__utf8_check): Fix major "porting" typo, tests
