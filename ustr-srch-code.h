@@ -4,14 +4,6 @@
 #error " Include ustr-srch.h before this file."
 #endif
 
-#ifndef USTR_CONF_HAVE_MEMMEM /* GNU extension */
-#ifdef __GLIBC__
-#define USTR_CONF_HAVE_MEMMEM 1
-#else
-#define USTR_CONF_HAVE_MEMMEM 0
-#endif
-#endif
-
 #ifndef USTR_CONF_HAVE_MEMRCHR /* GNU extension */
 #ifdef __GLIBC__
 #define USTR_CONF_HAVE_MEMRCHR 1
@@ -72,13 +64,9 @@ USTR_CONF_I_PROTO size_t ustr_srch_chr_rev(const struct Ustr *s1, char val)
 }
 #endif
 
-#if USTR_CONF_HAVE_MEMMEM /* GNU extension */
-# define USTR__SYS_MEMMEM memmem
-#else
-USTR_CONF_E_PROTO void *ustr__sys_memmem(const void*, size_t,const void*,size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_I_PROTO void *ustr__sys_memmem(const void *hs, size_t hslen,
-                                     const void *nd, size_t ndlen)
+#if ! USTR_CONF_HAVE_MEMMEM
+USTR_CONF_i_PROTO void *ustr__sys_memmem(const void *hs, size_t hslen,
+                                         const void *nd, size_t ndlen)
 {
   const char *ptr;
   const char *end;
@@ -96,7 +84,6 @@ USTR_CONF_I_PROTO void *ustr__sys_memmem(const void *hs, size_t hslen,
 
   return (0);
 }
-# define USTR__SYS_MEMMEM ustr__sys_memmem
 #endif
 
 USTR_CONF_I_PROTO size_t ustr_srch_buf_fwd(const struct Ustr *s1,

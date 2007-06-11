@@ -1,3 +1,17 @@
+2007-06-10  James Antill  <james@and.org>
+
+	* ustr-spn-code.h (ustr_utf8_spn_chrs_fwd)
+	(ustr_utf8_spn_chrs_rev, ustr_utf8_cspn_chrs_fwd)
+	(ustr_utf8_cspn_chrs_rev): Added functions. UTF-8 compatible spanning.
+
+	* ustr-srch-internal.h: Create internal file, so we can use 
+	USTR__SYS_MEM internally.
+
+	* ustr-utf8-code.h (ustr_utf8_len): Use hardwired code, for
+	code decrease / speed increase.
+
+	* ustr-srch-code.h (ustr__sys_memmem): Changed to an internal symbol.
+
 2007-06-08  James Antill  <james@and.org>
 
 	* ustr-utf8-code.h (ustr_utf8_chars2bytes): Added function.

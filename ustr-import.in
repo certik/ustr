@@ -403,7 +403,7 @@ fi
 if $set; then
   echo '#include "ustr-set.h"'  >> $outname
 fi
-if $fmt; then # FMT kind of deps. on SET
+if $fmt; then # FMT weak deps. on SET
   echo '#include "ustr-fmt.h"'  >> $outname
 fi
 
@@ -414,12 +414,11 @@ fi
 if $srch; then
   echo '#include "ustr-srch.h"' >> $outname
 fi
-if $spn; then # SPN deps. on SRCH
-  echo '#include "ustr-spn.h"'  >> $outname
-fi
-
 if $utf8; then
   echo '#include "ustr-utf8.h"' >> $outname
+fi
+if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
+  echo '#include "ustr-spn.h"'  >> $outname
 fi
 
 echo >> $outname

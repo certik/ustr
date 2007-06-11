@@ -22,15 +22,20 @@ struct ustr__utf8_interval
 #endif
 
 USTR_CONF_e_PROTO
-int ustr__utf8_bisearch(USTR__UTF8_WCHAR ucs,
-                        const struct ustr__utf8_interval *table, int max);
+int ustr__utf8_bisearch(USTR__UTF8_WCHAR,const struct ustr__utf8_interval*,int);
 USTR_CONF_e_PROTO
 ssize_t ustr__utf8_mk_wcwidth(USTR__UTF8_WCHAR)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 
 USTR_CONF_e_PROTO
-USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **s1)
+USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **)
     USTR__COMPILE_ATTR_NONNULL_A();
 
+USTR_CONF_e_PROTO
+const unsigned char *ustr__utf8_beg(const unsigned char *, size_t)
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_e_PROTO
+const unsigned char *ustr__utf8_nxt(const unsigned char *)
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 #endif

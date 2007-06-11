@@ -109,6 +109,7 @@ SRC_SRCS = ustr-b-code.h \
            ustr-set-internal.h \
            ustr-spn-code.h \
            ustr-srch-code.h \
+           ustr-srch-internal.h \
            ustr-utf8-code.h \
            ustr-utf8-internal.h \
            \

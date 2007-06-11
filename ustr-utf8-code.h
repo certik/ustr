@@ -281,8 +281,35 @@ USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **ps)
   return (0);
 }
 
+USTR_CONF_e_PROTO
+const unsigned char *ustr__utf8_beg(const unsigned char *ptr, size_t len)
+{ /* find the begining of the UTF-8 character, no checking */
+  while (len--)
+  {
+    if ((*ptr & 0xc0) != 0x80)
+      return (ptr);
+    --ptr;
+  }
+  
+  return (0);
+}
+
+USTR_CONF_e_PROTO
+const unsigned char *ustr__utf8_nxt(const unsigned char *ptr)
+{ /* find the begining of the next UTF-8 character, no checking.
+   *   -- assumes NIL termination. */
+  while (1)
+  {
+    if ((*ptr & 0xc0) != 0x80)
+      return (ptr);
+    ++ptr;
+  }
+  
+  return (0);
+}
+
 USTR_CONF_I_PROTO
-size_t ustr_utf8_len(const struct Ustr *s1)
+int ustr_utf8_valid(const struct Ustr *s1)
 {
   const unsigned char *beg  = (const unsigned char *)ustr_cstr(s1);
   const unsigned char *scan = beg;
@@ -296,13 +323,31 @@ size_t ustr_utf8_len(const struct Ustr *s1)
     
     ustr__utf8_check(&scan);
     if (!scan)
-      return (0);
+      return (USTR_FALSE);
     ++ret;
   }
   USTR_ASSERT(ustr_len(s1) >= (size_t)(scan - beg));
   
   if (ustr_len(s1) != (size_t)(scan - beg))
-    return (0); /* string contains a NIL byte */
+    return (USTR_FALSE); /* string contains a NIL byte */
+
+  return (USTR_TRUE);
+}
+
+USTR_CONF_I_PROTO
+size_t ustr_utf8_len(const struct Ustr *s1)
+{ /* this is a "fast" version */
+  const unsigned char *scan = (const unsigned char *)ustr_cstr(s1);
+  size_t ret = 0;
+
+  USTR_ASSERT(ustr_assert_valid(s1));
+
+  while (*scan)
+  {
+    if (!((*scan >= 0x80) && (*scan <= 0xBF)))
+      ++ret;
+    ++scan;
+  }
 
   return (ret);
 }
@@ -351,11 +396,8 @@ size_t ustr_utf8_chars2bytes(const struct Ustr *s1, size_t pos, size_t len,
     const unsigned char *prev = scan;
     
     USTR_ASSERT(ustr_len(s1) > (size_t)(scan - beg));
-    
-    ustr__utf8_check(&scan);
-    if (!scan)
-      return (0);
-    
+
+    scan = ustr__utf8_nxt(scan + 1);
     if (!--pos)
     {
       ret_beg = prev;
@@ -368,9 +410,7 @@ size_t ustr_utf8_chars2bytes(const struct Ustr *s1, size_t pos, size_t len,
   {
     USTR_ASSERT(ustr_len(s1) > (size_t)(scan - beg));
     
-    ustr__utf8_check(&scan);
-    if (!scan)
-      return (0);
+    scan = ustr__utf8_nxt(scan + 1);
   }
 
   USTR_ASSERT(ustr_len(s1) >= (size_t)(scan - beg));

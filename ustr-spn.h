@@ -67,6 +67,56 @@ size_t ustr_cspn_cstr_rev(const struct Ustr *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
+#ifdef USTR_UTF8_H
+USTR_CONF_E_PROTO
+size_t ustr_utf8_spn_chrs_fwd(const struct Ustr *, const char *, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+size_t ustr_utf8_spn_chrs_rev(const struct Ustr *, const char *, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustr_utf8_spn_fwd(const struct Ustr *, const struct Ustr *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustr_utf8_spn_rev(const struct Ustr *, const struct Ustr *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO size_t ustr_utf8_spn_cstr_fwd(const struct Ustr*,const char*)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO size_t ustr_utf8_spn_cstr_rev(const struct Ustr*,const char*)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+
+USTR_CONF_E_PROTO
+size_t ustr_utf8_cspn_chrs_fwd(const struct Ustr *, const char *, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+size_t ustr_utf8_cspn_chrs_rev(const struct Ustr *, const char *, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustr_utf8_cspn_fwd(const struct Ustr *, const struct Ustr *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustr_utf8_cspn_rev(const struct Ustr *, const struct Ustr *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustr_utf8_cspn_cstr_fwd(const struct Ustr *, const char *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+size_t ustr_utf8_cspn_cstr_rev(const struct Ustr *, const char *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+#endif
+
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-spn-code.h"
 #endif

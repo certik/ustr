@@ -48,6 +48,10 @@ size_t ustr_srch_subustr_rev(const struct Ustr *,
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+# include "ustr-srch-internal.h"
+#endif
+
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-srch-code.h"
 #endif
