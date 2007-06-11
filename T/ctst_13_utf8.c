@@ -101,8 +101,6 @@ int tst(void)
   ASSERT(ustr_len(s1)      == 10);
   ASSERT(ustr_utf8_len(s1) ==  4);
   ASSERT(ustr_utf8_width(s1) == 4);
-  printf("len=%zu\n", ustr_utf8_chars2bytes(s1, 1, 3, &c2b_pos));
-  printf("pos=%zu\n", c2b_pos);
   ASSERT(ustr_utf8_chars2bytes(s1, 1, 4, &c2b_pos) == 10);
   ASSERT(c2b_pos == 1);
   ASSERT(ustr_utf8_chars2bytes(s1, 1, 3, &c2b_pos) ==  6);
@@ -122,6 +120,14 @@ int tst(void)
   ASSERT(ustr_utf8_chars2bytes(s1, 3, 1, &c2b_pos) ==  3);
   ASSERT(c2b_pos == 4);
   ASSERT(ustr_utf8_chars2bytes(s1, 4, 1, &c2b_pos) ==  4);
+  ASSERT(c2b_pos == 7);
+
+  sp1 = USTRP1(\x2, "-\x90");
+  ASSERT(!ustrp_utf8_valid(sp1));
+  ASSERT(ustrp_len(sp1)      == 2);
+  ASSERT(ustrp_utf8_len(sp1) == 0);
+  ASSERT(ustrp_utf8_width(sp1) == 0);
+  ASSERT(ustrp_utf8_chars2bytes(sp1, 1, 2, &c2b_pos) ==  0);
   ASSERT(c2b_pos == 7);
 
   ustr_pool_free(pool);
