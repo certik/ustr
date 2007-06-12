@@ -10,7 +10,13 @@ int tst(void)
   Ustrp *sp3 = USTRP1(\x8, "abcd.xyz");
 
   ASSERT(!ustrp_cmp_cstr(sp1, "abcd"));
+  ASSERT( ustrp_cmp_cstr(sp2, "abcd") < 0);
+  ASSERT( ustrp_cmp_cstr(sp3, "abcd") > 0);
+  ASSERT( ustrp_cmp_cstr(sp1, ".xyz") > 0);
   ASSERT(!ustrp_cmp_cstr(sp2, ".xyz"));
+  ASSERT( ustrp_cmp_cstr(sp3, ".xyz") > 0);
+  ASSERT( ustrp_cmp_cstr(sp1, "abcd.xyz") < 0);
+  ASSERT( ustrp_cmp_cstr(sp2, "abcd.xyz") < 0);
   ASSERT(!ustrp_cmp_cstr(sp3, "abcd.xyz"));
   
   ASSERT(ustrp_cmp_buf_eq(sp1, "abcd.xyz", 4));
