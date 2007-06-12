@@ -1,5 +1,14 @@
 2007-06-11  James Antill  <james@and.org>
 
+	* ustr-main.h (ustr_xi__embed_val_get)
+	(ustr_xi__ref_get, ustr_xi__pow2): Rename functions.
+
+	* libustr.ver: Fixup ustr__ exported functions to be ustr_xi__
+
+	* libustr.ver: Added symbols to export map.
+
+	* scripts/list_functions_src.pl: Added io and utf8 files to list.
+
 	* ustr-utf8-code.h (ustr_utf8_chars2bytes): Deal with zero length input.
 
 	* ustr-spn.h (ustr_utf8_spn_cstr_fwd, ustr_utf8_spn_cstr_rev)

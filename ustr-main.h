@@ -374,8 +374,8 @@ struct Ustr_pool
 #define USTRP_SC_INIT_AUTO(x, y, z)             \
     ustrp_init_fixed(x, sizeof(x), y, z)
 
-#define USTR__REF_LEN(x)     ustr__pow2(ustr_sized(x), (x)->data[0] >> 2)
-#define USTR__LEN_LEN(x)     ustr__pow2(ustr_sized(x), (x)->data[0])
+#define USTR__REF_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0] >> 2)
+#define USTR__LEN_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0])
 
 /* ---------------- Ustr "pool" because ther'es no stdlib. ---------------- */
 USTR_CONF_E_PROTO struct Ustr_pool *ustr_pool_make(void)
@@ -388,7 +388,7 @@ USTR_CONF_E_PROTO void ustr_pool_clear(struct Ustr_pool *)
 /* This converts a number n to 2**(n-1) -- for small values > 0.
  * Where  n==0 means 0.
  * Oh and n==7 means 0 -- because, see above. */
-USTR_CONF_EI_PROTO size_t ustr__pow2(int, unsigned char)
+USTR_CONF_EI_PROTO size_t ustr_xi__pow2(int, unsigned char)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_CONST();
 
 /* Check if everything looks OK, should be used in debugging only. */
@@ -396,11 +396,11 @@ USTR_CONF_E_PROTO int ustr_assert_valid(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
-USTR_CONF_EI_PROTO size_t ustr__embed_val_get(const unsigned char *, size_t)
+USTR_CONF_EI_PROTO size_t ustr_xi__embed_val_get(const unsigned char *, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
-USTR_CONF_EI_PROTO size_t ustr__ref_get(const struct Ustr *)
+USTR_CONF_EI_PROTO size_t ustr_xi__ref_get(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -672,7 +672,7 @@ USTR_CONF_II_PROTO int ustr_limited(const struct Ustr *s1)
 { return (( s1->data[0] & USTR__BITS_RWLIM) == USTR__BITS_LIMITED); }
 
 USTR_CONF_II_PROTO
-size_t ustr__embed_val_get(const unsigned char *data, size_t len)
+size_t ustr_xi__embed_val_get(const unsigned char *data, size_t len)
 {
   size_t ret = 0;
   
@@ -702,7 +702,7 @@ size_t ustr__embed_val_get(const unsigned char *data, size_t len)
   return (ret);
 }
 
-USTR_CONF_II_PROTO size_t ustr__pow2(int use_big, unsigned char len)
+USTR_CONF_II_PROTO size_t ustr_xi__pow2(int use_big, unsigned char len)
 {
   static const unsigned char map_big_pow2[4] = {2, 4, 8, 16};
   static const unsigned char map_pow2[4] = {0, 1, 2,  4};
@@ -712,17 +712,17 @@ USTR_CONF_II_PROTO size_t ustr__pow2(int use_big, unsigned char len)
   
   return (map_pow2[len & 0x03]);
 }
-USTR_CONF_II_PROTO size_t ustr__ref_get(const struct Ustr *s1)
-{ return (ustr__embed_val_get(s1->data + 1, USTR__REF_LEN(s1))); }
+USTR_CONF_II_PROTO size_t ustr_xi__ref_get(const struct Ustr *s1)
+{ return (ustr_xi__embed_val_get(s1->data + 1, USTR__REF_LEN(s1))); }
 USTR_CONF_II_PROTO int ustr_shared(const struct Ustr *s1)
-{ return (ustr_ro(s1) || (ustr_alloc(s1) && !ustr__ref_get(s1))); }
+{ return (ustr_ro(s1) || (ustr_alloc(s1) && !ustr_xi__ref_get(s1))); }
 
 USTR_CONF_II_PROTO size_t ustr_len(const struct Ustr *s1)
 { /* NOTE: can't call ustr_assert_valid() here due to recursion */
   if (!s1->data[0]) return (0);
   
-  return (ustr__embed_val_get(s1->data + 1 + USTR__REF_LEN(s1),
-                              USTR__LEN_LEN(s1)));
+  return (ustr_xi__embed_val_get(s1->data + 1 + USTR__REF_LEN(s1),
+                                 USTR__LEN_LEN(s1)));
 }
 USTR_CONF_II_PROTO const char *ustr_cstr(const struct Ustr *s1)
 { /* NOTE: can't call ustr_assert_valid() here due to recursion,

@@ -1,9 +1,9 @@
  USTR_1.0 {
     global:
 
-  ustr__pow2;
-  ustr__embed_val_get;
-  ustr__ref_get;
+  ustr_xi__pow2;
+  ustr_xi__embed_val_get;
+  ustr_xi__ref_get;
 
   ustr_pool_sys_malloc;
   ustr_pool_sys_realloc;
@@ -197,29 +197,41 @@
 
   ustr_cmp;
   ustr_cmp_buf;
+  ustr_cmp_buf_eq;
   ustr_cmp_cstr;
+  ustr_cmp_cstr_eq;
+  ustr_cmp_eq;
   ustr_cmp_fast;
   ustr_cmp_fast_buf;
   ustr_cmp_fast_cstr;
   ustr_cmp_fast_subustr;
-  ustr_cmp_eq;
-  ustr_cmp_buf_eq;
-  ustr_cmp_cstr_eq;
+  ustr_cmp_prefix_buf_eq;
+  ustr_cmp_prefix_cstr_eq;
+  ustr_cmp_prefix_eq;
   ustr_cmp_subustr;
   ustr_cmp_subustr_eq;
+  ustr_cmp_suffix_buf_eq;
+  ustr_cmp_suffix_cstr_eq;
+  ustr_cmp_suffix_eq;
 
   ustrp_cmp;
   ustrp_cmp_buf;
+  ustrp_cmp_buf_eq;
   ustrp_cmp_cstr;
+  ustrp_cmp_cstr_eq;
+  ustrp_cmp_eq;
   ustrp_cmp_fast;
   ustrp_cmp_fast_buf;
   ustrp_cmp_fast_cstr;
   ustrp_cmp_fast_subustrp;
-  ustrp_cmp_eq;
-  ustrp_cmp_buf_eq;
-  ustrp_cmp_cstr_eq;
+  ustrp_cmp_prefix_buf_eq;
+  ustrp_cmp_prefix_cstr_eq;
+  ustrp_cmp_prefix_eq;
   ustrp_cmp_subustrp;
   ustrp_cmp_subustrp_eq;
+  ustrp_cmp_suffix_buf_eq;
+  ustrp_cmp_suffix_cstr_eq;
+  ustrp_cmp_suffix_eq;
 
   ustr_srch_buf_fwd;
   ustr_srch_buf_rev;
@@ -295,13 +307,65 @@
   ustrp_parse_b_uint32;
   ustrp_parse_b_uint64;
 
-  ustr_utf8_valid;
+  ustr_io_get;
+  ustr_io_getfile;
+  ustr_io_getfilename;
+  ustr_io_getline;
+  ustr_io_put;
+  ustr_io_putfile;
+  ustr_io_putfileline;
+  ustr_io_putfilename;
+  ustr_io_putline;
+
+  ustrp_io_get;
+  ustrp_io_getfile;
+  ustrp_io_getfilename;
+  ustrp_io_getline;
+  ustrp_io_put;
+  ustrp_io_putfile;
+  ustrp_io_putfileline;
+  ustrp_io_putfilename;
+  ustrp_io_putline;
+
+  ustr_utf8_bytes2chars;
+  ustr_utf8_chars2bytes;
   ustr_utf8_len;
+  ustr_utf8_valid;
   ustr_utf8_width;
 
-  ustrp_utf8_valid;
+  ustrp_utf8_bytes2chars;
+  ustrp_utf8_chars2bytes;
   ustrp_utf8_len;
+  ustrp_utf8_valid;
   ustrp_utf8_width;
+
+  ustr_utf8_spn_chrs_fwd;
+  ustr_utf8_spn_chrs_rev;
+  ustr_utf8_spn_cstr_fwd;
+  ustr_utf8_spn_cstr_rev;
+  ustr_utf8_spn_fwd;
+  ustr_utf8_spn_rev;
+
+  ustrp_utf8_spn_chrs_fwd;
+  ustrp_utf8_spn_chrs_rev;
+  ustrp_utf8_spn_cstr_fwd;
+  ustrp_utf8_spn_cstr_rev;
+  ustrp_utf8_spn_fwd;
+  ustrp_utf8_spn_rev;
+
+  ustr_utf8_cspn_chrs_fwd;
+  ustr_utf8_cspn_chrs_rev;
+  ustr_utf8_cspn_cstr_fwd;
+  ustr_utf8_cspn_cstr_rev;
+  ustr_utf8_cspn_fwd;
+  ustr_utf8_cspn_rev;
+
+  ustrp_utf8_cspn_chrs_fwd;
+  ustrp_utf8_cspn_chrs_rev;
+  ustrp_utf8_cspn_cstr_fwd;
+  ustrp_utf8_cspn_cstr_rev;
+  ustrp_utf8_cspn_fwd;
+  ustrp_utf8_cspn_rev;
 
     local:
   ustr__*;

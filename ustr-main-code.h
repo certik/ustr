@@ -119,7 +119,7 @@ USTR_CONF_i_PROTO size_t ustr__sz_get(const struct Ustr *s1)
   
   lenn = USTR__LEN_LEN(s1);
   
-  return (ustr__embed_val_get(s1->data + 1 + USTR__REF_LEN(s1) + lenn, lenn));
+  return (ustr_xi__embed_val_get(s1->data + 1 + USTR__REF_LEN(s1) + lenn,lenn));
 }
 
 USTR_CONF_i_PROTO size_t ustr__nb(size_t num)
@@ -353,9 +353,9 @@ USTR_CONF_i_PROTO void ustr__sz_set(struct Ustr *s1, size_t sz)
 #define USTR__REF_T_ADD(s1, num, lim)              \
     case num:                                      \
     {                                              \
-      ref = ustr__ref_get(s1);                     \
-      if (ref == 0)   return (USTR_TRUE);         \
-      if (ref == lim) return (USTR_FALSE);        \
+      ref = ustr_xi__ref_get(s1);                  \
+      if (ref == 0)   return (USTR_TRUE);          \
+      if (ref == lim) return (USTR_FALSE);         \
       ustr__ref_set(s1, ref + 1);                  \
     }                                              \
     return (USTR_TRUE)
@@ -398,7 +398,7 @@ USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
   {
     case 8: case 4: case 2: case 1:
     {
-      size_t ref = ustr__ref_get(s1);
+      size_t ref = ustr_xi__ref_get(s1);
       
       if (ref == 0)
         return (-1);
