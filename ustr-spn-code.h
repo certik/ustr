@@ -12,100 +12,104 @@ USTR_CONF_I_PROTO size_t ustr_spn_chr_fwd(const struct Ustr *s1, char chr)
 {
   const char *ptr = 0;
   size_t len = 0;
+  size_t clen = 0;
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   ptr = ustr_cstr(s1);
-  len = ustr_len(s1);
+  len = clen = ustr_len(s1);
   while (len)
   {
     if (*ptr != chr)
-      return (ustr_len(s1) - len);
+      break;
 
     ++ptr;
     --len;
   }
 
-  return (ustr_len(s1));  
+  return (clen - len);
 }
 
 USTR_CONF_I_PROTO size_t ustr_spn_chr_rev(const struct Ustr *s1, char chr)
 {
   const char *ptr = 0;
   size_t len = 0;
+  size_t clen = 0;
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   ptr = ustr_cstr(s1);
-  len = ustr_len(s1);
+  len = clen = ustr_len(s1);
   ptr += len;
   while (len)
   {
     --ptr;
     
     if (*ptr != chr)
-      return (ustr_len(s1) - len);
+      break;
 
     --len;
   }
 
-  return (ustr_len(s1));
+  return (clen - len);
 }
 
 USTR_CONF_I_PROTO
-size_t ustr_spn_chrs_fwd(const struct Ustr *s1, const char *chrs, size_t clen)
+size_t ustr_spn_chrs_fwd(const struct Ustr *s1, const char *chrs, size_t slen)
 {
   const char *ptr = 0;
   size_t len = 0;
+  size_t clen = 0;
   
   USTR_ASSERT(chrs);
 
-  if (clen == 1)
+  if (slen == 1)
     return (ustr_spn_chr_fwd(s1, *chrs));
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   ptr = ustr_cstr(s1);
-  len = ustr_len(s1);
+  len = clen = ustr_len(s1);
   while (len)
   {
-    if (!memchr(chrs, *ptr, clen))
-      return (ustr_len(s1) - len);
+    if (!memchr(chrs, *ptr, slen))
+      break;
 
     ++ptr;
     --len;
   }
 
-  return (ustr_len(s1));  
+  return (clen - len);
 }
 
 USTR_CONF_I_PROTO
-size_t ustr_spn_chrs_rev(const struct Ustr *s1, const char *chrs, size_t clen)
+size_t ustr_spn_chrs_rev(const struct Ustr *s1, const char *chrs, size_t slen)
 {
   const char *ptr = 0;
   size_t len = 0;
+  size_t clen = 0;
   
   USTR_ASSERT(chrs);
 
-  if (clen == 1)
+  if (slen == 1)
     return (ustr_spn_chr_rev(s1, *chrs));
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   ptr = ustr_cstr(s1);
-  len = ustr_len(s1);
+  len = clen = ustr_len(s1);
   ptr += len;
   while (len)
   {
     --ptr;
     
-    if (!memchr(chrs, *ptr, clen))
-      return (ustr_len(s1) - len);
+    if (!memchr(chrs, *ptr, slen))
+      break;
 
     --len;
   }
 
-  return (ustr_len(s1));
+  return (clen - len);
 }
 
 USTR_CONF_I_PROTO size_t ustr_cspn_chr_fwd(const struct Ustr *s1, char chr)
@@ -129,64 +133,66 @@ USTR_CONF_I_PROTO size_t ustr_cspn_chr_rev(const struct Ustr *s1, char chr)
 }
 
 USTR_CONF_I_PROTO
-size_t ustr_cspn_chrs_fwd(const struct Ustr *s1, const char *chrs, size_t clen)
+size_t ustr_cspn_chrs_fwd(const struct Ustr *s1, const char *chrs, size_t slen)
 {
   const char *ptr = 0;
   size_t len = 0;
+  size_t clen = 0;
   
   USTR_ASSERT(chrs);
 
-  if (clen == 1)
+  if (slen == 1)
     return (ustr_cspn_chr_fwd(s1, *chrs));
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   ptr = ustr_cstr(s1);
-  len = ustr_len(s1);
+  len = clen = ustr_len(s1);
   while (len)
   {
-    if (memchr(chrs, *ptr, clen))
-      return (ustr_len(s1) - len);
+    if (memchr(chrs, *ptr, slen))
+      break;
 
     ++ptr;
     --len;
   }
 
-  return (ustr_len(s1));
+  return (clen - len);
 }
 
 USTR_CONF_I_PROTO
-size_t ustr_cspn_chrs_rev(const struct Ustr *s1, const char *chrs, size_t clen)
+size_t ustr_cspn_chrs_rev(const struct Ustr *s1, const char *chrs, size_t slen)
 {
   const char *ptr = 0;
   size_t len = 0;
+  size_t clen = 0;
   
   USTR_ASSERT(chrs);
 
-  if (clen == 1)
+  if (slen == 1)
     return (ustr_cspn_chr_rev(s1, *chrs));
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   ptr = ustr_cstr(s1);
-  len = ustr_len(s1);
+  len = clen = ustr_len(s1);
   ptr += len;
   while (len)
   {
     --ptr;
     
-    if (memchr(chrs, *ptr, clen))
-      return (ustr_len(s1) - len);
+    if (memchr(chrs, *ptr, slen))
+      break;
 
     --len;
   }
 
-  return (ustr_len(s1));
+  return (clen - len);
 }
 
 #ifdef USTR_UTF8_H
 USTR_CONF_I_PROTO size_t ustr_utf8_spn_chrs_fwd(const struct Ustr *s1,
-                                                const char *pchrs, size_t clen)
+                                                const char *pchrs, size_t slen)
 {
   const unsigned char *chrs = (const unsigned char *)pchrs;
   const unsigned char *ptr = 0;
@@ -200,8 +206,8 @@ USTR_CONF_I_PROTO size_t ustr_utf8_spn_chrs_fwd(const struct Ustr *s1,
   {
     const unsigned char *bptr = ptr;
 
-    ptr = ustr__utf8_nxt(ptr + 1);
-    if (!USTR__SYS_MEMMEM(chrs, clen, bptr, ptr - bptr))
+    ptr = ustr__utf8_next(ptr);
+    if (!ptr || !USTR__SYS_MEMMEM(chrs, slen, bptr, ptr - bptr))
       break;
     
     ++ret;
@@ -211,7 +217,7 @@ USTR_CONF_I_PROTO size_t ustr_utf8_spn_chrs_fwd(const struct Ustr *s1,
 }
 
 USTR_CONF_I_PROTO size_t ustr_utf8_spn_chrs_rev(const struct Ustr *s1,
-                                                const char *chrs, size_t clen)
+                                                const char *pchrs, size_t slen)
 {
   const unsigned char *chrs = (const unsigned char *)pchrs;
   const unsigned char *ptr = 0;
@@ -226,9 +232,9 @@ USTR_CONF_I_PROTO size_t ustr_utf8_spn_chrs_rev(const struct Ustr *s1,
   while (len)
   {
     const unsigned char *eptr = ptr + len;
-    const unsigned char *bptr = ustr__utf8_beg(eptr - 1, len);
+    const unsigned char *bptr = ustr__utf8_prev(eptr, len);
 
-    if (!USTR__SYS_MEMMEM(chrs, clen, bptr, eptr - bptr))
+    if (!bptr || !USTR__SYS_MEMMEM(chrs, slen, bptr, eptr - bptr))
       break;
     
     ++ret;
@@ -239,7 +245,7 @@ USTR_CONF_I_PROTO size_t ustr_utf8_spn_chrs_rev(const struct Ustr *s1,
 }
 
 USTR_CONF_I_PROTO size_t ustr_utf8_cspn_chrs_fwd(const struct Ustr *s1,
-                                                 const char *chrs, size_t clen)
+                                                 const char *pchrs, size_t slen)
 {
   const unsigned char *chrs = (const unsigned char *)pchrs;
   const unsigned char *ptr = 0;
@@ -253,8 +259,8 @@ USTR_CONF_I_PROTO size_t ustr_utf8_cspn_chrs_fwd(const struct Ustr *s1,
   {
     const unsigned char *bptr = ptr;
 
-    ptr = ustr__utf8_nxt(ptr + 1);
-    if (USTR__SYS_MEMMEM(chrs, clen, bptr, ptr - bptr))
+    ptr = ustr__utf8_next(ptr);
+    if (USTR__SYS_MEMMEM(chrs, slen, bptr, ptr - bptr))
       break;
     
     ++ret;
@@ -264,7 +270,7 @@ USTR_CONF_I_PROTO size_t ustr_utf8_cspn_chrs_fwd(const struct Ustr *s1,
 }
 
 USTR_CONF_I_PROTO size_t ustr_utf8_cspn_chrs_rev(const struct Ustr *s1,
-                                                 const char *chrs, size_t clen)
+                                                 const char *pchrs, size_t slen)
 {
   const unsigned char *chrs = (const unsigned char *)pchrs;
   const unsigned char *ptr = 0;
@@ -279,9 +285,9 @@ USTR_CONF_I_PROTO size_t ustr_utf8_cspn_chrs_rev(const struct Ustr *s1,
   while (len)
   {
     const unsigned char *eptr = ptr + len;
-    const unsigned char *bptr = ustr__utf8_beg(eptr - 1, len);
+    const unsigned char *bptr = ustr__utf8_prev(eptr, len);
 
-    if (USTR__SYS_MEMMEM(chrs, clen, bptr, eptr - bptr))
+    if (!bptr || USTR__SYS_MEMMEM(chrs, slen, bptr, eptr - bptr))
       break;
     
     ++ret;

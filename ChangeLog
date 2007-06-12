@@ -1,3 +1,30 @@
+2007-06-11  James Antill  <james@and.org>
+
+	* ustr-utf8-code.h (ustr_utf8_chars2bytes): Deal with zero length input.
+
+	* ustr-spn.h (ustr_utf8_spn_cstr_fwd, ustr_utf8_spn_cstr_rev)
+	(ustr_utf8_cspn_cstr_fwd, ustr_utf8_cspn_cstr_rev)
+	(ustr_utf8_spn_fwd, ustr_utf8_spn_rev, ustr_utf8_cspn_fwd)
+	(ustr_utf8_cspn_rev): Added functions.
+
+	* ustr-spn-opt-code.c: Add utf8 externs.
+
+	* ustr-spn-dbg-code.c: Add utf8 externs.
+
+	* ustr-debug.h: Move utf8 in front of spn, as ustr-import does.
+
+	* ustr.h: Move utf8 in front of spn, as ustr-import does.
+
+	* ustr-spn-code.h (ustr_utf8_spn_chrs_fwd)
+	(ustr_utf8_spn_chrs_rev, ustr_utf8_cspn_chrs_fwd)
+	(ustr_utf8_cspn_chrs_rev): Fixes for bad utf-8.
+
+	* ustr-utf8-code.h (ustr_utf8_len): Use the same logic as
+	ustr__utf8_prev / next. Add pointer to Wikipedia documentation on utf8.
+	(ustr__utf8_next): Rename from _nxt.
+	(ustr__utf8_prev): Rename from _beg.
+	(ustr_utf8_bytes2chars): Added function.
+
 2007-06-10  James Antill  <james@and.org>
 
 	* ustr-spn-code.h (ustr_utf8_spn_chrs_fwd)

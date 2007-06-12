@@ -97,41 +97,43 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-srch.h \
            ustr-utf8.h
 
-SRC_SRCS = ustr-b-code.h \
-           ustr-cmp-code.h \
-           ustr-cntl-code.h \
-           ustr-fmt-code.h \
-           ustr-io-code.h \
-           ustr-io-internal.h \
-           ustr-main-code.h \
-           ustr-main-internal.h \
-           ustr-set-code.h \
-           ustr-set-internal.h \
-           ustr-spn-code.h \
-           ustr-srch-code.h \
-           ustr-srch-internal.h \
-           ustr-utf8-code.h \
-           ustr-utf8-internal.h \
-           \
-           ustr-b-dbg-code.c \
-           ustr-cmp-dbg-code.c \
-           ustr-set-dbg-code.c \
-           ustr-fmt-dbg-code.c \
-           ustr-io-dbg-code.c \
-           ustr-main-dbg-code.c \
-           ustr-spn-dbg-code.c \
-           ustr-srch-dbg-code.c \
-           ustr-utf8-dbg-code.c \
-           \
-           ustr-b-opt-code.c \
-           ustr-cmp-opt-code.c \
-           ustr-fmt-opt-code.c \
-           ustr-io-opt-code.c \
-           ustr-main-opt-code.c \
-           ustr-set-opt-code.c \
-           ustr-spn-opt-code.c \
-           ustr-srch-opt-code.c \
-           ustr-utf8-opt-code.c
+SRC_SRCS_H = ustr-b-code.h \
+             ustr-cmp-code.h \
+             ustr-cntl-code.h \
+             ustr-fmt-code.h \
+             ustr-io-code.h \
+             ustr-io-internal.h \
+             ustr-main-code.h \
+             ustr-main-internal.h \
+             ustr-set-code.h \
+             ustr-set-internal.h \
+             ustr-spn-code.h \
+             ustr-srch-code.h \
+             ustr-srch-internal.h \
+             ustr-utf8-code.h \
+             ustr-utf8-internal.h
+
+SRC_SRCS_C = ustr-b-dbg-code.c \
+             ustr-cmp-dbg-code.c \
+             ustr-set-dbg-code.c \
+             ustr-fmt-dbg-code.c \
+             ustr-io-dbg-code.c \
+             ustr-main-dbg-code.c \
+             ustr-spn-dbg-code.c \
+             ustr-srch-dbg-code.c \
+             ustr-utf8-dbg-code.c \
+             \
+             ustr-b-opt-code.c \
+             ustr-cmp-opt-code.c \
+             ustr-fmt-opt-code.c \
+             ustr-io-opt-code.c \
+             ustr-main-opt-code.c \
+             ustr-set-opt-code.c \
+             ustr-spn-opt-code.c \
+             ustr-srch-opt-code.c \
+             ustr-utf8-opt-code.c
+
+SRC_SRCS = $(SRC_SRCS_C) $(SRC_SRCS_H)
 XSRC_SRCS = .gdbinit
 
 DBG_LIB_SHAREDEV    = libustr-debug.so
@@ -147,7 +149,7 @@ OPT_LIB_STATIC      = libustr.a
 LIB_SHARED = $(DBG_LIB_SHARED) $(OPT_LIB_SHARED)
 LIB_STATIC = $(DBG_LIB_STATIC) $(OPT_LIB_STATIC)
 
-DEPS_NONC_ALL  = $(SRC_HDRS) $(SRC_SRCS)
+DEPS_NONC_ALL  = $(SRC_HDRS) $(SRC_SRCS_H)
 DEPS_C_ALL     = $(SRC_HDRS)
 OBJS_C_DBG_ALL = $(DBG_LIB_STATIC)
 OBJS_C_OPT_ALL = $(OPT_LIB_STATIC)

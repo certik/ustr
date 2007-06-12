@@ -21,6 +21,9 @@ ssize_t ustr_utf8_width(const struct Ustr *)
 USTR_CONF_E_PROTO
 size_t ustr_utf8_chars2bytes(const struct Ustr *, size_t, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+USTR_CONF_E_PROTO
+size_t ustr_utf8_bytes2chars(const struct Ustr *, size_t, size_t, size_t *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 
 USTR_CONF_E_PROTO
 int ustrp_utf8_valid(const struct Ustrp *)
@@ -36,6 +39,9 @@ ssize_t ustrp_utf8_width(const struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 size_t ustrp_utf8_chars2bytes(const struct Ustrp *, size_t, size_t, size_t *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+USTR_CONF_EI_PROTO
+size_t ustrp_utf8_bytes2chars(const struct Ustrp *, size_t, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 
 
@@ -60,6 +66,10 @@ USTR_CONF_II_PROTO
 size_t ustrp_utf8_chars2bytes(const struct Ustrp *s1, size_t pos, size_t len,
                               size_t *ret_pos)
 { return (ustr_utf8_chars2bytes(&s1->s, pos, len, ret_pos)); }
+USTR_CONF_II_PROTO
+size_t ustrp_utf8_bytes2chars(const struct Ustrp *s1, size_t pos, size_t len,
+                              size_t *ret_pos)
+{ return (ustr_utf8_bytes2chars(&s1->s, pos, len, ret_pos)); }
 
 
 #endif

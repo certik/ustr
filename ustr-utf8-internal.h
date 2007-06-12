@@ -32,10 +32,10 @@ USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_e_PROTO
-const unsigned char *ustr__utf8_beg(const unsigned char *, size_t)
+const unsigned char *ustr__utf8_prev(const unsigned char *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO
-const unsigned char *ustr__utf8_nxt(const unsigned char *)
+const unsigned char *ustr__utf8_next(const unsigned char *)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 #endif

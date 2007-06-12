@@ -281,31 +281,30 @@ USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **ps)
   return (0);
 }
 
+/* See: http://en.wikipedia.org/wiki/UTF-8#Description */
 USTR_CONF_e_PROTO
-const unsigned char *ustr__utf8_beg(const unsigned char *ptr, size_t len)
-{ /* find the begining of the UTF-8 character, no checking */
+const unsigned char *ustr__utf8_prev(const unsigned char *ptr, size_t len)
+{ /* find the begining of the previous UTF-8 character, no checking */
   while (len--)
   {
-    if ((*ptr & 0xc0) != 0x80)
+    if ((*--ptr & 0xc0) != 0x80)
       return (ptr);
-    --ptr;
   }
   
   return (0);
 }
 
 USTR_CONF_e_PROTO
-const unsigned char *ustr__utf8_nxt(const unsigned char *ptr)
+const unsigned char *ustr__utf8_next(const unsigned char *ptr)
 { /* find the begining of the next UTF-8 character, no checking.
-   *   -- assumes NIL termination. */
+   *   -- assumes NIL termination, so no length. */
   while (1)
   {
-    if ((*ptr & 0xc0) != 0x80)
-      return (ptr);
-    ++ptr;
+    if ((*++ptr & 0xc0) != 0x80)
+      break;
   }
   
-  return (0);
+  return (ptr);
 }
 
 USTR_CONF_I_PROTO
@@ -343,11 +342,7 @@ size_t ustr_utf8_len(const struct Ustr *s1)
   USTR_ASSERT(ustr_assert_valid(s1));
 
   while (*scan)
-  {
-    if (!((*scan >= 0x80) && (*scan <= 0xBF)))
-      ++ret;
-    ++scan;
-  }
+    ret += ((*scan++ & 0xc0) != 0x80);
 
   return (ret);
 }
@@ -397,7 +392,7 @@ size_t ustr_utf8_chars2bytes(const struct Ustr *s1, size_t pos, size_t len,
     
     USTR_ASSERT(ustr_len(s1) > (size_t)(scan - beg));
 
-    scan = ustr__utf8_nxt(scan + 1);
+    scan = ustr__utf8_next(scan);
     if (!--pos)
     {
       ret_beg = prev;
@@ -405,21 +400,65 @@ size_t ustr_utf8_chars2bytes(const struct Ustr *s1, size_t pos, size_t len,
       break;
     }
   }
-  
-  while (*scan && --len)
-  {
-    USTR_ASSERT(ustr_len(s1) > (size_t)(scan - beg));
-    
-    scan = ustr__utf8_nxt(scan + 1);
-  }
 
+  if (len)
+    while (*scan && --len)
+    {
+      USTR_ASSERT(ustr_len(s1) > (size_t)(scan - beg));
+      
+      scan = ustr__utf8_next(scan);
+    }
+  
   USTR_ASSERT(ustr_len(s1) >= (size_t)(scan - beg));
   
   if (len > 1)
-    return (0); /* string contains a NIL byte */
+    return (0); /* string contains a NIL byte, or ends with a bad UTF-8 char */
 
   if (pret_pos)
     *pret_pos = ret_pos;
   
   return (scan - ret_beg);
+}
+
+USTR_CONF_I_PROTO
+size_t ustr_utf8_bytes2chars(const struct Ustr *s1, size_t pos, size_t len,
+                             size_t *pret_pos)
+{
+  const unsigned char *beg  = (const unsigned char *)ustr_cstr(s1);
+  const unsigned char *scan = beg;
+  const unsigned char *ret_beg = beg;
+  size_t clen = ustr__valid_subustr(s1, pos, len);
+  size_t unum = 0;
+  size_t ret_pos = 0;
+
+  USTR_ASSERT(pret_pos || (pos == 1));
+
+  if (!clen) /* bad position */
+    return (0);
+  
+  scan += pos;
+  if (!(ret_beg = ustr__utf8_prev(scan, pos)))
+    return (0);
+  USTR_ASSERT(ustr_len(s1) >= (size_t)(scan - beg));  
+
+  scan = beg;
+  while (scan < ret_beg)
+    unum += ((*scan++ & 0xc0) != 0x80);
+  
+  unum += ((*scan & 0xc0) != 0x80);
+  ret_pos = unum;
+
+  if (len)
+  {
+    ret_beg += len - 1;
+    USTR_ASSERT(ustr_len(s1) >= (size_t)(ret_beg - beg));
+    
+    while (scan <= ret_beg)
+      unum += ((*scan++ & 0xc0) != 0x80);
+  }
+  
+  if (pret_pos)
+    *pret_pos = ret_pos;
+  
+  return (unum - ret_pos);
 }
