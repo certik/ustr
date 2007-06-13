@@ -49,11 +49,12 @@ static void conv_unprintable_chr(Ustr *s1, int prnt_h, int prnt_s)
   }
 }
 
+#define CONF_READ_SZ 16
 static unsigned int addr = 0;
 static void hexdump(Ustr **ps1)
 {
   Ustr *s1 = *ps1;
-  char buf[4096 * 5]; /* each 16 bytes turns into 70 bytes */
+  char buf[CONF_READ_SZ * 5]; /* each 16 bytes turns into 70 bytes */
   Ustr *out = USTR_SC_INIT_AUTO(buf, USTR_FALSE, 0);
   char buf_line[128]; /* 16 max */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
@@ -157,12 +158,17 @@ int main(int argc, char *argv[])
   argc -= optind;
   argv += optind;
 
-  if (!argc)
-    usage(prog_name, EXIT_FAILURE);
-
   if (!(io = ustr_dupx_empty(4096, 0, USTR_FALSE, USTR_FALSE)))
     die(prog_name, strerror(ENOMEM));
   
+  if (!argc)
+    while (ustr_io_get(&io, stdin, CONF_READ_SZ))
+    {
+      hexdump(&io);
+      if (!ustr_io_putfile(&io, stdout))
+        die(prog_name, strerror(errno));
+    }
+
   scan = 0;
   while (scan < argc)
   {
@@ -171,7 +177,7 @@ int main(int argc, char *argv[])
     if (!fp)
       die(prog_name, strerror(errno));
     
-    while (ustr_io_get(&io, fp, 4096))
+    while (ustr_io_get(&io, fp, CONF_READ_SZ))
     {
       hexdump(&io);
       if (!ustr_io_putfile(&io, stdout))

@@ -1,5 +1,7 @@
 2007-06-12  James Antill  <james@and.org>
 
+	* examples/hexdump.c (main): Change read size and allow stdin reading.
+
 	* examples/hexdump.c (hexdump): Added new example.
 
 	* examples/netstr.c: Remove fake compat. IO for ustr-0.99.1.
