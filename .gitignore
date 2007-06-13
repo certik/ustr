@@ -12,3 +12,5 @@
 /ustr-import
 examples/hello_world
 examples/netstr
+examples/hexdump
+abcd

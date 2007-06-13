@@ -2,24 +2,6 @@
 
 #include <errno.h>
 
-#if ! USTR_IO_H /* so we can compile with 0.99.1, and ustr-import without IO */
-#include <stdio.h>
-static int ustr_io_putfile(Ustr **ps1, FILE *fp)
-{
-  if (fwrite(ustr_cstr(*ps1), 1, ustr_len(*ps1), fp) != ustr_len(*ps1))
-    return (USTR_FALSE);
-  ustr_sc_del(ps1);
-  return (USTR_TRUE);
-}
-static int ustr_io_putfileline(Ustr **ps1, FILE *fp)
-{
-  if (!ustr_io_putfile(ps1, fp))
-    return (USTR_FALSE);
-  
-  return (putc('\n', fp) != EOF);
-}
-#endif
-
 static void die(const char *prog_name, const char *msg)
 {
   fprintf(stderr, "%s: %s\n", prog_name, msg);

@@ -45,35 +45,11 @@ LDFLAGS = -lustr
 
 # This is a simple makefile for example programs...
 
-ALL = netstr hello_world
+ALL = hello_world netstr hexdump
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
 LIB_STATIC = $(DBG_LIB_STATIC) $(OPT_LIB_STATIC)
-
-SRC_HDRS_DBG = ustr.h \
-           ustr-conf-debug.h \
-           ustr-b.h \
-           ustr-cmp.h \
-           ustr-cntl.h \
-           ustr-fmt.h \
-           ustr-io.h \
-           ustr-main.h \
-           ustr-set.h \
-           ustr-spn.h \
-           ustr-srch.h
-
-SRC_HDRS_OPT = ustr.h \
-           ustr-conf.h \
-           ustr-b.h \
-           ustr-cmp.h \
-           ustr-cntl.h \
-           ustr-fmt.h \
-           ustr-io.h \
-           ustr-main.h \
-           ustr-set.h \
-           ustr-spn.h \
-           ustr-srch.h
 
 LIB_STATIC_DBG = \
   ustr-b-code-a-dbg.o \
@@ -83,7 +59,8 @@ LIB_STATIC_DBG = \
   ustr-main-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
-  ustr-srch-code-a-dbg.o
+  ustr-srch-code-a-dbg.o \
+  ustr-utf8-code-a-dbg.o
 LIB_STATIC_OPT = \
   ustr-b-code-a-opt.o \
   ustr-cmp-code-a-opt.o \
@@ -92,7 +69,8 @@ LIB_STATIC_OPT = \
   ustr-main-code-a-opt.o \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \
-  ustr-srch-code-a-opt.o
+  ustr-srch-code-a-opt.o \
+  ustr-utf8-code-a-opt.o
 
 
 
@@ -108,19 +86,23 @@ libustr-debug.a: $(LIB_STATIC_DBG)
 		@$(AR) ru $@ $^
 		@$(RANLIB) $@
 
-%-code-a-opt.o:  %-opt-code.c %-code.h %.h $(SRC_HDRS_OPT)
+%-code-a-opt.o:  %-opt-code.c %-code.h %.h
 		@echo Compiling for A OPT lib: $<
 		@$(CC) $(CFLG_LIB_OPT) -o $@ -c $<
 
-%-code-a-dbg.o:  %-dbg-code.c %-code.h %.h $(SRC_HDRS_DBG)
+%-code-a-dbg.o:  %-dbg-code.c %-code.h %.h
 		@echo Compiling for A DBG lib: $<
 		@$(CC) $(CFLG_LIB_DBG) -o $@ -c $<
 
 clean:
 		rm -f *.o $(ALL) $(LIB_STATIC)
 
+hello_world: hello_world.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
 netstr: netstr.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
-hello_world: hello_world.c
+hexdump: hexdump.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
