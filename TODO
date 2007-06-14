@@ -1,6 +1,4 @@
 
- Memory failure testing for add/dup/fmt/io/set
-
  ustr_cmp_case*?
 
  ustr_tolower / toupper / reverse ?

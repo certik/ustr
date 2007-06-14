@@ -168,7 +168,15 @@ int tst(void)
   ASSERT(!MALLOC_CHECK_STORE.mem_fail_num);
   ASSERT( ustrp_del_subustrp(pool, &sp1, 3, 1));
   ASSERT_PEQ(sp1, USTRP1(\x3, "abd"));
-  
+
+  sp1 = USTRP1(\x4, "abcd");
+  MALLOC_CHECK_STORE.mem_fail_num = 1;
+  ASSERT(!ustrp_add_fmt(pool, &sp1, "%.500d", 4));
+  MALLOC_CHECK_STORE.mem_fail_num = 1;
+  ASSERT(!ustrp_set_fmt(pool, &sp1, "%.500d", 4));
+  MALLOC_CHECK_STORE.mem_fail_num = 1;
+  ASSERT(!(sp1 = ustrp_dup_fmt(pool, "%.500d", 4)));
+
   lim  = 1;
   scan = 0;
   while (scan++ < lim)
