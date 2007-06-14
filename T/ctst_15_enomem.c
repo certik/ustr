@@ -298,6 +298,17 @@ int tst(void)
   ASSERT(ustrp_add(pool, &sp2, sp1));
   ASSERT(ustrp_cmp_cstr_eq(sp2, ".xyz========--xyz========--xyz"));
 
+  sp2 = USTRP("");
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT(!ustrp_set(pool, &sp2, sp1));
+  }
+  ASSERT(ustrp_set(pool, &sp2, sp1));
+  ASSERT(ustrp_cmp_cstr_eq(sp2, "========--xyz"));
+  
   ASSERT((sp2 = ustrp_dupx_cstr(pool, 1, 1, 0, 0, "abcd")));
   ASSERT( ustrp_sized(sp2));
   ustrp_sc_del(pool, &sp2);
