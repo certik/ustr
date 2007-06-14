@@ -467,38 +467,49 @@ USTR_CONF_i_PROTO size_t ustr__ns(size_t num)
 USTR_CONF_I_PROTO size_t ustr_init_size(size_t sz, size_t rbytes, int exact,
                                         size_t len)
 {
-  size_t lbytes = ustr__nb(sz ? sz : len);
-  size_t sbytes = 0;
-  size_t oh = 0;
+  size_t oh  = 0;
+  size_t rsz = sz ? sz : len;
+  size_t lbytes = 0;
   
   USTR_ASSERT_RET((rbytes == 0) ||
                   (rbytes == 1) || (rbytes == 2) || (rbytes == 4) ||
                   (USTR_CONF_HAVE_64bit_SIZE_MAX && (rbytes == 8)), 0);
-  USTR_ASSERT(    (lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
-                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
 
-  if (!sz && ((lbytes == 8) || (rbytes == 8)))
-    sz = 1;
-  
-  if (sz)
+
+  do
   {
-    if (rbytes <= 1)
-      rbytes = 2;
-    if (lbytes <= 1)
-      lbytes = 2;
-    sbytes = lbytes;
-  }
+    size_t sbytes = 0;
 
-  oh = 1 + rbytes + lbytes + sbytes + sizeof(USTR_END_ALOCDx);
-  sz = oh + len;
+    lbytes = ustr__nb(rsz);
+    if (!sz && ((lbytes == 8) || (rbytes == 8)))
+      sz = 1;
+    
+    USTR_ASSERT(    (lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
+                    (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
   
-  if (sz < len)
-    return (0);
+    if (sz)
+    {
+      if (rbytes <= 1)
+        rbytes = 2;
+      if (lbytes <= 1)
+        lbytes = 2;
+      sbytes = lbytes;
+    }
+    
+    oh = 1 + rbytes + lbytes + sbytes + sizeof(USTR_END_ALOCDx);
+    rsz = oh + len;
+  
+    if (rsz < len)
+      return (0);
+
+    USTR_ASSERT((lbytes <= ustr__nb(rsz)) ||
+                ((lbytes == 2) && sz && (ustr__nb(rsz) == 1)));
+  } while (lbytes < ustr__nb(rsz));
   
   if (exact)
-    return (sz);
+    return (rsz);
   
-  return (ustr__ns(sz));
+  return (ustr__ns(rsz));
 }
 
 /* NIL terminate -- with possible end marker */
@@ -521,7 +532,7 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   struct Ustr *ret = data;
   int nexact = !exact;
   int sized  = 0;
-  size_t lbytes = ustr__nb(sz ? sz : len);
+  size_t lbytes = 0;
   size_t sbytes = 0;
   size_t oh = 0;
   const size_t eos_len = sizeof(USTR_END_ALOCDx);
@@ -529,16 +540,22 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   USTR_ASSERT_RET((rbytes == 0) ||
                   (rbytes == 1) || (rbytes == 2) || (rbytes == 4) ||
                   (USTR_CONF_HAVE_64bit_SIZE_MAX && (rbytes == 8)), USTR_NULL);
-  USTR_ASSERT(    (lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
-                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
   USTR_ASSERT(data);
   USTR_ASSERT(exact == !!exact);
   USTR_ASSERT(emem  == !!emem);
   USTR_ASSERT(!sz || (sz == rsz));
   USTR_ASSERT_RET(!sz || (sz > len), USTR_NULL);
 
-  if (!sz && ((lbytes == 8) || (rbytes == 8)))
+  if (!sz && (rbytes == 8))
     sz = rsz; /* whee... */
+  
+  lbytes = ustr__nb(sz ? sz : len);
+  if (!sz && (lbytes == 8))
+    sz = rsz; /* whee... */
+  USTR_ASSERT(lbytes == ustr__nb(sz ? sz : len));
+  
+  USTR_ASSERT(    (lbytes == 1) || (lbytes == 2) || (lbytes == 4) ||
+                  (USTR_CONF_HAVE_64bit_SIZE_MAX && (lbytes == 8)));
   
   if (sz)
   {
@@ -552,7 +569,7 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
     sbytes = lbytes;
   }
   oh = 1 + rbytes + lbytes + sbytes + eos_len;
-  
+
   if (rsz < (oh + len))
     return (USTR_NULL);
   
@@ -688,6 +705,7 @@ struct Ustr *ustrp__dupx_undef(void *p, size_t sz, size_t rbytes,
                                int exact, int emem, size_t len)
 {
   struct Ustr *ret = USTR_NULL;
+  struct Ustr *chk = USTR_NULL;
   size_t rsz = 0;
   
   USTR_ASSERT((rbytes == 0) || (rbytes == 1) || (rbytes == 2) || (rbytes == 4)||
@@ -709,7 +727,8 @@ struct Ustr *ustrp__dupx_undef(void *p, size_t sz, size_t rbytes,
   if (!ret)
     return (USTR_NULL);
   
-  ustr_init_alloc(ret, rsz, sz ? rsz : 0, rbytes, exact, emem, len);
+  chk = ustr_init_alloc(ret, rsz, sz ? rsz : 0, rbytes, exact, emem, len);
+  USTR_ASSERT(chk);
   
   USTR_ASSERT(ustr_assert_valid(ret));
   return (ret);
@@ -763,7 +782,6 @@ USTR_CONF_i_PROTO void ustr__memset(struct Ustr *s1, size_t off,
 }
 
 /* ---------------- del ---------------- */
-
 /* shrink the size of the Ustr to accomodate _just_ it's current len */
 USTR_CONF_i_PROTO int ustrp__reallocx(void *p, struct Ustr **ps1, int exact)
 {
@@ -792,7 +810,7 @@ USTR_CONF_i_PROTO int ustrp__reallocx(void *p, struct Ustr **ps1, int exact)
   
   /* For this to happen we'd have to have an exact match, and move to non-exact
    * and the non-exact match would have to take more bytes.
-   * Ie. exact == 255, non-exact == 256
+   * Ie. exact == 65535, non-exact == 65536
    * ...in other words our non-exact growing sucks here, and should really stop
    * at 255 and this test will then be meaningless.
    */

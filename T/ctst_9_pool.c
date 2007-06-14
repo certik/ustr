@@ -283,6 +283,8 @@ int tst(void)
   ASSERT(!ustrp_setf_share(sp1));
   ASSERT( ustrp_setf_owner(sp1));
   ASSERT(ustrp_exact(sp1));
+  ASSERT(ustrp_size(sp1) == ustrp_len(sp1));
+  ASSERT(ustrp_size_alloc(sp1) == ustrp_len(sp1) + ustrp_overhead(sp1));
   ASSERT( ustrp_enomem(sp1));
   ASSERT( ustrp_setf_enomem_clr(sp1));
   ASSERT(!ustrp_enomem(sp1));
@@ -292,6 +294,7 @@ int tst(void)
   ASSERT_PEQ(USTRP1(\xc, "1234567zabcd"), sp1);
 
   ustr_pool_free(pool);
+  ustr_pool_free(NULL);
   
   return (EXIT_SUCCESS);
 }

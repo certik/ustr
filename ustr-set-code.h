@@ -55,12 +55,10 @@ USTR_CONF_i_PROTO int ustrp__set_empty(void *p, struct Ustr **ps1)
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
 
-  if (ustr_fixed(*ps1))
+  if (ustr_sized(*ps1) && ustr_owner(*ps1))
     return (ustrp__del(p, ps1, ustr_len(*ps1)));
-  else
-    ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));
-  
-  if (!ret)
+
+  if (!(ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1))))
   {
     ustr_setf_enomem_err(*ps1);
     return (USTR_FALSE);
@@ -136,27 +134,12 @@ int ustrp__set_subustr(void *p, struct Ustr **ps1, const struct Ustr *s2,
   if (len == clen)
     return (ustrp__set(p, ps1, s2));
   
-  if (*ps1 != s2)
-    return (ustrp__set_buf(p, ps1, ustr_cstr(s2) + pos, len));
+  if ((*ps1 != s2) || !ustr_owner(s2))
+    return (ustrp__set_buf(p, ps1, ustr_cstr(s2) + pos - 1, len));
 
-  if (ustr_owner(s2))
-  {
-    --pos;
-    ustrp__del(p, ps1, clen - (pos + len)); /* delete bit after */
-    ustrp__del_subustr(p, ps1, 1, pos);     /* delete bit before */
-  }
-  else
-  {
-    struct Ustr *ret = ustrp__dup_subustr(p, s2, pos, len);
-
-    if (!ret)
-    {
-      ustr_setf_enomem_err(*ps1);
-      return (USTR_FALSE);
-    }
-
-    ustrp__sc_free2(p, ps1, ret);
-  }
+  --pos;
+  ustrp__del(p, ps1, clen - (pos + len)); /* delete bit after */
+  ustrp__del_subustr(p, ps1, 1, pos);     /* delete bit before */
   
   return (USTR_TRUE);
 }

@@ -1,5 +1,18 @@
 2007-06-13  James Antill  <james@and.org>
 
+	* ustr-set-code.h (ustrp__set_subustr): Simplify code.
+	(ustrp__set_subustr): Fix off by one bug, when going to set_buf().
+
+	* T/ctst_15_enomem.c (tst): Add test, coverage now over 98% on 32bit.
+
+	* Makefile (EXAMPLES): Add hexdump example.
+
+	* ustr-set-code.h (ustrp__set_empty): Don't dupx, if sized and owner.
+
+	* ustr-main-code.h (ustr_init_size): Fix bug with lbytes/sbytes being
+	wrong with sizes near the byte change marks.
+	(ustr_init_alloc): Fix bug with lbytes/sbytes being wrong on 64bit.
+
 	* ustr-io-code.h (ustr_io_get): Change the API to possibly return the 
 	number of bytes read.
 

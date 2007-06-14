@@ -51,19 +51,24 @@ int tst(void)
   Ustr_pool *pool = ustr_pool_make();
   Ustrp *sp1 = USTRP("");
   FILE *fp = fopen("T/ctst_11_io.c", "rb");
-
+  size_t got = 1;
+  
   ASSERT(pool);
   ASSERT(fp);
 
   ASSERT(!ustr_len(s1));
-  ASSERT(ustr_io_get(&s1, fp, 0));
+  ASSERT(ustr_io_get(&s1, fp, 0, &got));
+  ASSERT(!got);
   ASSERT(!ustr_len(s1));
-  ASSERT(ustr_io_get(&s1, fp, 11));
-  ASSERT(ustr_len(s1) >= 11);
-  ASSERT(ustr_io_get(&s1, fp, 20));
-  ASSERT(ustr_len(s1) >= 31);
-  ASSERT(ustr_io_get(&s1, fp, 40));
-  ASSERT(ustr_len(s1) >= 71);
+  ASSERT(ustr_io_get(&s1, fp, 11, &got));
+  ASSERT(ustr_len(s1) == 11);
+  ASSERT(got == 11);
+  ASSERT(ustr_io_get(&s1, fp, 20, &got));
+  ASSERT(ustr_len(s1) == 31);
+  ASSERT(got == 20);
+  ASSERT(ustr_io_get(&s1, fp, 40, &got));
+  ASSERT(ustr_len(s1) == 71);
+  ASSERT(got == 40);
   ASSERT(71 >= (ustr_len(line1) + ustr_len(line2) + ustr_len(line3) +
                 ustr_len(line4) + ustr_len(line5)));
 
@@ -172,7 +177,7 @@ int tst(void)
   ASSERT(!ustr_io_getline(&s1, fp));
   ASSERT_EQ(s1, line999);
   ustr_sc_del(&s1);
-  ASSERT(!ustr_io_get(&s1, fp, 1));
+  ASSERT(!ustr_io_get(&s1, fp, 1, NULL));
   ASSERT(ustr_io_getfile(&s1, fp));
   ASSERT(!ustr_len(s1));
 
@@ -197,7 +202,7 @@ int tst(void)
   ASSERT(ustrp_del(pool, &sp1, 1)); /* remove \n */
   ASSERT_EQ(&sp1->s, line999);
   ustrp_sc_del(pool, &sp1);
-  ASSERT(!ustrp_io_get(pool, &sp1, fp, 1));
+  ASSERT(!ustrp_io_get(pool, &sp1, fp, 1, NULL));
   ASSERT(!ustrp_len(sp1));
   ASSERT(ustrp_io_getfile(pool, &sp1, fp));
   ASSERT(!ustrp_len(sp1));
@@ -213,6 +218,15 @@ int tst(void)
   ASSERT(!ustrp_len(sp1));
   ASSERT(ustrp_io_getfilename(pool, &sp1, ustr_cstr(s2)));
   ASSERT(!ustrp_len(sp1));
+
+  remove(ustr_cstr(s2));
+
+  ASSERT(ustr_add_rep_chr(&s1, '-', 80 * 1000));
+  ASSERT(ustr_io_putfilename(&s1, ustr_cstr(s2), "wb"));
+  ASSERT(!ustr_len(s1));
+  ASSERT(ustr_io_getfilename(&s1, ustr_cstr(s2)));
+  ASSERT(ustr_len(s1) == (80 * 1000));
+  ASSERT(ustr_spn_cstr_fwd(s1, "-") == (80 * 1000));
   
   remove(ustr_cstr(s2));
 

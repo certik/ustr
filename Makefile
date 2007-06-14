@@ -54,6 +54,7 @@ MAN_PAGES = \
 
 EXAMPLES = examples/Makefile \
        examples/hello_world.c \
+       examples/hexdump.c \
        examples/netstr.c
 
 TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
@@ -81,7 +82,9 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
            tst_13_utf8  ctst_13_utf8 \
           otst_13_utf8 octst_13_utf8 \
            tst_14_cmp  ctst_14_cmp \
-          otst_14_cmp octst_14_cmp
+          otst_14_cmp octst_14_cmp \
+           tst_15_enomem  ctst_15_enomem \
+          otst_15_enomem octst_15_enomem
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \
@@ -318,8 +321,8 @@ perf-sizes32: perf-sizes.c $(OBJS_C_OPT_ALL)
 perf-sizes64: perf-sizes.c $(OBJS_C_OPT_ALL)
 		$(CC) $(WARNS) -O2 -g  $(LDFLAGS) -m64 -o $@ $^
 
-# We "generate" the test files ... because "make clean" still makes the
-# dir. reable. And it helps coverage testing.
+# We "generate" the test files ... because "make clean" then makes the
+# dir. readble. And it helps coverage testing.
 tst_%.c: T/tst_%.c T/ctst_%.c
 		@cat $^ > $@
 otst_%.c: T/tst_%.c T/ctst_%.c
