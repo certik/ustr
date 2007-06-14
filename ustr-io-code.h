@@ -4,8 +4,8 @@
 #error " You should have already included ustr-io.h, or just include ustr.h."
 #endif
 
-USTR_CONF_i_PROTO
-int ustrp__io_get(void *p, struct Ustr **ps1, FILE *fp, size_t minlen)
+USTR_CONF_i_PROTO int ustrp__io_get(void *p, struct Ustr **ps1, FILE *fp,
+                                    size_t minlen, size_t *got)
 {
   size_t olen = ustr_len(*ps1);
   size_t ret  = 0;
@@ -13,7 +13,11 @@ int ustrp__io_get(void *p, struct Ustr **ps1, FILE *fp, size_t minlen)
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
 
   if (!minlen)
+  {
+    if (got)
+      *got = 0;
     return (USTR_TRUE);
+  }
   
   if (!ustrp__add_undef(p, ps1, minlen))
     return (USTR_FALSE);
@@ -21,28 +25,32 @@ int ustrp__io_get(void *p, struct Ustr **ps1, FILE *fp, size_t minlen)
   ret = fread(ustr_wstr(*ps1) + olen, 1, minlen, fp);
   if (ret < minlen)
     ustrp__del(p, ps1, minlen - ret);
+
+  if (got)
+    *got = ret;
   
   return (ret > 0);
 }
 USTR_CONF_I_PROTO
-int ustr_io_get(struct Ustr **ps1, FILE *fp, size_t minlen)
-{ return (ustrp__io_get(0, ps1, fp, minlen)); }
-USTR_CONF_I_PROTO
-int ustrp_io_get(void *p, struct Ustrp **ps1, FILE *fp, size_t minlen)
-{ return (ustrp__io_get(p, USTR__PPTR(ps1), fp, minlen)); }
+int ustr_io_get(struct Ustr **ps1, FILE *fp, size_t minlen, size_t *got)
+{ return (ustrp__io_get(0, ps1, fp, minlen, got)); }
+USTR_CONF_I_PROTO int ustrp_io_get(void *p, struct Ustrp **ps1, FILE *fp,
+                                   size_t minlen, size_t *got)
+{ return (ustrp__io_get(p, USTR__PPTR(ps1), fp, minlen, got)); }
 
 USTR_CONF_i_PROTO int ustrp__io_getfile(void *p, struct Ustr **ps1, FILE *fp)
 {
   const size_t blksz = (1024 * 8) - (1 + 8 + 8 + 8 + sizeof(USTR_END_ALOCDx));
   size_t num = blksz;
+  size_t got = 0;
   
-  while (ustrp__io_get(p, ps1, fp, num))
+  while (ustrp__io_get(p, ps1, fp, num, &got) && (got == num))
   { /* round up... */
     size_t sz   = ustr_size(*ps1);
     size_t clen = ustr_len(*ps1);
 
     num = blksz;
-    if (sz > (clen + num))
+    if (num < (sz - clen))
       num = sz - clen;
   }
 

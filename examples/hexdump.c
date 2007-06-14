@@ -18,10 +18,11 @@ static void die(const char *prog_name, const char *msg)
 static void usage(const char *prog_name, int xcode)
 {
   fprintf((xcode == EXIT_SUCCESS) ? stdout : stderr, "\
- Format: %s [-chiV] <string> [string]...\n\
-\
-           -h = Print help.\n\
-           -V = Print version.\n\
+ Format: %s [-hHSV] [filename]...\n\
+           -S, --space = Print spaces in output.\n\
+           -H, --high  = Print high bytes in output.\n\
+           -h          = Print help.\n\
+           -V          = Print version.\n\
 ", prog_name);
   
   exit (xcode);
@@ -90,7 +91,7 @@ static void hexdump(Ustr **ps1)
     
     ustr_add_fmt(&out, "0x%08X:", addr);
 
-    while (len > 2)
+    while (len >= 2)
     {
       ustr_add_fmt(&out,  " %02X%02X", (unsigned)ptr[ 0], ptr[ 1]);
       len  -= 2;
@@ -114,6 +115,21 @@ static void hexdump(Ustr **ps1)
   ustr_set(ps1, out);
   ustr_free(out);    
   ustr_free(line);
+}
+
+static void loop(Ustr **io, FILE *in, const char *prog_name)
+{
+  int last = USTR_FALSE;
+  size_t got = 0;
+  
+  while (!last && ustr_io_get(io, in, CONF_READ_SZ, &got))
+  {
+    last = got != CONF_READ_SZ;
+    
+    hexdump(io);
+    if (!ustr_io_putfile(io, stdout))
+      die(prog_name, strerror(errno));
+  }
 }
 
 int main(int argc, char *argv[])
@@ -162,31 +178,29 @@ int main(int argc, char *argv[])
     die(prog_name, strerror(ENOMEM));
   
   if (!argc)
-    while (ustr_io_get(&io, stdin, CONF_READ_SZ))
-    {
-      hexdump(&io);
-      if (!ustr_io_putfile(&io, stdout))
-        die(prog_name, strerror(errno));
-    }
-
+    loop(&io, stdin, prog_name);
+  
   scan = 0;
   while (scan < argc)
   {
-    FILE *fp = fopen(argv[scan++], "rb");
-
-    if (!fp)
-      die(prog_name, strerror(errno));
-    
-    while (ustr_io_get(&io, fp, CONF_READ_SZ))
+    if (ustr_cmp_cstr_eq(USTR1(\1, "-"), argv[scan]))
+      loop(&io, stdin, prog_name);
+    else
     {
-      hexdump(&io);
-      if (!ustr_io_putfile(&io, stdout))
+      FILE *fp = fopen(argv[scan], "rb");
+      
+      if (!fp)
         die(prog_name, strerror(errno));
+      
+      loop(&io, fp, prog_name);
+      
+      if (ferror(fp))
+        die(prog_name, strerror(errno));
+      
+      fclose(fp);
     }
-    if (!feof(fp))
-      die(prog_name, strerror(errno));
-
-    fclose(fp);
+    
+    ++scan;
   }
 
   ustr_free(io); /* to make it allocation "clean" */

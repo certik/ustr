@@ -8,8 +8,8 @@
 
 #include <stdio.h>
 
-USTR_CONF_E_PROTO int ustr_io_get(struct Ustr **, FILE *, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustr_io_get(struct Ustr **, FILE *, size_t, size_t *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2));
 USTR_CONF_E_PROTO int ustr_io_getfile(struct Ustr **, FILE *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_io_getfilename(struct Ustr **, const char *)
@@ -30,7 +30,8 @@ USTR_CONF_E_PROTO
 int ustr_io_putfilename(struct Ustr **, const char *, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
-USTR_CONF_E_PROTO int ustrp_io_get(void *, struct Ustrp **, FILE *, size_t)
+USTR_CONF_E_PROTO
+int ustrp_io_get(void *, struct Ustrp **, FILE *, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_E_PROTO int ustrp_io_getfile(void *, struct Ustrp **, FILE *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));

@@ -124,8 +124,7 @@ USTR_CONF_i_PROTO size_t ustr__sz_get(const struct Ustr *s1)
 
 USTR_CONF_i_PROTO size_t ustr__nb(size_t num)
 {
-  USTR_ASSERT((num <= (0xFFFFFFFF - (1 + 4 + 1))) ||
-              USTR_CONF_HAVE_64bit_SIZE_MAX);
+  USTR_ASSERT((num <= 0xFFFFFFFF) || USTR_CONF_HAVE_64bit_SIZE_MAX);
   
   if (num > 0xFFFFFFFF)                 return (8);
   if (num > 0xFFFF)                     return (4);
@@ -791,7 +790,12 @@ USTR_CONF_i_PROTO int ustrp__reallocx(void *p, struct Ustr **ps1, int exact)
   if (msz == sz)
     return (USTR_TRUE);
   
-  /* we'd have to copy the Ustr, to add extra bytes to szn/lenn */
+  /* For this to happen we'd have to have an exact match, and move to non-exact
+   * and the non-exact match would have to take more bytes.
+   * Ie. exact == 255, non-exact == 256
+   * ...in other words our non-exact growing sucks here, and should really stop
+   * at 255 and this test will then be meaningless.
+   */
   if (USTR__LEN_LEN(s1) < ustr__nb(msz))
     return (USTR_FALSE);
   
@@ -860,7 +864,7 @@ int ustr__rw_add(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
 
   *alloc = USTR_FALSE; /* don't need to allocate/deallocate anything */
   if (*nsz <= *sz)
-    return (USTR_TRUE); /* ustr_fixed() */
+    return (USTR_TRUE); /* ustr_sized() */
   
   if (!ustr_exact(s1))
     *nsz = ustr__ns(*nsz);

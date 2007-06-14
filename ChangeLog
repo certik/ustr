@@ -1,3 +1,13 @@
+2007-06-13  James Antill  <james@and.org>
+
+	* ustr-io-code.h (ustr_io_get): Change the API to possibly return the 
+	number of bytes read.
+
+	* examples/hexdump.c (hexdump): Fix off by one typo: > should be >=
+	(main): Add - files.
+	(usage): Fix usage.
+	(loop): Don't read again, if we've hit EOF.
+
 2007-06-12  James Antill  <james@and.org>
 
 	* examples/hexdump.c (main): Change read size and allow stdin reading.

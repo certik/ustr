@@ -6,29 +6,35 @@ RANLIB = ranlib
 
 WARNS = -W -Wall -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Wno-format-zero-length -Wformat-nonliteral -Wformat-security # -Wfloat-equal -- no floats
 
+# DEF_CFLAGS = -Os -g
+DEF_CFLAGS = -O2 -g
+
 CFLG_LFS = -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 
-CFLAGS  = -O2 -g $(CFLG_LFS)
-
-PCFLAGS = $(DEF_CFLAGS)
-LDFLAGS =
-DEPS    =
+CFLAGS  = $(DEF_CFLAGS) $(CFLG_LFS)
 
 CFLG_LIB_OPT = $(CFLAGS) -DUSTR_DEBUG=0 -DNDEBUG
 CFLG_LIB_DBG = $(CFLAGS)
 
+# Compile "normal" using /ustr/include/ustr*.h and /usr/lib/libustr.so
+PCFLAGS = $(CFLAGS)
+LDFLAGS = -lustr
+DEPS    =
+
 ## Compile "inline" using parent dir.
 #PCFLAGS = $(CFLAGS) -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1 -I..
+#LDFLAGS =
 
 ## Compile "static" using parent dir.
-#PCFLAGS = $(CFLAGS) -I..
-#LDFLAGS = ../libustr.a
+PCFLAGS = $(CFLAGS) -I..
+LDFLAGS = ../libustr.a
 
 ## Compile "inline" using ustr-import output
 # - do nothing
 
 ## Compile "inline" using /ustr/include/ustr*.h / ustr-import -c
 #PCFLAGS = $(CFLAGS) -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1
+#LDFLAGS  =
 
 ## Compile "static" opt using ustr-import
 #PCFLAGS = $(CFLAGS)
@@ -40,8 +46,6 @@ CFLG_LIB_DBG = $(CFLAGS)
 #DEPS    = libustr-debug.a
 #LDFLAGS = libustr-debug.a
 
-# Compile "normal" using /ustr/include/ustr*.h and /usr/lib/libustr.so
-LDFLAGS = -lustr
 
 # This is a simple makefile for example programs...
 

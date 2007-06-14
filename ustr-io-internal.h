@@ -7,7 +7,7 @@
 #endif
 
 USTR_CONF_e_PROTO
-int ustrp__io_get(void *, struct Ustr **, FILE *, size_t)
+int ustrp__io_get(void *, struct Ustr **, FILE *, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_e_PROTO int ustrp__io_getfile(void *, struct Ustr **, FILE *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
