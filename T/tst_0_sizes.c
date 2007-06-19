@@ -51,7 +51,9 @@ int tst(void)
     ASSERT(ustr__ns(ohoff + 2 + num) == ans[9]);
   for (num =  93; num < 125; ++num)
     ASSERT(ustr__ns(ohoff + 2 + num) == ans[10]);
-  
+
+  ASSERT(ustr__ns(SIZE_MAX - (SIZE_MAX / 8)) == SIZE_MAX);
+
   return (EXIT_SUCCESS);
 }
 

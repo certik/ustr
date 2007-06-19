@@ -17,19 +17,28 @@ int tst(void)
   while (scan++ < lim)
   {
     MALLOC_CHECK_STORE.mem_fail_num = scan;
-    ASSERT(!(pool = ustr_pool_make()));
+    ASSERT(!(pool = ustr_pool_make_pool()));
   }
-  ASSERT((pool = ustr_pool_make()));
-  ASSERT(ustr_pool_sys_malloc(pool, 1));
+  ASSERT((pool = ustr_pool_make_pool()));
+
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT(!ustr_pool_make_subpool(pool));
+  }
+  ASSERT(ustr_pool_make_subpool(pool));
+  ASSERT(ustr_pool_make_subpool(pool));
   
   lim  = 2;
   scan = 0;
   while (scan++ < lim)
   {
     MALLOC_CHECK_STORE.mem_fail_num = scan;
-    ASSERT(!ustr_pool_sys_malloc(pool, 1));
+    ASSERT(!pool->pool_sys_malloc(pool, 1));
   }
-  ASSERT(ustr_pool_sys_malloc(pool, 1));
+  ASSERT(pool->pool_sys_malloc(pool, 1));
 
   ASSERT(!ustr_dup_undef(-2));
   

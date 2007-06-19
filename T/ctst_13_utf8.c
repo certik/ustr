@@ -4,7 +4,7 @@ static const char *rf = __FILE__;
 
 int tst(void)
 {
-  Ustr_pool *pool = ustr_pool_make();
+  Ustr_pool *pool = ustr_pool_make_pool();
   Ustrp *sp1 = USTRP1(\x3, "\xE2\x80\xA0");
   Ustrp *sp2 = USTRP1(\x3, "†");
   size_t c2b_pos = 1;

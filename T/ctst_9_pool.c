@@ -4,14 +4,23 @@ static const char *rf = __FILE__;
 
 int tst(void)
 {
-  Ustr_pool *pool = ustr_pool_make();
+  Ustr_pool *pool = ustr_pool_make_pool();
+  Ustr_pool *p1 = NULL;
+  Ustr_pool *p2 = NULL;
+  Ustr_pool *p3 = NULL;
   Ustrp *sp1 = ustrp_dup_empty(pool);
   Ustrp *sp2 = USTRP1(\x2, "s2");
   char buf_spa[1024];
   Ustrp *spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_FALSE, 0);
 
-  ASSERT(ustr_pool_sys_realloc(pool, NULL, 0, 0));
-  ASSERT(ustr_pool_sys_realloc(pool, NULL, 0, 1));
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT( ((struct Ustr__pool_si_base *)pool)->beg);
+  ASSERT( ((struct Ustr__pool_si_base *)pool)->beg->ptr == sp1);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->beg->next);
+#endif
+  
+  ASSERT(pool->pool_sys_realloc(pool, NULL, 0, 0));
+  ASSERT(pool->pool_sys_realloc(pool, NULL, 0, 1));
   
   ASSERT( ustrp_size_alloc(sp1));
   ASSERT(!ustrp_size_alloc(sp2));
@@ -59,7 +68,8 @@ int tst(void)
   ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
   ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
 
-  /* this is a huge hack based on pool_free() being a noop */
+  /* this is a huge hack based on pool_free() being a noop when it wasn't
+   * the last ptr. */
   ASSERT( ustrp_set_rep_chr(pool, &spa, '-', 2000));
   ASSERT(!ustrp_enomem(spa));
   ASSERT(spa != (void *)buf_spa);
@@ -272,9 +282,142 @@ int tst(void)
   ASSERT_PEQ(sp1, USTRP1(\x1, "2"));
   
   ustrp_sc_free2(pool, &sp1, USTRP(""));
+
+  /* test subpool API */
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->sbeg);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->next);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->prev);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->base);
+#endif
+  
+  ASSERT((p1 = ustr_pool_make_subpool(pool)));
+  ASSERT((p2 = ustr_pool_make_subpool(pool)));
+  ASSERT((p3 = ustr_pool_make_subpool(pool)));
+
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT(&((struct Ustr__pool_si_base *)pool)->sbeg->cbs == p3);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->next);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->prev);
+  ASSERT(!((struct Ustr__pool_si_base *)pool)->base);
+
+  ASSERT(!((struct Ustr__pool_si_base *)p3)->sbeg);
+  ASSERT(&((struct Ustr__pool_si_base *)p3)->next->cbs == p2);
+  ASSERT(!((struct Ustr__pool_si_base *)p3)->prev);
+  ASSERT(&((struct Ustr__pool_si_base *)p3)->base->cbs == pool);
+  ASSERT(!((struct Ustr__pool_si_base *)p2)->sbeg);
+  ASSERT(&((struct Ustr__pool_si_base *)p2)->next->cbs == p1);
+  ASSERT(&((struct Ustr__pool_si_base *)p2)->prev->cbs == p3);
+  ASSERT(&((struct Ustr__pool_si_base *)p2)->base->cbs == pool);
+  ASSERT(!((struct Ustr__pool_si_base *)p1)->sbeg);
+  ASSERT(!((struct Ustr__pool_si_base *)p1)->next);
+  ASSERT(&((struct Ustr__pool_si_base *)p1)->prev->cbs == p2);
+  ASSERT(&((struct Ustr__pool_si_base *)p1)->base->cbs == pool);
+#endif
+  
+  ustr_pool_clear(p2);
+  ustr_pool_clear(p1);
+  ustr_pool_clear(p3);
+
+  ASSERT(ustrp_dup_undef(p1, 2));
+  ASSERT(ustrp_dup_undef(p1, 2));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT( ((struct Ustr__pool_si_base *)p1)->beg);
+  ASSERT( ((struct Ustr__pool_si_base *)p2)->beg);
+  ASSERT( ((struct Ustr__pool_si_base *)p3)->beg);
+#endif
+  
+  ustr_pool_clear(p2);
+
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT( ((struct Ustr__pool_si_base *)p1)->beg);
+  ASSERT(!((struct Ustr__pool_si_base *)p2)->beg);
+  ASSERT( ((struct Ustr__pool_si_base *)p3)->beg);
+#endif
+  
+  ustr_pool_free(p3);
+  
+  ASSERT((p3 = ustr_pool_make_subpool(p2)));
+  
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT(!((struct Ustr__pool_si_base *)p1)->next);
+  ASSERT(&((struct Ustr__pool_si_base *)p1)->prev->cbs == p2);
+  ASSERT(&((struct Ustr__pool_si_base *)p2)->next->cbs == p1);
+  ASSERT(!((struct Ustr__pool_si_base *)p2)->prev);
+  ASSERT(&((struct Ustr__pool_si_base *)p2)->sbeg->cbs == p3);
+  ASSERT(!((struct Ustr__pool_si_base *)p3)->next);
+  ASSERT(!((struct Ustr__pool_si_base *)p3)->prev);
+  ASSERT(&((struct Ustr__pool_si_base *)p3)->base->cbs == p2);
+#endif
+  
+  ASSERT(ustrp_dup_undef(p3, 2));
+  ASSERT(ustrp_dup_undef(p3, 2));
+  ASSERT(ustrp_dup_undef(p3, 4));
+  ASSERT(ustrp_dup_undef(p3, 4));
+  ASSERT(ustrp_dup_undef(p3, 4));
+  ASSERT(ustrp_dup_undef(p3, 4));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  
+  ASSERT((p3 = ustr_pool_make_subpool(pool)));
+  
+  ustr_pool_free(p2);
+  
+  ASSERT((p1 = ustr_pool_make_subpool(p3)));
+  ASSERT((p2 = ustr_pool_make_subpool(p3)));
+  ASSERT((p3 = ustr_pool_make_subpool(p3)));
+  
+  ASSERT(ustrp_dup_undef(p1, 2));
+  ASSERT(ustrp_dup_undef(p1, 2));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p2, 4));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+  ASSERT(ustrp_dup_undef(p3, 8));
+
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT(p1 && ((struct Ustr__pool_si_base *)p1)->beg &&
+         ((struct Ustr__pool_si_base *)p1)->beg->ptr);
+  ASSERT(p2 && ((struct Ustr__pool_si_base *)p2)->beg &&
+         ((struct Ustr__pool_si_base *)p2)->beg->ptr);
+  ASSERT(p3 && ((struct Ustr__pool_si_base *)p3)->beg &&
+         ((struct Ustr__pool_si_base *)p3)->beg->ptr);
+#endif
   
   ustr_pool_clear(pool);
 
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+  ASSERT(p1 && !((struct Ustr__pool_si_base *)p1)->beg);
+  ASSERT(p2 && !((struct Ustr__pool_si_base *)p2)->beg);
+  ASSERT(p3 && !((struct Ustr__pool_si_base *)p3)->beg);
+#endif
+  
   ASSERT_PEQ(USTRP1(\x8, "1234567z"), ustrp_dup_cstr(pool, "1234567z"));
   ASSERT(ustrp_assert_valid(sp1));
   ASSERT((sp1 = ustrp_dupx_cstr(pool, 0, 0, USTR_TRUE, USTR_TRUE, "1234567z")));

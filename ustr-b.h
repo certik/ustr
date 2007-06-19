@@ -138,9 +138,12 @@ uint_least64_t ustr_parse_b_uint64(struct Ustr *s1, size_t off)
 /* ----------------------------------------------- */
 
 /* ---------------- add ---------------- */
-USTR_CONF_EI_PROTO int ustrp_add_b_uint16(void *,struct Ustrp **,uint_least16_t)
+USTR_CONF_EI_PROTO
+int ustrp_add_b_uint16(struct Ustr_pool *, struct Ustrp **, uint_least16_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_add_b_uint16(void *p, struct Ustrp **ps1, uint_least16_t data)
+USTR_CONF_II_PROTO
+int ustrp_add_b_uint16(struct Ustr_pool *p, struct Ustrp **ps1,
+                       uint_least16_t data)
 {
   unsigned char buf[2];
 
@@ -150,9 +153,12 @@ USTR_CONF_II_PROTO int ustrp_add_b_uint16(void *p, struct Ustrp **ps1, uint_leas
   return (ustrp_add_buf(p, ps1, buf, sizeof(buf)));
 }
 
-USTR_CONF_EI_PROTO int ustrp_add_b_uint32(void *,struct Ustrp **,uint_least32_t)
+USTR_CONF_EI_PROTO
+int ustrp_add_b_uint32(struct Ustr_pool *, struct Ustrp **, uint_least32_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_add_b_uint32(void *p, struct Ustrp **ps1, uint_least32_t data)
+USTR_CONF_II_PROTO
+int ustrp_add_b_uint32(struct Ustr_pool *p, struct Ustrp **ps1,
+                       uint_least32_t data)
 {
   unsigned char buf[4];
 
@@ -164,10 +170,12 @@ USTR_CONF_II_PROTO int ustrp_add_b_uint32(void *p, struct Ustrp **ps1, uint_leas
   return (ustrp_add_buf(p, ps1, buf, sizeof(buf)));
 }
 
-USTR_CONF_EI_PROTO int ustrp_add_b_uint64(void *,struct Ustrp **,uint_least64_t)
+USTR_CONF_EI_PROTO
+int ustrp_add_b_uint64(struct Ustr_pool *, struct Ustrp **, uint_least64_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_II_PROTO
-int ustrp_add_b_uint64(void *p, struct Ustrp **ps1, uint_least64_t data)
+int ustrp_add_b_uint64(struct Ustr_pool *p, struct Ustrp **ps1,
+                       uint_least64_t data)
 {
   unsigned char buf[8];
 

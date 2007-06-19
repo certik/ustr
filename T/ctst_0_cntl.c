@@ -1,4 +1,4 @@
-#include "ustr.h"
+#include "ustr-debug.h"
 
 #define ASSERT(x) do {                                                  \
       if (x) {} else {                                                  \
@@ -12,19 +12,12 @@ static void my_mem_free(void *x)
   free(x);
 }
 
-static void my_memp_free(void *x, void *y)
-{
-  (void)x;
-  (void)y;
-}
-
 int main(void)
 {
   size_t rbytes = 0;
   int has_sz = -1;
   int exact_bytes = -1;
   Ustr_cntl_mem  mymem;
-  Ustr_cntl_memp mymemp;
   
   ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_REF_BYTES, &rbytes));
   ASSERT(rbytes == 2);
@@ -58,22 +51,8 @@ int main(void)
   ASSERT(mymem.sys_realloc == realloc);
   ASSERT(mymem.sys_free    == my_mem_free);
   
-  mymemp.pool_sys_malloc  = 0;
-  mymemp.pool_sys_realloc = 0;
-  mymemp.pool_sys_free    = 0;
-  ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_MEMP, &mymemp));
-  ASSERT(mymemp.pool_sys_malloc  == ustr_pool_sys_malloc);
-  ASSERT(mymemp.pool_sys_realloc == ustr_pool_sys_realloc);
-  ASSERT(mymemp.pool_sys_free    == ustr_pool_sys_free);
-  mymemp.pool_sys_free = my_memp_free;
-  ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_SET_MEMP, &mymemp));  
-  mymemp.pool_sys_malloc  = 0;
-  mymemp.pool_sys_realloc = 0;
-  mymemp.pool_sys_free    = 0;
-  ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_MEMP, &mymemp));
-  ASSERT(mymemp.pool_sys_malloc  == ustr_pool_sys_malloc);
-  ASSERT(mymemp.pool_sys_realloc == ustr_pool_sys_realloc);
-  ASSERT(mymemp.pool_sys_free    == my_memp_free);
+  if (!USTR_DEBUG)
+    ASSERT(!ustr_cntl_opt(-1, &mymem));
   
   return 0;
 }

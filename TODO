@@ -1,13 +1,25 @@
 
+ TST
+ bad mb strings for fmt*.
+
+ 8byte refs
+   ustr_owner()
+   ustr_init_size()
+
+ ustr_add(), where len1+len2 overflows
+
+ utf8 from: http://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt
+
+ FIX
+ ustr_io_* ... unlocked IO for get/put/etc.? ... 
+    esp. getfile/putfile as they can involve multi operations.
+
+ ADD
+ ustr_parse_* (numbers, with seperators ... ala. vstr)
+
  ustr_cmp_case*?
 
  ustr_tolower / toupper / reverse ?
 
  ustr_utf8_reverse
 
-
- --------------
- Other sections
- --------------
-
-  ss_parse_* (numbers, with seperators ... ala. vstr)

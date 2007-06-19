@@ -20,8 +20,6 @@
 #define USTR_CNTL_OPT_SET_EXACT_BYTES (6)
 #define USTR_CNTL_OPT_GET_MEM         (7)
 #define USTR_CNTL_OPT_SET_MEM         (8)
-#define USTR_CNTL_OPT_GET_MEMP        (9)
-#define USTR_CNTL_OPT_SET_MEMP       (10)
 
 /* move to dynamic configuration, so it's more usable from a shared library */
 #undef  USTR_CONF_REF_BYTES
@@ -36,15 +34,6 @@
 #define USTR_CONF_REALLOC(x, y) ((*ustr__opts->ustr.sys_realloc)((x), (y)))
 #undef  USTR_CONF_FREE
 #define USTR_CONF_FREE(x)       ((*ustr__opts->ustr.sys_free)(x))
-#undef  USTR_CONF_POOL_MALLOC
-#define USTR_CONF_POOL_MALLOC(p, x)             \
-    ((*ustr__opts->ustrp.pool_sys_malloc)((p), (x)))
-#undef  USTR_CONF_POOL_REALLOC
-#define USTR_CONF_POOL_REALLOC(p, x, y, z)      \
-    ((*ustr__opts->ustrp.pool_sys_realloc)((p), (x), (y), (z)))
-#undef  USTR_CONF_POOL_FREE
-#define USTR_CONF_POOL_FREE(p, x)               \
-    ((*ustr__opts->ustrp.pool_sys_free)((p), (x)))
 
 struct Ustr_cntl_mem
 {
@@ -53,20 +42,12 @@ struct Ustr_cntl_mem
  void  (*sys_free)(void *);
 };
 
-struct Ustr_cntl_memp
-{
- void *(*pool_sys_malloc)(void *, size_t);
- void *(*pool_sys_realloc)(void *, void *, size_t, size_t);
- void  (*pool_sys_free)(void *, void *); 
-};
-
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 struct Ustr_opts
 {
  size_t ref_bytes;
 
- struct Ustr_cntl_mem  ustr;
- struct Ustr_cntl_memp ustrp;
+ struct Ustr_cntl_mem ustr;
 
  unsigned int has_size    : 1;
  unsigned int exact_bytes : 1;
@@ -80,7 +61,6 @@ struct Ustr_opts; /* declare opaque struct */
 
 #if USTR_CONF_COMPILE_TYPEDEF
 typedef struct Ustr_cntl_mem  Ustr_cntl_mem;
-typedef struct Ustr_cntl_memp Ustr_cntl_memp;
 typedef struct Ustr_opts      Ustr_opts;
 #endif
 

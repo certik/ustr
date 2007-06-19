@@ -1,3 +1,24 @@
+2007-06-18  James Antill  <james@and.org>
+
+	* Makefile (CFLG_LIB_OPT): Remove USTR_DEBUG from CFLG_LIB_OPT
+
+	* ustr-main-code.h (ustr__pool_sys_free): Have free do the "right" thing
+	if using the last allocated ustrp. Same as ustr__pool_sys_realloc.
+	(ustr_pool_make_subpool): Added function.
+
+	* ustr-main.h (struct Ustr_pool): Create generic "class" for pool'd
+	data. This way multiple modules can have seperate pools, managed in
+	different ways. Convert all pool functions to require a Ustr_pool
+	argument.
+
+2007-06-14  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_ASSERT_NO_SWITCH_DEF): Add macro for switch
+	statements that "can't" default.
+
+	* ustr-main-code.h (ustr_owner): Only have code for 8 byte refs. in
+	64bit compiles.
+
 2007-06-13  James Antill  <james@and.org>
 
 	* ustr-set-code.h (ustrp__set_subustr): Simplify code.

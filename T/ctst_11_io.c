@@ -48,7 +48,7 @@ static void tst_getline(FILE *fp)
 
 int tst(void)
 {
-  Ustr_pool *pool = ustr_pool_make();
+  Ustr_pool *pool = ustr_pool_make_pool();
   Ustrp *sp1 = USTRP("");
   FILE *fp = fopen("T/ctst_11_io.c", "rb");
   size_t got = 1;

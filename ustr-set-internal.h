@@ -6,21 +6,22 @@
 # error " You should have already included ustr-set.h, or just include ustr.h"
 #endif
 
-USTR_CONF_e_PROTO int ustrp__set_undef(void *p, struct Ustr **ps1, size_t nlen)
+USTR_CONF_e_PROTO
+int ustrp__set_undef(struct Ustr_pool *, struct Ustr **, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__set_empty(void *p, struct Ustr **ps1)
+USTR_CONF_e_PROTO int ustrp__set_empty(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO
-int ustrp__set_buf(void *p, struct Ustr **ps1, const void *buf, size_t len)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_e_PROTO int ustrp__set(void *p,struct Ustr **ps1,const struct Ustr*s2)
+int ustrp__set_buf(struct Ustr_pool *, struct Ustr **, const void *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_e_PROTO
-int ustrp__set_subustr(void *p, struct Ustr **ps1, const struct Ustr *s2,
-                       size_t pos, size_t len)
+int ustrp__set(struct Ustr_pool *, struct Ustr **, const struct Ustr *)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO int ustrp__set_subustr(struct Ustr_pool *, struct Ustr **,
+                                         const struct Ustr *, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_e_PROTO
-int ustrp__set_rep_chr(void *p, struct Ustr **ps1, char chr, size_t len)
+int ustrp__set_rep_chr(struct Ustr_pool *, struct Ustr **, char, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 
 

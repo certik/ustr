@@ -16,7 +16,6 @@
 struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
  {2, /* ref bytes */
   {malloc, realloc, free}, /* ustr */
-  {ustr_pool_sys_malloc, ustr_pool_sys_realloc, ustr_pool_sys_free}, /* ustrp */
   USTR_FALSE,   /* has_size */
   USTR_FALSE}}; /* exact_bytes */
 
@@ -123,30 +122,6 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
       ret = USTR_TRUE;
     }
     break;
-
-    case USTR_CNTL_OPT_GET_MEMP:
-    {
-      struct Ustr_cntl_memp *val = va_arg(ap, struct Ustr_cntl_memp *);
-
-      val->pool_sys_malloc  = ustr__opts->ustrp.pool_sys_malloc;
-      val->pool_sys_realloc = ustr__opts->ustrp.pool_sys_realloc;
-      val->pool_sys_free    = ustr__opts->ustrp.pool_sys_free;
-      
-      ret = USTR_TRUE;
-    }
-    break;
-    
-    case USTR_CNTL_OPT_SET_MEMP:
-    {
-      const struct Ustr_cntl_memp *val = va_arg(ap, struct Ustr_cntl_memp *);
-
-      ustr__opts->ustrp.pool_sys_malloc  = val->pool_sys_malloc;
-      ustr__opts->ustrp.pool_sys_realloc = val->pool_sys_realloc;
-      ustr__opts->ustrp.pool_sys_free    = val->pool_sys_free;
-      
-      ret = USTR_TRUE;
-    }
-    break;    
 
 #if USTR_CONF_USE_MALLOC_CHECK
     case 666:

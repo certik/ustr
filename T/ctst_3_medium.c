@@ -158,6 +158,10 @@ int tst(void)
   ASSERT(ustr_cmp_subustr_eq(USTR1(\x4, "abcd"), s2, 1, 4));
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
   ASSERT(!ustr_setf_share(s2));
+  ASSERT( ustr_add_undef(&s2, 8));
+  ASSERT(ustr_len(s2) == (209 + 8));
+  ASSERT(ustr_cmp_subustr_eq(USTR1(\x4, "abcd"), s2, 1, 4));
+  ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - (6+8), 7));
   ustr_sc_free2(&s2, USTR(""));
   ASSERT(my_fmt(&s2, "abcd %.200d xyz", 42));
   ASSERT(s2);
@@ -271,7 +275,7 @@ int tst(void)
   ASSERT(ustr_enomem(s1));
   ASSERT(ustr_sized(s1));
   ASSERT(ustr_exact(s1));
-  
+
   return (EXIT_SUCCESS);
 }
 

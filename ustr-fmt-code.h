@@ -73,11 +73,13 @@ int ustr__retard_vfmt_ret(const char *fmt, va_list ap)
 #  define ustr__retard_vfmt_ret(x, y) (-1)
 # endif
 
-USTR_CONF_e_PROTO int ustrp__add_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
-                                          const char *fmt, va_list ap)
+USTR_CONF_e_PROTO
+int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
+                        const char *fmt, va_list ap)
     USTR__COMPILE_ATTR_NONNULL_L((2, 4)) USTR__COMPILE_ATTR_FMT(4, 0);
-USTR_CONF_i_PROTO int ustrp__add_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
-                                          const char *fmt, va_list ap)
+USTR_CONF_i_PROTO
+int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
+                        const char *fmt, va_list ap)
 { /* you might think we want to juse use ustr_wstr()
    * if ustr_size() - ustr_len() > 0 ... however the problem there is about
    * screwing up the data when we fail. Which we just don't do */
@@ -120,7 +122,7 @@ USTR_CONF_i_PROTO int ustrp__add_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
 USTR_CONF_I_PROTO
 int ustr_add_vfmt_lim(struct Ustr **ps1, size_t lim, const char *fmt,va_list ap)
 { return (ustrp__add_vfmt_lim(0, ps1, lim, fmt, ap)); }
-USTR_CONF_I_PROTO int ustrp_add_vfmt_lim(void *p, struct Ustrp **ps1,
+USTR_CONF_I_PROTO int ustrp_add_vfmt_lim(struct Ustr_pool *p,struct Ustrp **ps1,
                                          size_t lim, const char *fmt,va_list ap)
 { return (ustrp__add_vfmt_lim(p, USTR__PPTR(ps1), lim, fmt, ap)); }
 
@@ -137,8 +139,9 @@ int ustr_add_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
   return (ret);
 }
 
-USTR_CONF_I_PROTO int ustrp_add_fmt_lim(void *p, struct Ustrp **ps1, size_t lim,
-                                        const char *fmt, ...)
+USTR_CONF_I_PROTO
+int ustrp_add_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1, size_t lim,
+                      const char *fmt, ...)
 {
   va_list ap;
   int ret = -1;
@@ -153,8 +156,8 @@ USTR_CONF_I_PROTO int ustrp_add_fmt_lim(void *p, struct Ustrp **ps1, size_t lim,
 USTR_CONF_I_PROTO int ustr_add_vfmt(struct Ustr **ps1,const char*fmt,va_list ap)
 { return (ustr_add_vfmt_lim(ps1, 0, fmt, ap)); }
 
-USTR_CONF_I_PROTO
-int ustrp_add_vfmt(void *p, struct Ustrp **ps1, const char *fmt, va_list ap)
+USTR_CONF_I_PROTO int ustrp_add_vfmt(struct Ustr_pool *p, struct Ustrp **ps1,
+                                     const char *fmt, va_list ap)
 { return (ustrp_add_vfmt_lim(p, ps1, 0, fmt, ap)); }
 
 USTR_CONF_I_PROTO int ustr_add_fmt(struct Ustr **ps1, const char *fmt, ...)
@@ -170,7 +173,7 @@ USTR_CONF_I_PROTO int ustr_add_fmt(struct Ustr **ps1, const char *fmt, ...)
 }
 
 USTR_CONF_I_PROTO
-int ustrp_add_fmt(void *p, struct Ustrp **ps1, const char *fmt, ...)
+int ustrp_add_fmt(struct Ustr_pool *p, struct Ustrp **ps1, const char *fmt, ...)
 {
   va_list ap;
   int ret = -1;
@@ -183,12 +186,13 @@ int ustrp_add_fmt(void *p, struct Ustrp **ps1, const char *fmt, ...)
 }
 
 USTR_CONF_e_PROTO
-struct Ustr *ustrp__dupx_vfmt_lim(void *, size_t, size_t, int, int, size_t,
+struct Ustr *ustrp__dupx_vfmt_lim(struct Ustr_pool *,
+                                  size_t, size_t, int, int, size_t,
                                   const char *, va_list)
     USTR__COMPILE_ATTR_NONNULL_L((7)) USTR__COMPILE_ATTR_FMT(7, 0);
 USTR_CONF_i_PROTO
-struct Ustr *ustrp__dupx_vfmt_lim(void *p, size_t sz, size_t rbytes, int exact,
-                                  int emem, size_t lim,
+struct Ustr *ustrp__dupx_vfmt_lim(struct Ustr_pool *p, size_t sz, size_t rbytes,
+                                  int exact, int emem, size_t lim,
                                   const char *fmt, va_list ap)
 { /* NOTE: Copy and pasted so we don't have to allocate twice, just to get the
    * options */
@@ -228,8 +232,8 @@ struct Ustr *ustr_dupx_vfmt_lim(size_t sz, size_t rbytes, int exact,
                                 int emem,size_t lim,const char *fmt, va_list ap)
 { return (ustrp__dupx_vfmt_lim(0, sz, rbytes, exact, emem, lim, fmt, ap)); }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dupx_vfmt_lim(void *p, size_t sz, size_t rb, int exact,
-                                  int emem, size_t lim,
+struct Ustrp *ustrp_dupx_vfmt_lim(struct Ustr_pool *p, size_t sz, size_t rb,
+                                  int exact, int emem, size_t lim,
                                   const char *fmt, va_list ap)
 { return (USTRP(ustrp__dupx_vfmt_lim(p, sz, rb, exact, emem, lim, fmt, ap))); }
 
@@ -248,8 +252,9 @@ struct Ustr *ustr_dupx_fmt_lim(size_t sz, size_t rbytes, int exact,
 }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dupx_fmt_lim(void *p, size_t sz, size_t rbytes, int exact,
-                                 int emem, size_t lim, const char *fmt, ...)
+struct Ustrp *ustrp_dupx_fmt_lim(struct Ustr_pool *p, size_t sz, size_t rbytes,
+                                 int exact, int emem, size_t lim,
+                                 const char *fmt, ...)
                  
 {
   va_list ap;
@@ -268,8 +273,8 @@ struct Ustr *ustr_dupx_vfmt(size_t sz, size_t rbytes, int exact,
 { return (ustr_dupx_vfmt_lim(sz, rbytes, exact, emem, 0, fmt, ap)); }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dupx_vfmt(void *p, size_t sz, size_t rbytes, int exact,
-                              int emem, const char *fmt, va_list ap)
+struct Ustrp *ustrp_dupx_vfmt(struct Ustr_pool *p, size_t sz, size_t rbytes,
+                              int exact, int emem, const char *fmt, va_list ap)
 { return (ustrp_dupx_vfmt_lim(p, sz, rbytes, exact, emem, 0, fmt, ap)); }
 
 USTR_CONF_I_PROTO struct Ustr *ustr_dupx_fmt(size_t sz, size_t rbytes,int exact,
@@ -286,8 +291,8 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dupx_fmt(size_t sz, size_t rbytes,int exact,
 }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dupx_fmt(void *p, size_t sz, size_t rbytes, int exact,
-                             int emem, const char *fmt, ...)
+struct Ustrp *ustrp_dupx_fmt(struct Ustr_pool *p, size_t sz, size_t rbytes,
+                             int exact, int emem, const char *fmt, ...)
                  
 {
   va_list ap;
@@ -305,7 +310,8 @@ struct Ustr *ustr_dup_vfmt_lim(size_t lim, const char *fmt, va_list ap)
 { return (ustr_dupx_vfmt_lim(USTR__DUPX_DEF, lim, fmt, ap)); }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dup_vfmt_lim(void *p, size_t lim,const char *fmt,va_list ap)
+struct Ustrp *ustrp_dup_vfmt_lim(struct Ustr_pool *p, size_t lim,
+                                 const char *fmt, va_list ap)
 { return (ustrp_dupx_vfmt_lim(p, USTR__DUPX_DEF, lim, fmt, ap)); }
 
 USTR_CONF_I_PROTO
@@ -322,7 +328,8 @@ struct Ustr *ustr_dup_fmt_lim(size_t lim, const char *fmt, ...)
 }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dup_fmt_lim(void *p, size_t lim, const char *fmt, ...)
+struct Ustrp *ustrp_dup_fmt_lim(struct Ustr_pool *p, size_t lim,
+                                const char *fmt, ...)
                  
 {
   va_list ap;
@@ -339,7 +346,7 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup_vfmt(const char *fmt, va_list ap)
 { return (ustr_dupx_vfmt(USTR__DUPX_DEF, fmt, ap)); }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dup_vfmt(void *p, const char *fmt, va_list ap)
+struct Ustrp *ustrp_dup_vfmt(struct Ustr_pool *p, const char *fmt, va_list ap)
 { return (ustrp_dupx_vfmt(p, USTR__DUPX_DEF, fmt, ap)); }
 
 USTR_CONF_I_PROTO struct Ustr *ustr_dup_fmt(const char *fmt, ...)
@@ -354,7 +361,8 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup_fmt(const char *fmt, ...)
   return (ret);
 }
 
-USTR_CONF_I_PROTO struct Ustrp *ustrp_dup_fmt(void *p, const char *fmt, ...)
+USTR_CONF_I_PROTO
+struct Ustrp *ustrp_dup_fmt(struct Ustr_pool *p, const char *fmt, ...)
 {
   va_list ap;
   struct Ustrp *ret = USTRP_NULL;
@@ -367,11 +375,13 @@ USTR_CONF_I_PROTO struct Ustrp *ustrp_dup_fmt(void *p, const char *fmt, ...)
 }
 
 # ifdef USTR_SET_H
-USTR_CONF_e_PROTO int ustrp__set_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
-                                          const char *fmt, va_list ap)
+USTR_CONF_e_PROTO
+int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
+                        const char *fmt, va_list ap)
     USTR__COMPILE_ATTR_NONNULL_L((2, 4)) USTR__COMPILE_ATTR_FMT(4, 0);
-USTR_CONF_i_PROTO int ustrp__set_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
-                                          const char *fmt, va_list ap)
+USTR_CONF_i_PROTO
+int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
+                        const char *fmt, va_list ap)
 { /* NOTE: Copy and pasted so we can use ustrp_set_undef() */
   va_list nap;
   int rc = -1;
@@ -405,8 +415,9 @@ USTR_CONF_i_PROTO int ustrp__set_vfmt_lim(void *p, struct Ustr **ps1,size_t lim,
 USTR_CONF_I_PROTO int ustr_set_vfmt_lim(struct Ustr **ps1, size_t lim,
                                         const char *fmt, va_list ap)
 { return (ustrp__set_vfmt_lim(0, ps1, lim, fmt, ap)); }
-USTR_CONF_I_PROTO int ustrp_set_vfmt_lim(void *p,struct Ustrp **ps1, size_t lim,
-                                         const char *fmt, va_list ap)
+USTR_CONF_I_PROTO
+int ustrp_set_vfmt_lim(struct Ustr_pool *p,struct Ustrp **ps1, size_t lim,
+                       const char *fmt, va_list ap)
 { return (ustrp__set_vfmt_lim(p, USTR__PPTR(ps1), lim, fmt, ap)); }
 
 USTR_CONF_I_PROTO
@@ -423,7 +434,8 @@ int ustr_set_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
 }
 
 USTR_CONF_I_PROTO
-int ustrp_set_fmt_lim(void *p,struct Ustrp **ps1,size_t lim,const char*fmt, ...)
+int ustrp_set_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1, size_t lim,
+                      const char*fmt, ...)
 {
   va_list ap;
   int ret = USTR_FALSE;
@@ -439,7 +451,7 @@ USTR_CONF_I_PROTO int ustr_set_vfmt(struct Ustr **ps1,
                                     const char *fmt, va_list ap)
 { return (ustr_set_vfmt_lim(ps1, 0, fmt, ap)); }
 
-USTR_CONF_I_PROTO int ustrp_set_vfmt(void *p, struct Ustrp **ps1,
+USTR_CONF_I_PROTO int ustrp_set_vfmt(struct Ustr_pool *p, struct Ustrp **ps1,
                                      const char *fmt, va_list ap)
 { return (ustrp_set_vfmt_lim(p, ps1, 0, fmt, ap)); }
 
@@ -455,7 +467,7 @@ USTR_CONF_I_PROTO int ustr_set_fmt(struct Ustr **ps1, const char *fmt, ...)
   return (ret);
 }
 
-USTR_CONF_I_PROTO int ustrp_set_fmt(void *p, struct Ustrp **ps1,
+USTR_CONF_I_PROTO int ustrp_set_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
                                     const char *fmt, ...)
 {
   va_list ap;
@@ -514,8 +526,9 @@ int ustr_add_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
   return (USTR_TRUE);
 }
 
-USTR_CONF_I_PROTO int ustrp_add_fmt_lim(void *p, struct Ustrp **ps1, size_t lim,
-                                        const char *fmt, ...)
+USTR_CONF_I_PROTO
+int ustrp_add_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1, size_t lim,
+                      const char *fmt, ...)
 {
   char *tmp = 0;
   size_t os1len = 0;
@@ -595,7 +608,7 @@ USTR_CONF_I_PROTO int ustr_add_fmt(struct Ustr **ps1, const char *fmt, ...)
 }
 
 USTR_CONF_I_PROTO
-int ustrp_add_fmt(void *p, struct Ustrp **ps1, const char *fmt, ...)
+int ustrp_add_fmt(struct Ustr_pool *p, struct Ustrp **ps1, const char *fmt, ...)
 {
   char *tmp = 0;
   size_t os1len = 0;
@@ -673,8 +686,8 @@ struct Ustr *ustr_dupx_fmt_lim(size_t sz, size_t rbytes, int exact,
 }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dupx_fmt_lim(void *p, size_t sz, size_t rbytes, int exact,
-                                 int emem, const char *fmt, ...)
+struct Ustrp *ustrp_dupx_fmt_lim(struct Ustr_pool *p, size_t sz, size_t rbytes,
+                                 int exact, int emem, const char *fmt, ...)
 {
   struct Ustrp *s1 = USTRP_NULL;
   va_list ap;
@@ -746,7 +759,8 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup_fmt_lim(size_t lim,const char *fmt, ...)
 }
 
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_dup_fmt_lim(void *p, size_t lim, const char *fmt, ...)
+struct Ustrp *ustrp_dup_fmt_lim(struct Ustr_pool *p, size_t lim,
+                                const char *fmt, ...)
 {
   struct Ustrp *s1 = USTRP_NULL;
   va_list ap;
@@ -817,7 +831,8 @@ USTR_CONF_I_PROTO struct Ustr *ustr_dup_fmt(const char *fmt, ...)
   return (s1);
 }
 
-USTR_CONF_I_PROTO struct Ustrp *ustrp_dup_fmt(void *p, const char *fmt, ...)
+USTR_CONF_I_PROTO
+struct Ustrp *ustrp_dup_fmt(struct Ustr_pool *p, const char *fmt, ...)
 {
   struct Ustrp *s1 = USTRP_NULL;
   va_list ap;
@@ -886,7 +901,7 @@ int ustr_set_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
   return (USTR_TRUE);
 }
 
-USTR_CONF_I_PROTO int ustrp_set_fmt_lim(void *p, struct Ustrp **ps1,
+USTR_CONF_I_PROTO int ustrp_set_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1,
                                         size_t lim, const char *fmt, ...)
 { /* This version used even if we have va_copy(), due to ustr_set_undef() */
   va_list ap;
@@ -950,7 +965,7 @@ USTR_CONF_I_PROTO int ustr_set_fmt(struct Ustr **ps1, const char *fmt, ...)
   return (USTR_TRUE);
 }
 
-USTR_CONF_I_PROTO int ustrp_set_fmt(void *p, struct Ustrp **ps1,
+USTR_CONF_I_PROTO int ustrp_set_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
                                     const char *fmt, ...)
 { /* This version used even if we have va_copy(), due to ustr_set_undef() */
   va_list ap;

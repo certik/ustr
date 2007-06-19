@@ -5,12 +5,11 @@
   ustr_xi__embed_val_get;
   ustr_xi__ref_get;
 
-  ustr_pool_sys_malloc;
-  ustr_pool_sys_realloc;
-  ustr_pool_sys_free;
   ustr_pool_clear;
   ustr_pool_free;
-  ustr_pool_make;
+
+  ustr_pool_make_pool;
+  ustr_pool_make_subpool;
 
   ustr_assert_valid;
 
