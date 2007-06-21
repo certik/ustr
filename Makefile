@@ -84,7 +84,9 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
            tst_14_cmp  ctst_14_cmp \
           otst_14_cmp octst_14_cmp \
            tst_15_enomem  ctst_15_enomem \
-          otst_15_enomem octst_15_enomem
+          otst_15_enomem octst_15_enomem \
+           tst_16_parse  ctst_16_parse \
+          otst_16_parse octst_16_parse
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \
@@ -95,6 +97,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-fmt.h \
            ustr-io.h \
            ustr-main.h \
+           ustr-parse.h \
            ustr-set.h \
            ustr-spn.h \
            ustr-srch.h \
@@ -108,6 +111,7 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-io-internal.h \
              ustr-main-code.h \
              ustr-main-internal.h \
+             ustr-parse-code.h \
              ustr-set-code.h \
              ustr-set-internal.h \
              ustr-spn-code.h \
@@ -122,6 +126,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-fmt-dbg-code.c \
              ustr-io-dbg-code.c \
              ustr-main-dbg-code.c \
+             ustr-parse-dbg-code.c \
              ustr-spn-dbg-code.c \
              ustr-srch-dbg-code.c \
              ustr-utf8-dbg-code.c \
@@ -131,6 +136,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-fmt-opt-code.c \
              ustr-io-opt-code.c \
              ustr-main-opt-code.c \
+             ustr-parse-opt-code.c \
              ustr-set-opt-code.c \
              ustr-spn-opt-code.c \
              ustr-srch-opt-code.c \
@@ -163,6 +169,7 @@ LIB_SHARED_DBG = \
   ustr-fmt-code-so-dbg.o \
   ustr-io-code-so-dbg.o \
   ustr-main-code-so-dbg.o \
+  ustr-parse-code-so-dbg.o \
   ustr-set-code-so-dbg.o \
   ustr-spn-code-so-dbg.o \
   ustr-srch-code-so-dbg.o \
@@ -173,6 +180,7 @@ LIB_STATIC_DBG = \
   ustr-fmt-code-a-dbg.o \
   ustr-io-code-a-dbg.o \
   ustr-main-code-a-dbg.o \
+  ustr-parse-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
   ustr-srch-code-a-dbg.o \
@@ -184,6 +192,7 @@ LIB_SHARED_OPT = \
   ustr-fmt-code-so-opt.o \
   ustr-io-code-so-opt.o \
   ustr-main-code-so-opt.o \
+  ustr-parse-code-so-opt.o \
   ustr-set-code-so-opt.o \
   ustr-spn-code-so-opt.o \
   ustr-srch-code-so-opt.o \
@@ -194,6 +203,7 @@ LIB_STATIC_OPT = \
   ustr-fmt-code-a-opt.o \
   ustr-io-code-a-opt.o \
   ustr-main-code-a-opt.o \
+  ustr-parse-code-a-opt.o \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \
   ustr-srch-code-a-opt.o \

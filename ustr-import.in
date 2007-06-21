@@ -18,24 +18,25 @@ function usage
 {
   echo " Format: $0 [-d] [-d] [-c] [-b x] [-s] [-e] gdb | all | <section> ..." 1>&2
   echo "     List of options:" 1>&2
-  echo "         -d   = Turn debugging on, assert() trigger etc." 1>&2
-  echo "         -d   = Turn extra debugging on" 1>&2
-  echo "         -c   = Import/use .c files, instead of headers only" 1>&2
-  echo "         -b   = Specify default ref. bytes size: 0, 1, 2 or 4" 1>&2
-  echo "         -e   = Exact allocations used by default" 1>&2
-  echo "         -s   = Sized value included by default" 1>&2
+  echo "         -d    = Turn debugging on, assert() trigger etc." 1>&2
+  echo "         -d    = Turn extra debugging on" 1>&2
+  echo "         -c    = Import/use .c files, instead of headers only" 1>&2
+  echo "         -b    = Specify default ref. bytes size: 0, 1, 2 or 4" 1>&2
+  echo "         -e    = Exact allocations used by default" 1>&2
+  echo "         -s    = Sized value included by default" 1>&2
   echo "     List of sections:" 1>&2
-  echo "         b    = strcat() binary numbers in NBO format" 1>&2
-  echo "         cmp  = Comparing, strcmp() for Ustr's" 1>&2
-  echo "         cntl = Control options dynamically" 1>&2
-  echo "         fmt  = Formatted output, sprintf() for Ustr's" 1>&2
-  echo "         gdb  = Copy just the .gdbinit file to the local dir" 1>&2
-  echo "         io   = IO routines" 1>&2
-  echo "         main = The core, strcat() and delete for Ustr's" 1>&2
-  echo "         set  = strcpy() for Ustr's" 1>&2
-  echo "         spn  = Spanning, strspn() / strcspn() for Ustr's" 1>&2
-  echo "         srch = Searching, strchr() / strrchr() for Ustr's" 1>&2
-  echo "         utf8 = UTF8 routines" 1>&2
+  echo "         b     = strcat() binary numbers in NBO format" 1>&2
+  echo "         cmp   = Comparing, strcmp() for Ustr's" 1>&2
+  echo "         cntl  = Control options dynamically" 1>&2
+  echo "         fmt   = Formatted output, sprintf() for Ustr's" 1>&2
+  echo "         gdb   = Copy just the .gdbinit file to the local dir" 1>&2
+  echo "         io    = IO routines" 1>&2
+  echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
+  echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
+  echo "         set   = strcpy() for Ustr's" 1>&2
+  echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
+  echo "         srch  = Searching, strchr() / strrchr() for Ustr's" 1>&2
+  echo "         utf8  = UTF8 routines" 1>&2
   echo "" 1>&2
   echo "     Ustr Version: $VERS_FULL" 1>&2
   exit 1
@@ -75,6 +76,7 @@ cntl=false
 fmt=false
 io=false
 main=false
+parse=false
 set=false
 spn=false
 srch=false
@@ -92,6 +94,7 @@ for i in $@; do
     gdb)  gdb=true;                       ;;
     io)   io=true;              main=true ;;
     main)                       main=true ;;
+    parse) parse=true;          main=true ;;
     set)  set=true;             main=true ;;
     spn)  spn=true;  srch=true; main=true ;;
     srch) srch=true;            main=true ;;
@@ -109,6 +112,7 @@ if $all; then
   fmt=true
   io=true
   main=true
+  parse=true
   set=true
   spn=true
   srch=true
@@ -166,6 +170,7 @@ if $cntl; then
 fi
 
 # conf is generated from scratch
+copy compiler
 
 if $fmt; then
   copy fmt
@@ -175,8 +180,11 @@ if $io; then
   copy io
 fi
 
-copy compiler
 copy main
+
+if $parse; then
+  copy parse
+fi
 
 if $set; then
   copy set
@@ -409,6 +417,10 @@ fi
 
 if $io; then
   echo '#include "ustr-io.h"' >> $outname
+fi
+
+if $parse; then
+  echo '#include "ustr-parse.h"'  >> $outname
 fi
 
 if $srch; then

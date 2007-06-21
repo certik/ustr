@@ -63,7 +63,18 @@ int cescape_decode(Ustr **ps1)
         case 'r':  ++src; *dst++ = '\r'; break;
         case 't':  ++src; *dst++ = '\t'; break;
         case '\\': ++src; *dst++ = '\\'; break;
-          
+
+        case 'o':
+        case 'O':
+          if ((len < 1) || !isdigit((unsigned char)src[1]))
+          {
+            *dst++ = '\\';
+            goto normal;
+          }
+          --len; ++src;
+
+          /* FALL THROUGH */
+
         case '0': case '1': case '2': case '3':
         case '4': case '5': case '6': case '7':
         {

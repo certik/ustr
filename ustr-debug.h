@@ -12,12 +12,13 @@
 #endif
 
 #include "ustr-main.h"
+#include "ustr-b.h"
+#include "ustr-cmp.h"
 #include "ustr-set.h"
 #include "ustr-fmt.h"
-#include "ustr-srch.h"
-#include "ustr-cmp.h"
-#include "ustr-b.h"
 #include "ustr-io.h"
+#include "ustr-parse.h"
+#include "ustr-srch.h"
 #include "ustr-utf8.h"
 #include "ustr-spn.h"
 

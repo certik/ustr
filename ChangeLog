@@ -1,3 +1,15 @@
+2007-06-20  James Antill  <james@and.org>
+
+	* ustr-parse-code.h (ustr_parse_uintmaxx): Added function.
+	(ustr_parse_intmax, ustr_parse_intmax): Added functions.
+	(ustr_parse_ulongx): Added function.
+	(ustr_parse_long, ustr_parse_long): Added functions.
+	(ustr_parse_int, ustr_parse_int): Added functions.
+	(ustr_parse_short, ustr_parse_short): Added functions.
+
+	* examples/netstr.c (cescape_decode): Added new style python octal
+	escapes.
+
 2007-06-18  James Antill  <james@and.org>
 
 	* Makefile (CFLG_LIB_OPT): Remove USTR_DEBUG from CFLG_LIB_OPT

@@ -15,9 +15,6 @@ struct ustr__utf8_interval
 #if ! USTR_CONF_HAVE_STDINT_H
 # define USTR__UTF8_WCHAR unsigned long
 #else
-# ifndef USTR_B_H /* stdint.h already included */
-#  include <stdint.h> /* uint_*_t */
-# endif
 # define USTR__UTF8_WCHAR uint_least32_t
 #endif
 

@@ -15,8 +15,6 @@
     esp. getfile/putfile as they can involve multi operations.
 
  ADD
- ustr_parse_* (numbers, with seperators ... ala. vstr)
-
  ustr_cmp_case*?
 
  ustr_tolower / toupper / reverse ?

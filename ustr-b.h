@@ -5,7 +5,6 @@
 #include "ustr-main.h"
 
 #if USTR_CONF_HAVE_STDINT_H
-#include <stdint.h> /* uint_*_t */
 
 /* ---------------- add ---------------- */
 USTR_CONF_EI_PROTO int ustr_add_b_uint16(struct Ustr **, uint_least16_t)
