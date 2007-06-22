@@ -11,9 +11,12 @@ fi
 
 sort libustr.ver > /tmp/libustr.ver.sort
 tr -d '; ' < /tmp/libustr.ver.sort  > /tmp/ustr.libver.sort.tr
+egrep -v '^$' < /tmp/ustr.libver.sort.tr > /tmp/ustr.libver.sort.tr.grepv
 
-./scripts/list_functions_src.pl x | sort > /tmp/ustr.gen.sort
 
-tr -d '()' < /tmp/ustr.gen.sort > /tmp/ustr.gen.sort.tr
+./scripts/list_functions_src.pl | sort > /tmp/ustr.gen.sort
 
-diff -bBu /tmp/ustr.libver.sort.tr /tmp/ustr.gen.sort.tr
+tr -d '() ' < /tmp/ustr.gen.sort > /tmp/ustr.gen.sort.tr
+
+# -Bb doesn't work *sighs*
+diff -u /tmp/ustr.libver.sort.tr.grepv /tmp/ustr.gen.sort.tr

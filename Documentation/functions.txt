@@ -115,43 +115,6 @@ Function: USTR4()
  the read-only string can be upto 2**32 - 1 bytes in length.
 
 
-Function: USTR8()
- Returns: Ustr string
- Type: struct Ustr *
-
- Parameter[1]: Encoded 8th byte of number of the length of Ustr string
- Type[1]: symbol
-
- Parameter[2]: Encoded 7th byte of number of the length of Ustr string
- Type[2]: symbol
-
- Parameter[3]: Encoded 6th byte of number of the length of Ustr string
- Type[3]: symbol
-
- Parameter[4]: Encoded 5st byte of number of the length of Ustr string
- Type[4]: symbol
-
- Parameter[5]: Encoded 4th byte of number of the length of Ustr string
- Type[5]: symbol
-
- Parameter[6]: Encoded 3rd byte of number of the length of Ustr string
- Type[6]: symbol
-
- Parameter[7]: Encoded 2nd byte of number of the length of Ustr string
- Type[7]: symbol
-
- Parameter[8]: Encoded 1st byte of number of the length of Ustr string
- Type[8]: symbol
-
- Parameter[9]: Data for Ustr string
- Type[9]: const char[]
-
- Explanation:
-
-  This function works in the same way as USTR1() but takes eight length bytes,
- so the read-only string can be upto 2**64 - 1 bytes in length.
-
-
 Function: USTRP1()
  Returns: Ustr string
  Type: struct Ustr *
@@ -208,41 +171,6 @@ Function: USTRP4()
 
   This function works like USTR2(), but returns a Ustrp instead.
 
-
-Function: USTRP8()
- Returns: Ustrp string
- Type: struct Ustrp *
-
- Parameter[1]: Encoded 8th byte of number of the length of Ustrp string
- Type[1]: symbol
-
- Parameter[2]: Encoded 7th byte of number of the length of Ustrp string
- Type[2]: symbol
-
- Parameter[3]: Encoded 6th byte of number of the length of Ustrp string
- Type[3]: symbol
-
- Parameter[4]: Encoded 5st byte of number of the length of Ustrp string
- Type[4]: symbol
-
- Parameter[5]: Encoded 4th byte of number of the length of Ustrp string
- Type[5]: symbol
-
- Parameter[6]: Encoded 3rd byte of number of the length of Ustrp string
- Type[6]: symbol
-
- Parameter[7]: Encoded 2nd byte of number of the length of Ustrp string
- Type[7]: symbol
-
- Parameter[8]: Encoded 1st byte of number of the length of Ustrp string
- Type[8]: symbol
-
- Parameter[9]: Data for Ustrp string
- Type[9]: const char[]
-
- Explanation:
-
-  This function works like USTR8(), but returns a Ustrp instead.
 
 
 Section: Creating fixed Ustr functions
@@ -445,8 +373,695 @@ Function: ustr_add_undef()
  be writable. Or it'll return USTR_FALSE (zero) on failure.
 
 
+Function: ustr_add_buf()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const void *
+ Type[2]:  const void *
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_cstr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const char *
+ Type[2]:  const char *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const struct Ustr *
+ Type[2]:  const struct Ustr *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_subustr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const struct Ustr *
+ Type[2]:  const struct Ustr *
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+ Parameter[4]:  size_t
+ Type[4]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_rep_chr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  char
+ Type[2]:  char
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Adding formatted data to Ustr functions
+Function: ustr_add_vfmt_lim()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+ Parameter[3]:  const char *
+ Type[3]:  const char *
+
+ Parameter[4]:  va_list
+ Type[4]:  va_list
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_vfmt()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const char *
+ Type[2]:  const char *
+
+ Parameter[3]:  va_list
+ Type[3]:  va_list
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_fmt()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const char *
+ Type[2]:  const char *
+
+ Parameter[3]:  ...
+ Type[3]:  ...
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_fmt_lim()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+ Parameter[3]: const char *
+ Type[3]: const char *
+
+ Parameter[4]:  ...
+ Type[4]:  ...
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Adding binary data to Ustr functions
+Function: ustr_add_b_uint16()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  uint_least16_t
+ Type[2]:  uint_least16_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_b_uint32()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+ Parameter[2]:  uint_least32_t
+ Type[2]:  uint_least32_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_add_b_uint64()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  uint_least64_t
+ Type[2]:  uint_least64_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+
+Section: Parsing binary data from Ustr
+Function: ustr_parse_b_uint16()
+ Returns: uint_least16_t 
+ Type: uint_least16_t 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_b_uint32()
+ Returns: uint_least32_t 
+ Type: uint_least32_t 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_b_uint64()
+ Returns: uint_least64_t 
+ Type: uint_least64_t 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Ustr IO helpers
+Function: ustr_io_get()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+ Parameter[4]:  size_t *
+ Type[4]:  size_t *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_getfile()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_getfilename()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const char *
+ Type[2]:  const char *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_getline()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_put()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_putline()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_putfile()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_putfileline()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  FILE *
+ Type[2]:  FILE *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_io_putfilename()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const char *
+ Type[2]:  const char *
+
+ Parameter[3]:  const char *
+ Type[3]:  const char *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Dealing with UTF-8 in a Ustr
+Function: ustr_utf8_valid()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_len()
+ Returns: size_t 
+ Type: size_t 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_width()
+ Returns: ssize_t 
+ Type: ssize_t 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_chars2bytes()
+ Returns: size_t 
+ Type: size_t 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+ Parameter[4]:  size_t *
+ Type[4]:  size_t *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_bytes2chars()
+ Returns: size_t 
+ Type: size_t 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+ Parameter[4]:  size_t *
+ Type[4]:  size_t *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Parsing integer numbers from a Ustr
+Function: ustr_parse_uintmaxx()
+ Returns: uintmax_t 
+ Type: uintmax_t 
+
+ Parameter[1]: Ustr
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: flags
+ Type[2]: unsigned int
+
+ Parameter[3]: min
+ Type[3]: uintmax_t
+
+ Parameter[4]: max
+ Type[4]:  uintmax_t
+
+ Parameter[5]: seperator
+ Type[5]:  char
+
+ Parameter[6]: error number
+ Type[6]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_ulongx()
+ Returns: unsigned long 
+ Type: unsigned long 
+
+ Parameter[1]: Ustr
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: flags
+ Type[2]:  unsigned int
+
+ Parameter[3]: min val
+ Type[3]: unsigned long
+
+ Parameter[4]: max val
+ Type[4]:  unsigned long
+
+ Parameter[5]: seperator
+ Type[5]: char
+
+ Parameter[6]: error number
+ Type[6]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_uintmax()
+ Returns: uintmax_t 
+ Type: uintmax_t 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_intmax()
+ Returns: intmax_t 
+ Type: intmax_t 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_ulong()
+ Returns: unsigned long 
+ Type: unsigned long 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]: unsigned int *
+ Type[3]: unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_long()
+ Returns: long 
+ Type: long 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_uint()
+ Returns: unsigned int 
+ Type: unsigned int 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_int()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_ushort()
+ Returns: unsigned short 
+ Type: unsigned short 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: unsigned int
+ Type[2]: unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_parse_short()
+ Returns: short 
+ Type: short 
+
+ Parameter[1]: const struct Ustr *
+ Type[1]: const struct Ustr *
+
+ Parameter[2]:  unsigned int
+ Type[2]:  unsigned int
+
+ Parameter[3]:  unsigned int *
+ Type[3]:  unsigned int *
+
+Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
 Section: Simple Ustr pool API
-Function: ustr_pool_make()
+Function: ustr_pool_make_pool()
  Returns: Ustr pool object
  Type: struct Ustr_pool *
 
@@ -455,7 +1070,22 @@ Function: ustr_pool_make()
 
  Explanation:
 
-  This allocates a new pool, from the simple pool API.
+  This allocates a new pool.
+
+Function: ustr_pool_make_subpool()
+ Returns: struct Ustr_pool *
+ Type: struct Ustr_pool *
+
+ Parameter[1]: struct Ustr_pool *
+ Type[1]: struct Ustr_pool *
+
+Explanation:
+
+  This allocates a new pool as a child of the passed in pool (Parameter[1]),
+ The pool can be freed and cleared independantly of the parent pool however
+ free and clear operations on the parent pool are automatically applied to all
+ child pools.
+
 
 Function: ustr_pool_free()
  Returns: Nothing
@@ -466,7 +1096,11 @@ Function: ustr_pool_free()
 
  Explanation:
 
-  This deallocates a new pool, from the simple pool API.
+  This deallocates a pool, and all sub-pools.
+
+ Note:
+
+  This also operates on all sub-pools.
 
 
 Function: ustr_pool_clear()
@@ -479,7 +1113,11 @@ Function: ustr_pool_clear()
  Explanation:
 
   This allows all the data in the pool to be reused, it may also free some/all
- of the data in the pool, from the simple pool API.
+ of the data in the pool, from the pool API.
+
+ Note:
+
+  This also operates on all sub-pools.
 
 
 Function: ustr_pool_sys_malloc()

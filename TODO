@@ -1,5 +1,6 @@
 
  TST
+ ---
  bad mb strings for fmt*.
 
  8byte refs
@@ -10,12 +11,18 @@
 
  utf8 from: http://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt
 
+
  FIX
+ ---
  ustr_io_* ... unlocked IO for get/put/etc.? ... 
     esp. getfile/putfile as they can involve multi operations.
     needs autoconf_foo_unlocked
 
+
  ADD
+ ---
+ DOCS!
+
  ustr_cmp_case*?
 
  ustr_tolower / toupper ?

@@ -368,6 +368,28 @@
   ustrp_utf8_cspn_fwd;
   ustrp_utf8_cspn_rev;
 
+  ustr_parse_int;
+  ustr_parse_intmax;
+  ustr_parse_long;
+  ustr_parse_short;
+  ustr_parse_uint;
+  ustr_parse_uintmax;
+  ustr_parse_uintmaxx;
+  ustr_parse_ulong;
+  ustr_parse_ulongx;
+  ustr_parse_ushort;
+
+  ustrp_parse_int;
+  ustrp_parse_intmax;
+  ustrp_parse_long;
+  ustrp_parse_short;
+  ustrp_parse_uint;
+  ustrp_parse_uintmax;
+  ustrp_parse_uintmaxx;
+  ustrp_parse_ulong;
+  ustrp_parse_ulongx;
+  ustrp_parse_ushort;
+
     local:
   ustr__*;
   ustrp__*;
