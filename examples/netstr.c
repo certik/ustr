@@ -2,6 +2,7 @@
 
 #include <getopt.h>
 #include <errno.h>
+#include <ctype.h>
 
 static int combine = USTR_FALSE;
 static int interp  = USTR_FALSE;
@@ -20,12 +21,12 @@ static void usage(const char *prog_name, int xcode)
            -i = Interpret arguments from C-escaping.\n\
            -h = Print help.\n\
            -V = Print version.\n\
-", prog_name);
+", prog_name ? prog_name : "netstr");
   
   exit (xcode);
 }
 
-int cescape_decode(Ustr **ps1)
+static int cescape_decode(Ustr **ps1)
 { /* convert \n \t etc. into their correct bytes */
   size_t len = 0;
   char  *src = NULL;
@@ -166,7 +167,7 @@ int main(int argc, char *argv[])
   int optchar = -1;
   
   if (!argc)
-    exit (EXIT_FAILURE);
+    usage(NULL, EXIT_FAILURE);
   
   if ((prog_name = strrchr(argv[0], '/')))
     ++prog_name;

@@ -275,7 +275,39 @@ int tst(void)
   ASSERT(ustr_enomem(s1));
   ASSERT(ustr_sized(s1));
   ASSERT(ustr_exact(s1));
+  ASSERT(ustr_setf_enomem_clr(s1));
 
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x8, "dcba4321"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x7, "234abcd"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x6, "cba432"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x5, "34abc"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x4, "ba43"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x3, "4ab"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x2, "a4"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x1, "a"));
+  ASSERT(ustr_del(&s1, 1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR(""));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT(ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR(""));  
+  
   return (EXIT_SUCCESS);
 }
 

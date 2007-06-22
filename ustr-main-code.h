@@ -1663,3 +1663,31 @@ USTR_CONF_I_PROTO
 int ustrp_sc_ensure_owner(struct Ustr_pool *p, struct Ustrp **ps1)
 { return (ustrp__sc_ensure_owner(p, USTR__PPTR(ps1))); }
 
+USTR_CONF_i_PROTO int ustrp__sc_reverse(struct Ustr_pool *p, struct Ustr **ps1)
+{
+  size_t clen;
+  size_t len;
+  char *ptr;
+  
+  if (!ustrp__sc_ensure_owner(p, ps1))
+    return (USTR_FALSE);
+
+  clen = len = ustr_len(*ps1);
+  ptr  = ustr_wstr(*ps1);
+  while (len > (clen / 2))
+  {
+    char tmp = ptr[clen - len];
+
+    ptr[clen - len] = ptr[len - 1];
+    ptr[ len - 1]   = tmp;
+    
+    --len;
+  }
+
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_sc_reverse(struct Ustr **ps1)
+{ return (ustrp__sc_reverse(0, ps1)); }
+USTR_CONF_I_PROTO int ustrp_sc_reverse(struct Ustr_pool *p, struct Ustrp **ps1)
+{ return (ustrp__sc_reverse(p, USTR__PPTR(ps1))); }
+

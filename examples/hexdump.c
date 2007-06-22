@@ -147,7 +147,6 @@ int main(int argc, char *argv[])
   const char *prog_name = NULL;
   Ustr *io = NULL;
   int scan = 0;
-  size_t total = 0;
   int optchar = -1;
   
   if (!argc)

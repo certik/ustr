@@ -7,7 +7,7 @@ RANLIB = ranlib
 WARNS = -W -Wall -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Wno-format-zero-length -Wformat-nonliteral -Wformat-security # -Wfloat-equal -- no floats
 
 # DEF_CFLAGS = -Os -g
-DEF_CFLAGS = -O2 -g
+DEF_CFLAGS = -O2 -g # $(WARNS)
 
 CFLG_LFS = -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 
@@ -49,7 +49,7 @@ LDFLAGS = ../libustr.a
 
 # This is a simple makefile for example programs...
 
-ALL = hello_world netstr hexdump
+ALL = hello_world netstr hexdump nums
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
@@ -110,5 +110,8 @@ netstr: netstr.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 hexdump: hexdump.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
+nums: nums.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 

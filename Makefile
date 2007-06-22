@@ -240,12 +240,13 @@ install: all ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)/usr/lib/pkgconfig ustr.pc ustr-debug.pc
 
 clean:
-		rm -f $(LIB_SHARED) $(LIB_STATIC)
-		rm -f $(TST_ALL)
-		rm -f *.o
-		rm -f perf-sizes perf-sizes32 perf-sizes64
-		rm -f *.gcda *.gcno *.gcov
-		rm -f tst_*.c ctst_*.c otst_*.c octst_*.c
+		@echo Cleanup
+		@rm -f $(LIB_SHARED) $(LIB_STATIC)
+		@rm -f $(TST_ALL)
+		@rm -f *.o
+		@rm -f perf-sizes perf-sizes32 perf-sizes64
+		@rm -f *.gcda *.gcno *.gcov
+		@rm -f tst_*.c ctst_*.c otst_*.c octst_*.c
 
 distclean: clean
 		rm -f ustr-import

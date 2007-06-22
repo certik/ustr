@@ -365,6 +365,18 @@ int tst(void)
 
   sp1 = NULL;
   ustrp_sc_free_shared(pool, &sp1);
-  
+
+  ustr_sc_free2(&s1, USTR1(\x8, "12345678"));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s1, USTR1(\x8, "12345678"));
+    ASSERT(!ustr_sc_reverse(&s1));
+  }
+  ASSERT( ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x8, "87654321"));
+
   return (EXIT_SUCCESS);
 }

@@ -1,3 +1,16 @@
+2007-06-21  James Antill  <james@and.org>
+
+	* ustr-parse-code.h (ustr_parse_uintmaxx): Fixup overflow to work the
+	same with or without the overflow error numbers.
+
+	* ustr-parse-code.h (ustr_parse_uintmaxx): Add num_min argument to
+	cleanup negative numbers support.
+
+	* examples/nums.c (main): Added example program, uses ustr_parse* and
+	ustr_sc_reverse().
+
+	* ustr-main-code.h (ustr_sc_reverse): Added function.
+
 2007-06-20  James Antill  <james@and.org>
 
 	* ustr-parse-code.h (ustr_parse_uintmaxx): Added function.

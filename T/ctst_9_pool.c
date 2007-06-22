@@ -436,6 +436,44 @@ int tst(void)
   ASSERT(ustrp_add_cstr(pool, &sp1, "abcd"));
   ASSERT_PEQ(USTRP1(\xc, "1234567zabcd"), sp1);
 
+  ustrp_sc_free2(pool, &sp1, ustrp_dupx_cstr(pool, 1, 1, 1, 1, "1234abcd"));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "1234abcd"));
+  ASSERT(ustrp_enomem(sp1));
+  ASSERT(ustrp_sized(sp1));
+  ASSERT(ustrp_exact(sp1));
+  ASSERT(ustrp_setf_enomem_clr(sp1));
+
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "dcba4321"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x7, "234abcd"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x6, "cba432"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x5, "34abc"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x4, "ba43"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x3, "4ab"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x2, "a4"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP1(\x1, "a"));
+  ASSERT(ustrp_del(pool, &sp1, 1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP(""));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT(ustrp_sc_reverse(pool, &sp1));
+  ASSERT_PEQ(sp1, USTRP(""));  
+  
   ustr_pool_free(pool);
   ustr_pool_free(NULL);
   

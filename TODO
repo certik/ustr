@@ -13,11 +13,12 @@
  FIX
  ustr_io_* ... unlocked IO for get/put/etc.? ... 
     esp. getfile/putfile as they can involve multi operations.
+    needs autoconf_foo_unlocked
 
  ADD
  ustr_cmp_case*?
 
- ustr_tolower / toupper / reverse ?
+ ustr_tolower / toupper ?
 
  ustr_utf8_reverse
 
