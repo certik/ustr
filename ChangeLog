@@ -1,3 +1,22 @@
+2007-06-23  James Antill  <james@and.org>
+
+	* scripts/gen_doc_templ_from_protos.pl: Add ustrp functions back in.
+
+	* ustr-cmp.h (ustr_cmp_case_eq): Added function.
+	(ustr_cmp_case_subustr_eq): Added function.
+	(ustr_cmp_case_cstr_eq): Added function.
+	(ustr_cmp_case_prefix_eq): Added function.
+	(ustr_cmp_case_prefix_cstr_eq): Added function.
+	(ustr_cmp_case_suffix_eq): Added function.
+	(ustr_cmp_case_suffix_cstr_eq): Added function.
+	(ustr_cmp_case_cstr): Added function.
+
+	* ustr-cmp-code.h (ustr_cmp_case_buf): Added function.
+	(ustr_cmp_case): Added function.
+	(ustr_cmp_case_subustr): Added function.
+	(ustr_cmp_case_prefix_buf_eq): Added function.
+	(ustr_cmp_case_suffix_buf_eq): Added function.
+
 2007-06-22  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_sc_tolower): Added function.

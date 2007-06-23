@@ -378,5 +378,35 @@ int tst(void)
   ASSERT( ustr_sc_reverse(&s1));
   ASSERT_EQ(s1, USTR1(\x8, "87654321"));
 
+  ustr_sc_free2(&s1, USTR1(\x34, "abcdefghijklmnopqrstuvwxyz"
+                                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s1, USTR1(\x34, "abcdefghijklmnopqrstuvwxyz"
+                              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+    ASSERT(!ustr_sc_tolower(&s1));
+  }
+  ASSERT( ustr_sc_tolower(&s1));
+  ASSERT_EQ(s1, USTR1(\x34, "abcdefghijklmnopqrstuvwxyz"
+                            "abcdefghijklmnopqrstuvwxyz"));
+
+  ustr_sc_free2(&s1, USTR1(\x34, "abcdefghijklmnopqrstuvwxyz"
+                                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s1, USTR1(\x34, "abcdefghijklmnopqrstuvwxyz"
+                              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+    ASSERT(!ustr_sc_toupper(&s1));
+  }
+  ASSERT( ustr_sc_toupper(&s1));
+  ASSERT_EQ(s1, USTR1(\x34, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
   return (EXIT_SUCCESS);
 }

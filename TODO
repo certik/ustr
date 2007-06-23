@@ -23,9 +23,5 @@
  ---
  DOCS!
 
- ustr_cmp_case*?
-
- ustr_tolower / toupper ?
-
  ustr_utf8_reverse
 

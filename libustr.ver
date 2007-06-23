@@ -152,6 +152,8 @@
   ustr_sc_free2;
   ustr_sc_free_shared;
   ustr_sc_reverse;
+  ustr_sc_tolower;
+  ustr_sc_toupper;
 
   ustrp_sc_del;
   ustrp_sc_dupx;
@@ -161,6 +163,8 @@
   ustrp_sc_free2;
   ustrp_sc_free_shared;
   ustrp_sc_reverse;
+  ustrp_sc_tolower;
+  ustrp_sc_toupper;
 
   ustr_add_fmt;
   ustr_add_fmt_lim;
@@ -199,6 +203,20 @@
   ustr_cmp;
   ustr_cmp_buf;
   ustr_cmp_buf_eq;
+  ustr_cmp_case;
+  ustr_cmp_case_buf;
+  ustr_cmp_case_buf_eq;
+  ustr_cmp_case_cstr;
+  ustr_cmp_case_cstr_eq;
+  ustr_cmp_case_eq;
+  ustr_cmp_case_prefix_buf_eq;
+  ustr_cmp_case_prefix_cstr_eq;
+  ustr_cmp_case_prefix_eq;
+  ustr_cmp_case_subustr;
+  ustr_cmp_case_subustr_eq;
+  ustr_cmp_case_suffix_buf_eq;
+  ustr_cmp_case_suffix_cstr_eq;
+  ustr_cmp_case_suffix_eq;
   ustr_cmp_cstr;
   ustr_cmp_cstr_eq;
   ustr_cmp_eq;
@@ -218,6 +236,20 @@
   ustrp_cmp;
   ustrp_cmp_buf;
   ustrp_cmp_buf_eq;
+  ustrp_cmp_case;
+  ustrp_cmp_case_buf;
+  ustrp_cmp_case_buf_eq;
+  ustrp_cmp_case_cstr;
+  ustrp_cmp_case_cstr_eq;
+  ustrp_cmp_case_eq;
+  ustrp_cmp_case_prefix_buf_eq;
+  ustrp_cmp_case_prefix_cstr_eq;
+  ustrp_cmp_case_prefix_eq;
+  ustrp_cmp_case_subustrp;
+  ustrp_cmp_case_subustrp_eq;
+  ustrp_cmp_case_suffix_buf_eq;
+  ustrp_cmp_case_suffix_cstr_eq;
+  ustrp_cmp_case_suffix_eq;
   ustrp_cmp_cstr;
   ustrp_cmp_cstr_eq;
   ustrp_cmp_eq;

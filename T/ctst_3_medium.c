@@ -308,6 +308,17 @@ int tst(void)
   ASSERT(ustr_sc_reverse(&s1));
   ASSERT_EQ(s1, USTR(""));  
   
+  ustr_sc_free2(&s1, ustr_dupx_cstr(1, 1, 1, 1, "aBcDeFgHiJ"));
+  ASSERT(ustr_sc_tolower(&s1));
+  ASSERT_EQ(s1, USTR1(\xa, "abcdefghij"));
+  ASSERT(ustr_sc_toupper(&s1));
+  ASSERT_EQ(s1, USTR1(\xa, "ABCDEFGHIJ"));
+  ustr_sc_free2(&s1, ustr_dupx_cstr(1, 1, 1, 1, "aBcDeFgHiJ"));
+  ASSERT(ustr_sc_toupper(&s1));
+  ASSERT_EQ(s1, USTR1(\xa, "ABCDEFGHIJ"));
+  ASSERT(ustr_sc_tolower(&s1));
+  ASSERT_EQ(s1, USTR1(\xa, "abcdefghij"));
+  
   return (EXIT_SUCCESS);
 }
 
