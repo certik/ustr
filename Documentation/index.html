@@ -571,7 +571,7 @@ struct Simple_str
 </p>
 
 <pre class="c2html">
-<span class="char">char</span> buf_store[1024];
+<span class="char">char</span> buf_store[USTR_SIZE_FIXED(1024)];
 Ustr *s1 = USTR_SC_INIT_AUTO(buf_store, <span class="false">FALSE</span>, <span class="num0">0</span>);
 </pre>
 
@@ -742,7 +742,7 @@ if (ustr_ro(s2))     <span class="comment">/* This is  TRUE */</span>
     <address><a href="mailto:james-web@and.org">James Antill</a></address>
 <!-- Created: Thu May 10 02:10:59 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Sat May 19 02:31:57 EDT 2007
+Last modified: Sat Jun 23 11:29:00 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>

@@ -1,5 +1,16 @@
 2007-06-23  James Antill  <james@and.org>
 
+	* ustr-main.h (USTR_CONF_COMPILE_USE_INLINE): Added conf. so we can
+	compile without inline, users only atm.
+
+	* ustr-set.h (USTR_SET_OBJ): Added macro.
+
+	* ustr-main.h (USTR_SIZE_FIXED): Added macro for sizing fixed Ustr's.
+	(USTR_BEG_FIXED8): Added macro.
+	(USTR_ADD_OBJ): Added macro.
+	(USTR_DUP_OBJ): Added macro.
+	(USTR_DUPX_OBJ): Added macro.
+
 	* scripts/gen_doc_templ_from_protos.pl: Add ustrp functions back in.
 
 	* ustr-cmp.h (ustr_cmp_case_eq): Added function.

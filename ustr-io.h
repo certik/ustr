@@ -61,6 +61,7 @@ int ustrp_io_putfilename(void *, struct Ustrp **, const char *, const char *)
 # include "ustr-io-code.h"
 #endif
 
+#if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO int ustr_io_putfile(struct Ustr **ps1, FILE *fp)
 { return (ustr_io_put(ps1, fp, ustr_len(*ps1))); }
 USTR_CONF_II_PROTO int ustr_io_putfileline(struct Ustr **ps1, FILE *fp)
@@ -70,5 +71,6 @@ USTR_CONF_II_PROTO int ustrp_io_putfile(void *p, struct Ustrp **ps1, FILE *fp)
 { return (ustrp_io_put(p, ps1, fp, ustrp_len(*ps1))); }
 USTR_CONF_II_PROTO int ustrp_io_putfileline(void *p,struct Ustrp **ps1,FILE *fp)
 { return (ustrp_io_putline(p, ps1, fp, ustrp_len(*ps1))); }
+#endif
 
 #endif

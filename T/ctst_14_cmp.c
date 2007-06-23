@@ -112,7 +112,7 @@ int tst(void)
   
   ASSERT(!ustr_cmp_case_cstr(&sp1->s, "abcd"));
   ASSERT( ustr_cmp_case_cstr_eq(&sp1->s, "aBcD"));
-  ASSERT( ustr_cmp_case_eq(&sp1->s, USTRP1(\4, "aBCd")));
+  ASSERT( ustr_cmp_case_eq(&sp1->s, USTR1(\4, "aBCD")));
   ASSERT( ustr_cmp_case_cstr(&sp2->s, "abcD") < 0);
   ASSERT( ustr_cmp_case_cstr(&sp3->s, "Abcd") > 0);
   ASSERT( ustr_cmp_case_cstr(&sp1->s, ".xyz") > 0);

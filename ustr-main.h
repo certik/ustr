@@ -92,6 +92,10 @@
 #define USTR_CONF_COMPILE_USE_ATTRIBUTES 1
 #endif
 
+#ifndef USTR_CONF_COMPILE_USE_INLINE /* have very small functions inline? */
+#define USTR_CONF_COMPILE_USE_INLINE 1
+#endif
+
 #include "ustr-compiler.h"
 
 #ifndef USTR_CONF_USE_DYNAMIC_CONF /* make some _CONF settings into variables */
@@ -237,6 +241,9 @@ USTR__COMPILE_ASSERT(sizeof(struct Ustrp) == sizeof(struct Ustr),
 #define USTR_BEG_RO4     "\x03"
 #define USTR_BEG_FIXED2  "x112233"
 #define USTR_BEG_FIXED4  "x1122223333"         /* Likely? */
+#if USTR_CONF_HAVE_64bit_SIZE_MAX
+# define USTR_BEG_FIXED8 "x112222222233333333" /* Not, so much. */
+#endif
 #if USTR_CONF_USE_EOS_MARK /* i == 0b_0110_1001 */
 # define USTR_END_CONSTx "\0<ii-CONST_EOS-ii>"
 # define USTR_END_ALOCDx "\0<ii-ALOCD_EOS-ii>"
@@ -364,6 +371,24 @@ typedef struct Ustr_pool Ustr_pool;
     ustr_init_fixed(x, sizeof(x), y, z)
 #define USTRP_SC_INIT_AUTO(x, y, z)             \
     ustrp_init_fixed(x, sizeof(x), y, z)
+
+/* (x) && (((x) - 1) >= 0xFFFFFFFF) should really be:
+   (x) > 0xFFFFFFFF ... but GCC likes to warn about that if x == 4, say */
+#define USTR_SIZE_FIXED(x) ((x) + 1 + 2 + 4 +                           \
+                            (((x) > 0xFFFF)     ? 4 : 0) +              \
+                            ((USTR_CONF_HAVE_64bit_SIZE_MAX && (x) &&   \
+                              (((x) - 1) >= 0xFFFFFFFF)) ? 8 : 0) +     \
+                            sizeof(USTR_END_FIXEDx))
+
+#define USTR_ADD_OBJ(x, y) ustr_add_buf(x, y, sizeof(y))
+#define USTR_DUP_OBJ(y)    ustr_dup_buf(y, sizeof(y))
+#define USTR_DUPX_OBJ(x1, x2, x3, x4, y)        \
+    ustr_dupx_buf(x1, x2, x3, x4, y, sizeof(y))
+
+#define USTRP_ADD_OBJ(p, x, y) ustrp_add_buf(p, x, y, sizeof(y))
+#define USTRP_DUP_OBJ(p, y)    ustrp_dup_buf(p, y, sizeof(y))
+#define USTRP_DUPX_OBJ(p, x1, x2, x3, x4, y)        \
+    ustrp_dupx_buf(p, x1, x2, x3, x4, y, sizeof(y))
 
 #define USTR__REF_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0] >> 2)
 #define USTR__LEN_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0])
@@ -678,7 +703,7 @@ USTR_CONF_E_PROTO int ustrp_sc_toupper(struct Ustr_pool *, struct Ustrp **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 /* ---------------- pre inlines ---------------- */
-
+#if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO struct Ustr_pool *ustr_pool_make_subpool(struct Ustr_pool *p)
 {
   USTR_ASSERT(p);
@@ -779,6 +804,7 @@ USTR_CONF_II_PROTO const char *ustr_cstr(const struct Ustr *s1)
   
   return ((const char *)(s1->data + 1 + USTR__REF_LEN(s1) + lenn));
 }
+#endif
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-main-internal.h"
@@ -789,6 +815,7 @@ USTR_CONF_II_PROTO const char *ustr_cstr(const struct Ustr *s1)
 #endif
 
 /* ---------------- post inlines ---------------- */
+#if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO
 int ustrp_add_cstr(struct Ustr_pool *p, struct Ustrp **ps1, const char *cstr)
 { return (ustrp_add_buf(p, ps1, cstr, strlen(cstr))); }
@@ -809,108 +836,114 @@ struct Ustr *ustr_dupx_cstr(size_t sz, size_t rb, int ex, int me, const char *c)
 { return (ustr_dupx_buf(sz, rb, ex, me, c, strlen(c))); }
 USTR_CONF_II_PROTO struct Ustr *ustr_dup_cstr(const char *cstr)
 { return (ustr_dup_buf(cstr, strlen(cstr))); }
+#endif
 
 /* ---------------- pool wrapper APIs ---------------- */
 USTR_CONF_EI_PROTO int ustrp_assert_valid(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_assert_valid(const struct Ustrp *s1)
-{ return (ustr_assert_valid(&s1->s)); }
 USTR_CONF_EI_PROTO size_t ustrp_len(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO size_t ustrp_len(const struct Ustrp *s1)
-{ return (ustr_len(&s1->s)); }
 USTR_CONF_EI_PROTO const char *ustrp_cstr(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO const char *ustrp_cstr(const struct Ustrp *s1)
-{ return (ustr_cstr(&s1->s)); }
 USTR_CONF_EI_PROTO char *ustrp_wstr(struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO char *ustrp_wstr(struct Ustrp *s1)
-{ return (ustr_wstr(&s1->s)); }
 
 USTR_CONF_EI_PROTO int ustrp_alloc(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_alloc(const struct Ustrp *s1)
-{ return (ustr_alloc(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_exact(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_exact(const struct Ustrp *s1)
-{ return (ustr_exact(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_sized(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_sized(const struct Ustrp *s1)
-{ return (ustr_sized(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_ro(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_ro(const struct Ustrp *s1)
-{ return (ustr_ro(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_fixed(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_fixed(const struct Ustrp *s1)
-{ return (ustr_fixed(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_enomem(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_enomem(const struct Ustrp *s1)
-{ return (ustr_enomem(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_shared(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_shared(const struct Ustrp *s1)
-{ return (ustr_shared(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_limited(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_limited(const struct Ustrp *s1)
-{ return (ustr_limited(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_owner(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO int ustrp_owner(const struct Ustrp *s1)
-{ return (ustr_owner(&s1->s)); }
 
 USTR_CONF_EI_PROTO int ustrp_setf_enomem_err(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_setf_enomem_err(struct Ustrp *s1)
-{ return (ustr_setf_enomem_err(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_setf_enomem_clr(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_setf_enomem_clr(struct Ustrp *s1)
-{ return (ustr_setf_enomem_clr(&s1->s)); }
 
 USTR_CONF_EI_PROTO int ustrp_setf_share(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_setf_share(struct Ustrp *s1)
-{ return (ustr_setf_share(&s1->s)); }
 USTR_CONF_EI_PROTO int ustrp_setf_owner(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
-USTR_CONF_II_PROTO int ustrp_setf_owner(struct Ustrp *s1)
-{ return (ustr_setf_owner(&s1->s)); }
 
 USTR_CONF_EI_PROTO size_t ustrp_overhead(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO size_t ustrp_overhead(const struct Ustrp *s1)
-{ return (ustr_overhead(&s1->s)); }
 USTR_CONF_EI_PROTO size_t ustrp_size(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_II_PROTO size_t ustrp_size(const struct Ustrp *s1)
-{ return (ustr_size(&s1->s)); }
 USTR_CONF_EI_PROTO size_t ustrp_size_alloc(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+
+#if USTR_CONF_COMPILE_USE_INLINE
+USTR_CONF_II_PROTO int ustrp_assert_valid(const struct Ustrp *s1)
+{ return (ustr_assert_valid(&s1->s)); }
+USTR_CONF_II_PROTO size_t ustrp_len(const struct Ustrp *s1)
+{ return (ustr_len(&s1->s)); }
+USTR_CONF_II_PROTO const char *ustrp_cstr(const struct Ustrp *s1)
+{ return (ustr_cstr(&s1->s)); }
+USTR_CONF_II_PROTO char *ustrp_wstr(struct Ustrp *s1)
+{ return (ustr_wstr(&s1->s)); }
+
+USTR_CONF_II_PROTO int ustrp_alloc(const struct Ustrp *s1)
+{ return (ustr_alloc(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_exact(const struct Ustrp *s1)
+{ return (ustr_exact(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_sized(const struct Ustrp *s1)
+{ return (ustr_sized(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_ro(const struct Ustrp *s1)
+{ return (ustr_ro(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_fixed(const struct Ustrp *s1)
+{ return (ustr_fixed(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_enomem(const struct Ustrp *s1)
+{ return (ustr_enomem(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_shared(const struct Ustrp *s1)
+{ return (ustr_shared(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_limited(const struct Ustrp *s1)
+{ return (ustr_limited(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_owner(const struct Ustrp *s1)
+{ return (ustr_owner(&s1->s)); }
+
+USTR_CONF_II_PROTO int ustrp_setf_enomem_err(struct Ustrp *s1)
+{ return (ustr_setf_enomem_err(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_setf_enomem_clr(struct Ustrp *s1)
+{ return (ustr_setf_enomem_clr(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_setf_share(struct Ustrp *s1)
+{ return (ustr_setf_share(&s1->s)); }
+USTR_CONF_II_PROTO int ustrp_setf_owner(struct Ustrp *s1)
+{ return (ustr_setf_owner(&s1->s)); }
+USTR_CONF_II_PROTO size_t ustrp_overhead(const struct Ustrp *s1)
+{ return (ustr_overhead(&s1->s)); }
+USTR_CONF_II_PROTO size_t ustrp_size(const struct Ustrp *s1)
+{ return (ustr_size(&s1->s)); }
 USTR_CONF_II_PROTO size_t ustrp_size_alloc(const struct Ustrp *s1)
 { return (ustr_size_alloc(&s1->s)); }
+#endif
 
 
 #endif

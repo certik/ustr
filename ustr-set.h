@@ -6,6 +6,9 @@
 #error " You should have already included ustr-main.h, or just include ustr.h."
 #endif
 
+#define USTR_SET_OBJ(x, y) ustr_set_buf(x, y, sizeof(y))
+
+#define USTRP_SET_OBJ(p, x, y) ustrp_set_buf(p, x, y, sizeof(y))
 
 USTR_CONF_E_PROTO int ustr_set_undef(struct Ustr **, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
@@ -53,11 +56,13 @@ int ustrp_set_rep_chr(struct Ustr_pool *, struct Ustrp **, char, size_t)
 # include "ustr-set-code.h"
 #endif
 
+#if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO int ustr_set_cstr(struct Ustr **ps1, const char *cstr)
 { return (ustr_set_buf(ps1, cstr, strlen(cstr))); }
 
 USTR_CONF_II_PROTO
 int ustrp_set_cstr(struct Ustr_pool *p, struct Ustrp **ps1, const char *cstr)
 { return (ustrp_set_buf(p, ps1, cstr, strlen(cstr))); }
+#endif
 
 #endif

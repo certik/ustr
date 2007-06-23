@@ -54,6 +54,8 @@ int tst(void)
 
   ASSERT(ustr__ns(SIZE_MAX - (SIZE_MAX / 8)) == SIZE_MAX);
 
+  assert(USTR_SIZE_FIXED(0) == (7 + sizeof(USTR_END_CONSTx)));
+  
   return (EXIT_SUCCESS);
 }
 

@@ -80,26 +80,12 @@ USTR_CONF_EI_PROTO
 uintmax_t ustrp_parse_uintmaxx(const struct Ustrp *, unsigned int,
                                uintmax_t, uintmax_t, const char *,unsigned int*)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 5));
-USTR_CONF_II_PROTO
-uintmax_t ustrp_parse_uintmaxx(const struct Ustrp *s1, unsigned int flags,
-                               uintmax_t num_min, uintmax_t num_max,
-                               const char *sep, unsigned int *ern)
-{ return (ustr_parse_uintmaxx(&s1->s, flags, num_min, num_max, sep, ern)); }
-
 USTR_CONF_EI_PROTO
 uintmax_t ustrp_parse_uintmax(const struct Ustrp *, unsigned int,unsigned int *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
-USTR_CONF_II_PROTO
-uintmax_t ustrp_parse_uintmax(const struct Ustrp *s1,
-                              unsigned int flags, unsigned int *ern)
-{ return (ustr_parse_uintmax(&s1->s, flags, ern)); }
 USTR_CONF_EI_PROTO
 intmax_t ustrp_parse_intmax(const struct Ustrp *, unsigned int,unsigned int *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
-USTR_CONF_II_PROTO
-intmax_t ustrp_parse_intmax(const struct Ustrp *s1,
-                              unsigned int flags, unsigned int *ern)
-{ return (ustr_parse_intmax(&s1->s, flags, ern)); }
 
 #endif
 
@@ -108,56 +94,80 @@ unsigned long ustrp_parse_ulongx(const struct Ustrp *, unsigned int,
                                  unsigned long, unsigned long,
                                  const char *, unsigned int *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 5));
+
+USTR_CONF_EI_PROTO
+unsigned long ustrp_parse_ulong(const struct Ustrp *,unsigned int,unsigned int*)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+USTR_CONF_EI_PROTO
+long ustrp_parse_long(const struct Ustrp *, unsigned int,unsigned int *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+
+USTR_CONF_EI_PROTO
+unsigned int ustrp_parse_uint(const struct Ustrp *,unsigned int,unsigned int*)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+USTR_CONF_EI_PROTO
+int ustrp_parse_int(const struct Ustrp *, unsigned int,unsigned int *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+
+USTR_CONF_EI_PROTO
+unsigned short ustrp_parse_ushort(const struct Ustrp *, unsigned int, unsigned*)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+USTR_CONF_EI_PROTO
+short ustrp_parse_short(const struct Ustrp *, unsigned int,unsigned int *)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+
+#if USTR_CONF_COMPILE_USE_INLINE
+# if USTR_CONF_HAVE_STDINT_H
+USTR_CONF_II_PROTO
+uintmax_t ustrp_parse_uintmaxx(const struct Ustrp *s1, unsigned int flags,
+                               uintmax_t num_min, uintmax_t num_max,
+                               const char *sep, unsigned int *ern)
+{ return (ustr_parse_uintmaxx(&s1->s, flags, num_min, num_max, sep, ern)); }
+
+USTR_CONF_II_PROTO
+uintmax_t ustrp_parse_uintmax(const struct Ustrp *s1,
+                              unsigned int flags, unsigned int *ern)
+{ return (ustr_parse_uintmax(&s1->s, flags, ern)); }
+
+USTR_CONF_II_PROTO
+intmax_t ustrp_parse_intmax(const struct Ustrp *s1,
+                              unsigned int flags, unsigned int *ern)
+{ return (ustr_parse_intmax(&s1->s, flags, ern)); }
+# endif
+
 USTR_CONF_II_PROTO
 unsigned long ustrp_parse_ulongx(const struct Ustrp *s1, unsigned int flags,
                                  unsigned long num_min, unsigned long num_max,
                                  const char *sep, unsigned *ern)
 { return (ustr_parse_ulongx(&s1->s, flags, num_min, num_max, sep, ern)); }
 
-USTR_CONF_EI_PROTO
-unsigned long ustrp_parse_ulong(const struct Ustrp *,unsigned int,unsigned int*)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_II_PROTO
 unsigned long ustrp_parse_ulong(const struct Ustrp *s1,
                               unsigned int flags, unsigned int *ern)
 { return (ustr_parse_ulong(&s1->s, flags, ern)); }
-USTR_CONF_EI_PROTO
-long ustrp_parse_long(const struct Ustrp *, unsigned int,unsigned int *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_II_PROTO
 long ustrp_parse_long(const struct Ustrp *s1,
                               unsigned int flags, unsigned int *ern)
 { return (ustr_parse_long(&s1->s, flags, ern)); }
 
-USTR_CONF_EI_PROTO
-unsigned int ustrp_parse_uint(const struct Ustrp *,unsigned int,unsigned int*)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_II_PROTO
 unsigned int ustrp_parse_uint(const struct Ustrp *s1,
                               unsigned int flags, unsigned int *ern)
 { return (ustr_parse_uint(&s1->s, flags, ern)); }
-USTR_CONF_EI_PROTO
-int ustrp_parse_int(const struct Ustrp *, unsigned int,unsigned int *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_II_PROTO
 int ustrp_parse_int(const struct Ustrp *s1,
                               unsigned int flags, unsigned int *ern)
 { return (ustr_parse_int(&s1->s, flags, ern)); }
 
-USTR_CONF_EI_PROTO
-unsigned short ustrp_parse_ushort(const struct Ustrp *, unsigned int, unsigned*)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_II_PROTO
 unsigned short ustrp_parse_ushort(const struct Ustrp *s1,
                                   unsigned int flags, unsigned int *ern)
 { return (ustr_parse_ushort(&s1->s, flags, ern)); }
-USTR_CONF_EI_PROTO
-short ustrp_parse_short(const struct Ustrp *, unsigned int,unsigned int *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_II_PROTO
 short ustrp_parse_short(const struct Ustrp *s1,
                               unsigned int flags, unsigned int *ern)
 { return (ustr_parse_short(&s1->s, flags, ern)); }
+#endif
 
 #endif
 

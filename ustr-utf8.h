@@ -53,6 +53,7 @@ size_t ustrp_utf8_bytes2chars(const struct Ustrp *, size_t, size_t, size_t *)
 # include "ustr-utf8-code.h"
 #endif
 
+#if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO
 int ustrp_utf8_valid(const struct Ustrp *s1)
 { return (ustr_utf8_valid(&s1->s)); }
@@ -70,6 +71,6 @@ USTR_CONF_II_PROTO
 size_t ustrp_utf8_bytes2chars(const struct Ustrp *s1, size_t pos, size_t len,
                               size_t *ret_pos)
 { return (ustr_utf8_bytes2chars(&s1->s, pos, len, ret_pos)); }
-
+#endif
 
 #endif
