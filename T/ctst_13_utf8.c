@@ -265,6 +265,8 @@ int tst(void)
   ASSERT(ustr_utf8_bytes2chars(USTR1(\x5, ".\x80\x80\x80\x80"), 3, 1, &c2b_pos) == 1);
   ASSERT(c2b_pos ==  1);
 
+  ASSERT(12345 == ustr_parse_ulongx(USTR1(\xb, "1⁺234⁺5"), USTR_FLAG_PARSE_NUM_SEP, 0, ULONG_MAX, "⁺", NULL));
+
   ustr_pool_free(pool);
 
 #ifdef USTR__UTF8_WCHAR /* internal testing for utf8 functions */

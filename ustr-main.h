@@ -648,6 +648,10 @@ USTR_CONF_E_PROTO void ustr_sc_free_shared(struct Ustr **)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_sc_reverse(struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustr_sc_tolower(struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustr_sc_toupper(struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO void ustrp_sc_del(struct Ustr_pool *, struct Ustrp **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
@@ -667,6 +671,10 @@ void ustrp_sc_free2(struct Ustr_pool *, struct Ustrp **, struct Ustrp *)
 USTR_CONF_E_PROTO void ustrp_sc_free_shared(struct Ustr_pool *, struct Ustrp **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_E_PROTO int ustrp_sc_reverse(struct Ustr_pool *, struct Ustrp **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustrp_sc_tolower(struct Ustr_pool *, struct Ustrp **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustrp_sc_toupper(struct Ustr_pool *, struct Ustrp **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 /* ---------------- pre inlines ---------------- */

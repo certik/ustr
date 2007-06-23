@@ -1568,8 +1568,7 @@ void ustrp__sc_free_shared(struct Ustr_pool *p, struct Ustr **ps1)
   USTR_ASSERT(ustr_shared(*ps1));
 
   ustr_setf_owner(*ps1);
-  ustrp__free(p, *ps1);
-  *ps1 = USTR_NULL;
+  ustrp__sc_free(p, ps1);
 }
 USTR_CONF_I_PROTO void ustr_sc_free_shared(struct Ustr **ps1)
 { ustrp__sc_free_shared(0, ps1); }
@@ -1690,4 +1689,56 @@ USTR_CONF_I_PROTO int ustr_sc_reverse(struct Ustr **ps1)
 { return (ustrp__sc_reverse(0, ps1)); }
 USTR_CONF_I_PROTO int ustrp_sc_reverse(struct Ustr_pool *p, struct Ustrp **ps1)
 { return (ustrp__sc_reverse(p, USTR__PPTR(ps1))); }
+
+USTR_CONF_i_PROTO int ustrp__sc_tolower(struct Ustr_pool *p, struct Ustr **ps1)
+{
+  size_t clen;
+  size_t len;
+  char *ptr;
+  
+  if (!ustrp__sc_ensure_owner(p, ps1))
+    return (USTR_FALSE);
+
+  clen = len = ustr_len(*ps1);
+  ptr  = ustr_wstr(*ps1);
+  while (len)
+  {
+    if ((*ptr >= 0x41) && (*ptr <= 0x5a))
+      *ptr ^= 0x20;
+    ++ptr;
+    --len;
+  }
+
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_sc_tolower(struct Ustr **ps1)
+{ return (ustrp__sc_tolower(0, ps1)); }
+USTR_CONF_I_PROTO int ustrp_sc_tolower(struct Ustr_pool *p, struct Ustrp **ps1)
+{ return (ustrp__sc_tolower(p, USTR__PPTR(ps1))); }
+
+USTR_CONF_i_PROTO int ustrp__sc_toupper(struct Ustr_pool *p, struct Ustr **ps1)
+{
+  size_t clen;
+  size_t len;
+  char *ptr;
+  
+  if (!ustrp__sc_ensure_owner(p, ps1))
+    return (USTR_FALSE);
+
+  clen = len = ustr_len(*ps1);
+  ptr  = ustr_wstr(*ps1);
+  while (len)
+  {
+    if ((*ptr >= 0x61) && (*ptr <= 0x7a))
+      *ptr ^= 0x20;
+    ++ptr;
+    --len;
+  }
+
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_sc_toupper(struct Ustr **ps1)
+{ return (ustrp__sc_toupper(0, ps1)); }
+USTR_CONF_I_PROTO int ustrp_sc_toupper(struct Ustr_pool *p, struct Ustrp **ps1)
+{ return (ustrp__sc_toupper(p, USTR__PPTR(ps1))); }
 

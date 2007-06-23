@@ -1,3 +1,10 @@
+2007-06-22  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr_sc_tolower): Added function.
+	(ustr_sc_toupper): Added function.
+
+	* ustr-parse-code.h (ustr_parse_uintmaxx): Allow utf8 seperators.
+
 2007-06-21  James Antill  <james@and.org>
 
 	* ustr-parse-code.h (ustr_parse_uintmaxx): Fixup overflow to work the

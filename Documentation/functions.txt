@@ -906,7 +906,7 @@ Function: ustr_parse_ulongx()
  Type[4]:  unsigned long
 
  Parameter[5]: seperator
- Type[5]: char
+ Type[5]: const char *
 
  Parameter[6]: error number
  Type[6]:  unsigned int *
