@@ -1,3 +1,8 @@
+2007-06-24  James Antill  <james@and.org>
+
+	* ustr-compiler.h (USTR__INLINE): Move a bit closer to being able to
+	build without inline support.
+
 2007-06-23  James Antill  <james@and.org>
 
 	* ustr-main.h (USTR_CONF_COMPILE_USE_INLINE): Added conf. so we can

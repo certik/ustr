@@ -62,16 +62,22 @@
 #endif
 #endif
 
+#if USTR_CONF_COMPILE_USE_INLINE
+#define USTR__INLINE inline
+#else
+#define USTR__INLINE /* no inline */
+#endif
+
 #ifndef USTR_CONF_E_PROTO /* external */
 # if USTR_CONF_INCLUDE_CODEONLY_HEADERS
-#  define USTR_CONF_E_PROTO static inline
+#  define USTR_CONF_E_PROTO static USTR__INLINE
 # else
 #  define USTR_CONF_E_PROTO extern
 # endif
 #endif
 #ifndef USTR_CONF_I_PROTO /* implementation */
 # if USTR_CONF_INCLUDE_CODEONLY_HEADERS
-#  define USTR_CONF_I_PROTO static inline
+#  define USTR_CONF_I_PROTO static USTR__INLINE
 # else
 #  define USTR_CONF_I_PROTO
 # endif
@@ -79,24 +85,24 @@
 
 #ifndef USTR_CONF_EI_PROTO /* external inline */
 # if USTR_CONF_INCLUDE_CODEONLY_HEADERS
-#  define USTR_CONF_EI_PROTO static inline
+#  define USTR_CONF_EI_PROTO static USTR__INLINE
 # else
 #  define USTR_CONF_EI_PROTO extern
 # endif
 #endif
 #ifndef USTR_CONF_II_PROTO /* implementation of inline */
 # if USTR_CONF_INCLUDE_CODEONLY_HEADERS
-#  define USTR_CONF_II_PROTO static inline
+#  define USTR_CONF_II_PROTO static USTR__INLINE
 # else
 #  define USTR_CONF_II_PROTO extern inline
 # endif
 #endif
 
 #ifndef USTR_CONF_e_PROTO /* internal, unleustr INCLUDE_CODEONLY_HEADERS=1 */
-#define USTR_CONF_e_PROTO static inline
+#define USTR_CONF_e_PROTO static USTR__INLINE
 #endif
 #ifndef USTR_CONF_i_PROTO /* implementation of "external", dito. */
-#define USTR_CONF_i_PROTO static inline
+#define USTR_CONF_i_PROTO static USTR__INLINE
 #endif
 
 /* GCC helper macros */
