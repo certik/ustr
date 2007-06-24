@@ -1,5 +1,9 @@
 2007-06-24  James Antill  <james@and.org>
 
+	* NEWS: Release 0.99.3
+
+2007-06-24  James Antill  <james@and.org>
+
 	* ustr-compiler.h (USTR__INLINE): Move a bit closer to being able to
 	build without inline support.
 

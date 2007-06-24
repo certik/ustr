@@ -1,3 +1,9 @@
+0.99.3 - 2007-06-24
+ Added lots of functions, including utf8 and parsing integers.
+ Increased unit test coverage to over 99%.
+ Added "hexdump" and "nums" example programs.
+ Remove internal functions from linker export map.
+
 0.99.2 - 2007-06-03
  Added IO functions.
  Added runtime configuration for libraries.
