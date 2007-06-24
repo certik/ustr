@@ -1,4 +1,5 @@
 
+
  TST
  ---
  bad mb strings for fmt*.
@@ -18,10 +19,17 @@
     esp. getfile/putfile as they can involve multi operations.
     needs autoconf_foo_unlocked
 
+ Allow the shared lib. to compile without inline, and dito. users.
+
 
  ADD
  ---
  DOCS!
 
- ustr_utf8_reverse
+ ustr-import man page.
 
+ ustr_sub() just ustr_add_buf() and/or ustr_del_subustr()?
+
+ ustr_utf8_reverse?
+
+ ustr_srch_case?
