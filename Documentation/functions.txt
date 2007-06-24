@@ -355,7 +355,7 @@ Function: ustr_dup_undef()
  of default options.
 
 
-Section: Adding data to Ustr functions
+Section: Adding data to a Ustr
 Function: ustr_add_undef()
  Returns: Success or failure
  Type: int
@@ -460,7 +460,74 @@ Explanation:
   This function is NOT DOCUMENTED YET!
 
 
-Section: Adding formatted data to Ustr functions
+Section: Deleting data from a Ustr
+Function: ustr_del()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Length to delete.
+ Type[2]: size_t
+
+Explanation:
+
+  This function deletes data from the end of Ustr, possibly re-sizing the Ustr
+ at the same time.
+
+
+Function: ustr_del_subustr()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+Explanation:
+
+  This function works like ustr_del() but can delete an arbitrary section of the
+ Ustr.
+
+
+Section: Resizing a Ustr
+Function: ustr_reallocx()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Exact size allocation
+ Type[2]: int
+
+Explanation:
+
+  This function is re-sizes the Ustr if it is a sized Ustr (ustr_sized() returns
+ USTR_TRUE). This is mostly used to shrink a Ustr that is now significantly
+ smaller than it once was. Although this function will grow a Ustr under
+ certain conditions.
+
+
+Function: ustr_realloc()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr **
+ Type[1]: struct Ustr **
+
+Explanation:
+
+  This function is like ustr_reallocx() but uses the current value of
+ ustr_exact().
+
+
+Section: Adding formatted data to Ustr
 Function: ustr_add_vfmt_lim()
  Returns: Success or failure
  Type: int 

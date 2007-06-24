@@ -25,14 +25,23 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.3 reference documentation -- functions (21)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.3 reference documentation -- functions (66)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
-<li><a href="#indx-Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions (10)</a>
+<li><a href="#indx-Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions (8)</a>
 <li><a href="#indx-Creating%20fixed%20Ustr%20functions">Creating fixed Ustr functions (2)</a>
-<li><a href="#indx-Creating%20allocated%20Ustr%20functions">Creating allocated Ustr functions (3)</a>
-<li><a href="#indx-Simple%20Ustr%20pool%20API">Simple Ustr pool API (6)</a></ul>
+<li><a href="#indx-Creating%20allocated%20Ustr%20functions">Creating allocated Ustr functions (5)</a>
+<li><a href="#indx-Adding%20data%20to%20a%20Ustr">Adding data to a Ustr (6)</a>
+<li><a href="#indx-Deleting%20data%20from%20a%20Ustr">Deleting data from a Ustr (2)</a>
+<li><a href="#indx-Resizing%20a%20Ustr">Resizing a Ustr (2)</a>
+<li><a href="#indx-Adding%20formatted%20data%20to%20Ustr">Adding formatted data to Ustr (4)</a>
+<li><a href="#indx-Adding%20binary%20data%20to%20Ustr%20functions">Adding binary data to Ustr functions (3)</a>
+<li><a href="#indx-Parsing%20binary%20data%20from%20Ustr">Parsing binary data from Ustr (3)</a>
+<li><a href="#indx-Ustr%20IO%20helpers">Ustr IO helpers (9)</a>
+<li><a href="#indx-Dealing%20with%20UTF%2d8%20in%20a%20Ustr">Dealing with UTF-8 in a Ustr (5)</a>
+<li><a href="#indx-Parsing%20integer%20numbers%20from%20a%20Ustr">Parsing integer numbers from a Ustr (10)</a>
+<li><a href="#indx-Simple%20Ustr%20pool%20API">Simple Ustr pool API (7)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
 <li><a id="indx-Creating%20read%2donly%20Ustr%20functions" href="#Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions</a>
@@ -42,11 +51,9 @@
 <li class="obj"><a href="#USTR1%28%29">USTR1()</a>
 <li class="obj"><a href="#USTR2%28%29">USTR2()</a>
 <li class="obj"><a href="#USTR4%28%29">USTR4()</a>
-<li class="obj"><a href="#USTR8%28%29">USTR8()</a>
 <li class="obj"><a href="#USTRP1%28%29">USTRP1()</a>
 <li class="obj"><a href="#USTRP2%28%29">USTRP2()</a>
 <li class="obj"><a href="#USTRP4%28%29">USTRP4()</a>
-<li class="obj"><a href="#USTRP8%28%29">USTRP8()</a>
 </ul><li><a id="indx-Creating%20fixed%20Ustr%20functions" href="#Creating%20fixed%20Ustr%20functions">Creating fixed Ustr functions</a>
 <ul>
 <li class="obj"><a href="#ustr_init_fixed%28%29">ustr_init_fixed()</a>
@@ -54,11 +61,76 @@
 </ul><li><a id="indx-Creating%20allocated%20Ustr%20functions" href="#Creating%20allocated%20Ustr%20functions">Creating allocated Ustr functions</a>
 <ul>
 <li class="obj"><a href="#ustr_init_alloc%28%29">ustr_init_alloc()</a>
+<li class="obj"><a href="#ustr_dupx_empty%28%29">ustr_dupx_empty()</a>
 <li class="obj"><a href="#ustr_dup_empty%28%29">ustr_dup_empty()</a>
+<li class="obj"><a href="#ustr_dupx_undef%28%29">ustr_dupx_undef()</a>
 <li class="obj"><a href="#ustr_dup_undef%28%29">ustr_dup_undef()</a>
+</ul><li><a id="indx-Adding%20data%20to%20a%20Ustr" href="#Adding%20data%20to%20a%20Ustr">Adding data to a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_add_undef%28%29">ustr_add_undef()</a>
+<li class="obj"><a href="#ustr_add_buf%28%29">ustr_add_buf()</a>
+<li class="obj"><a href="#ustr_add_cstr%28%29">ustr_add_cstr()</a>
+<li class="obj"><a href="#ustr_add%28%29">ustr_add()</a>
+<li class="obj"><a href="#ustr_add_subustr%28%29">ustr_add_subustr()</a>
+<li class="obj"><a href="#ustr_add_rep_chr%28%29">ustr_add_rep_chr()</a>
+</ul><li><a id="indx-Deleting%20data%20from%20a%20Ustr" href="#Deleting%20data%20from%20a%20Ustr">Deleting data from a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_del%28%29">ustr_del()</a>
+<li class="obj"><a href="#ustr_del_subustr%28%29">ustr_del_subustr()</a>
+</ul><li><a id="indx-Resizing%20a%20Ustr" href="#Resizing%20a%20Ustr">Resizing a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_reallocx%28%29">ustr_reallocx()</a>
+<li class="obj"><a href="#ustr_realloc%28%29">ustr_realloc()</a>
+</ul><li><a id="indx-Adding%20formatted%20data%20to%20Ustr" href="#Adding%20formatted%20data%20to%20Ustr">Adding formatted data to Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_add_vfmt_lim%28%29">ustr_add_vfmt_lim()</a>
+<li class="obj"><a href="#ustr_add_vfmt%28%29">ustr_add_vfmt()</a>
+<li class="obj"><a href="#ustr_add_fmt%28%29">ustr_add_fmt()</a>
+<li class="obj"><a href="#ustr_add_fmt_lim%28%29">ustr_add_fmt_lim()</a>
+</ul><li><a id="indx-Adding%20binary%20data%20to%20Ustr%20functions" href="#Adding%20binary%20data%20to%20Ustr%20functions">Adding binary data to Ustr functions</a>
+<ul>
+<li class="obj"><a href="#ustr_add_b_uint16%28%29">ustr_add_b_uint16()</a>
+<li class="obj"><a href="#ustr_add_b_uint32%28%29">ustr_add_b_uint32()</a>
+<li class="obj"><a href="#ustr_add_b_uint64%28%29">ustr_add_b_uint64()</a>
+</ul><li><a id="indx-Parsing%20binary%20data%20from%20Ustr" href="#Parsing%20binary%20data%20from%20Ustr">Parsing binary data from Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_parse_b_uint16%28%29">ustr_parse_b_uint16()</a>
+<li class="obj"><a href="#ustr_parse_b_uint32%28%29">ustr_parse_b_uint32()</a>
+<li class="obj"><a href="#ustr_parse_b_uint64%28%29">ustr_parse_b_uint64()</a>
+</ul><li><a id="indx-Ustr%20IO%20helpers" href="#Ustr%20IO%20helpers">Ustr IO helpers</a>
+<ul>
+<li class="obj"><a href="#ustr_io_get%28%29">ustr_io_get()</a>
+<li class="obj"><a href="#ustr_io_getfile%28%29">ustr_io_getfile()</a>
+<li class="obj"><a href="#ustr_io_getfilename%28%29">ustr_io_getfilename()</a>
+<li class="obj"><a href="#ustr_io_getline%28%29">ustr_io_getline()</a>
+<li class="obj"><a href="#ustr_io_put%28%29">ustr_io_put()</a>
+<li class="obj"><a href="#ustr_io_putline%28%29">ustr_io_putline()</a>
+<li class="obj"><a href="#ustr_io_putfile%28%29">ustr_io_putfile()</a>
+<li class="obj"><a href="#ustr_io_putfileline%28%29">ustr_io_putfileline()</a>
+<li class="obj"><a href="#ustr_io_putfilename%28%29">ustr_io_putfilename()</a>
+</ul><li><a id="indx-Dealing%20with%20UTF%2d8%20in%20a%20Ustr" href="#Dealing%20with%20UTF%2d8%20in%20a%20Ustr">Dealing with UTF-8 in a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_utf8_valid%28%29">ustr_utf8_valid()</a>
+<li class="obj"><a href="#ustr_utf8_len%28%29">ustr_utf8_len()</a>
+<li class="obj"><a href="#ustr_utf8_width%28%29">ustr_utf8_width()</a>
+<li class="obj"><a href="#ustr_utf8_chars2bytes%28%29">ustr_utf8_chars2bytes()</a>
+<li class="obj"><a href="#ustr_utf8_bytes2chars%28%29">ustr_utf8_bytes2chars()</a>
+</ul><li><a id="indx-Parsing%20integer%20numbers%20from%20a%20Ustr" href="#Parsing%20integer%20numbers%20from%20a%20Ustr">Parsing integer numbers from a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_parse_uintmaxx%28%29">ustr_parse_uintmaxx()</a>
+<li class="obj"><a href="#ustr_parse_ulongx%28%29">ustr_parse_ulongx()</a>
+<li class="obj"><a href="#ustr_parse_uintmax%28%29">ustr_parse_uintmax()</a>
+<li class="obj"><a href="#ustr_parse_intmax%28%29">ustr_parse_intmax()</a>
+<li class="obj"><a href="#ustr_parse_ulong%28%29">ustr_parse_ulong()</a>
+<li class="obj"><a href="#ustr_parse_long%28%29">ustr_parse_long()</a>
+<li class="obj"><a href="#ustr_parse_uint%28%29">ustr_parse_uint()</a>
+<li class="obj"><a href="#ustr_parse_int%28%29">ustr_parse_int()</a>
+<li class="obj"><a href="#ustr_parse_ushort%28%29">ustr_parse_ushort()</a>
+<li class="obj"><a href="#ustr_parse_short%28%29">ustr_parse_short()</a>
 </ul><li><a id="indx-Simple%20Ustr%20pool%20API" href="#Simple%20Ustr%20pool%20API">Simple Ustr pool API</a>
 <ul>
-<li class="obj"><a href="#ustr_pool_make%28%29">ustr_pool_make()</a>
+<li class="obj"><a href="#ustr_pool_make_pool%28%29">ustr_pool_make_pool()</a>
+<li class="obj"><a href="#ustr_pool_make_subpool%28%29">ustr_pool_make_subpool()</a>
 <li class="obj"><a href="#ustr_pool_free%28%29">ustr_pool_free()</a>
 <li class="obj"><a href="#ustr_pool_clear%28%29">ustr_pool_clear()</a>
 <li class="obj"><a href="#ustr_pool_sys_malloc%28%29">ustr_pool_sys_malloc()</a>
@@ -146,23 +218,6 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="USTR8%28%29">USTR8()</a>
-<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 8th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 7th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Encoded 6th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 5st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[4]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[5]</strong>: Encoded 4th byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[6]</strong>: Encoded 3rd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[6]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[7]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[7]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[8]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[8]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[9]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[9]</strong>: const char[]
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works in the same way as USTR1() but takes eight length bytes,
- so the read-only string can be upto 2**64 - 1 bytes in length.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="USTRP1%28%29">USTRP1()</a>
 <br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
@@ -192,21 +247,6 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like USTR2(), but returns a Ustrp instead.
 
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="USTRP8%28%29">USTRP8()</a>
-<br>Returns: <a href="design">Ustrp string</a><br>Type: struct Ustrp *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded 8th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[1]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 7th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[2]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Encoded 6th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[3]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 5st byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[4]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[5]</strong>: Encoded 4th byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[5]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[6]</strong>: Encoded 3rd byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[6]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[7]</strong>: Encoded 2nd byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[7]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[8]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[8]</strong>: symbol
-</td></tr><tr><td>Parameter<strong>[9]</strong>: Data for <a href="design">Ustrp string</a><br>Type<strong>[9]</strong>: const char[]
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like USTR8(), but returns a Ustrp instead.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20fixed%20Ustr%20functions">Creating fixed Ustr functions</a></h2>
@@ -270,16 +310,49 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_empty%28%29">ustr_dupx_empty()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function creates an empty Ustr, owned by you, that is allocated
+ from system memory, or it returns NULL.
+</p><p>  The size is the desired allocation size for the entire Ustr, including
+ overhead for metadata. This value will be rounded up, if it's too small, so
+ passing 1 as the size says you want a stored size but to allocate the smallest
+ amount of memory possible.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The reference byte count can only be one of the following values: 0, 1, 2 or
+ 4, or 8 (on environments with a 64bit size_t).
+</p><p>  It can be useful to ensure that the Ustr is in system memory, so that you can
+ add things to it and check for errors with <a href="functions#ustr_enomem%28%29">ustr_enomem()</a>.
+</p><p>  If you chose to store the allocated size in the Ustr then the number of bytes
+ allocated for the reference count will be a minimum of 2.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_dup_empty%28%29">ustr_dup_empty()</a>
 <br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function creates an empty Ustr, owned by you, that is allocated
- from system memory, or return NULL.
+</p><p>  This function is the same as calling <a href="functions#ustr_dupx_empty%28%29">ustr_dupx_empty()</a> with the current set
+ of default options.
 
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  It can be useful to ensure that the Ustr is in system memory, so that you can
- add things to it and check for errors with <a href="functions#ustr_enomem%28%29">ustr_enomem()</a>.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_undef%28%29">ustr_dupx_undef()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of new undefined data<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like you called <a href="functions#ustr_dupx_empty%28%29">ustr_dupx_empty()</a> and then
+ <a href="functions#ustr_add_undef%28%29">ustr_add_undef()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -287,29 +360,526 @@
 <br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Length of new undefined data<br>Type<strong>[1]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function creates a Ustr, owned by you, with the specified amount of data,
- allocated from system memory, that is writable. Or it'll return NULL on
- failure.
+</p><p>  This function is the same as calling <a href="functions#ustr_dupx_undef%28%29">ustr_dupx_undef()</a> with the current set
+ of default options.
 
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  Like most ustr functions if the specified length of the ustr is zero, the
- returned value will just be a duplicate of a read-only C-nil-string "".
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20data%20to%20a%20Ustr">Adding data to a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_undef%28%29">ustr_add_undef()</a>
+<br>Returns: Success or failure<br>Type: int
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new undefined data<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  The <a href="design">Ustr string</a> is expanded (possibly reallocated) so that it can contain
+ length (Parameter[2]) extra data, if the length is not zero the Ustr will
+ be writable. Or it'll return <a href="constants#USTR_FALSE">USTR_FALSE</a> (zero) on failure.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_buf%28%29">ustr_add_buf()</a>
+<br>Returns: Success or failure<br>Type: int
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const void *<br>Type<strong>[2]</strong>:  const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_cstr%28%29">ustr_add_cstr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add%28%29">ustr_add()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const struct Ustr *<br>Type<strong>[2]</strong>:  const struct Ustr *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_subustr%28%29">ustr_add_subustr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const struct Ustr *<br>Type<strong>[2]</strong>:  const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t<br>Type<strong>[4]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_rep_chr%28%29">ustr_add_rep_chr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  char<br>Type<strong>[2]</strong>:  char
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Deleting%20data%20from%20a%20Ustr">Deleting data from a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_del%28%29">ustr_del()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Length to delete.<br>Type<strong>[2]</strong>: size_t
+Explanation:
+
+</p><p>  This function deletes data from the end of Ustr, possibly re-sizing the Ustr
+ at the same time.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_del_subustr%28%29">ustr_del_subustr()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+Explanation:
+
+</p><p>  This function works like <a href="functions#ustr_del%28%29">ustr_del()</a> but can delete an arbitrary section of the
+ Ustr.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Resizing%20a%20Ustr">Resizing a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_reallocx%28%29">ustr_reallocx()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Exact size allocation<br>Type<strong>[2]</strong>: int
+Explanation:
+
+</p><p>  This function is re-sizes the Ustr if it is a sized Ustr (<a href="functions#ustr_sized%28%29">ustr_sized()</a> returns
+ <a href="constants#USTR_TRUE">USTR_TRUE</a>). This is mostly used to shrink a Ustr that is now significantly
+ smaller than it once was. Although this function will grow a Ustr under
+ certain conditions.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_realloc%28%29">ustr_realloc()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+Explanation:
+
+</p><p>  This function is like <a href="functions#ustr_reallocx%28%29">ustr_reallocx()</a> but uses the current value of
+ <a href="functions#ustr_exact%28%29">ustr_exact()</a>.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20formatted%20data%20to%20Ustr">Adding formatted data to Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_vfmt_lim%28%29">ustr_add_vfmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  const char *<br>Type<strong>[3]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  va_list<br>Type<strong>[4]</strong>:  va_list
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_vfmt%28%29">ustr_add_vfmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  va_list<br>Type<strong>[3]</strong>:  va_list
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_fmt%28%29">ustr_add_fmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  ...<br>Type<strong>[3]</strong>:  ...
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_fmt_lim%28%29">ustr_add_fmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: const char *<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  ...<br>Type<strong>[4]</strong>:  ...
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20binary%20data%20to%20Ustr%20functions">Adding binary data to Ustr functions</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_b_uint16%28%29">ustr_add_b_uint16()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  uint_least16_t<br>Type<strong>[2]</strong>:  uint_least16_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_b_uint32%28%29">ustr_add_b_uint32()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **</td></tr><tr><td>Parameter<strong>[2]</strong>:  uint_least32_t<br>Type<strong>[2]</strong>:  uint_least32_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_b_uint64%28%29">ustr_add_b_uint64()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  uint_least64_t<br>Type<strong>[2]</strong>:  uint_least64_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20binary%20data%20from%20Ustr">Parsing binary data from Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint16%28%29">ustr_parse_b_uint16()</a>
+<br>Returns: uint_least16_t <br>Type: uint_least16_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint32%28%29">ustr_parse_b_uint32()</a>
+<br>Returns: uint_least32_t <br>Type: uint_least32_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint64%28%29">ustr_parse_b_uint64()</a>
+<br>Returns: uint_least64_t <br>Type: uint_least64_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Ustr%20IO%20helpers">Ustr IO helpers</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_get%28%29">ustr_io_get()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_getfile%28%29">ustr_io_getfile()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_getfilename%28%29">ustr_io_getfilename()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_getline%28%29">ustr_io_getline()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_put%28%29">ustr_io_put()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_putline%28%29">ustr_io_putline()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_putfile%28%29">ustr_io_putfile()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_putfileline%28%29">ustr_io_putfileline()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_putfilename%28%29">ustr_io_putfilename()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr **<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  const char *<br>Type<strong>[3]</strong>:  const char *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Dealing%20with%20UTF%2d8%20in%20a%20Ustr">Dealing with UTF-8 in a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_valid%28%29">ustr_utf8_valid()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_len%28%29">ustr_utf8_len()</a>
+<br>Returns: size_t <br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_width%28%29">ustr_utf8_width()</a>
+<br>Returns: ssize_t <br>Type: ssize_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_chars2bytes%28%29">ustr_utf8_chars2bytes()</a>
+<br>Returns: size_t <br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_bytes2chars%28%29">ustr_utf8_bytes2chars()</a>
+<br>Returns: size_t <br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20integer%20numbers%20from%20a%20Ustr">Parsing integer numbers from a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_uintmaxx%28%29">ustr_parse_uintmaxx()</a>
+<br>Returns: uintmax_t <br>Type: uintmax_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: flags<br>Type<strong>[2]</strong>: unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>: min<br>Type<strong>[3]</strong>: uintmax_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: max<br>Type<strong>[4]</strong>:  uintmax_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: seperator<br>Type<strong>[5]</strong>:  char
+</td></tr><tr><td>Parameter<strong>[6]</strong>: error number<br>Type<strong>[6]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_ulongx%28%29">ustr_parse_ulongx()</a>
+<br>Returns: unsigned long <br>Type: unsigned long 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: flags<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>: min val<br>Type<strong>[3]</strong>: unsigned long
+</td></tr><tr><td>Parameter<strong>[4]</strong>: max val<br>Type<strong>[4]</strong>:  unsigned long
+</td></tr><tr><td>Parameter<strong>[5]</strong>: seperator<br>Type<strong>[5]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: error number<br>Type<strong>[6]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_uintmax%28%29">ustr_parse_uintmax()</a>
+<br>Returns: uintmax_t <br>Type: uintmax_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_intmax%28%29">ustr_parse_intmax()</a>
+<br>Returns: intmax_t <br>Type: intmax_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_ulong%28%29">ustr_parse_ulong()</a>
+<br>Returns: unsigned long <br>Type: unsigned long 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>: unsigned int *<br>Type<strong>[3]</strong>: unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_long%28%29">ustr_parse_long()</a>
+<br>Returns: long <br>Type: long 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_uint%28%29">ustr_parse_uint()</a>
+<br>Returns: unsigned int <br>Type: unsigned int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_int%28%29">ustr_parse_int()</a>
+<br>Returns: int <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_ushort%28%29">ustr_parse_ushort()</a>
+<br>Returns: unsigned short <br>Type: unsigned short 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: unsigned int<br>Type<strong>[2]</strong>: unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_short%28%29">ustr_parse_short()</a>
+<br>Returns: short <br>Type: short 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: const struct Ustr *<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  unsigned int<br>Type<strong>[2]</strong>:  unsigned int
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  unsigned int *<br>Type<strong>[3]</strong>:  unsigned int *
+Explanation:
+
+</p><p>  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple Ustr pool API</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_pool_make%28%29">ustr_pool_make()</a>
+<strong>Function: </strong> <a id="ustr_pool_make_pool%28%29">ustr_pool_make_pool()</a>
 <br>Returns: Ustr pool object<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This allocates a new pool, from the simple pool API.
+</p><p>  This allocates a new pool.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_pool_make_subpool%28%29">ustr_pool_make_subpool()</a>
+<br>Returns: struct Ustr_pool *<br>Type: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr_pool *<br>Type<strong>[1]</strong>: struct Ustr_pool *
+Explanation:
+
+</p><p>  This allocates a new pool as a child of the passed in pool (Parameter[1]),
+ The pool can be freed and cleared independantly of the parent pool however
+ free and clear operations on the parent pool are automatically applied to all
+ child pools.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_free%28%29">ustr_pool_free()</a>
 <br>Returns: Nothing<br>Type: void
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This deallocates a new pool, from the simple pool API.
+</p><p>  This deallocates a pool, and all sub-pools.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This also operates on all sub-pools.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -318,7 +888,10 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This allows all the data in the pool to be reused, it may also free some/all
- of the data in the pool, from the simple pool API.
+ of the data in the pool, from the pool API.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This also operates on all sub-pools.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -328,7 +901,7 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new allocation<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This works like malloc() but allocates at least size (Parameter[2]) memory
- from the pool (Parameter[1]), or returns NULL on failure.
+ from the pool (Parameter[1]), or it returns NULL on failure.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -340,8 +913,8 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of new allocation<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This works like realloc() but allocates at least size (Parameter[4]) memory
- from the pool (Parameter[1]) and copies the old data into it, or returns NULL
- on failure.
+ from the pool (Parameter[1]) and copies the old data into it, or it returns
+ NULL on failure.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  If the old data was the last thing allocated from the pool, it might be

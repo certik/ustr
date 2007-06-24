@@ -2,7 +2,7 @@
 
 pkg=ustr
 # FIXME: More C&P of VERSION
-v="0.99.2"
+v="0.99.3"
 
 if [ ! -f ustr-main.h ]; then
   if [ -f ustr/ustr-main.h ]; then

@@ -1,4 +1,4 @@
-.TH ustr 3 "05-Jun-2007" "Ustr 0.99.3" "Ustr String Library"
+.TH ustr 3 "24-Jun-2007" "Ustr 0.99.3" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -26,10 +26,6 @@ struct Ustr *\fBUSTR2\fR(symbol, symbol, const char[]);
 .ti \w'  'u
 struct Ustr *\fBUSTR4\fR(symbol, symbol, symbol, symbol, const char[]);
 .br
-.in \w'  struct Ustr *\fBUSTR8\fR('u
-.ti \w'  'u
-struct Ustr *\fBUSTR8\fR(symbol, symbol, symbol, symbol, symbol, symbol, symbol, symbol, const char[]);
-.br
 .in \w'  struct Ustr *\fBUSTRP1\fR('u
 .ti \w'  'u
 struct Ustr *\fBUSTRP1\fR(symbol, const char[]);
@@ -41,10 +37,6 @@ struct Ustr *\fBUSTRP2\fR(symbol, symbol, const char[]);
 .in \w'  struct Ustrp *\fBUSTRP4\fR('u
 .ti \w'  'u
 struct Ustrp *\fBUSTRP4\fR(symbol, symbol, symbol, symbol, const char[]);
-.br
-.in \w'  struct Ustrp *\fBUSTRP8\fR('u
-.ti \w'  'u
-struct Ustrp *\fBUSTRP8\fR(symbol, symbol, symbol, symbol, symbol, symbol, symbol, symbol, const char[]);
 .sp
 .br
 .in \w'  struct Ustr *\fBustr_init_fixed\fR('u
@@ -60,18 +52,215 @@ struct Ustr *\fBUSTR_SC_INIT_AUTO\fR(char[], int, size_t);
 .ti \w'  'u
 struct Ustr *\fBustr_init_alloc\fR(void *, size_t, size_t, size_t, int, int, size_t);
 .br
+.in \w'  struct Ustr *\fBustr_dupx_empty\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx_empty\fR(size_t, size_t, int, int);
+.br
 .in \w'  struct Ustr *\fBustr_dup_empty\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_empty\fR(void);
+.br
+.in \w'  struct Ustr *\fBustr_dupx_undef\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx_undef\fR(size_t, size_t, int, int, size_t);
 .br
 .in \w'  struct Ustr *\fBustr_dup_undef\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_undef\fR(size_t);
 .sp
 .br
-.in \w'  struct Ustr_pool *\fBustr_pool_make\fR('u
+.in \w'  int \fBustr_add_undef\fR('u
 .ti \w'  'u
-struct Ustr_pool *\fBustr_pool_make\fR(void);
+int \fBustr_add_undef\fR(struct Ustr **, size_t);
+.br
+.in \w'  int \fBustr_add_buf\fR('u
+.ti \w'  'u
+int \fBustr_add_buf\fR(struct Ustr **,  const void *,  size_t);
+.br
+.in \w'  int  \fBustr_add_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_add_cstr\fR(struct Ustr **,  const char *);
+.br
+.in \w'  int  \fBustr_add\fR('u
+.ti \w'  'u
+int  \fBustr_add\fR(struct Ustr **,  const struct Ustr *);
+.br
+.in \w'  int  \fBustr_add_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_add_subustr\fR(struct Ustr **,  const struct Ustr *,  size_t,  size_t);
+.br
+.in \w'  int  \fBustr_add_rep_chr\fR('u
+.ti \w'  'u
+int  \fBustr_add_rep_chr\fR(struct Ustr **,  char,  size_t);
+.sp
+.br
+.in \w'  int  \fBustr_del\fR('u
+.ti \w'  'u
+int  \fBustr_del\fR(struct Ustr **, size_t);
+.br
+.in \w'  int  \fBustr_del_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_del_subustr\fR(struct Ustr **,  size_t,  size_t);
+.sp
+.br
+.in \w'  int  \fBustr_reallocx\fR('u
+.ti \w'  'u
+int  \fBustr_reallocx\fR(struct Ustr **, int);
+.br
+.in \w'  int  \fBustr_realloc\fR('u
+.ti \w'  'u
+int  \fBustr_realloc\fR(struct Ustr **);
+.sp
+.br
+.in \w'  int  \fBustr_add_vfmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_add_vfmt_lim\fR(struct Ustr **,  size_t,  const char *,  va_list);
+.br
+.in \w'  int  \fBustr_add_vfmt\fR('u
+.ti \w'  'u
+int  \fBustr_add_vfmt\fR(struct Ustr **,  const char *,  va_list);
+.br
+.in \w'  int  \fBustr_add_fmt\fR('u
+.ti \w'  'u
+int  \fBustr_add_fmt\fR(struct Ustr **,  const char *,  ...);
+.br
+.in \w'  int  \fBustr_add_fmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_add_fmt_lim\fR(struct Ustr **,  size_t, const char *,  ...);
+.sp
+.br
+.in \w'  int  \fBustr_add_b_uint16\fR('u
+.ti \w'  'u
+int  \fBustr_add_b_uint16\fR(struct Ustr **,  uint_least16_t);
+.br
+.in \w'  int  \fBustr_add_b_uint32\fR('u
+.ti \w'  'u
+int  \fBustr_add_b_uint32\fR(struct Ustr **,  uint_least32_t);
+.br
+.in \w'  int  \fBustr_add_b_uint64\fR('u
+.ti \w'  'u
+int  \fBustr_add_b_uint64\fR(struct Ustr **,  uint_least64_t);
+.sp
+.br
+.in \w'  uint_least16_t  \fBustr_parse_b_uint16\fR('u
+.ti \w'  'u
+uint_least16_t  \fBustr_parse_b_uint16\fR(struct Ustr *,  size_t);
+.br
+.in \w'  uint_least32_t  \fBustr_parse_b_uint32\fR('u
+.ti \w'  'u
+uint_least32_t  \fBustr_parse_b_uint32\fR(struct Ustr *,  size_t);
+.br
+.in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
+.ti \w'  'u
+uint_least64_t  \fBustr_parse_b_uint64\fR(struct Ustr *,  size_t);
+.sp
+.br
+.in \w'  int  \fBustr_io_get\fR('u
+.ti \w'  'u
+int  \fBustr_io_get\fR(struct Ustr **,  FILE *,  size_t,  size_t *);
+.br
+.in \w'  int  \fBustr_io_getfile\fR('u
+.ti \w'  'u
+int  \fBustr_io_getfile\fR(struct Ustr **,  FILE *);
+.br
+.in \w'  int  \fBustr_io_getfilename\fR('u
+.ti \w'  'u
+int  \fBustr_io_getfilename\fR(struct Ustr **,  const char *);
+.br
+.in \w'  int  \fBustr_io_getline\fR('u
+.ti \w'  'u
+int  \fBustr_io_getline\fR(struct Ustr **,  FILE *);
+.br
+.in \w'  int  \fBustr_io_put\fR('u
+.ti \w'  'u
+int  \fBustr_io_put\fR(struct Ustr **,  FILE *,  size_t);
+.br
+.in \w'  int  \fBustr_io_putline\fR('u
+.ti \w'  'u
+int  \fBustr_io_putline\fR(struct Ustr **,  FILE *,  size_t);
+.br
+.in \w'  int  \fBustr_io_putfile\fR('u
+.ti \w'  'u
+int  \fBustr_io_putfile\fR(struct Ustr **,  FILE *);
+.br
+.in \w'  int  \fBustr_io_putfileline\fR('u
+.ti \w'  'u
+int  \fBustr_io_putfileline\fR(struct Ustr **,  FILE *);
+.br
+.in \w'  int  \fBustr_io_putfilename\fR('u
+.ti \w'  'u
+int  \fBustr_io_putfilename\fR(struct Ustr **,  const char *,  const char *);
+.sp
+.br
+.in \w'  int  \fBustr_utf8_valid\fR('u
+.ti \w'  'u
+int  \fBustr_utf8_valid\fR(const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_utf8_len\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_len\fR(const struct Ustr *);
+.br
+.in \w'  ssize_t  \fBustr_utf8_width\fR('u
+.ti \w'  'u
+ssize_t  \fBustr_utf8_width\fR(const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_utf8_chars2bytes\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_chars2bytes\fR(const struct Ustr *,  size_t,  size_t,  size_t *);
+.br
+.in \w'  size_t  \fBustr_utf8_bytes2chars\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_bytes2chars\fR(const struct Ustr *,  size_t,  size_t,  size_t *);
+.sp
+.br
+.in \w'  uintmax_t  \fBustr_parse_uintmaxx\fR('u
+.ti \w'  'u
+uintmax_t  \fBustr_parse_uintmaxx\fR(const struct Ustr *, unsigned int, uintmax_t,  uintmax_t,  char,  unsigned int *);
+.br
+.in \w'  unsigned long  \fBustr_parse_ulongx\fR('u
+.ti \w'  'u
+unsigned long  \fBustr_parse_ulongx\fR(const struct Ustr *,  unsigned int, unsigned long,  unsigned long, const char *,  unsigned int *);
+.br
+.in \w'  uintmax_t  \fBustr_parse_uintmax\fR('u
+.ti \w'  'u
+uintmax_t  \fBustr_parse_uintmax\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+.br
+.in \w'  intmax_t  \fBustr_parse_intmax\fR('u
+.ti \w'  'u
+intmax_t  \fBustr_parse_intmax\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+.br
+.in \w'  unsigned long  \fBustr_parse_ulong\fR('u
+.ti \w'  'u
+unsigned long  \fBustr_parse_ulong\fR(const struct Ustr *,  unsigned int, unsigned int *);
+.br
+.in \w'  long  \fBustr_parse_long\fR('u
+.ti \w'  'u
+long  \fBustr_parse_long\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+.br
+.in \w'  unsigned int  \fBustr_parse_uint\fR('u
+.ti \w'  'u
+unsigned int  \fBustr_parse_uint\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+.br
+.in \w'  int  \fBustr_parse_int\fR('u
+.ti \w'  'u
+int  \fBustr_parse_int\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+.br
+.in \w'  unsigned short  \fBustr_parse_ushort\fR('u
+.ti \w'  'u
+unsigned short  \fBustr_parse_ushort\fR(const struct Ustr *, unsigned int,  unsigned int *);
+.br
+.in \w'  short  \fBustr_parse_short\fR('u
+.ti \w'  'u
+short  \fBustr_parse_short\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+.sp
+.br
+.in \w'  struct Ustr_pool *\fBustr_pool_make_pool\fR('u
+.ti \w'  'u
+struct Ustr_pool *\fBustr_pool_make_pool\fR(void);
+.br
+.in \w'  struct Ustr_pool *\fBustr_pool_make_subpool\fR('u
+.ti \w'  'u
+struct Ustr_pool *\fBustr_pool_make_subpool\fR(struct Ustr_pool *);
 .br
 .in \w'  void \fBustr_pool_free\fR('u
 .ti \w'  'u
@@ -275,65 +464,6 @@ Type\fB[5]\fR: const char[]
 
 .ti -2
 .br
-\fBFunction: \fR USTR8()
-.br
-Returns: Ustr string
-.br
-Type: struct Ustr *
-
-.br
-Parameter\fB[1]\fR: Encoded 8th byte of number of the length of Ustr string
-.br
-Type\fB[1]\fR: symbol
-
-.br
-Parameter\fB[2]\fR: Encoded 7th byte of number of the length of Ustr string
-.br
-Type\fB[2]\fR: symbol
-
-.br
-Parameter\fB[3]\fR: Encoded 6th byte of number of the length of Ustr string
-.br
-Type\fB[3]\fR: symbol
-
-.br
-Parameter\fB[4]\fR: Encoded 5st byte of number of the length of Ustr string
-.br
-Type\fB[4]\fR: symbol
-
-.br
-Parameter\fB[5]\fR: Encoded 4th byte of number of the length of Ustr string
-.br
-Type\fB[5]\fR: symbol
-
-.br
-Parameter\fB[6]\fR: Encoded 3rd byte of number of the length of Ustr string
-.br
-Type\fB[6]\fR: symbol
-
-.br
-Parameter\fB[7]\fR: Encoded 2nd byte of number of the length of Ustr string
-.br
-Type\fB[7]\fR: symbol
-
-.br
-Parameter\fB[8]\fR: Encoded 1st byte of number of the length of Ustr string
-.br
-Type\fB[8]\fR: symbol
-
-.br
-Parameter\fB[9]\fR: Data for Ustr string
-.br
-Type\fB[9]\fR: const char[]
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works in the same way as USTR1() but takes eight length bytes, so the read-only string can be upto 2**64 - 1 bytes in length.
-
-.ti -2
-.br
 \fBFunction: \fR USTRP1()
 .br
 Returns: Ustr string
@@ -424,64 +554,6 @@ Type\fB[5]\fR: const char[]
 .br
   This function works like USTR2(), but returns a Ustrp instead.
 
-.ti -2
-.br
-\fBFunction: \fR USTRP8()
-.br
-Returns: Ustrp string
-.br
-Type: struct Ustrp *
-
-.br
-Parameter\fB[1]\fR: Encoded 8th byte of number of the length of Ustrp string
-.br
-Type\fB[1]\fR: symbol
-
-.br
-Parameter\fB[2]\fR: Encoded 7th byte of number of the length of Ustrp string
-.br
-Type\fB[2]\fR: symbol
-
-.br
-Parameter\fB[3]\fR: Encoded 6th byte of number of the length of Ustrp string
-.br
-Type\fB[3]\fR: symbol
-
-.br
-Parameter\fB[4]\fR: Encoded 5st byte of number of the length of Ustrp string
-.br
-Type\fB[4]\fR: symbol
-
-.br
-Parameter\fB[5]\fR: Encoded 4th byte of number of the length of Ustrp string
-.br
-Type\fB[5]\fR: symbol
-
-.br
-Parameter\fB[6]\fR: Encoded 3rd byte of number of the length of Ustrp string
-.br
-Type\fB[6]\fR: symbol
-
-.br
-Parameter\fB[7]\fR: Encoded 2nd byte of number of the length of Ustrp string
-.br
-Type\fB[7]\fR: symbol
-
-.br
-Parameter\fB[8]\fR: Encoded 1st byte of number of the length of Ustrp string
-.br
-Type\fB[8]\fR: symbol
-
-.br
-Parameter\fB[9]\fR: Data for Ustrp string
-.br
-Type\fB[9]\fR: const char[]
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works like USTR8(), but returns a Ustrp instead.
 
 .SH Creating fixed Ustr functions
 
@@ -621,6 +693,51 @@ Type\fB[7]\fR: size_t
 
 .ti -2
 .br
+\fBFunction: \fR ustr_dupx_empty()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function creates an empty Ustr, owned by you, that is allocated from system memory, or it returns NULL.
+.br
+  The size is the desired allocation size for the entire Ustr, including overhead for metadata. This value will be rounded up, if it's too small, so passing 1 as the size says you want a stored size but to allocate the smallest amount of memory possible.
+.sp
+\fBNote:\fR
+
+.br
+  The reference byte count can only be one of the following values: 0, 1, 2 or 4, or 8 (on environments with a 64bit size_t).
+.br
+  It can be useful to ensure that the Ustr is in system memory, so that you can add things to it and check for errors with ustr_enomem().
+.br
+  If you chose to store the allocated size in the Ustr then the number of bytes allocated for the reference count will be a minimum of 2.
+
+.ti -2
+.br
 \fBFunction: \fR ustr_dup_empty()
 .br
 Returns: Ustr string
@@ -636,12 +753,46 @@ Type\fB[1]\fR: void
 \fBExplanation:\fR
 
 .br
-  This function creates an empty Ustr, owned by you, that is allocated from system memory, or return NULL.
-.sp
-\fBNote:\fR
+  This function is the same as calling ustr_dupx_empty() with the current set of default options.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dupx_undef()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
 
 .br
-  It can be useful to ensure that the Ustr is in system memory, so that you can add things to it and check for errors with ustr_enomem().
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Length of new undefined data
+.br
+Type\fB[5]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like you called ustr_dupx_empty() and then ustr_add_undef().
 
 .ti -2
 .br
@@ -660,17 +811,1193 @@ Type\fB[1]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function creates a Ustr, owned by you, with the specified amount of data, allocated from system memory, that is writable. Or it'll return NULL on failure.
-.sp
-\fBNote:\fR
+  This function is the same as calling ustr_dupx_undef() with the current set of default options.
+
+.SH Adding data to a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_add_undef()
+.br
+Returns: Success or failure
+.br
+Type: int
 
 .br
-  Like most ustr functions if the specified length of the ustr is zero, the returned value will just be a duplicate of a read-only C-nil-string "".
+Parameter\fB[1]\fR: Pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Length of new undefined data
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  The Ustr string is expanded (possibly reallocated) so that it can contain length (Parameter[2]) extra data, if the length is not zero the Ustr will be writable. Or it'll return USTR_FALSE (zero) on failure.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_buf()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const void *
+.br
+Type\fB[2]\fR:  const void *
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_cstr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const char *
+.br
+Type\fB[2]\fR:  const char *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const struct Ustr *
+.br
+Type\fB[2]\fR:  const struct Ustr *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_subustr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const struct Ustr *
+.br
+Type\fB[2]\fR:  const struct Ustr *
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+.br
+Parameter\fB[4]\fR:  size_t
+.br
+Type\fB[4]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_rep_chr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  char
+.br
+Type\fB[2]\fR:  char
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.SH Deleting data from a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_del()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Length to delete.
+.br
+Type\fB[2]\fR: size_t
+
+Explanation:
+
+.br
+  This function deletes data from the end of Ustr, possibly re-sizing the Ustr at the same time.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_del_subustr()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+Explanation:
+
+.br
+  This function works like ustr_del() but can delete an arbitrary section of the Ustr.
+
+.SH Resizing a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_reallocx()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Exact size allocation
+.br
+Type\fB[2]\fR: int
+
+Explanation:
+
+.br
+  This function is re-sizes the Ustr if it is a sized Ustr (ustr_sized() returns USTR_TRUE). This is mostly used to shrink a Ustr that is now significantly smaller than it once was. Although this function will grow a Ustr under certain conditions.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_realloc()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+Explanation:
+
+.br
+  This function is like ustr_reallocx() but uses the current value of ustr_exact().
+
+.SH Adding formatted data to Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_add_vfmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR:  const char *
+.br
+Type\fB[3]\fR:  const char *
+
+.br
+Parameter\fB[4]\fR:  va_list
+.br
+Type\fB[4]\fR:  va_list
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_vfmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const char *
+.br
+Type\fB[2]\fR:  const char *
+
+.br
+Parameter\fB[3]\fR:  va_list
+.br
+Type\fB[3]\fR:  va_list
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_fmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const char *
+.br
+Type\fB[2]\fR:  const char *
+
+.br
+Parameter\fB[3]\fR:  ...
+.br
+Type\fB[3]\fR:  ...
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_fmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR: const char *
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR:  ...
+.br
+Type\fB[4]\fR:  ...
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.SH Adding binary data to Ustr functions
+.ti -2
+.br
+\fBFunction: \fR ustr_add_b_uint16()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  uint_least16_t
+.br
+Type\fB[2]\fR:  uint_least16_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_b_uint32()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+.br
+Parameter\fB[2]\fR:  uint_least32_t
+.br
+Type\fB[2]\fR:  uint_least32_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_b_uint64()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  uint_least64_t
+.br
+Type\fB[2]\fR:  uint_least64_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+
+.SH Parsing binary data from Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint16()
+.br
+Returns: uint_least16_t 
+.br
+Type: uint_least16_t 
+
+.br
+Parameter\fB[1]\fR: struct Ustr *
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint32()
+.br
+Returns: uint_least32_t 
+.br
+Type: uint_least32_t 
+
+.br
+Parameter\fB[1]\fR: struct Ustr *
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint64()
+.br
+Returns: uint_least64_t 
+.br
+Type: uint_least64_t 
+
+.br
+Parameter\fB[1]\fR: struct Ustr *
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.SH Ustr IO helpers
+.ti -2
+.br
+\fBFunction: \fR ustr_io_get()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+.br
+Parameter\fB[4]\fR:  size_t *
+.br
+Type\fB[4]\fR:  size_t *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_getfile()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_getfilename()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const char *
+.br
+Type\fB[2]\fR:  const char *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_getline()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_put()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_putline()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_putfile()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_putfileline()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  FILE *
+.br
+Type\fB[2]\fR:  FILE *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_putfilename()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: struct Ustr **
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  const char *
+.br
+Type\fB[2]\fR:  const char *
+
+.br
+Parameter\fB[3]\fR:  const char *
+.br
+Type\fB[3]\fR:  const char *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.SH Dealing with UTF-8 in a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_valid()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_len()
+.br
+Returns: size_t 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_width()
+.br
+Returns: ssize_t 
+.br
+Type: ssize_t 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_chars2bytes()
+.br
+Returns: size_t 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+.br
+Parameter\fB[4]\fR:  size_t *
+.br
+Type\fB[4]\fR:  size_t *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_bytes2chars()
+.br
+Returns: size_t 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR:  size_t
+.br
+Type\fB[3]\fR:  size_t
+
+.br
+Parameter\fB[4]\fR:  size_t *
+.br
+Type\fB[4]\fR:  size_t *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.SH Parsing integer numbers from a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_uintmaxx()
+.br
+Returns: uintmax_t 
+.br
+Type: uintmax_t 
+
+.br
+Parameter\fB[1]\fR: Ustr
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: flags
+.br
+Type\fB[2]\fR: unsigned int
+
+.br
+Parameter\fB[3]\fR: min
+.br
+Type\fB[3]\fR: uintmax_t
+
+.br
+Parameter\fB[4]\fR: max
+.br
+Type\fB[4]\fR:  uintmax_t
+
+.br
+Parameter\fB[5]\fR: seperator
+.br
+Type\fB[5]\fR:  char
+
+.br
+Parameter\fB[6]\fR: error number
+.br
+Type\fB[6]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_ulongx()
+.br
+Returns: unsigned long 
+.br
+Type: unsigned long 
+
+.br
+Parameter\fB[1]\fR: Ustr
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: flags
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR: min val
+.br
+Type\fB[3]\fR: unsigned long
+
+.br
+Parameter\fB[4]\fR: max val
+.br
+Type\fB[4]\fR:  unsigned long
+
+.br
+Parameter\fB[5]\fR: seperator
+.br
+Type\fB[5]\fR: const char *
+
+.br
+Parameter\fB[6]\fR: error number
+.br
+Type\fB[6]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_uintmax()
+.br
+Returns: uintmax_t 
+.br
+Type: uintmax_t 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_intmax()
+.br
+Returns: intmax_t 
+.br
+Type: intmax_t 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_ulong()
+.br
+Returns: unsigned long 
+.br
+Type: unsigned long 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR: unsigned int *
+.br
+Type\fB[3]\fR: unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_long()
+.br
+Returns: long 
+.br
+Type: long 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_uint()
+.br
+Returns: unsigned int 
+.br
+Type: unsigned int 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_int()
+.br
+Returns: int 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_ushort()
+.br
+Returns: unsigned short 
+.br
+Type: unsigned short 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: unsigned int
+.br
+Type\fB[2]\fR: unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_short()
+.br
+Returns: short 
+.br
+Type: short 
+
+.br
+Parameter\fB[1]\fR: const struct Ustr *
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR:  unsigned int
+.br
+Type\fB[2]\fR:  unsigned int
+
+.br
+Parameter\fB[3]\fR:  unsigned int *
+.br
+Type\fB[3]\fR:  unsigned int *
+
+Explanation:
+
+.br
+  This function is NOT DOCUMENTED YET!
 
 .SH Simple Ustr pool API
 .ti -2
 .br
-\fBFunction: \fR ustr_pool_make()
+\fBFunction: \fR ustr_pool_make_pool()
 .br
 Returns: Ustr pool object
 .br
@@ -685,7 +2012,25 @@ Type\fB[1]\fR: void
 \fBExplanation:\fR
 
 .br
-  This allocates a new pool, from the simple pool API.
+  This allocates a new pool.
+.ti -2
+.br
+\fBFunction: \fR ustr_pool_make_subpool()
+.br
+Returns: struct Ustr_pool *
+.br
+Type: struct Ustr_pool *
+
+.br
+Parameter\fB[1]\fR: struct Ustr_pool *
+.br
+Type\fB[1]\fR: struct Ustr_pool *
+
+Explanation:
+
+.br
+  This allocates a new pool as a child of the passed in pool (Parameter[1]), The pool can be freed and cleared independantly of the parent pool however free and clear operations on the parent pool are automatically applied to all child pools.
+
 .ti -2
 .br
 \fBFunction: \fR ustr_pool_free()
@@ -703,7 +2048,12 @@ Type\fB[1]\fR: struct Ustr_pool *
 \fBExplanation:\fR
 
 .br
-  This deallocates a new pool, from the simple pool API.
+  This deallocates a pool, and all sub-pools.
+.sp
+\fBNote:\fR
+
+.br
+  This also operates on all sub-pools.
 
 .ti -2
 .br
@@ -722,7 +2072,12 @@ Type\fB[1]\fR: struct Ustr_pool *
 \fBExplanation:\fR
 
 .br
-  This allows all the data in the pool to be reused, it may also free some/all of the data in the pool, from the simple pool API.
+  This allows all the data in the pool to be reused, it may also free some/all of the data in the pool, from the pool API.
+.sp
+\fBNote:\fR
+
+.br
+  This also operates on all sub-pools.
 
 .ti -2
 .br
@@ -746,7 +2101,7 @@ Type\fB[2]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This works like malloc() but allocates at least size (Parameter[2]) memory from the pool (Parameter[1]), or returns NULL on failure.
+  This works like malloc() but allocates at least size (Parameter[2]) memory from the pool (Parameter[1]), or it returns NULL on failure.
 
 .ti -2
 .br
@@ -780,7 +2135,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This works like realloc() but allocates at least size (Parameter[4]) memory from the pool (Parameter[1]) and copies the old data into it, or returns NULL on failure.
+  This works like realloc() but allocates at least size (Parameter[4]) memory from the pool (Parameter[1]) and copies the old data into it, or it returns NULL on failure.
 .sp
 \fBNote:\fR
 
