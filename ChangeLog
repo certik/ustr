@@ -1,5 +1,12 @@
 2007-06-24  James Antill  <james@and.org>
 
+	* examples/Makefile: Revert to using the system headers/libs.
+
+	* examples/nums.c (main): Fix ustr_parse_intmaxx() call to use the
+	pointer and not the old char API.
+
+2007-06-24  James Antill  <james@and.org>
+
 	* NEWS: Release 0.99.3
 
 2007-06-24  James Antill  <james@and.org>
