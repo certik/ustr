@@ -1,5 +1,7 @@
 2007-06-24  James Antill  <james@and.org>
 
+	* Makefile (EXAMPLES): Add nums example to install.
+
 	* examples/Makefile: Revert to using the system headers/libs.
 
 	* examples/nums.c (main): Fix ustr_parse_intmaxx() call to use the
