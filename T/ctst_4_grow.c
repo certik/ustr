@@ -34,10 +34,10 @@ int tst(void)
   if (!USTR_CONF_USE_EOS_MARK)
   ASSERT(ustr_size(s4) ==  0);
 
-  ASSERT(ustr_srch_fwd(s3, s2) == 9);
-  ASSERT(ustr_srch_rev(s3, s2) == 9);
-  ASSERT(ustr_srch_fwd(s2, s3) == 0);
-  ASSERT(ustr_srch_rev(s2, s3) == 0);
+  ASSERT(ustr_srch_fwd(s3, 0, s2) == 9);
+  ASSERT(ustr_srch_rev(s3, 0, s2) == 9);
+  ASSERT(ustr_srch_fwd(s2, 0, s3) == 0);
+  ASSERT(ustr_srch_rev(s2, 0, s3) == 0);
   
   ASSERT(ustr_add_cstr(&s2, "x"));
   ASSERT(ustr_len(s2)  ==   3);
@@ -58,10 +58,10 @@ int tst(void)
   ASSERT(ustr_cmp_cstr_eq(s2,   "s2xyz-----------"));
   ASSERT(!strcmp(ustr_cstr(s2), "s2xyz-----------"));
   
-  ASSERT(ustr_srch_fwd(s3, s2) == 0);
-  ASSERT(ustr_srch_rev(s3, s2) == 0);
-  ASSERT(ustr_srch_fwd(s2, s3) == 0);
-  ASSERT(ustr_srch_rev(s2, s3) == 0);
+  ASSERT(ustr_srch_fwd(s3, 0, s2) == 0);
+  ASSERT(ustr_srch_rev(s3, 0, s2) == 0);
+  ASSERT(ustr_srch_fwd(s2, 0, s3) == 0);
+  ASSERT(ustr_srch_rev(s2, 0, s3) == 0);
 
   /* NOTE: Using system *printf, so can't use %zu as Solaris is retarded */
   ASSERT(ustr_add_fmt(&s1, "%s abcd %13.100s %d %c %lu%n",
@@ -74,16 +74,21 @@ int tst(void)
 
   ASSERT(ustr_add_fmt(&s4, "%2$d%1$u", 2, 4));
 
-  ASSERT(ustr_srch_cstr_fwd(s1, "abcd") == 17);
-  ASSERT(ustr_srch_cstr_rev(s1, "abcd") == 17);
-  ASSERT(ustr_srch_cstr_fwd(s1, "abc")  ==  7);
-  ASSERT(ustr_srch_cstr_rev(s1, "abc")  == 17);
-  ASSERT(ustr_srch_cstr_fwd(s1, "10")  == 41);
-  ASSERT(ustr_srch_cstr_rev(s1, "10")  == 41);
-  ASSERT(ustr_srch_chr_fwd(s1, 0)  == 39);
-  ASSERT(ustr_srch_chr_rev(s1, 0)  == 39);
-  ASSERT(ustr_srch_fwd(s1, s4) == 36);
+  ASSERT(ustr_srch_cstr_fwd(s1, 0, "abcd") == 17);
+  ASSERT(ustr_srch_cstr_rev(s1, 0, "abcd") == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, 0, "abc")  ==  7);
+  ASSERT(ustr_srch_cstr_rev(s1, 0, "abc")  == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, 0, "10")  == 41);
+  ASSERT(ustr_srch_cstr_rev(s1, 0, "10")  == 41);
+  ASSERT(ustr_srch_chr_fwd(s1, 0, 0)  == 39);
+  ASSERT(ustr_srch_chr_rev(s1, 0, 0)  == 39);
+  ASSERT(ustr_srch_fwd(s1, 0, s4) == 36);
 
+  ASSERT(ustr_srch_cstr_fwd(s1,  1, "abcd") == 16);
+  ASSERT(ustr_srch_cstr_rev(s1,  1, "abcd") == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, 10, "abcd") ==  7);
+  ASSERT(ustr_srch_cstr_rev(s1, 10, "abcd") == 17);
+  
   /*  puts(ustr_cstr(s4)); */
   
   ustr_sc_free(&s3);

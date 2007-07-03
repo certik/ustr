@@ -1,3 +1,22 @@
+2007-07-02  James Antill  <james@and.org>
+
+	* ustr-parse-code.h (ustr_parse_uintmaxx): Added offset and return
+	length arguments.
+	(ustr_parse_ulongx): Added offset and return length arguments.
+	* ustr-parse.h (ustrp_parse_uintmaxx): Dito.
+	(ustrp_parse_ulongx): Dito.
+
+	* ustr-main-code.h (ustr_size_overhead): Rename function, from
+	ustr_overhead().
+	* ustr-main.h: Rename ustr_overhead and ustrp_overhead to 
+	ustr_size_overhead and ustrp_size_overhead.
+
+	* T/ctst_99_64bit.c (tst): Add 64bit tests.
+
+2007-07-01  James Antill  <james@and.org>
+
+	* Makefile (install): Fix pkgconfig install on x86-64.
+
 2007-06-24  James Antill  <james@and.org>
 
 	* Makefile (EXAMPLES): Add nums example to install.

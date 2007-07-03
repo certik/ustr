@@ -1,7 +1,7 @@
 #ifndef USTR_CONF_H
 #define USTR_CONF_H 1
 
-/* this is the custom version for the library itslef, for everyone else
+/* this is the custom version for the library itself, for everyone else
  * ustr-import generates one depending on the options. */
 
 /* The default is now to link against libc. */

@@ -473,13 +473,13 @@ USTR_CONF_E_PROTO int ustr_setf_share(struct Ustr *)
 USTR_CONF_E_PROTO int ustr_setf_owner(struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
 
-USTR_CONF_E_PROTO size_t ustr_overhead(const struct Ustr *)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO size_t ustr_size(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO size_t ustr_size_alloc(const struct Ustr *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO size_t ustr_size_overhead(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -890,13 +890,13 @@ USTR_CONF_EI_PROTO int ustrp_setf_share(struct Ustrp *)
 USTR_CONF_EI_PROTO int ustrp_setf_owner(struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_A(); /* _can_ ignore the "error return" here */
 
-USTR_CONF_EI_PROTO size_t ustrp_overhead(const struct Ustrp *)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO size_t ustrp_size(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO size_t ustrp_size_alloc(const struct Ustrp *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO size_t ustrp_size_overhead(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -937,12 +937,12 @@ USTR_CONF_II_PROTO int ustrp_setf_share(struct Ustrp *s1)
 { return (ustr_setf_share(&s1->s)); }
 USTR_CONF_II_PROTO int ustrp_setf_owner(struct Ustrp *s1)
 { return (ustr_setf_owner(&s1->s)); }
-USTR_CONF_II_PROTO size_t ustrp_overhead(const struct Ustrp *s1)
-{ return (ustr_overhead(&s1->s)); }
 USTR_CONF_II_PROTO size_t ustrp_size(const struct Ustrp *s1)
 { return (ustr_size(&s1->s)); }
 USTR_CONF_II_PROTO size_t ustrp_size_alloc(const struct Ustrp *s1)
 { return (ustr_size_alloc(&s1->s)); }
+USTR_CONF_II_PROTO size_t ustrp_size_overhead(const struct Ustrp *s1)
+{ return (ustr_size_overhead(&s1->s)); }
 #endif
 
 

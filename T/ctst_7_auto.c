@@ -29,8 +29,8 @@ int tst(void)
   ASSERT(!ustr_limited(s3));
   ASSERT( ustr_limited(s4));
 
-  ASSERT(ustr_size(s3) == (sizeof(buf_s3) - ustr_overhead(s3)));
-  ASSERT(ustr_size(s4) == (sizeof(buf_s4) - ustr_overhead(s4)));
+  ASSERT(ustr_size(s3) == (sizeof(buf_s3) - ustr_size_overhead(s3)));
+  ASSERT(ustr_size(s4) == (sizeof(buf_s4) - ustr_size_overhead(s4)));
 
   ASSERT(ustr_size(s4) == 15);
   ASSERT(ustr_size_alloc(s4) == sizeof(buf_s4));

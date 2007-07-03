@@ -1,0 +1,64 @@
+Section: Members of Ustr_pool
+Function: pool_sys_malloc()
+ Returns: Allocated data
+ Type: void *
+
+ Parameter[1]: Ustr pool object
+ Type[1]: void *
+
+ Parameter[2]: Length of new allocation
+ Type[2]: size_t
+
+ Explanation:
+
+  This is a callback to provide a similar usage to malloc().
+  This works like malloc() but allocates at least size (Parameter[2]) memory
+ from the pool (Parameter[1]), or it returns NULL on failure.
+
+
+Function: pool_sys_realloc()
+ Returns: Re-allocated data
+ Type: void *
+
+ Parameter[1]: Ustr pool object
+ Type[1]: void *
+
+ Parameter[2]: Pointer to the old data
+ Type[2]: void *
+
+ Parameter[3]: Length of old allocation
+ Type[3]: size_t
+
+ Parameter[4]: Length of new allocation
+ Type[4]: size_t
+
+ Explanation:
+
+  This is a callback to provide a similar usage to realloc().
+  The Ustr ustr_pool_make() varient works like realloc() but allocates at least
+ size (Parameter[4]) memory from the pool (Parameter[1]) and copies the old
+ data into it, or it returns NULL on failure.
+
+ Note:
+
+  If the old data was the last thing allocated from the pool, it might be
+ resized on success.
+  If the old data was larger than the new data, the pointer to the old data is
+ always returned.
+
+Function: pool_sys_free()
+ Returns: Nothing
+ Type: void
+
+ Parameter[1]: Ustr pool object
+ Type[1]: void *
+
+ Parameter[2]: Pointer to the data
+ Type[2]: void *
+
+ Explanation:
+
+  This is a callback to provide a similar usage to free().
+  The Ustr ustr_pool_make() varient free's the data, if it was the last thing
+ allocated from the pool. Otherwise it does nothing.
+

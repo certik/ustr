@@ -13,7 +13,8 @@ int tst(void)
   unsigned int flg_ext   = USTR_FLAG_PARSE_NUM_EXACT;
   unsigned int flg_sep_spc = flg_sep | flg_spc;
   unsigned int ern = 0;
-
+  size_t num_len = 0;
+  
   ASSERT(4000   == ustr_parse_uint(USTR1(\x5, "4_000"),   flg_sep, NULL));
   ASSERT(0x4000 == ustr_parse_uint(USTR1(\x7, "0x4_000"), flg_sep, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_NONE);
@@ -29,11 +30,13 @@ int tst(void)
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_NONE);
   
   ASSERT(0xFFFFFFFF == ustr_parse_ulong(USTR1(\x8, "FFFFFFFF"), 16, &ern));
-  ASSERT(0xFFFFFFFF == ustr_parse_ulong(USTR1(\x9, "100000000"), 16, &ern));
+
+  /* assume uint == 32bit */
+  ASSERT(0xFFFFFFFF == ustr_parse_uint(USTR1(\x9, "100000000"), 16, &ern));
   ASSERT(!ern);
-  ASSERT(0xFFFFFFFF == ustr_parse_ulong(USTR1(\x9, "100000001"), 16, &ern));
+  ASSERT(0xFFFFFFFF == ustr_parse_uint(USTR1(\x9, "100000001"), 16, &ern));
   ASSERT(!ern);
-  ASSERT(0 == ustr_parse_ulong(USTR1(\x9, "100000001"), 16 | flg_ovr, &ern));
+  ASSERT(0 == ustr_parse_uint(USTR1(\x9, "100000001"), 16 | flg_ovr, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OVERFLOW);
 
   ASSERT(9 == ustr_parse_ushort(USTR1(\x4, "1001"), 2, &ern));
@@ -49,36 +52,39 @@ int tst(void)
   
   ASSERT(2 == ustr_parse_int(USTR1(\x8, " 0b10-01"), flg_spc | flg_ext, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OOB);
-  ASSERT(2345 == ustr_parse_ulongx(USTR1(\x8, " +2,34,5"),
+  ASSERT(2345 == ustr_parse_ulongx(USTR1(\x8, " +2,34,5"), 0,
                                    10 | flg_ovr | flg_sep_spc,
-                                   0, 2345, ",", &ern));
+                                   0, 2345, ",", &num_len, &ern));
   ASSERT(!ern);
+  ASSERT(num_len == 8);
 
-  ASSERT(-2345 == (int)ustr_parse_ulongx(USTR1(\x8, " -2,34,5"), 
+  ASSERT(-2345 == (int)ustr_parse_ulongx(USTR1(\x8, " -2,34,5"), 0, 
                                          10 | flg_ovr | flg_sep_spc,
-                                         2346, 2345, ",", &ern));
+                                         2346, 2345, ",", &num_len, &ern));
   ASSERT(!ern);
-  ASSERT(-2346 == (int)ustr_parse_ulongx(USTR1(\x8, " -2,34,6"), 
+  ASSERT(num_len == 8);
+  ASSERT(-2346 == (int)ustr_parse_ulongx(USTR1(\x8, " -2,34,6"), 0,
                                          10 | flg_ovr | flg_sep_spc,
-                                         2346, 2345, ",", &ern));
+                                         2346, 2345, ",", &num_len, &ern));
   ASSERT(!ern);
-  ASSERT(0 == (int)ustr_parse_ulongx(USTR1(\x8, " -4,34,5"), 
+  ASSERT(num_len == 8);
+  ASSERT(0 == (int)ustr_parse_ulongx(USTR1(\x8, " -4,34,5"), 0,
                                      10 | flg_ovr | flg_sep_spc,
-                                     2346, 2345, ",", &ern));
+                                     2346, 2345, ",", &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OVERFLOW);
   
-  ASSERT(0 == ustr_parse_ulongx(USTR1(\x7, "-4,34,5"), 
+  ASSERT(0 == ustr_parse_ulongx(USTR1(\x7, "-4,34,5"), 0,
                                 10 | flg_ovr | flg_sep | flg_noneg,
-                                0, 8345, ",", &ern));
+                                0, 8345, ",", &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_NEGATIVE);
   
-  ASSERT(0 == ustr_parse_ulongx(USTR1(\x8, " -4,34,5"), 
+  ASSERT(0 == ustr_parse_ulongx(USTR1(\x8, " -4,34,5"), 0,
                                 flg_ovr | flg_sep_spc | flg_nopm,
-                                8346, 8345, ",", &ern));
+                                8346, 8345, ",", &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OOB);
-  ASSERT(0 == ustr_parse_ulongx(USTR1(\x8, " +4,34,5"), 
+  ASSERT(0 == ustr_parse_ulongx(USTR1(\x8, " +4,34,5"), 0,
                                 flg_ovr | flg_sep_spc | flg_nopm,
-                                8346, 8345, ",", &ern));
+                                8346, 8345, ",", &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OOB);
   
   ASSERT(4345 == ustr_parse_uintmax(USTR1(\x9, " +04_34_5"),
@@ -115,19 +121,26 @@ int tst(void)
   ASSERT(0 == ustrp_parse_uintmax(USTRP1(\x4, "0x00"), flg_no0, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO);
 
-  ASSERT(0 == ustrp_parse_ulongx(USTRP1(\x1, " "), 37|flg_spc, 0,8, ",", &ern));
+  ASSERT(0 == ustrp_parse_ulongx(USTRP1(\x1, " "), 0, 37|flg_spc, 0,8, ",",
+                                 NULL, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_ONLY_S);
 
-  ASSERT(0 == ustrp_parse_ulongx(USTRP1(\x1, "+"), 1, 0,8, ",", &ern));
+  ASSERT(0 == ustrp_parse_ulongx(USTRP1(\x1, "+"), 0, 1, 0,8, ",", NULL, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM);
-  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x1, "-"), 1, 0,8, ",", &ern));
+  num_len = 0;
+  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x1, "-"), 0, 1, 0,8, ",",
+                                   &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM);
+  ASSERT(num_len == 0);
 
-  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "0b"), 0, 0,8, ",", &ern));
+  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "0b"), 0, 0, 0,8, ",",
+                                   NULL, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX);
-  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "0o"), 0, 0,8, ",", &ern));
+  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "0o"), 0, 0, 0,8, ",",
+                                   &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX);
-  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "0x"), 0, 0,8, ",", &ern));
+  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "0x"), 0, 0, 0,8, ",",
+                                   &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX);
 
   ASSERT( 4 == ustrp_parse_short(USTRP1(\x4, "0o04"), 0, &ern));
@@ -177,17 +190,24 @@ int tst(void)
                                  flg_ovr, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OVERFLOW);
   
-  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), flg_ovr, 7,7, "-",&ern));
+  ASSERT(0 == ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), 0, flg_ovr, 7,7, "-",
+                                   &num_len, &ern));
   ASSERT(ern == USTR_TYPE_PARSE_NUM_ERR_OVERFLOW);
   ASSERT(-8 ==
-         (int)ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), flg_ovr, 8,7, "-",&ern));
+         (int)ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), 0, flg_ovr, 8,7, "-",
+                                   NULL, &ern));
   ASSERT(!ern);
+  ASSERT(num_len == 2);
   ASSERT(-7 ==
-         (int)ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), 0, 7,7, "-",&ern));
+         (int)ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), 0, 0, 7,7, "-",
+                                   &num_len, &ern));
   ASSERT(!ern);
+  ASSERT(num_len == 2);
   ASSERT(-8 ==
-         (int)ustrp_parse_uintmaxx(USTRP1(\x2, "-8"), 0, 8,7, "-", &ern));
+         (int)ustrp_parse_uintmaxx(USTRP1(\x6, "ABCD-8"), 4, 0, 8,7, "-",
+                                   &num_len, &ern));
   ASSERT(!ern);
+  ASSERT(num_len == 2);
   
   return (EXIT_SUCCESS);
 }

@@ -58,7 +58,7 @@ int tst(void)
   
   /* parse the numbers out again ... */
   num = 0;
-  off = 1;
+  off = 0;
   while (num < 9)
   {
     ASSERT(u16[num] == ustr_parse_b_uint16(s1, off));

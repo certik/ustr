@@ -1,3 +1,19 @@
+ API Change
+ ----------
+
+ Add "offset" to all parsing, searching, spanning functions.
+   ustr_srch_fwd(s1, s2); => 1. ustr_srch_fwd(s1, 0, s2);
+                             2. ustr_srch_fwd(s1, ustr_srch_fwd(s1, 0, s2), s2);
+     also: ustr_srch_fwd(s1, ustr_spn_fwd(s1, 0, s2), s3);
+   ustr_spn_fwd(s1, s2); => 1. ustr_spn_fwd(s1, 0, s2);
+                            2. ustr_spn_fwd(s1, ustr_spn_fwd(s1, 0, s2), s2);
+     also: ustr_spn_fwd(s1, ustr_srch_fwd(s1, 0, s2), s3);
+   ustr_spn_fwd(s1, ustr_len(s1), s2) == BAD
+
+   Also implies adding "len" return value to parse_uint etc.
+
+   Don't change any of the others, just the read-only functions ... 
+    most notably ustr_cmp*() doesn't change.
 
 
  TST
@@ -28,7 +44,9 @@
 
  ustr-import man page.
 
- ustr_sub() just ustr_add_buf() and/or ustr_del_subustr()?
+ ustr_ins()?
+
+ ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
 
  ustr_utf8_reverse?
 

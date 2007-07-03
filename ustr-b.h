@@ -94,9 +94,8 @@ uint_least16_t ustr_parse_b_uint16(struct Ustr *s1, size_t off)
   const unsigned char *ptr = 0;
   size_t len = ustr_len(s1);
 
-  USTR_ASSERT_RET(off, 0);
+  USTR_ASSERT_RET(off <= len, 0);
   
-  --off;
   if (len < 2)         return (ret);
   if ((len - 2) < off) return (ret);
 
@@ -115,9 +114,8 @@ uint_least32_t ustr_parse_b_uint32(struct Ustr *s1, size_t off)
   const unsigned char *ptr = 0;
   size_t len = ustr_len(s1);
 
-  USTR_ASSERT_RET(off, 0);
+  USTR_ASSERT_RET(off <= len, 0);
   
-  --off;
   if (len < 4)         return (ret);
   if ((len - 4) < off) return (ret);
 
@@ -138,9 +136,8 @@ uint_least64_t ustr_parse_b_uint64(struct Ustr *s1, size_t off)
   const unsigned char *ptr = 0;
   size_t len = ustr_len(s1);
 
-  USTR_ASSERT_RET(off, 0);
+  USTR_ASSERT_RET(off <= len, 0);
   
-  --off;
   if (len < 8)         return (ret);
   if ((len - 8) < off) return (ret);
 
@@ -215,9 +212,8 @@ uint_least16_t ustrp_parse_b_uint16(struct Ustrp *s1, size_t off)
   const unsigned char *ptr = 0;
   size_t len = ustrp_len(s1);
 
-  USTR_ASSERT_RET(off, 0);
+  USTR_ASSERT_RET(off <= len, 0);
   
-  --off;
   if (len < 2)         return (ret);
   if ((len - 2) < off) return (ret);
 
@@ -236,9 +232,8 @@ uint_least32_t ustrp_parse_b_uint32(struct Ustrp *s1, size_t off)
   const unsigned char *ptr = 0;
   size_t len = ustrp_len(s1);
 
-  USTR_ASSERT_RET(off, 0);
+  USTR_ASSERT_RET(off <= len, 0);
   
-  --off;
   if (len < 4)         return (ret);
   if ((len - 4) < off) return (ret);
 
@@ -259,9 +254,8 @@ uint_least64_t ustrp_parse_b_uint64(struct Ustrp *s1, size_t off)
   const unsigned char *ptr = 0;
   size_t len = ustrp_len(s1);
 
-  USTR_ASSERT_RET(off, 0);
+  USTR_ASSERT_RET(off <= len, 0);
   
-  --off;
   if (len < 8)         return (ret);
   if ((len - 8) < off) return (ret);
   

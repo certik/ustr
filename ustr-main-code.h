@@ -714,7 +714,7 @@ USTR_CONF_I_PROTO
 struct Ustrp *ustrp_init_fixed(void *data, size_t sz, int exact, size_t len)
 { return (USTRP(ustr_init_fixed(data, sz, exact, len))); }
 
-USTR_CONF_I_PROTO size_t ustr_overhead(const struct Ustr *s1)
+USTR_CONF_I_PROTO size_t ustr_size_overhead(const struct Ustr *s1)
 {
   size_t lenn = 0;
   
@@ -737,14 +737,14 @@ USTR_CONF_I_PROTO size_t ustr_size(const struct Ustr *s1)
 
   if (ustr_ro(s1))
     return (0);
-  USTR_ASSERT(ustr_overhead(s1));
+  USTR_ASSERT(ustr_size_overhead(s1));
   
   if (ustr_sized(s1))
-    return (ustr__sz_get(s1) - ustr_overhead(s1));
+    return (ustr__sz_get(s1) - ustr_size_overhead(s1));
   if (ustr_exact(s1))
     return (ustr_len(s1));
 
-  oh = ustr_overhead(s1);
+  oh = ustr_size_overhead(s1);
   return (ustr__ns(ustr_len(s1) + oh) - oh);
 }
 
@@ -756,12 +756,12 @@ USTR_CONF_I_PROTO size_t ustr_size_alloc(const struct Ustr *s1)
 
   if (ustr_ro(s1))
     return (0);
-  USTR_ASSERT(ustr_overhead(s1));
+  USTR_ASSERT(ustr_size_overhead(s1));
   
   if (ustr_sized(s1))
     return (ustr__sz_get(s1));
 
-  oh = ustr_overhead(s1);
+  oh = ustr_size_overhead(s1);
   USTR_ASSERT((oh + ustr_len(s1)) >= oh);
   
   if (ustr_exact(s1))
@@ -872,7 +872,7 @@ int ustrp__reallocx(struct Ustr_pool *p, struct Ustr **ps1, int exact)
   if (!ustr_sized(s1) || !ustr_alloc(s1) || !ustr_owner(s1))
     return (USTR_FALSE);
   
-  oh  = ustr_overhead(s1);
+  oh  = ustr_size_overhead(s1);
   len = ustr_len(s1);
   msz = oh + len;
   if (!exact)

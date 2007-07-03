@@ -221,25 +221,25 @@ int tst(void)
   ASSERT(ustr_utf8_cspn_cstr_rev(&sp2->s, "©¢®") == 0);
   ASSERT(ustr_utf8_cspn_cstr_rev(&sp2->s, "©¢") == 5);
 
-  ASSERT(ustr_srch_cstr_fwd(&sp2->s, "¢") == 5);
-  ASSERT(ustr_srch_cstr_rev(&sp2->s, "¢") == 5);
+  ASSERT(ustr_srch_cstr_fwd(&sp2->s, 0, "¢") == 5);
+  ASSERT(ustr_srch_cstr_rev(&sp2->s, 0, "¢") == 5);
 
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "¢£"), 1, 4) ==  5);
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "¡¢"), 1, 4) ==  3);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "¢£"), 1, 4) ==  5);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "¡¢"), 1, 4) ==  3);
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "¢©"), 3, 2) == 19);
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "©¢"), 1, 2) == 19);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "¢©"), 3, 2) == 19);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "©¢"), 1, 2) == 19);
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "¢©"), 1, 2) ==  5);
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "©¢"), 3, 2) ==  5);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "¢©"), 1, 2) ==  5);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "©¢"), 3, 2) ==  5);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "¢£"), 1, 4) ==  5);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "¡¢"), 1, 4) ==  3);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "¢£"), 1, 4) ==  5);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "¡¢"), 1, 4) ==  3);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "¢©"), 3, 2) == 19);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "©¢"), 1, 2) == 19);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "¢©"), 3, 2) == 19);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "©¢"), 1, 2) == 19);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "¢©"), 1, 2) ==  5);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "©¢"), 3, 2) ==  5);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "¢©"), 1, 2) ==  5);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "©¢"), 3, 2) ==  5);
 
   if (!USTR_DEBUG) {
-  ASSERT(ustr_srch_subustr_fwd(&sp2->s, USTR1(\x4, "©¢"), 3, 8) == 1);
-  ASSERT(ustr_srch_subustr_rev(&sp2->s, USTR1(\x4, "¢©"), 1, 8) == 0x1e);
+  ASSERT(ustr_srch_subustr_fwd(&sp2->s, 0, USTR1(\x4, "©¢"), 3, 8) == 1);
+  ASSERT(ustr_srch_subustr_rev(&sp2->s, 0, USTR1(\x4, "¢©"), 1, 8) == 0x1e);
   }
 
   /* hack ... invalid utf-8 cstr, ask to go backwards */
@@ -265,7 +265,7 @@ int tst(void)
   ASSERT(ustr_utf8_bytes2chars(USTR1(\x5, ".\x80\x80\x80\x80"), 3, 1, &c2b_pos) == 1);
   ASSERT(c2b_pos ==  1);
 
-  ASSERT(12345 == ustr_parse_ulongx(USTR1(\xb, "1⁺234⁺5"), USTR_FLAG_PARSE_NUM_SEP, 0, ULONG_MAX, "⁺", NULL));
+  ASSERT(12345 == ustr_parse_ulongx(USTR1(\xb, "1⁺234⁺5"), 0, USTR_FLAG_PARSE_NUM_SEP, 0, ULONG_MAX, "⁺", NULL, NULL));
 
   ustr_pool_free(pool);
 

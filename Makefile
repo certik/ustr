@@ -87,7 +87,9 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
            tst_15_enomem  ctst_15_enomem \
           otst_15_enomem octst_15_enomem \
            tst_16_parse  ctst_16_parse \
-          otst_16_parse octst_16_parse
+          otst_16_parse octst_16_parse \
+           tst_99_64bit  ctst_99_64bit \
+          otst_99_64bit octst_99_64bit
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \
@@ -107,6 +109,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
 SRC_SRCS_H = ustr-b-code.h \
              ustr-cmp-code.h \
              ustr-cntl-code.h \
+             ustr-compiler.h \
              ustr-fmt-code.h \
              ustr-io-code.h \
              ustr-io-internal.h \
@@ -238,7 +241,7 @@ install: all ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)$(EXAMDIR) $(EXAMPLES)
 		install -m 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES)
 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
-		install -m 644 -t $(DESTDIR)/usr/lib/pkgconfig ustr.pc ustr-debug.pc
+		install -m 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
 
 clean:
 		@echo Cleanup

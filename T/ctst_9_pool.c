@@ -30,7 +30,7 @@ int tst(void)
   ASSERT( ustrp_fixed(spa));
   ASSERT(!ustrp_limited(spa));
   ASSERT(!ustrp_ro(spa));
-  ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
+  ASSERT((ustrp_size(spa) + ustrp_size_overhead(spa)) == sizeof(buf_spa));
   ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
 
   ASSERT( ustrp_set_rep_chr(pool, &spa, '-', 2000));
@@ -48,7 +48,7 @@ int tst(void)
   ASSERT( ustrp_fixed(spa));
   ASSERT( ustrp_limited(spa));
   ASSERT(!ustrp_ro(spa));
-  ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
+  ASSERT((ustrp_size(spa) + ustrp_size_overhead(spa)) == sizeof(buf_spa));
   ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
 
   ASSERT(!ustrp_set_rep_chr(pool, &spa, '-', 2000));
@@ -65,7 +65,7 @@ int tst(void)
   ASSERT(!ustrp_fixed(spa));
   ASSERT(!ustrp_limited(spa));
   ASSERT(!ustrp_ro(spa));
-  ASSERT((ustrp_size(spa) + ustrp_overhead(spa)) == sizeof(buf_spa));
+  ASSERT((ustrp_size(spa) + ustrp_size_overhead(spa)) == sizeof(buf_spa));
   ASSERT(ustrp_size_alloc(spa) == sizeof(buf_spa));
 
   /* this is a huge hack based on pool_free() being a noop when it wasn't
@@ -243,20 +243,20 @@ int tst(void)
   ASSERT(ustrp_cspn_rev(sp1, USTRP1(\x3, "abc")) == 18);
   
   /* srch */
-  ASSERT(ustrp_srch_cstr_fwd(sp1, "xy") == 5);
-  ASSERT(ustrp_srch_cstr_rev(sp1, "xy") == 5);
-  ASSERT(ustrp_srch_fwd(sp1, USTRP1(\x2, "xy")) == 5);
-  ASSERT(ustrp_srch_rev(sp1, USTRP1(\x2, "xy")) == 5);
-  ASSERT(ustrp_srch_subustrp_fwd(sp1, USTRP1(\x2, "xy"), 1, 2) ==  5);
-  ASSERT(ustrp_srch_subustrp_rev(sp1, USTRP1(\x2, "xy"), 1, 2) ==  5);
-  ASSERT(ustrp_srch_subustrp_fwd(sp1, USTRP1(\x2, "xy"), 1, 1) ==  3);
-  ASSERT(ustrp_srch_subustrp_rev(sp1, USTRP1(\x2, "xy"), 1, 1) ==  5);
-  ASSERT(ustrp_srch_subustrp_fwd(sp1, USTRP1(\x2, "xy"), 2, 1) ==  6);
-  ASSERT(ustrp_srch_subustrp_rev(sp1, USTRP1(\x2, "xy"), 2, 1) == 18);
-  ASSERT(ustrp_srch_chr_fwd(sp1, 'x') ==  3);
-  ASSERT(ustrp_srch_chr_rev(sp1, 'x') ==  5);
-  ASSERT(ustrp_srch_chr_fwd(sp1, 'y') ==  6);
-  ASSERT(ustrp_srch_chr_rev(sp1, 'y') == 18);
+  ASSERT(ustrp_srch_cstr_fwd(sp1, 0, "xy") == 5);
+  ASSERT(ustrp_srch_cstr_rev(sp1, 0, "xy") == 5);
+  ASSERT(ustrp_srch_fwd(sp1, 0, USTRP1(\x2, "xy")) == 5);
+  ASSERT(ustrp_srch_rev(sp1, 0, USTRP1(\x2, "xy")) == 5);
+  ASSERT(ustrp_srch_subustrp_fwd(sp1, 0, USTRP1(\x2, "xy"), 1, 2) ==  5);
+  ASSERT(ustrp_srch_subustrp_rev(sp1, 0, USTRP1(\x2, "xy"), 1, 2) ==  5);
+  ASSERT(ustrp_srch_subustrp_fwd(sp1, 0, USTRP1(\x2, "xy"), 1, 1) ==  3);
+  ASSERT(ustrp_srch_subustrp_rev(sp1, 0, USTRP1(\x2, "xy"), 1, 1) ==  5);
+  ASSERT(ustrp_srch_subustrp_fwd(sp1, 0, USTRP1(\x2, "xy"), 2, 1) ==  6);
+  ASSERT(ustrp_srch_subustrp_rev(sp1, 0, USTRP1(\x2, "xy"), 2, 1) == 18);
+  ASSERT(ustrp_srch_chr_fwd(sp1, 0, 'x') ==  3);
+  ASSERT(ustrp_srch_chr_rev(sp1, 0, 'x') ==  5);
+  ASSERT(ustrp_srch_chr_fwd(sp1, 0, 'y') ==  6);
+  ASSERT(ustrp_srch_chr_rev(sp1, 0, 'y') == 18);
   
   /* do some more stuff... */
   ustrp_free(pool, sp1);
@@ -427,7 +427,7 @@ int tst(void)
   ASSERT( ustrp_setf_owner(sp1));
   ASSERT(ustrp_exact(sp1));
   ASSERT(ustrp_size(sp1) == ustrp_len(sp1));
-  ASSERT(ustrp_size_alloc(sp1) == ustrp_len(sp1) + ustrp_overhead(sp1));
+  ASSERT(ustrp_size_alloc(sp1) == ustrp_len(sp1) + ustrp_size_overhead(sp1));
   ASSERT( ustrp_enomem(sp1));
   ASSERT( ustrp_setf_enomem_clr(sp1));
   ASSERT(!ustrp_enomem(sp1));

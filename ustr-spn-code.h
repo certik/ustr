@@ -114,7 +114,7 @@ size_t ustr_spn_chrs_rev(const struct Ustr *s1, const char *chrs, size_t slen)
 
 USTR_CONF_I_PROTO size_t ustr_cspn_chr_fwd(const struct Ustr *s1, char chr)
 {
-  size_t f_pos = ustr_srch_chr_fwd(s1, chr);
+  size_t f_pos = ustr_srch_chr_fwd(s1, 0, chr);
 
   if (!f_pos)
     return (ustr_len(s1));
@@ -124,7 +124,7 @@ USTR_CONF_I_PROTO size_t ustr_cspn_chr_fwd(const struct Ustr *s1, char chr)
 
 USTR_CONF_I_PROTO size_t ustr_cspn_chr_rev(const struct Ustr *s1, char chr)
 {
-  size_t f_pos = ustr_srch_chr_rev(s1, chr);
+  size_t f_pos = ustr_srch_chr_rev(s1, 0, chr);
 
   if (!f_pos)
     return (ustr_len(s1));

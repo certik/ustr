@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.3 reference documentation -- functions (66)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.3 reference documentation -- functions (63)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -41,7 +41,7 @@
 <li><a href="#indx-Ustr%20IO%20helpers">Ustr IO helpers (9)</a>
 <li><a href="#indx-Dealing%20with%20UTF%2d8%20in%20a%20Ustr">Dealing with UTF-8 in a Ustr (5)</a>
 <li><a href="#indx-Parsing%20integer%20numbers%20from%20a%20Ustr">Parsing integer numbers from a Ustr (10)</a>
-<li><a href="#indx-Simple%20Ustr%20pool%20API">Simple Ustr pool API (7)</a></ul>
+<li><a href="#indx-Simple%20Ustr%20pool%20API">Simple Ustr pool API (4)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
 <li><a id="indx-Creating%20read%2donly%20Ustr%20functions" href="#Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions</a>
@@ -133,9 +133,6 @@
 <li class="obj"><a href="#ustr_pool_make_subpool%28%29">ustr_pool_make_subpool()</a>
 <li class="obj"><a href="#ustr_pool_free%28%29">ustr_pool_free()</a>
 <li class="obj"><a href="#ustr_pool_clear%28%29">ustr_pool_clear()</a>
-<li class="obj"><a href="#ustr_pool_sys_malloc%28%29">ustr_pool_sys_malloc()</a>
-<li class="obj"><a href="#ustr_pool_sys_realloc%28%29">ustr_pool_sys_realloc()</a>
-<li class="obj"><a href="#ustr_pool_sys_free%28%29">ustr_pool_sys_free()</a>
 </ul></ul>
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Creating%20read%2donly%20Ustr%20functions">Creating read-only Ustr functions</a></h2>
 
@@ -892,43 +889,6 @@ Explanation:
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  This also operates on all sub-pools.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_pool_sys_malloc%28%29">ustr_pool_sys_malloc()</a>
-<br>Returns: Allocated data<br>Type: void *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new allocation<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This works like malloc() but allocates at least size (Parameter[2]) memory
- from the pool (Parameter[1]), or it returns NULL on failure.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_pool_sys_realloc%28%29">ustr_pool_sys_realloc()</a>
-<br>Returns: Re-allocated data<br>Type: void *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the old data<br>Type<strong>[2]</strong>: void *
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of old allocation<br>Type<strong>[3]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of new allocation<br>Type<strong>[4]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This works like realloc() but allocates at least size (Parameter[4]) memory
- from the pool (Parameter[1]) and copies the old data into it, or it returns
- NULL on failure.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  If the old data was the last thing allocated from the pool, it might be
- resized on success.
-</p><p>  If the old data was larger than the new data, the pointer to the old data is
- returned.
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_pool_sys_free%28%29">ustr_pool_sys_free()</a>
-<br>Returns: Nothing<br>Type: void
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the data<br>Type<strong>[2]</strong>: void *
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function does nothing.
 
 
 </td></tr></table>

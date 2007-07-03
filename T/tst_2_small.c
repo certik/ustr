@@ -46,32 +46,33 @@ int tst(void)
   ASSERT( ustr_cmp_cstr(s2, "s2")   == 0);
   ASSERT( ustr_cmp_buf(s2, "s2", 2) == 0);
   
-  ASSERT( ustr_srch_fwd(s1, s1) == 1);
-  ASSERT( ustr_srch_fwd(s1, s2) == 0);
-  ASSERT( ustr_srch_fwd(s2, s1) == 1);
-  ASSERT( ustr_srch_fwd(s2, s2) == 1);
-  ASSERT( ustr_srch_rev(s1, s1) == 1);
-  ASSERT( ustr_srch_rev(s1, s2) == 0);
-  ASSERT( ustr_srch_rev(s2, s1) == 2);
-  ASSERT( ustr_srch_rev(s2, s2) == 1);
+  ASSERT( ustr_srch_fwd(s1, 0, s1) == 1);
+  ASSERT( ustr_srch_fwd(s1, 0, s2) == 0);
+  ASSERT( ustr_srch_fwd(s2, 0, s1) == 1);
+  ASSERT( ustr_srch_fwd(s2, 0, s2) == 1);
+  ASSERT( ustr_srch_rev(s1, 0, s1) == 1);
+  ASSERT( ustr_srch_rev(s1, 0, s2) == 0);
+  ASSERT( ustr_srch_rev(s2, 0, s1) == 2);
+  ASSERT( ustr_srch_rev(s2, 0, s2) == 1);
   
-  ASSERT(!ustr_srch_cstr_fwd(s1, "x"));
-  ASSERT(!ustr_srch_cstr_fwd(s2, "x"));
-  ASSERT(!ustr_srch_cstr_fwd(s2, "x"));
-  ASSERT( ustr_srch_cstr_fwd(s1, "") == 1);
-  ASSERT( ustr_srch_cstr_fwd(s1, "") == 1);
-  ASSERT( ustr_srch_cstr_fwd(s2, "s2") == 1);
-  ASSERT( ustr_srch_cstr_fwd(s2, "s")  == 1);
-  ASSERT( ustr_srch_cstr_fwd(s2, "2")  == 2);
+  ASSERT(!ustr_srch_cstr_fwd(s1, 0, "x"));
+  ASSERT(!ustr_srch_cstr_fwd(s2, 0, "x"));
+  ASSERT(!ustr_srch_cstr_fwd(s2, 0, "x"));
+  ASSERT( ustr_srch_cstr_fwd(s1, 0, "") == 1);
+  ASSERT( ustr_srch_cstr_fwd(s1, 0, "") == 1);
+  ASSERT( ustr_srch_cstr_fwd(s2, 0, "s2") == 1);
+  ASSERT( ustr_srch_cstr_fwd(s2, 0, "s")  == 1);
+  ASSERT( ustr_srch_cstr_fwd(s2, 0, "2")  == 2);
+  ASSERT( ustr_srch_cstr_fwd(s2, 1, "2")  == 1);
   
-  ASSERT(!ustr_srch_cstr_rev(s1, "x"));
-  ASSERT(!ustr_srch_cstr_rev(s2, "x"));
-  ASSERT(!ustr_srch_cstr_rev(s2, "x"));
-  ASSERT( ustr_srch_cstr_rev(s1, "") == 1);
-  ASSERT( ustr_srch_cstr_rev(s1, "") == 1);
-  ASSERT( ustr_srch_cstr_rev(s2, "s2") == 1);
-  ASSERT( ustr_srch_cstr_rev(s2, "s")  == 1);
-  ASSERT( ustr_srch_cstr_rev(s2, "2")  == 2);
+  ASSERT(!ustr_srch_cstr_rev(s1, 0, "x"));
+  ASSERT(!ustr_srch_cstr_rev(s2, 0, "x"));
+  ASSERT(!ustr_srch_cstr_rev(s2, 0, "x"));
+  ASSERT( ustr_srch_cstr_rev(s1, 0, "") == 1);
+  ASSERT( ustr_srch_cstr_rev(s1, 0, "") == 1);
+  ASSERT( ustr_srch_cstr_rev(s2, 0, "s2") == 1);
+  ASSERT( ustr_srch_cstr_rev(s2, 0, "s")  == 1);
+  ASSERT( ustr_srch_cstr_rev(s2, 0, "2")  == 2);
 
   for (i = 0; i < num; ++i)
   {
