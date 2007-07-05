@@ -340,6 +340,7 @@ static Ustr *gen_csv_netstr(Nstrs *nstrs, Ustr **pin, FILE *fp,
               goto fail_bad_csv;
             ustr_del(pin, 1);
             in = *pin;
+            len = ustr_len(in);
           }
           
           tmp += ustr_cspn_cstr_fwd(in, off + tmp, "\\\"'");
