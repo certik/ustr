@@ -138,7 +138,8 @@ int main(int argc, char *argv[])
   
   {
     uintmax_t num_min = INTMAX_MIN;
-    num = ustr_parse_uintmaxx(s1, flags, -num_min, UINTMAX_MAX, sep, &ern);
+    num = ustr_parse_uintmaxx(s1, 0, flags, -num_min, UINTMAX_MAX, sep,
+                              NULL, &ern);
   }
   
   ustr_add_fmt(&out, " Input: %s\n", argv[0]);

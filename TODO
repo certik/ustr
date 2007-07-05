@@ -1,28 +1,6 @@
- API Change
- ----------
-
- Add "offset" to all parsing, searching, spanning functions.
-   ustr_srch_fwd(s1, s2); => 1. ustr_srch_fwd(s1, 0, s2);
-                             2. ustr_srch_fwd(s1, ustr_srch_fwd(s1, 0, s2), s2);
-     also: ustr_srch_fwd(s1, ustr_spn_fwd(s1, 0, s2), s3);
-   ustr_spn_fwd(s1, s2); => 1. ustr_spn_fwd(s1, 0, s2);
-                            2. ustr_spn_fwd(s1, ustr_spn_fwd(s1, 0, s2), s2);
-     also: ustr_spn_fwd(s1, ustr_srch_fwd(s1, 0, s2), s3);
-   ustr_spn_fwd(s1, ustr_len(s1), s2) == BAD
-
-   Also implies adding "len" return value to parse_uint etc.
-
-   Don't change any of the others, just the read-only functions ... 
-    most notably ustr_cmp*() doesn't change.
-
-
  TST
  ---
  bad mb strings for fmt*.
-
- 8byte refs
-   ustr_owner()
-   ustr_init_size()
 
  ustr_add(), where len1+len2 overflows
 
@@ -31,11 +9,13 @@
 
  FIX
  ---
+ ustr_io_*() can't tell if enomem, or FILE io?
+
  ustr_io_* ... unlocked IO for get/put/etc.? ... 
     esp. getfile/putfile as they can involve multi operations.
     needs autoconf_foo_unlocked
 
- Allow the shared lib. to compile without inline, and dito. users.
+ Allow the shared lib. to compile without inline.
 
 
  ADD
@@ -44,10 +24,18 @@
 
  ustr-import man page.
 
+ ustr_sc_concat()
+
+ ustr_srch_case()
+
+ ustr_parse_netstr() / ustr_parse_netstr2()
+
  ustr_ins()?
 
  ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
 
+ ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
+   Ie. the aotl() of strtol()
+
  ustr_utf8_reverse?
 
- ustr_srch_case?

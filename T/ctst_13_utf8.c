@@ -193,33 +193,61 @@ int tst(void)
   ASSERT(ustrp_utf8_bytes2chars(sp1, 7, 8, &c2b_pos) == 4);
   ASSERT(c2b_pos == 4);
 
-  ASSERT(ustrp_spn_cstr_fwd(sp2, " ¡¢ãäåæçèé") == 21);
-  ASSERT(ustrp_spn_cstr_fwd(sp2, "ãäåæçèéàáâµ") == 21);
-  ASSERT(ustrp_utf8_spn_cstr_fwd(sp2, "ãäåæçèé ¡¢") == 3);
-  ASSERT(ustrp_utf8_spn_cstr_rev(sp2, "ãäåæçèé ¡¢") == 0);
-  ASSERT(ustrp_utf8_spn_cstr_rev(sp2, "ãäå¬­®æçèé ¡¢") == 3);
-  ASSERT(ustrp_utf8_spn_fwd(sp2, USTRP1(\xa, " ¡¢ãäåæçèé")) == 3);
-  ASSERT(ustrp_utf8_spn_rev(sp2, USTRP1(\x14, "¡¢ãäåæçèé ")) == 0);
-  ASSERT(ustrp_utf8_spn_rev(sp2, USTRP1(\x1a, "¡¢ãäå¬­®æçèé ")) == 3);
-  ASSERT(ustrp_cspn_cstr_fwd(sp2, "àáâãäåæçèé") == 1);
-  ASSERT(ustrp_cspn_cstr_fwd(sp2, "àáâãäåæçèéµ") == 0);
-  ASSERT(ustrp_cspn_cstr_rev(sp2, "àáâãäåæçèéµ") == 1);
-  ASSERT(ustrp_cspn_cstr_rev(sp2, "àáâãäåæçèéµî") == 0);
-  ASSERT(ustrp_utf8_cspn_fwd(sp2, USTRP1(\xb, "àáâãäåæçèéµ")) == 15);
-  ASSERT(ustrp_utf8_cspn_rev(sp2, USTRP1(\xb, "àáâãäåæçèéµ")) == 15);
-  ASSERT(ustrp_utf8_cspn_cstr_fwd(sp2, "©®¢") == 2);
-  ASSERT(ustrp_utf8_cspn_cstr_fwd(sp2, "¢©®") == 2);
-  ASSERT(ustrp_utf8_cspn_cstr_rev(sp2, "©¢®") == 0);
-  ASSERT(ustrp_utf8_cspn_cstr_rev(sp2, "©¢") == 5);
+  ASSERT(ustrp_spn_cstr_fwd(sp2, 0, " ¡¢ãäåæçèé") == 21);
+  ASSERT(ustrp_spn_cstr_fwd(sp2, 0, "ãäåæçèéàáâµ") == 21);
+  ASSERT(ustrp_utf8_spn_cstr_fwd(sp2, 0, "ãäåæçèé ¡¢") == 3);
+  ASSERT(ustrp_utf8_spn_cstr_rev(sp2, 0, "ãäåæçèé ¡¢") == 0);
+  ASSERT(ustrp_utf8_spn_cstr_rev(sp2, 0, "ãäå¬­®æçèé ¡¢") == 3);
+  ASSERT(ustrp_utf8_spn_fwd(sp2, 0, USTRP1(\xa, " ¡¢ãäåæçèé")) == 3);
+  ASSERT(ustrp_utf8_spn_rev(sp2, 0, USTRP1(\x14, "¡¢ãäåæçèé ")) == 0);
+  ASSERT(ustrp_utf8_spn_rev(sp2, 0, USTRP1(\x1a, "¡¢ãäå¬­®æçèé ")) == 3);
+  ASSERT(ustrp_cspn_cstr_fwd(sp2, 0, "àáâãäåæçèé") == 1);
+  ASSERT(ustrp_cspn_cstr_fwd(sp2, 0, "àáâãäåæçèéµ") == 0);
+  ASSERT(ustrp_cspn_cstr_rev(sp2, 0, "àáâãäåæçèéµ") == 1);
+  ASSERT(ustrp_cspn_cstr_rev(sp2, 0, "àáâãäåæçèéµî") == 0);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 0, USTRP1(\xb, "àáâãäåæçèéµ")) == 15);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 0, USTRP1(\xb, "àáâãäåæçèéµ")) == 15);
+  ASSERT(ustrp_utf8_cspn_cstr_fwd(sp2, 0, "©®¢") == 2);
+  ASSERT(ustrp_utf8_cspn_cstr_fwd(sp2, 0, "¢©®") == 2);
+  ASSERT(ustrp_utf8_cspn_cstr_rev(sp2, 0, "©¢®") == 0);
+  ASSERT(ustrp_utf8_cspn_cstr_rev(sp2, 0, "©¢") == 5);
 
-  ASSERT(ustr_utf8_spn_cstr_fwd(&sp2->s, "ãäåæçèé ¡¢") == 3);
-  ASSERT(ustr_utf8_spn_cstr_rev(&sp2->s, "ãäåæçèé ¡¢") == 0);
-  ASSERT(ustr_utf8_spn_cstr_rev(&sp2->s, "ãäå¬­®æçèé ¡¢") == 3);
+  ASSERT(ustrp_utf8_spn_cstr_fwd(sp2, 1, "ãäåæçèé ¡¢") == 2);
+  ASSERT(ustrp_utf8_spn_cstr_fwd(sp2, 2, "ãäåæçèé ¡¢") == 1);
+  ASSERT(ustrp_utf8_spn_cstr_fwd(sp2, 3, "ãäåæçèé ¡¢") == 0);
+  ASSERT(ustrp_utf8_spn_rev(sp2, 1, USTRP1(\x1a, "¡¢ãäå¬­®æçèé ")) == 2);
+  ASSERT(ustrp_utf8_spn_rev(sp2, 2, USTRP1(\x1a, "¡¢ãäå¬­®æçèé ")) == 1);
+  ASSERT(ustrp_utf8_spn_rev(sp2, 3, USTRP1(\x1a, "¡¢ãäå¬­®æçèé ")) == 0);
 
-  ASSERT(ustr_utf8_cspn_cstr_fwd(&sp2->s, "©®¢") == 2);
-  ASSERT(ustr_utf8_cspn_cstr_fwd(&sp2->s, "¢©®") == 2);
-  ASSERT(ustr_utf8_cspn_cstr_rev(&sp2->s, "©¢®") == 0);
-  ASSERT(ustr_utf8_cspn_cstr_rev(&sp2->s, "©¢") == 5);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 0, USTRP1(\xb, "àáâãäåæçèéµ")) == 15);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 1, USTRP1(\xb, "àáâãäåæçèéµ")) == 14);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 2, USTRP1(\xb, "àáâãäåæçèéµ")) == 13);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 3, USTRP1(\xb, "àáâãäåæçèéµ")) == 12);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 4, USTRP1(\xb, "àáâãäåæçèéµ")) == 11);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 5, USTRP1(\xb, "àáâãäåæçèéµ")) == 10);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 6, USTRP1(\xb, "àáâãäåæçèéµ")) ==  9);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 7, USTRP1(\xb, "àáâãäåæçèéµ")) ==  8);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 8, USTRP1(\xb, "àáâãäåæçèéµ")) ==  7);
+  ASSERT(ustrp_utf8_cspn_fwd(sp2, 9, USTRP1(\xb, "àáâãäåæçèéµ")) ==  6);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 0, USTRP1(\xb, "àáâãäåæçèéµ")) == 15);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 1, USTRP1(\xb, "àáâãäåæçèéµ")) == 14);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 2, USTRP1(\xb, "àáâãäåæçèéµ")) == 13);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 3, USTRP1(\xb, "àáâãäåæçèéµ")) == 12);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 4, USTRP1(\xb, "àáâãäåæçèéµ")) == 11);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 5, USTRP1(\xb, "àáâãäåæçèéµ")) == 10);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 6, USTRP1(\xb, "àáâãäåæçèéµ")) ==  9);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 7, USTRP1(\xb, "àáâãäåæçèéµ")) ==  8);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 8, USTRP1(\xb, "àáâãäåæçèéµ")) ==  7);
+  ASSERT(ustrp_utf8_cspn_rev(sp2, 9, USTRP1(\xb, "àáâãäåæçèéµ")) ==  6);
+
+  ASSERT(ustr_utf8_spn_cstr_fwd(&sp2->s, 0, "ãäåæçèé ¡¢") == 3);
+  ASSERT(ustr_utf8_spn_cstr_rev(&sp2->s, 0, "ãäåæçèé ¡¢") == 0);
+  ASSERT(ustr_utf8_spn_cstr_rev(&sp2->s, 0, "ãäå¬­®æçèé ¡¢") == 3);
+
+  ASSERT(ustr_utf8_cspn_cstr_fwd(&sp2->s, 0, "©®¢") == 2);
+  ASSERT(ustr_utf8_cspn_cstr_fwd(&sp2->s, 0, "¢©®") == 2);
+  ASSERT(ustr_utf8_cspn_cstr_rev(&sp2->s, 0, "©¢®") == 0);
+  ASSERT(ustr_utf8_cspn_cstr_rev(&sp2->s, 0, "©¢") == 5);
 
   ASSERT(ustr_srch_cstr_fwd(&sp2->s, 0, "¢") == 5);
   ASSERT(ustr_srch_cstr_rev(&sp2->s, 0, "¢") == 5);
@@ -243,10 +271,10 @@ int tst(void)
   }
 
   /* hack ... invalid utf-8 cstr, ask to go backwards */
-  ASSERT(ustr_utf8_cspn_cstr_fwd(USTR1(\x4, "\x80\x80\x80\x80"), "©¢") == 1);
-  ASSERT(ustr_utf8_cspn_cstr_rev(USTR1(\x4, "\x80\x80\x80\x80"), "©¢") == 0);
-  ASSERT(ustr_utf8_cspn_cstr_fwd(USTR1(\x5, ".\x80\x80\x80\x80"), "©¢") == 1);
-  ASSERT(ustr_utf8_cspn_cstr_rev(USTR1(\x5, ".\x80\x80\x80\x80"), "©¢") == 1);
+  ASSERT(ustr_utf8_cspn_cstr_fwd(USTR1(\x4, "\x80\x80\x80\x80"), 0, "©¢") == 1);
+  ASSERT(ustr_utf8_cspn_cstr_rev(USTR1(\x4, "\x80\x80\x80\x80"), 0, "©¢") == 0);
+  ASSERT(ustr_utf8_cspn_cstr_fwd(USTR1(\x5, ".\x80\x80\x80\x80"),0, "©¢") == 1);
+  ASSERT(ustr_utf8_cspn_cstr_rev(USTR1(\x5, ".\x80\x80\x80\x80"),0, "©¢") == 1);
 
   c2b_pos = 99;
   ASSERT(ustr_utf8_bytes2chars(USTR1(\x4, "\x80\x80\x80\x80"), 1, 1, &c2b_pos) == 0);

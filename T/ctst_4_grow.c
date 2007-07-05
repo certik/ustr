@@ -84,11 +84,35 @@ int tst(void)
   ASSERT(ustr_srch_chr_rev(s1, 0, 0)  == 39);
   ASSERT(ustr_srch_fwd(s1, 0, s4) == 36);
 
-  ASSERT(ustr_srch_cstr_fwd(s1,  1, "abcd") == 16);
+  ASSERT(ustr_srch_cstr_fwd(s1,  1, "abcd") == 17);
   ASSERT(ustr_srch_cstr_rev(s1,  1, "abcd") == 17);
-  ASSERT(ustr_srch_cstr_fwd(s1, 10, "abcd") ==  7);
+  ASSERT(ustr_srch_cstr_fwd(s1, 10, "abcd") == 17);
   ASSERT(ustr_srch_cstr_rev(s1, 10, "abcd") == 17);
   
+  ASSERT(ustr_srch_cstr_fwd(s1,  0, " ") == 16);
+  ASSERT(ustr_srch_cstr_fwd(s1, 10, " ") == 16);
+  ASSERT(ustr_srch_cstr_fwd(s1, 16, " ") == 21);
+  ASSERT(ustr_srch_cstr_fwd(s1, 20, " ") == 21);
+  ASSERT(ustr_srch_cstr_fwd(s1, 21, " ") == 22);
+  
+  ASSERT(ustr_srch_cstr_fwd(s1,  0, "a") ==  7);
+  ASSERT(ustr_srch_cstr_fwd(s1,  6, "a") ==  7);
+  ASSERT(ustr_srch_cstr_fwd(s1,  7, "a") == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, 16, "a") == 17);
+  ASSERT(ustr_srch_cstr_fwd(s1, 17, "a") ==  0);
+  
+  ASSERT(ustr_srch_cstr_rev(s1, 0, "a") == 17);
+  ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) - 17, "a") == 17);
+  ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) - 16, "a") ==  7);
+  ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) -  7, "a") ==  7);
+  ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) -  6, "a") ==  0);
+  ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) -  1, "a") ==  0);
+
+  if (!USTR_DEBUG)
+  ASSERT(ustr_srch_cstr_fwd(s1, ustr_len(s1), "a") ==  0);
+  if (!USTR_DEBUG)
+  ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1), "a") ==  0);
+
   /*  puts(ustr_cstr(s4)); */
   
   ustr_sc_free(&s3);

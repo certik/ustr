@@ -63,7 +63,8 @@ int tst(void)
   ASSERT( ustr_srch_cstr_fwd(s2, 0, "s2") == 1);
   ASSERT( ustr_srch_cstr_fwd(s2, 0, "s")  == 1);
   ASSERT( ustr_srch_cstr_fwd(s2, 0, "2")  == 2);
-  ASSERT( ustr_srch_cstr_fwd(s2, 1, "2")  == 1);
+  ASSERT( ustr_srch_cstr_fwd(s2, 1, "2")  == 2);
+  ASSERT( ustr_srch_cstr_fwd(s2, 1, "s2") == 0);
   
   ASSERT(!ustr_srch_cstr_rev(s1, 0, "x"));
   ASSERT(!ustr_srch_cstr_rev(s2, 0, "x"));

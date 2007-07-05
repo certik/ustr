@@ -226,7 +226,7 @@ int tst(void)
   ASSERT(!ustr_len(s1));
   ASSERT(ustr_io_getfilename(&s1, ustr_cstr(s2)));
   ASSERT(ustr_len(s1) == (80 * 1000));
-  ASSERT(ustr_spn_cstr_fwd(s1, "-") == (80 * 1000));
+  ASSERT(ustr_spn_cstr_fwd(s1, 0, "-") == (80 * 1000));
   
   remove(ustr_cstr(s2));
 

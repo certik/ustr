@@ -15,19 +15,20 @@
 USTR_CONF_I_PROTO size_t ustr_srch_chr_fwd(const struct Ustr *s1, size_t off,
                                            char val)
 {
-  const char *ptr = ustr_cstr(s1);
+  const char *beg = ustr_cstr(s1);
+  const char *ptr;
   size_t len = ustr_len(s1);
   const char *tmp;
 
   USTR_ASSERT(ustr_assert_valid(s1));
 
   USTR_ASSERT_RET(off <= len, 0);
-  ptr += off;
+  ptr  = beg + off;
   len -= off;
 
   if (!(tmp = memchr(ptr, val, len))) return (0);
 
-  len = tmp - ptr;
+  len = tmp - beg;
   return (len + 1);
 }
 
@@ -102,7 +103,8 @@ USTR_CONF_i_PROTO void *ustr__sys_memmem(const void *hs, size_t hslen,
 USTR_CONF_I_PROTO size_t ustr_srch_buf_fwd(const struct Ustr *s1, size_t off,
                                            const void *val, size_t vlen)
 {
-  const char *ptr = ustr_cstr(s1);
+  const char *beg = ustr_cstr(s1);
+  const char *ptr;
   size_t len = ustr_len(s1);
   char *tmp = 0;
 
@@ -112,13 +114,13 @@ USTR_CONF_I_PROTO size_t ustr_srch_buf_fwd(const struct Ustr *s1, size_t off,
     return (ustr_srch_chr_fwd(s1, off, ((const char *)val)[0]));
 
   USTR_ASSERT_RET(off <= len, 0);
-  ptr += off;
+  ptr  = beg + off;
   len -= off;
 
   if (!(tmp = USTR__SYS_MEMMEM(ptr, len, val, vlen)))
     return (0);
 
-  len = tmp - ptr;
+  len = tmp - beg;
   return (len + 1);
 }
 

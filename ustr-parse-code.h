@@ -245,20 +245,20 @@ USTR__UMAX ustr_parse_uintmaxx(const struct Ustr *s1, size_t off,
 
 #if USTR_CONF_HAVE_STDINT_H
 USTR_CONF_I_PROTO
-uintmax_t ustr_parse_uintmax(const struct Ustr *s1, unsigned int flags,
-                             unsigned int *ern)
+uintmax_t ustr_parse_uintmax(const struct Ustr *s1, size_t off,
+                             unsigned int flags, size_t *len, unsigned int *ern)
 {
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
   flags |= USTR_FLAG_PARSE_NUM_NO_NEGATIVE;
-  return (ustr_parse_uintmaxx(s1, 0, flags, 0, UINTMAX_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1, off, flags, 0, UINTMAX_MAX, "_", len, ern));
 }
 USTR_CONF_I_PROTO
-intmax_t ustr_parse_intmax(const struct Ustr *s1, unsigned int flags,
-                           unsigned int *ern)
+intmax_t ustr_parse_intmax(const struct Ustr *s1, size_t off,
+                           unsigned int flags, size_t *len, unsigned int *ern)
 {
   uintmax_t num_min = INTMAX_MIN;
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
-  return (ustr_parse_uintmaxx(s1, 0, flags, -num_min, INTMAX_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1,off, flags, -num_min,INTMAX_MAX, "_",len,ern));
 }
 #endif
 
@@ -270,54 +270,56 @@ unsigned long ustr_parse_ulongx(const struct Ustr *s1, size_t off,
 { return (ustr_parse_uintmaxx(s1,off, flags, num_min,num_max, sep, len, ern)); }
 
 USTR_CONF_I_PROTO
-unsigned long ustr_parse_ulong(const struct Ustr *s1, unsigned int flags,
-                               unsigned int *ern)
+unsigned long ustr_parse_ulong(const struct Ustr *s1, size_t off,
+                               unsigned int flags,
+                               size_t *len, unsigned int *ern)
 {
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
   flags |= USTR_FLAG_PARSE_NUM_NO_NEGATIVE;
-  return (ustr_parse_uintmaxx(s1, 0, flags, 0, ULONG_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1, off, flags, 0, ULONG_MAX, "_", len, ern));
 }
 USTR_CONF_I_PROTO
-long ustr_parse_long(const struct Ustr *s1, unsigned int flags,
-                     unsigned int *ern)
+long ustr_parse_long(const struct Ustr *s1, size_t off, unsigned int flags,
+                     size_t *len, unsigned int *ern)
 {
   unsigned long num_min = LONG_MIN;
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
-  return (ustr_parse_uintmaxx(s1, 0, flags, -num_min, LONG_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1,off, flags, -num_min, LONG_MAX, "_", len,ern));
 }
 
 USTR_CONF_I_PROTO
-unsigned int ustr_parse_uint(const struct Ustr *s1, unsigned int flags,
-                             unsigned int *ern)
+unsigned int ustr_parse_uint(const struct Ustr *s1, size_t off,
+                             unsigned int flags, size_t *len, unsigned int *ern)
 {
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
   flags |= USTR_FLAG_PARSE_NUM_NO_NEGATIVE;
-  return (ustr_parse_uintmaxx(s1, 0, flags, 0, UINT_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1, off, flags, 0, UINT_MAX, "_", len, ern));
 }
 USTR_CONF_I_PROTO
-int ustr_parse_int(const struct Ustr *s1, unsigned int flags,
-                   unsigned int *ern)
+int ustr_parse_int(const struct Ustr *s1, size_t off, unsigned int flags,
+                   size_t *len, unsigned int *ern)
 {
   unsigned int num_min = INT_MIN;
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
-  return (ustr_parse_uintmaxx(s1, 0, flags, -num_min, INT_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1,off, flags, -num_min, INT_MAX, "_", len, ern));
 }
 
 USTR_CONF_I_PROTO
-unsigned short ustr_parse_ushort(const struct Ustr *s1, unsigned int flags,
-                                 unsigned int *ern)
+unsigned short ustr_parse_ushort(const struct Ustr *s1, size_t off,
+                                 unsigned int flags,
+                                 size_t *len, unsigned int *ern)
 {
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
   flags |= USTR_FLAG_PARSE_NUM_NO_NEGATIVE;
-  return (ustr_parse_uintmaxx(s1, 0, flags, 0, USHRT_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1, off, flags, 0, USHRT_MAX, "_", len, ern));
 }
 USTR_CONF_I_PROTO
-short ustr_parse_short(const struct Ustr *s1, unsigned int flags,
-                       unsigned int *ern)
+short ustr_parse_short(const struct Ustr *s1, size_t off, unsigned int flags,
+                       size_t *len, unsigned int *ern)
 {
   unsigned short num_min = SHRT_MIN;
   ustr_assert(!(flags & USTR_FLAG_PARSE_NUM_NO_NEGATIVE));
-  return (ustr_parse_uintmaxx(s1, 0, flags, -num_min, SHRT_MAX, "_", 0, ern));
+  return (ustr_parse_uintmaxx(s1,off, flags, -num_min, SHRT_MAX, "_", len,ern));
 }
 
 /* void *ustr_parse_num(const struct Ustr *s1, unsigned int flags,

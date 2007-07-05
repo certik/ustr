@@ -1,4 +1,25 @@
+2007-07-04  James Antill  <james@and.org>
+
+	* examples/netstr.c (gen_csv_netstr): Added CSV functionality.
+
+	* ustr-srch-code.h (ustr_srch_chr_fwd, ustr_srch_buf_fwd): Always
+	return the position as an absolute value.
+
+2007-07-03  James Antill  <james@and.org>
+
+	* ustr-spn-code.h (ustr_spn_chr_fwd, ustr_spn_chr_rev)
+	(ustr_spn_chrs_fwd, ustr_spn_chrs_rev)
+	(ustr_cspn_chr_fwd, ustr_cspn_chr_rev)
+	(ustr_cspn_chrs_fwd, ustr_cspn_chrs_rev)
+	(ustr_utf8_spn_chrs_fwd, ustr_utf8_spn_chrs_rev)
+	(ustr_utf8_cspn_chrs_fwd, ustr_utf8_cspn_chrs_rev): Added offset
+	argument.
+
 2007-07-02  James Antill  <james@and.org>
+
+	* ustr-srch-code.h (ustr_srch_chr_fwd, ustr_srch_chr_rev)
+	(ustr_srch_buf_fwd, ustr_srch_buf_rev)
+	(ustr_srch_subustr_fwd, ustr_srch_subustr_rev): Added offset argument.
 
 	* ustr-parse-code.h (ustr_parse_uintmaxx): Added offset and return
 	length arguments.
