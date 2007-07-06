@@ -65,7 +65,8 @@ static int cescape_decode(Ustr **ps1)
         default:
           goto normal;
 
-        case '"':  ++src; break; /* for quoted CSV entries */
+        case '\n': ++src; break;
+        case '"':  ++src; break;
         case '\'': ++src; break;
           
         case 'b':  ++src; *dst++ = '\b'; break;
@@ -73,6 +74,7 @@ static int cescape_decode(Ustr **ps1)
         case 'n':  ++src; *dst++ = '\n'; break;
         case 'r':  ++src; *dst++ = '\r'; break;
         case 't':  ++src; *dst++ = '\t'; break;
+        case 'v':  ++src; *dst++ = '\v'; break;
         case '\\': ++src; *dst++ = '\\'; break;
 
         case 'o':

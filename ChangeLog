@@ -1,3 +1,7 @@
+2007-07-06  James Antill  <james@and.org>
+
+	* examples/netstr.c (cescape_decode): Add \ EOL and \v handling.
+
 2007-07-05  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_realloc): Simplify the realloc API. to be 
