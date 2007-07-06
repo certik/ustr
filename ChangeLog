@@ -1,3 +1,17 @@
+2007-07-05  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr_realloc): Simplify the realloc API. to be 
+	closer to what people would expect.
+	(ustr_reallocx): Remove this API.
+
+	* ustr-sc-code.h (ustr_sc_wstr): Added function.
+
+	* ustr-import.in: Add sc handling.
+
+	* ustr-sc.h: Move most of the ustr_sc functions to a file.
+
+	* ustr-utf8-code.h (ustr_sc_utf8_reverse): Added function.
+
 2007-07-04  James Antill  <james@and.org>
 
 	* examples/netstr.c (gen_csv_netstr): Added CSV functionality.

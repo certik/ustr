@@ -171,39 +171,37 @@ int tst(void)
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
   ASSERT( ustr_setf_share(s2));
   ASSERT( ustr_setf_owner(s2));
-  ASSERT(!ustr_reallocx(&s2, USTR_TRUE));
+#endif
   ustr_sc_free2(&s2, ustr_dupx(1, 0, 0, 0, s2));
   
   ASSERT(!ustr_exact(s2));
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_size(s2) > 209);
   ASSERT( ustr_setf_share(s2));
-  ASSERT(!ustr_reallocx(&s2, USTR_TRUE));
   ASSERT( ustr_setf_owner(s2));
   ASSERT(ustr_len(s2) == 209);
   ASSERT(ustr_size(s2) > 209);
   ASSERT(!ustr_exact(s2));
-  ASSERT( ustr_realloc(&s2));
+  ASSERT( ustr_realloc(&s2, 209));
   ASSERT(ustr_len(s2) == 209);
-  ASSERT(ustr_size(s2) > 209);
+  ASSERT(ustr_size(s2) == 209);
   ASSERT(!ustr_exact(s2));
-  ASSERT( ustr_reallocx(&s2, USTR_TRUE));
+  ASSERT( ustr_realloc(&s2, 210));
   ASSERT(ustr_len(s2) == 209);
-  ASSERT(ustr_size(s2) == 209);
-  ASSERT( ustr_exact(s2));
-  ASSERT( ustr_realloc(&s2));
-  ASSERT(ustr_len(s2) == 209);
-  ASSERT(ustr_size(s2) == 209);
-  ASSERT( ustr_exact(s2));
-  ASSERT( ustr_reallocx(&s2, USTR_FALSE));
-  ASSERT(ustr_len(s2) == 209);
-  ASSERT(ustr_size(s2) > 209);
+  ASSERT(ustr_size(s2) == 210);
   ASSERT(!ustr_exact(s2));
   ASSERT(ustr_cmp_subustr_eq(USTR1(\x4, "abcd"), s2, 1, 4));
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
-  ustr_sc_free2(&s2, USTR(""));
-#endif
 
+  ustr_sc_free2(&s2, USTR(""));
+  ASSERT(ustr_sc_ensure_owner(&s2));
+  
+  ustr_sc_free2(&s2, USTR(""));
+  ASSERT(ustr_sc_wstr(&s2));
+  
+  ustr_sc_free2(&s2, USTR1(\1, "1"));
+  ASSERT(ustr_sc_wstr(&s2));
+  
   ASSERT( ustr_setf_share(USTR("")));
   ASSERT(!ustr_setf_owner(USTR("")));
   

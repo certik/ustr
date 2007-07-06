@@ -35,4 +35,10 @@ USTR_CONF_e_PROTO
 const unsigned char *ustr__utf8_next(const unsigned char *)
     USTR__COMPILE_ATTR_NONNULL_A();
 
+#ifdef USTR_SC_H
+USTR_CONF_e_PROTO
+int ustrp__sc_utf8_reverse(struct Ustr_pool *, struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
+#endif
+
 #endif

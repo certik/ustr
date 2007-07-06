@@ -104,24 +104,33 @@ int tst(void)
   while (scan++ < lim)
   {
     MALLOC_CHECK_STORE.mem_fail_num = scan;
-    ASSERT(!ustrp_exact(sp1));
     ASSERT( ustrp_setf_enomem_clr(sp1));
-    ASSERT(!ustrp_reallocx(pool, &sp1, USTR_TRUE));
+    ASSERT(!ustrp_realloc(pool, &sp1, 0));
+    ASSERT(!ustrp_exact(sp1));
+    ASSERT( ustrp_size(sp1) > ustrp_len(sp1));
     ASSERT( ustrp_enomem(sp1));
   }
   ASSERT(!ustrp_exact(sp1));
-  ASSERT(ustrp_reallocx(pool, &sp1, USTR_TRUE));
-  ASSERT( ustrp_exact(sp1));
+  ASSERT( ustrp_size(sp1) > ustrp_len(sp1));
+  ASSERT( ustrp_realloc(pool, &sp1, 0));
+  ASSERT(!ustrp_exact(sp1));
+  ASSERT( ustrp_size(sp1) == ustrp_len(sp1));
   
   MALLOC_CHECK_STORE.mem_fail_num = 1;
   ASSERT(ustrp_del(pool, &sp1, 56));
-  ASSERT(!ustrp_realloc(pool, &sp1));
-  ASSERT( ustrp_realloc(pool, &sp1));
+  ASSERT(ustrp_size_overhead(sp1) >= 6);
+  ASSERT(!ustrp_realloc(pool, &sp1, 0));
+  ASSERT(ustrp_size_overhead(sp1) >= 6);
+  ASSERT( ustrp_realloc(pool, &sp1, 0));
+  ASSERT(ustrp_size_overhead(sp1) >= 6);
+  ASSERT(!ustrp_realloc(pool, &sp1, (65 * 1000) + 529)); /* too big */
+  ASSERT(!ustrp_realloc(pool, &sp1, (65 * 1000) + 529)); /* too big */
+  ASSERT(!ustrp_realloc(pool, &sp1, (65 * 1000) + 529)); /* too big */
   ASSERT((sp1 = ustrp_dupx_undef(pool, 1, 0, 1, 0, 65520)));
   ASSERT((sp1 = ustrp_dupx_undef(pool, 1, 0, 1, 0, 65500)));
-  ASSERT(!ustrp_reallocx(pool, &sp1, USTR_FALSE));
-  ASSERT(!ustrp_reallocx(pool, &sp1, USTR_FALSE));
-  ASSERT(!ustrp_reallocx(pool, &sp1, USTR_FALSE));
+  ASSERT(!ustrp_realloc(pool, &sp1, 1)); /* too small */
+  ASSERT(!ustrp_realloc(pool, &sp1, 1)); /* too small */
+  ASSERT(!ustrp_realloc(pool, &sp1, 1)); /* too small */
   
   ustr_pool_clear(pool);
 
@@ -148,12 +157,19 @@ int tst(void)
     ASSERT( ustrp_sc_ensure_owner(pool, &sp1));
     ASSERT( ustrp_sc_ensure_owner(pool, &sp1));
     ASSERT((sp1 = ustrp_dup_empty(pool)));
+
     ASSERT(ustrp_setf_share(sp1));
     MALLOC_CHECK_STORE.mem_fail_num = 1;
     ASSERT(!ustrp_sc_ensure_owner(pool, &sp1));
     ASSERT( ustrp_sc_ensure_owner(pool, &sp1));
     ASSERT( ustrp_sc_ensure_owner(pool, &sp1));
     
+    ASSERT(ustrp_setf_share(sp1));
+    MALLOC_CHECK_STORE.mem_fail_num = 1;
+    ASSERT(!ustrp_sc_wstr(pool, &sp1));
+    ASSERT( ustrp_sc_wstr(pool, &sp1));
+    ASSERT( ustrp_sc_wstr(pool, &sp1));
+
     ASSERT(ustrp_set_cstr(pool, &sp1, "abcd"));
     ASSERT(ustrp_setf_share(sp1));
     MALLOC_CHECK_STORE.mem_fail_num = 1;

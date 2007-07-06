@@ -101,6 +101,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-io.h \
            ustr-main.h \
            ustr-parse.h \
+           ustr-sc.h \
            ustr-set.h \
            ustr-spn.h \
            ustr-srch.h \
@@ -116,6 +117,8 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-main-code.h \
              ustr-main-internal.h \
              ustr-parse-code.h \
+             ustr-sc-code.h \
+             ustr-sc-internal.h \
              ustr-set-code.h \
              ustr-set-internal.h \
              ustr-spn-code.h \
@@ -126,11 +129,12 @@ SRC_SRCS_H = ustr-b-code.h \
 
 SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-cmp-dbg-code.c \
-             ustr-set-dbg-code.c \
              ustr-fmt-dbg-code.c \
              ustr-io-dbg-code.c \
              ustr-main-dbg-code.c \
              ustr-parse-dbg-code.c \
+             ustr-sc-dbg-code.c \
+             ustr-set-dbg-code.c \
              ustr-spn-dbg-code.c \
              ustr-srch-dbg-code.c \
              ustr-utf8-dbg-code.c \
@@ -141,6 +145,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-io-opt-code.c \
              ustr-main-opt-code.c \
              ustr-parse-opt-code.c \
+             ustr-sc-opt-code.c \
              ustr-set-opt-code.c \
              ustr-spn-opt-code.c \
              ustr-srch-opt-code.c \
@@ -174,6 +179,7 @@ LIB_SHARED_DBG = \
   ustr-io-code-so-dbg.o \
   ustr-main-code-so-dbg.o \
   ustr-parse-code-so-dbg.o \
+  ustr-sc-code-so-dbg.o \
   ustr-set-code-so-dbg.o \
   ustr-spn-code-so-dbg.o \
   ustr-srch-code-so-dbg.o \
@@ -185,6 +191,7 @@ LIB_STATIC_DBG = \
   ustr-io-code-a-dbg.o \
   ustr-main-code-a-dbg.o \
   ustr-parse-code-a-dbg.o \
+  ustr-sc-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
   ustr-srch-code-a-dbg.o \
@@ -197,6 +204,7 @@ LIB_SHARED_OPT = \
   ustr-io-code-so-opt.o \
   ustr-main-code-so-opt.o \
   ustr-parse-code-so-opt.o \
+  ustr-sc-code-so-opt.o \
   ustr-set-code-so-opt.o \
   ustr-spn-code-so-opt.o \
   ustr-srch-code-so-opt.o \
@@ -208,6 +216,7 @@ LIB_STATIC_OPT = \
   ustr-io-code-a-opt.o \
   ustr-main-code-a-opt.o \
   ustr-parse-code-a-opt.o \
+  ustr-sc-code-a-opt.o \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \
   ustr-srch-code-a-opt.o \

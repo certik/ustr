@@ -129,8 +129,7 @@ int tst(void)
   ASSERT(ustrp_cmp_case_buf_eq(sp1, "abcd.xyz", 4));
 
   ASSERT(ustrp_cmp_case_cstr_eq(sp1, ustrp_cstr(USTRP1(\x4, "abcd"))));
-  ASSERT(ustrp_sc_ensure_owner(pool, &sp1));
-  ASSERT(ustrp_cmp_case_cstr_eq(sp1, ustrp_wstr(sp1)));
+  ASSERT(ustrp_cmp_case_cstr_eq(sp1, ustrp_sc_wstr(pool, &sp1)));
   
   ASSERT(ustrp_cmp_case_cstr_eq(sp1, "abcd"));
   ASSERT(ustrp_cmp_case_cstr_eq(sp2, ".xyz"));

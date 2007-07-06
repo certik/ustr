@@ -18,6 +18,7 @@
 #include "ustr-fmt.h"
 #include "ustr-io.h"
 #include "ustr-parse.h"
+#include "ustr-sc.h"
 #include "ustr-srch.h"
 #include "ustr-utf8.h"
 #include "ustr-spn.h"

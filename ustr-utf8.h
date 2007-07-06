@@ -24,6 +24,11 @@ size_t ustr_utf8_chars2bytes(const struct Ustr *, size_t, size_t, size_t *)
 USTR_CONF_E_PROTO
 size_t ustr_utf8_bytes2chars(const struct Ustr *, size_t, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+#ifdef USTR_SC_H
+USTR_CONF_E_PROTO
+int ustr_sc_utf8_reverse(struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+#endif
 
 USTR_CONF_E_PROTO
 int ustrp_utf8_valid(const struct Ustrp *)
@@ -43,7 +48,11 @@ size_t ustrp_utf8_chars2bytes(const struct Ustrp *, size_t, size_t, size_t *)
 USTR_CONF_EI_PROTO
 size_t ustrp_utf8_bytes2chars(const struct Ustrp *, size_t, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
-
+#ifdef USTR_SC_H
+USTR_CONF_E_PROTO
+int ustrp_sc_utf8_reverse(struct Ustr_pool *, struct Ustrp **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
+#endif
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-utf8-internal.h"

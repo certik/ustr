@@ -33,6 +33,7 @@ function usage
   echo "         io    = IO routines" 1>&2
   echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
   echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
+  echo "         sc    = Shortcut functions for Ustr's" 1>&2
   echo "         set   = strcpy() for Ustr's" 1>&2
   echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
   echo "         srch  = Searching, strchr() / strrchr() for Ustr's" 1>&2
@@ -77,6 +78,7 @@ fmt=false
 io=false
 main=false
 parse=false
+sc=false
 set=false
 spn=false
 srch=false
@@ -86,19 +88,20 @@ gdb=false
 
 for i in $@; do
   case "$i" in
-    all)  all=true                        ;;
-    b)    b=true;               main=true ;;
-    cmp)  cmp=true;             main=true ;;
-    cntl) cntl=true             main=true ;;
-    fmt)  fmt=true;             main=true ;;
-    gdb)  gdb=true;                       ;;
-    io)   io=true;              main=true ;;
-    main)                       main=true ;;
-    parse) parse=true;          main=true ;;
-    set)  set=true;             main=true ;;
-    spn)  spn=true;  srch=true; main=true ;;
-    srch) srch=true;            main=true ;;
-    utf8) utf8=true;            main=true ;;
+    all)   all=true                        ;;
+    b)     b=true;               main=true ;;
+    cmp)   cmp=true;             main=true ;;
+    cntl)  cntl=true             main=true ;;
+    fmt)   fmt=true;             main=true ;;
+    gdb)   gdb=true;                       ;;
+    io)    io=true;              main=true ;;
+    main)                        main=true ;;
+    parse) parse=true;           main=true ;;
+    sc)    sc=true;              main=true ;;
+    set)   set=true;             main=true ;;
+    spn)   spn=true;  srch=true; main=true ;;
+    srch)  srch=true;            main=true ;;
+    utf8)  utf8=true;            main=true ;;
     *)
       usage
       ;;
@@ -113,6 +116,7 @@ if $all; then
   io=true
   main=true
   parse=true
+  sc=true
   set=true
   spn=true
   srch=true
@@ -184,6 +188,10 @@ copy main
 
 if $parse; then
   copy parse
+fi
+
+if $sc; then
+  copy sc
 fi
 
 if $set; then
@@ -421,6 +429,10 @@ fi
 
 if $parse; then
   echo '#include "ustr-parse.h"'  >> $outname
+fi
+
+if $sc; then
+  echo '#include "ustr-sc.h"' >> $outname
 fi
 
 if $srch; then

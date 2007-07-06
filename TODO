@@ -17,14 +17,11 @@
 
  Allow the shared lib. to compile without inline.
 
-
  ADD
  ---
  DOCS!
 
  ustr-import man page.
-
- ustr_sc_concat()
 
  ustr_srch_case()
 
@@ -34,8 +31,7 @@
 
  ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
 
+ ustr_sc_add_concat() / ustr_sc_dup_concat()
+
  ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
    Ie. the aotl() of strtol()
-
- ustr_utf8_reverse?
-

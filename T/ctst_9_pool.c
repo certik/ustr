@@ -273,13 +273,16 @@ int tst(void)
   ASSERT(!ustrp_owner(sp1));
   ASSERT( ustrp_shared(sp1));
   ASSERT( ustrp_enomem(sp1));
-  ASSERT(!ustrp_reallocx(pool, &sp1, USTR_FALSE));
+  ASSERT(!ustrp_realloc(pool, &sp1, 0));
+  ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT( ustrp_owner(sp1));
   ASSERT(!ustrp_shared(sp1));
   ASSERT( ustrp_enomem(sp1));
-  ASSERT( ustrp_reallocx(pool, &sp1, USTR_FALSE));
-  ASSERT_PEQ(sp1, USTRP1(\x1, "2"));
+  ASSERT(!ustrp_realloc(pool, &sp1, 1));
+  ASSERT( ustrp_realloc(pool, &sp1, 2));
+  ASSERT( ustrp_realloc(pool, &sp1, 2));
+  ASSERT_PEQ(sp1, USTRP1(\x2, "22"));
   
   ustrp_sc_free2(pool, &sp1, USTRP(""));
 

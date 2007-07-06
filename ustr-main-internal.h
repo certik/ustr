@@ -102,9 +102,7 @@ USTR_CONF_e_PROTO void ustr__memcpy(struct Ustr *, size_t, const void *,size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO void ustr__memset(struct Ustr *, size_t, int, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_e_PROTO int ustrp__reallocx(struct Ustr_pool *, struct Ustr **, int)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__realloc(struct Ustr_pool *, struct Ustr **)
+USTR_CONF_e_PROTO int ustrp__realloc(struct Ustr_pool *, struct Ustr **, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO int ustr__rw_add(struct Ustr *, size_t, size_t *, size_t *,
                                    size_t *, size_t *, int *)
@@ -167,26 +165,10 @@ int ustrp__add_subustr(struct Ustr_pool *, struct Ustr **,
 USTR_CONF_e_PROTO
 int ustrp__add_rep_chr(struct Ustr_pool *p, struct Ustr **, char, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
+
 USTR_CONF_e_PROTO void ustrp__sc_del(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO
-struct Ustr *ustrp__sc_dupx(struct Ustr_pool *p,
-                            size_t sz, size_t rbytes, int exact, int emem,
-                            struct Ustr **ps1)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
-USTR_CONF_e_PROTO struct Ustr *ustrp__sc_dup(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__sc_ensure_owner(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO void ustrp__sc_free(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO void ustrp__sc_free_shared(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__sc_reverse(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__sc_tolower(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__sc_toupper(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 
 #endif

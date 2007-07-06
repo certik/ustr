@@ -193,6 +193,12 @@ int tst(void)
   ASSERT(ustrp_utf8_bytes2chars(sp1, 7, 8, &c2b_pos) == 4);
   ASSERT(c2b_pos == 4);
 
+  ASSERT_PEQ(sp2, USTRP1(\x1e," ¡¢£¤¥¦§¨©ª«¬­®"));
+  ASSERT(ustrp_sc_utf8_reverse(pool, &sp2));
+  ASSERT_PEQ(sp2, USTRP1(\x1e,"®­¬«ª©¨§¦¥¤£¢¡ "));
+  ASSERT(ustrp_sc_utf8_reverse(pool, &sp2));
+  ASSERT_PEQ(sp2, USTRP1(\x1e," ¡¢£¤¥¦§¨©ª«¬­®"));
+
   ASSERT(ustrp_spn_cstr_fwd(sp2, 0, " ¡¢ãäåæçèé") == 21);
   ASSERT(ustrp_spn_cstr_fwd(sp2, 0, "ãäåæçèéàáâµ") == 21);
   ASSERT(ustrp_utf8_spn_cstr_fwd(sp2, 0, "ãäåæçèé ¡¢") == 3);
@@ -294,6 +300,14 @@ int tst(void)
   ASSERT(c2b_pos ==  1);
 
   ASSERT(12345 == ustr_parse_ulongx(USTR1(\xb, "1⁺234⁺5"), 0, USTR_FLAG_PARSE_NUM_SEP, 0, ULONG_MAX, "⁺", NULL, NULL));
+
+  ASSERT(ustrp_add_cstr(pool, &sp2, "0123456789"));
+  ASSERT_PEQ(sp2, USTRP1(\x28," ¡¢£¤¥¦§¨©ª«¬­®0123456789"));
+  ASSERT(ustrp_sc_utf8_reverse(pool, &sp2));
+  ASSERT_PEQ(sp2, USTRP1(\x28,"9876543210®­¬«ª©¨§¦¥¤£¢¡ "));
+  ASSERT(ustrp_owner(sp2));
+  ASSERT(ustr_sc_utf8_reverse((Ustr **)&sp2)); /* hack */
+  ASSERT_PEQ(sp2, USTRP1(\x28," ¡¢£¤¥¦§¨©ª«¬­®0123456789"));
 
   ustr_pool_free(pool);
 
