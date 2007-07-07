@@ -1,6 +1,4 @@
 Section: Creating read-only Ustr functions
-
-
 Function: USTR()
  Returns: Ustr string
  Type: struct Ustr *
@@ -172,9 +170,7 @@ Function: USTRP4()
   This function works like USTR2(), but returns a Ustrp instead.
 
 
-
 Section: Creating fixed Ustr functions
-
 Function: ustr_init_fixed()
  Returns: Ustr string
  Type: struct Ustr *
@@ -236,7 +232,6 @@ Function: USTR_SC_INIT_AUTO()
 
 
 Section: Creating allocated Ustr functions
-
 Function: ustr_init_alloc()
  Returns: Ustr string
  Type: struct Ustr *
@@ -279,7 +274,7 @@ Function: ustr_dupx_empty()
  Parameter[2]: Number of bytes to use for reference count
  Type[2]: size_t
 
- Parameter[3]: Exact memory allocations
+ Parameter[3]: Exact memory allocation flag
  Type[3]: int
 
  Parameter[4]: ENOMEM, memory error flag
@@ -291,8 +286,13 @@ Function: ustr_dupx_empty()
  from system memory, or it returns NULL.
   The size is the desired allocation size for the entire Ustr, including
  overhead for metadata. This value will be rounded up, if it's too small, so
- passing 1 as the size says you want a stored size but to allocate the smallest
+ passing 1 as the size means you want a stored size but to allocate the smallest
  amount of memory possible.
+  The exact memory allocation flag says if the Ustr should round allocations up
+ to the nearest half power of two or should be no more than needed.
+  The ENOMEM memory error flag sets the iniital state of the user visible flag
+ for memory allocation errors. Eg. ustr_enomem(), ustr_setf_enomem_clr() and
+ ustr_setf_enomem_err()
 
  Note:
 
@@ -360,7 +360,7 @@ Function: ustr_add_undef()
  Returns: Success or failure
  Type: int
 
- Parameter[1]: Pointer to a Ustr string
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Length of new undefined data
@@ -377,111 +377,132 @@ Function: ustr_add_buf()
  Returns: Success or failure
  Type: int
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const void *
- Type[2]:  const void *
+ Parameter[2]: Pointer to data
+ Type[2]: const void *
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Length of data
+ Type[3]: size_t
 
-Explanation:
+ Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works as if you had called ustr_add_undef() and then copied the
+ data into the new undefined spacee.
 
 
 Function: ustr_add_cstr()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const char *
- Type[2]:  const char *
+ Parameter[2]: Pointer to C-style string
+ Type[2]: const char *
 
-Explanation:
+ Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works as if you had called ustr_add_buf() and passed strlen() as
+ the length.
 
 
 Function: ustr_add()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const struct Ustr *
- Type[2]:  const struct Ustr *
+ Parameter[2]: A pointer to a constant Ustr string
+ Type[2]: const struct Ustr *
 
-Explanation:
+ Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function mostly works as if you had called ustr_add_buf() with the
+ ustr_cstr() and ustr_len() values of the Ustr string to be added.
+
+ Note:
+
+  If the Ustr string is zero length and isn't writable this function may just
+ add a reference, this is fine for Ustr strings that are "constant" because if
+ the Ustr is read-only then the memory will not be written to.
 
 
 Function: ustr_add_subustr()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const struct Ustr *
- Type[2]:  const struct Ustr *
+ Parameter[2]: A pointer to a constant Ustr string
+ Type[2]: const struct Ustr *
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Position in the Ustr
+ Type[3]: size_t
 
- Parameter[4]:  size_t
- Type[4]:  size_t
+ Parameter[4]: Length to add from the Ustr
+ Type[4]: size_t
 
-Explanation:
+ Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function mostly works as if you had called ustr_add_buf() with the
+ ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+
+ Note:
+
+  If the position is 1 and the length is the length of the Ustr string then it
+ just calls ustrr_add().
 
 
 Function: ustr_add_rep_chr()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  char
- Type[2]:  char
+ Parameter[2]: Byte value of data
+ Type[2]: char
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Length of bytes as data
+ Type[3]: size_t
 
-Explanation:
+ Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works as if you had called ustr_add_undef() and then copied the
+ byte value to each position.
 
 
 Section: Deleting data from a Ustr
 Function: ustr_del()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Length to delete from the Ustr
  Type[2]: size_t
 
-Explanation:
+ Explanation:
 
   This function deletes data from the end of Ustr, possibly re-sizing the Ustr
  at the same time.
+
+ Note:
+
+  The Ustr is never re-sized when the size is stored explicitly, so the pointer
+ never changes.
 
 
 Function: ustr_del_subustr()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Position in the Ustr
@@ -490,18 +511,140 @@ Function: ustr_del_subustr()
  Parameter[3]: Length to delete from the Ustr
  Type[3]:  size_t
 
-Explanation:
+ Explanation:
 
   This function works like ustr_del() but can delete an arbitrary section of the
  Ustr.
 
 
-Section: Resizing a Ustr
-Function: ustr_realloc()
- Returns: int 
+Section: Setting a Ustr to some data
+Function: ustr_set_undef()
+ Returns: Success or failure 
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  size_t
+ Type[2]:  size_t
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ the ustr_add_undef().
+
+
+Function: ustr_set_empty()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string,
+ however the string will be allocated if this completes.
+
+
+Function: ustr_set_buf()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const void *
+ Type[2]:  const void *
+
+ Parameter[3]:  size_t
+ Type[3]:  size_t
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ the ustr_add_buf().
+
+
+Function: ustr_set_cstr()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  const char *
+ Type[2]:  const char *
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ the ustr_add_cstr().
+
+
+Function: ustr_set()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant Ustr string
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ the ustr_add().
+
+
+Function: ustr_set_subustr()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant Ustr string
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: Position in the Ustr
+ Type[3]: size_t
+
+ Parameter[4]: Length to set from the Ustr
+ Type[4]: size_t
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ the ustr_add_subustr().
+
+
+Function: ustr_set_rep_chr()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Byte value of data
+ Type[2]: char
+
+ Parameter[3]: Length of bytes as data
+ Type[3]: size_t
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ the ustr_add_rep_chr().
+
+
+Section: Resizing a sized Ustr
+Function: ustr_realloc()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Size of allocation
@@ -519,12 +662,12 @@ Function: ustr_realloc()
  value as well as a length (ustr_sized() must return USTR_TRUE).
 
 
-Section: Adding formatted data to Ustr
+Section: Adding formatted data to a Ustr
 Function: ustr_add_vfmt_lim()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  size_t
@@ -536,7 +679,7 @@ Function: ustr_add_vfmt_lim()
  Parameter[4]:  va_list
  Type[4]:  va_list
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -545,7 +688,7 @@ Function: ustr_add_vfmt()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  const char *
@@ -554,7 +697,7 @@ Function: ustr_add_vfmt()
  Parameter[3]:  va_list
  Type[3]:  va_list
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -563,7 +706,7 @@ Function: ustr_add_fmt()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  const char *
@@ -572,7 +715,7 @@ Function: ustr_add_fmt()
  Parameter[3]:  ...
  Type[3]:  ...
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -581,7 +724,7 @@ Function: ustr_add_fmt_lim()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  size_t
@@ -593,23 +736,23 @@ Function: ustr_add_fmt_lim()
  Parameter[4]:  ...
  Type[4]:  ...
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
 
-Section: Adding binary data to Ustr functions
+Section: Adding binary data to a Ustr
 Function: ustr_add_b_uint16()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Binary value to add to the Ustr
  Type[2]: uint_least16_t
 
-Explanation:
+ Explanation:
 
   This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
@@ -619,13 +762,13 @@ Function: ustr_add_b_uint32()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Binary value to add to the Ustr
  Type[2]: uint_least32_t
 
-Explanation:
+ Explanation:
 
   This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
@@ -635,19 +778,19 @@ Function: ustr_add_b_uint64()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Binary value to add to the Ustr
  Type[2]: uint_least64_t
 
-Explanation:
+ Explanation:
 
   This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
-Section: Parsing binary data from Ustr
+Section: Parsing binary data from a Ustr
 Function: ustr_parse_b_uint16()
  Returns: uint_least16_t 
  Type: uint_least16_t 
@@ -658,7 +801,7 @@ Function: ustr_parse_b_uint16()
  Parameter[2]: Offset within string to start parsing at
  Type[2]: size_t
 
-Explanation:
+ Explanation:
 
   This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
@@ -674,7 +817,7 @@ Function: ustr_parse_b_uint32()
  Parameter[2]: Offset within string to start parsing at
  Type[2]: size_t
 
-Explanation:
+ Explanation:
 
   This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
@@ -690,18 +833,302 @@ Function: ustr_parse_b_uint64()
  Parameter[2]: Offset within string to start parsing at
  Type[2]: size_t
 
-Explanation:
+ Explanation:
 
   This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
-Section: Ustr IO helpers
+Section: Accessing the "variables" of a Ustr
+Function: ustr_len()
+ Returns: The length of the Ustr
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function returns the length of the data within the Ustr, much like
+ strlen() but without getting the value wrong in the case of extra NIL bytes.
+
+
+Function: ustr_cstr()
+ Returns: Read-only pointer to the start of data in the Ustr
+ Type: const char *
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function returns a read-only pointer to the start of the data of the
+ Ustr string. Due to there always being a terminating NIL byte in a Ustr, this
+ is also a valid C-style string.
+
+
+Function: ustr_wstr()
+ Returns: Writable pointer to the start of data in the Ustr, or NULL
+ Type: char *
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: struct Ustr *
+
+ Explanation:
+
+  This function returns a writable pointer to the start of the data of the
+ Ustr string. Due to there always being a terminating NIL byte in a Ustr, this
+ is also a valid C-style string.
+  If the ustr is read-only (ustr_ro() == USTR_TRUE) then this function will
+ return NULL.
+
+ Note:
+
+  Unless the string is owned (ustr_owner() == USTR_TRUE) it can be a very bad
+ idea to use this to change data, as then all references will be updated. See
+ ustr_sc_wstr().
+
+
+Function: ustr_alloc()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if the Ustr is currently in allocated storage.
+
+
+Function: ustr_exact()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if the Ustr is doing exact allocations, so as the Ustr
+ grows it will only have storage allocated exactly as required and not in half
+ powers of two.
+
+ Note:
+
+  This will always be USTR_FALSE for read-only Ustr strings
+ (ustr_ro() == USTR_TRUE), even though the default may be to used exact sized
+ allocations when  adding data to them etc.
+
+
+Function: ustr_sized()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if the Ustr stores an explicit allocation size, if not
+ the size is implied as the next highest half power of two.
+
+
+Function: ustr_ro()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if the Ustr is current in read-only storage.
+  Read-only storage is not writable but can be referenced via. ustr_dup() an
+ infinite amount of times.
+
+
+Function: ustr_fixed()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if the Ustr is current in fixed size storage.
+  Fixed size storage is writable but cannot be referenced.
+
+ Note:
+
+  Fixed size storage always explicitly stores the size of the storage.
+
+
+Function: ustr_enomem()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_shared()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_limited()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if the Ustr is current in fixed size storage and cannot
+ move to allocated storage.
+
+ Note:
+
+  This always fails for Ustr's in allocated storage.
+
+
+Function: ustr_owner()
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+ Type: int 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function says if their is only a single reference to the Ustr string.
+
+ Note:
+
+  This always fails for Ustr's in read-only storage.
+  This always succeeds for Ustr's in fixed size storage.
+
+
+Function: ustr_size()
+ Returns: size_t 
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function calculates the maximum amount of data that could be stored (Ie.
+ the max ustr_len()) without having to re-size the Ustr string.
+
+ Note:
+
+  This is always zero for Ustr's in read-only storage.
+
+
+Function: ustr_size_alloc()
+ Returns: size_t 
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function returns the size of the storage for the Ustr.
+
+ Note:
+
+  This is always zero for Ustr's in read-only storage.
+
+
+Function: ustr_size_overhead()
+ Returns: size_t 
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function returns the difference between the size of the storage and the
+ maximum amount of data that could be stored without having to re-size the Ustr
+ string.
+
+ Note:
+
+  This is always zero for Ustr's in read-only storage.
+
+
+Section: Setting the "flags" of a Ustr
+Function: ustr_setf_enomem_err()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_setf_enomem_clr()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_setf_share()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_setf_owner()
+ Returns: int 
+ Type: int 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Doing IO from or to a Ustr
 Function: ustr_io_get()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
@@ -713,7 +1140,7 @@ Function: ustr_io_get()
  Parameter[4]:  size_t *
  Type[4]:  size_t *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -722,13 +1149,13 @@ Function: ustr_io_getfile()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
  Type[2]:  FILE *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -737,13 +1164,13 @@ Function: ustr_io_getfilename()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  const char *
  Type[2]:  const char *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -752,13 +1179,13 @@ Function: ustr_io_getline()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
  Type[2]:  FILE *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -767,7 +1194,7 @@ Function: ustr_io_put()
  Returns: int 
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
@@ -776,7 +1203,7 @@ Function: ustr_io_put()
  Parameter[3]:  size_t
  Type[3]:  size_t
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -785,7 +1212,7 @@ Function: ustr_io_putline()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
@@ -794,7 +1221,7 @@ Function: ustr_io_putline()
  Parameter[3]:  size_t
  Type[3]:  size_t
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -803,13 +1230,13 @@ Function: ustr_io_putfile()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
  Type[2]:  FILE *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -818,13 +1245,13 @@ Function: ustr_io_putfileline()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  FILE *
  Type[2]:  FILE *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -833,7 +1260,7 @@ Function: ustr_io_putfilename()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr **
+ Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]:  const char *
@@ -842,7 +1269,7 @@ Function: ustr_io_putfilename()
  Parameter[3]:  const char *
  Type[3]:  const char *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -852,10 +1279,10 @@ Function: ustr_utf8_valid()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -864,10 +1291,10 @@ Function: ustr_utf8_len()
  Returns: size_t 
  Type: size_t 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -876,10 +1303,10 @@ Function: ustr_utf8_width()
  Returns: ssize_t 
  Type: ssize_t 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -888,7 +1315,7 @@ Function: ustr_utf8_chars2bytes()
  Returns: size_t 
  Type: size_t 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]:  size_t
@@ -900,7 +1327,7 @@ Function: ustr_utf8_chars2bytes()
  Parameter[4]:  size_t *
  Type[4]:  size_t *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
@@ -909,7 +1336,7 @@ Function: ustr_utf8_bytes2chars()
  Returns: size_t 
  Type: size_t 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]:  size_t
@@ -921,18 +1348,17 @@ Function: ustr_utf8_bytes2chars()
  Parameter[4]:  size_t *
  Type[4]:  size_t *
 
-Explanation:
+ Explanation:
 
   This function is NOT DOCUMENTED YET!
 
 
-Section: Parsing integer numbers from a Ustr
-
+Section: Parsing ASCII integer numbers from a Ustr
 Function: ustr_parse_uintmaxx()
  Returns: Parsed number, or zero on error
  Type: uintmax_t 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -970,7 +1396,7 @@ Function: ustr_parse_uintmax()
  Returns: Parsed number, or zero on error
  Type: uintmax_t 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -999,7 +1425,7 @@ Function: ustr_parse_intmax()
  Returns: Parsed number, or zero on error
  Type: intmax_t 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1028,7 +1454,7 @@ Function: ustr_parse_ulongx()
  Returns: Parsed number, or zero on error
  Type: unsigned long 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1062,7 +1488,7 @@ Function: ustr_parse_ulong()
  Returns: Parsed number, or zero on error
  Type: unsigned long 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1087,7 +1513,7 @@ Function: ustr_parse_long()
  Returns: Parsed number, or zero on error
  Type: long 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1112,7 +1538,7 @@ Function: ustr_parse_uint()
  Returns: Parsed number, or zero on error
  Type: unsigned int 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1137,7 +1563,7 @@ Function: ustr_parse_int()
  Returns: Parsed number, or zero on error
  Type: int 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1162,7 +1588,7 @@ Function: ustr_parse_ushort()
  Returns: Parsed number, or zero on error
  Type: unsigned short 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1187,7 +1613,7 @@ Function: ustr_parse_short()
  Returns: Parsed number, or zero on error
  Type: short 
 
- Parameter[1]: String to parse number from
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
@@ -1227,7 +1653,7 @@ Function: ustr_pool_make_subpool()
  Parameter[1]: struct Ustr_pool *
  Type[1]: struct Ustr_pool *
 
-Explanation:
+ Explanation:
 
   This allocates a new pool as a child of the passed in pool (Parameter[1]),
  The pool can be freed and cleared independantly of the parent pool however
