@@ -10,6 +10,7 @@
  FIX
  ---
  ustr_io_*() can't tell if enomem, or FILE io?
+    Well ustr_enomem() mostly helps.
 
  ustr_io_* ... unlocked IO for get/put/etc.? ... 
     esp. getfile/putfile as they can involve multi operations.
@@ -29,11 +30,12 @@
 
  ustr_parse_netstr() / ustr_parse_netstr2()
 
- ustr_ins()?
-
  ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
+   ustr_sub(Ustr **s1, size_t pos, Ustr *s2) == ustr_set + offset.
+   ustr_sub(Ustr **s1, size_t pos, size_t len, Ustr *s2) ?
 
- ustr_sc_add_concat() / ustr_sc_dup_concat() / ustr_sc_set_concat()
+ ustr_ins()?
 
  ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
    Ie. the aotl() of strtol()
+   This allos attribute pure to be used, so it'll be hoisted from loops etc.

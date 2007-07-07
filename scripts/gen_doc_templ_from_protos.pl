@@ -18,7 +18,7 @@ $/ = undef;
 
 $_ = <IN>;
 
-while (/^USTR_CONF_EI?_PROTO\s+([\s0-9a-zA-Z_*]*\s+\**)(ustrp?(_)[0-9a-zA-Z][0-9a-zA-Z_]*)\((?:void|([^,\)]+)|([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+))\);?\s*$/gm)
+while (/^USTR_CONF_EI?_PROTO\s+([\s0-9a-zA-Z_*]*\s+\**)(ustrp?(_)[0-9a-zA-Z][0-9a-zA-Z_]*)\((?:void|([^,\)]+)|([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+)|([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+),([^,\)]+))\);?\s*$/gm)
   {
     print "Function: $2()\n";
     print " Returns: $1\n";
@@ -140,8 +140,36 @@ while (/^USTR_CONF_EI?_PROTO\s+([\s0-9a-zA-Z_*]*\s+\**)(ustrp?(_)[0-9a-zA-Z][0-9
       print " Parameter[8]: $39\n";
       print " Type[8]: $39\n";
     }
+    if (defined ($40)) {
+      print " Parameter[1]: $41\n";
+      print " Type[1]: $41\n";
+      print "\n";
+      print " Parameter[2]: $42\n";
+      print " Type[2]: $42\n";
+      print "\n";
+      print " Parameter[3]: $43\n";
+      print " Type[3]: $43\n";
+      print "\n";
+      print " Parameter[4]: $44\n";
+      print " Type[4]: $44\n";
+      print "\n";
+      print " Parameter[5]: $45\n";
+      print " Type[5]: $45\n";
+      print "\n";
+      print " Parameter[6]: $46\n";
+      print " Type[6]: $46\n";
+      print "\n";
+      print " Parameter[7]: $47\n";
+      print " Type[7]: $47\n";
+      print "\n";
+      print " Parameter[8]: $48\n";
+      print " Type[8]: $48\n";
+      print "\n";
+      print " Parameter[9]: $49\n";
+      print " Type[9]: $49\n";
+    }
     print "\n";
-    print "Explanation:\n";
+    print " Explanation:\n";
     print "\n";
     print "  This function is NOT DOCUMENTED YET!\n";
     print "\n";

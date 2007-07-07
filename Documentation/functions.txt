@@ -468,7 +468,7 @@ Function: ustr_del()
  Parameter[1]: struct Ustr **
  Type[1]: struct Ustr **
 
- Parameter[2]: Length to delete.
+ Parameter[2]: Length to delete from the Ustr
  Type[2]: size_t
 
 Explanation:
@@ -478,15 +478,16 @@ Explanation:
 
 
 Function: ustr_del_subustr()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
  Type[1]: struct Ustr **
- Parameter[2]:  size_t
- Type[2]:  size_t
 
- Parameter[3]:  size_t
+ Parameter[2]: Position in the Ustr
+ Type[2]: size_t
+
+ Parameter[3]: Length to delete from the Ustr
  Type[3]:  size_t
 
 Explanation:
@@ -496,24 +497,6 @@ Explanation:
 
 
 Section: Resizing a Ustr
-Function: ustr_reallocx()
- Returns: int 
- Type: int 
-
- Parameter[1]: struct Ustr **
- Type[1]: struct Ustr **
-
- Parameter[2]: Exact size allocation
- Type[2]: int
-
-Explanation:
-
-  This function is re-sizes the Ustr if it is a sized Ustr (ustr_sized() returns
- USTR_TRUE). This is mostly used to shrink a Ustr that is now significantly
- smaller than it once was. Although this function will grow a Ustr under
- certain conditions.
-
-
 Function: ustr_realloc()
  Returns: int 
  Type: int 
@@ -521,10 +504,19 @@ Function: ustr_realloc()
  Parameter[1]: struct Ustr **
  Type[1]: struct Ustr **
 
-Explanation:
+ Parameter[2]: Size of allocation
+ Type[2]: size_t
 
-  This function is like ustr_reallocx() but uses the current value of
- ustr_exact().
+ Explanation:
+
+  This function is re-sizes the Ustr to the specified size (Parameter[2]).
+  This is mostly used to shrink a sized Ustr that is now significantly
+ smaller than it once was. Although this function can also grow a Ustr.
+
+ Note:
+
+  To have a size that isn't implied from the length the Ustr must store a size
+ value as well as a length (ustr_sized() must return USTR_TRUE).
 
 
 Section: Adding formatted data to Ustr
@@ -608,48 +600,51 @@ Explanation:
 
 Section: Adding binary data to Ustr functions
 Function: ustr_add_b_uint16()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
  Type[1]: struct Ustr **
 
- Parameter[2]:  uint_least16_t
- Type[2]:  uint_least16_t
+ Parameter[2]: Binary value to add to the Ustr
+ Type[2]: uint_least16_t
 
 Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
 
 
 Function: ustr_add_b_uint32()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
  Type[1]: struct Ustr **
- Parameter[2]:  uint_least32_t
- Type[2]:  uint_least32_t
+
+ Parameter[2]: Binary value to add to the Ustr
+ Type[2]: uint_least32_t
 
 Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
 
 
 Function: ustr_add_b_uint64()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
  Type[1]: struct Ustr **
 
- Parameter[2]:  uint_least64_t
- Type[2]:  uint_least64_t
+ Parameter[2]: Binary value to add to the Ustr
+ Type[2]: uint_least64_t
 
 Explanation:
 
-  This function is NOT DOCUMENTED YET!
-
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
 
 
 Section: Parsing binary data from Ustr
@@ -660,12 +655,13 @@ Function: ustr_parse_b_uint16()
  Parameter[1]: struct Ustr *
  Type[1]: struct Ustr *
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
 Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 Function: ustr_parse_b_uint32()
@@ -675,12 +671,13 @@ Function: ustr_parse_b_uint32()
  Parameter[1]: struct Ustr *
  Type[1]: struct Ustr *
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
 Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 Function: ustr_parse_b_uint64()
@@ -690,17 +687,18 @@ Function: ustr_parse_b_uint64()
  Parameter[1]: struct Ustr *
  Type[1]: struct Ustr *
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
 Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 Section: Ustr IO helpers
 Function: ustr_io_get()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -721,7 +719,7 @@ Explanation:
 
 
 Function: ustr_io_getfile()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -736,7 +734,7 @@ Explanation:
 
 
 Function: ustr_io_getfilename()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -751,7 +749,7 @@ Explanation:
 
 
 Function: ustr_io_getline()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -784,7 +782,7 @@ Explanation:
 
 
 Function: ustr_io_putline()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -802,7 +800,7 @@ Explanation:
 
 
 Function: ustr_io_putfile()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -817,7 +815,7 @@ Explanation:
 
 
 Function: ustr_io_putfileline()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -832,7 +830,7 @@ Explanation:
 
 
 Function: ustr_io_putfilename()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: struct Ustr **
@@ -851,7 +849,7 @@ Explanation:
 
 Section: Dealing with UTF-8 in a Ustr
 Function: ustr_utf8_valid()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
  Parameter[1]: const struct Ustr *
@@ -929,202 +927,285 @@ Explanation:
 
 
 Section: Parsing integer numbers from a Ustr
+
 Function: ustr_parse_uintmaxx()
- Returns: uintmax_t 
+ Returns: Parsed number, or zero on error
  Type: uintmax_t 
 
- Parameter[1]: Ustr
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]: flags
- Type[2]: unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]: min
- Type[3]: uintmax_t
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
- Parameter[4]: max
- Type[4]:  uintmax_t
+ Parameter[4]: Absolute minimum value
+ Type[4]: uintmax_t
 
- Parameter[5]: seperator
- Type[5]:  char
+ Parameter[5]: Absolute maximum value
+ Type[5]: uintmax_t
 
- Parameter[6]: error number
- Type[6]:  unsigned int *
+ Parameter[6]: Thousands seperator
+ Type[6]: const char *
 
-Explanation:
+ Parameter[7]: Return length of parsed number
+ Type[7]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[8]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[8]: unsigned int *
 
+ Explanation:
 
-Function: ustr_parse_ulongx()
- Returns: unsigned long 
- Type: unsigned long 
+  This function parses an ASCII representation of a number from a
+ Ustr (Parameter[1]) starting at the offset (Parameter[2]).
 
- Parameter[1]: Ustr
- Type[1]: const struct Ustr *
+ Note:
 
- Parameter[2]: flags
- Type[2]:  unsigned int
-
- Parameter[3]: min val
- Type[3]: unsigned long
-
- Parameter[4]: max val
- Type[4]:  unsigned long
-
- Parameter[5]: seperator
- Type[5]: const char *
-
- Parameter[6]: error number
- Type[6]:  unsigned int *
-
-Explanation:
-
-  This function is NOT DOCUMENTED YET!
+  If stdint.h isn't available this function won't be available.
 
 
 Function: ustr_parse_uintmax()
- Returns: uintmax_t 
+ Returns: Parsed number, or zero on error
  Type: uintmax_t 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum
+ values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
+
+ Note:
+
+  If stdint.h isn't available this function won't be available.
 
 
 Function: ustr_parse_intmax()
- Returns: intmax_t 
+ Returns: Parsed number, or zero on error
  Type: intmax_t 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum
+ values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
+
+ Note:
+
+  If stdint.h isn't available this function won't be available.
+
+
+Function: ustr_parse_ulongx()
+ Returns: Parsed number, or zero on error
+ Type: unsigned long 
+
+ Parameter[1]: String to parse number from
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]:  size_t
+
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]:  unsigned int
+
+ Parameter[4]: Absolute minimum value
+ Type[4]:  unsigned long
+
+ Parameter[5]: Absolute maximum value
+ Type[5]:  unsigned long
+
+ Parameter[6]: Thousands seperator
+ Type[6]: const char *
+
+ Parameter[7]: Return length of parsed number
+ Type[7]:  size_t *
+
+ Parameter[8]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[8]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_uintmaxx() but returns an unsigned long,
+ it is always available even when stdint.h isn't.
 
 
 Function: ustr_parse_ulong()
- Returns: unsigned long 
+ Returns: Parsed number, or zero on error
  Type: unsigned long 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]: unsigned int *
- Type[3]: unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
 
 
 Function: ustr_parse_long()
- Returns: long 
+ Returns: Parsed number, or zero on error
  Type: long 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
 
 
 Function: ustr_parse_uint()
- Returns: unsigned int 
+ Returns: Parsed number, or zero on error
  Type: unsigned int 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as 0 and UINT_MAX, and the thousands seperator as "_".
 
 
 Function: ustr_parse_int()
- Returns: int 
+ Returns: Parsed number, or zero on error
  Type: int 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
 
 
 Function: ustr_parse_ushort()
- Returns: unsigned short 
+ Returns: Parsed number, or zero on error
  Type: unsigned short 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]: unsigned int
- Type[2]: unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
 
 
 Function: ustr_parse_short()
- Returns: short 
+ Returns: Parsed number, or zero on error
  Type: short 
 
- Parameter[1]: const struct Ustr *
+ Parameter[1]: String to parse number from
  Type[1]: const struct Ustr *
 
- Parameter[2]:  unsigned int
- Type[2]:  unsigned int
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
 
- Parameter[3]:  unsigned int *
- Type[3]:  unsigned int *
+ Parameter[3]: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+ Type[3]: unsigned int
 
-Explanation:
+ Parameter[4]: Return length of parsed number
+ Type[4]: size_t *
 
-  This function is NOT DOCUMENTED YET!
+ Parameter[5]: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+ Type[5]: unsigned int *
+
+ Explanation:
+
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
 
 Section: Simple Ustr pool API
