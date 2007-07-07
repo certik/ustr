@@ -1433,22 +1433,11 @@ int ustrp__add(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   if (len1 > (len1 + len2))
     return (USTR_FALSE);
   
-  if (ustr__treat_as_buf(*ps1, len1, s2, len2))
+  if (len1 || ustr__treat_as_buf(*ps1, len1, s2, len2))
     return (ustrp__add_buf(p, ps1, ustr_cstr(s2), ustr_len(s2)));
     
-  if (!len1)
-  {  
-    if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
-      return (USTR_FALSE);
-  }
-  else
-  {
-    if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), len1 + len2)))
-      return (USTR_FALSE);
-    
-    ustr__memcpy(ret,    0, ustr_cstr(*ps1), len1);
-    ustr__memcpy(ret, len1, ustr_cstr(s2),   len2);
-  }
+  if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
+    return (USTR_FALSE);
   
   ustrp__sc_free2(p, ps1, ret);
   return (USTR_TRUE);
