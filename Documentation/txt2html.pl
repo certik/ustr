@@ -70,7 +70,7 @@ sub convert_index
 	  {
 	    my $name = $2;
 	    my $uri = $2;
-	    $uri =~ s/([^[:alnum:]:_])/sprintf("%%%02x", ord($1))/eg;
+	    $uri =~ s/[^[:alnum:]:_]//g;
 
 	    $txt_indx_ful .= "<li class=\"obj\"><a href=\"#$uri\">$name</a>\n";
 	    ++$mem_count;
@@ -79,7 +79,8 @@ sub convert_index
 	  {
 	    my $section = $1;
 	    my $uri = $1;
-	    $uri =~ s/([^[:alnum:]:_])/sprintf("%%%02x", ord($1))/eg;
+	    $uri =~ s/\s/_/g;
+	    $uri =~ s/[^[:alnum:]:_]//g;
 
 	    if ($done)
 	      {
@@ -131,9 +132,9 @@ sub conv_A_refs
       {$1<a href="design">$2</a>$3}g;
 
     s{([^#"_0-9a-z])ustr_([_0-9a-z]+)\(\)}
-      {$1<a href="functions#ustr_$2%28%29">ustr_$2()</a>}g;
+      {$1<a href="functions#ustr_${2}">ustr_$2()</a>}g;
     s{([^#"_0-9A-Z])USTR_([_0-9A-Z]+)\(\)}
-      {$1<a href="functions#USTR_$2%28%29">USTR_$2()</a>}g;
+      {$1<a href="functions#USTR_${2}">USTR_$2()</a>}g;
 
     if ($params && defined($current_function))
       {
@@ -173,24 +174,24 @@ EOL
             {
               if ($1 eq "Constant")
 	      {
-                my $uri = $2;
+                my $iduri = $2;
 		my $orig_str = $_;
 
 		$next_in_const = 1;
 
-		$uri =~ s/([^[:alnum:]:_])/sprintf("%%%02x", ord($1))/eg;
-		s!(: </strong> )(.*)!$1<a id="$uri">$2</a>!;
+		$iduri =~ s/([^[:alnum:]:_])//g;
+		s!(: </strong> )(.*)!$1<a id="$iduri">$2</a>!;
 
 		$current_function = undef;
 	      }
               elsif ($1 eq "Function")
               {
-                my $uri = $2;
-                $uri =~ s/([^[:alnum:]:_])/sprintf("%%%02x", ord($1))/eg;
+                my $iduri = $2;
+                $iduri =~ s/([^[:alnum:]:_])//g;
 
-		s!(: </strong> )(.*)!$1<a id="$uri">$2</a>!;
+		s!(: </strong> )(.*)!$1<a id="$iduri">$2</a>!;
 
-		$current_function = $uri;
+		$current_function = $iduri;
               }
               elsif ($1 eq "Member")
               {

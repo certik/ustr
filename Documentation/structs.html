@@ -29,18 +29,18 @@
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
-<li><a href="#indx-Members%20of%20Ustr_pool">Members of Ustr_pool (3)</a></ul>
+<li><a href="#indx-Members_of_Ustr_pool">Members of Ustr_pool (3)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
-<li><a id="indx-Members%20of%20Ustr_pool" href="#Members%20of%20Ustr_pool">Members of Ustr_pool</a>
+<li><a id="indx-Members_of_Ustr_pool" href="#Members_of_Ustr_pool">Members of Ustr_pool</a>
 <ul>
-<li class="obj"><a href="#pool_sys_malloc%28%29">pool_sys_malloc()</a>
-<li class="obj"><a href="#pool_sys_realloc%28%29">pool_sys_realloc()</a>
-<li class="obj"><a href="#pool_sys_free%28%29">pool_sys_free()</a>
+<li class="obj"><a href="#pool_sys_malloc">pool_sys_malloc()</a>
+<li class="obj"><a href="#pool_sys_realloc">pool_sys_realloc()</a>
+<li class="obj"><a href="#pool_sys_free">pool_sys_free()</a>
 </ul></ul>
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Members%20of%20Ustr_pool">Members of Ustr_pool</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="pool_sys_malloc%28%29">pool_sys_malloc()</a>
+<strong>Function: </strong> <a id="pool_sys_malloc">pool_sys_malloc()</a>
 <br>Returns: Allocated data<br>Type: void *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new allocation<br>Type<strong>[2]</strong>: size_t
@@ -51,7 +51,7 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="pool_sys_realloc%28%29">pool_sys_realloc()</a>
+<strong>Function: </strong> <a id="pool_sys_realloc">pool_sys_realloc()</a>
 <br>Returns: Re-allocated data<br>Type: void *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the old data<br>Type<strong>[2]</strong>: void *
@@ -59,7 +59,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of new allocation<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This is a callback to provide a similar usage to realloc().
-</p><p>  The Ustr <a href="functions#ustr_pool_make%28%29">ustr_pool_make()</a> varient works like realloc() but allocates at least
+</p><p>  The Ustr <a href="functions#ustr_pool_make">ustr_pool_make()</a> varient works like realloc() but allocates at least
  size (Parameter[4]) memory from the pool (Parameter[1]) and copies the old
  data into it, or it returns NULL on failure.
 
@@ -70,13 +70,13 @@
  always returned.
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="pool_sys_free%28%29">pool_sys_free()</a>
+<strong>Function: </strong> <a id="pool_sys_free">pool_sys_free()</a>
 <br>Returns: Nothing<br>Type: void
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the data<br>Type<strong>[2]</strong>: void *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This is a callback to provide a similar usage to free().
-</p><p>  The Ustr <a href="functions#ustr_pool_make%28%29">ustr_pool_make()</a> varient free's the data, if it was the last thing
+</p><p>  The Ustr <a href="functions#ustr_pool_make">ustr_pool_make()</a> varient free's the data, if it was the last thing
  allocated from the pool. Otherwise it does nothing.
 
 
