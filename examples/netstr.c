@@ -38,7 +38,7 @@ static void usage(const char *prog_name, int xcode)
    entire thing by hand using just a malloc() and storing the length
    separately. */
 static int cescape_decode(Ustr **ps1)
-{ /* Convert \n \t etc. into their correct bytes. *//
+{ /* Convert \n \t etc. into their correct bytes. */
   size_t fpos = 0;
   size_t len = ustr_len(*ps1);
   char  *src = NULL;
