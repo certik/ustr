@@ -148,7 +148,7 @@ int tst(void)
   ASSERT(!ustr_enomem(s2));
   ASSERT(!ustr_setf_enomem_err(s2));
   ASSERT(!ustr_enomem(s2));
-  ASSERT( ustr_setf_enomem_clr(s2));
+  ASSERT(!ustr_setf_enomem_clr(s2));
   ASSERT(!ustr_enomem(s2));
   
 #if USTR_CONF_HAVE_VA_COPY
@@ -171,6 +171,13 @@ int tst(void)
   ASSERT(!ustr_cmp_subustr(USTR1(\x7, "042 xyz"), s2, ustr_len(s2) - 6, 7));
   ASSERT( ustr_setf_share(s2));
   ASSERT( ustr_setf_owner(s2));
+  ASSERT( ustr_add(&s2, USTR("")));
+#ifdef __linux__
+  /* test multi-byte conversion failure */
+  ASSERT(!ustr_add_fmt(&s2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_dup_fmt(     "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_set_fmt(&s2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+#endif
 #endif
   ustr_sc_free2(&s2, ustr_dupx(1, 0, 0, 0, s2));
   

@@ -39,6 +39,8 @@ int tst(void)
   ASSERT(ustr_len(s4) == 4);
   ASSERT(ustr_cmp_eq(s3, USTR1(\x0, "")));
   ASSERT(ustr_cmp_eq(s4, USTR1(\x4, "abcd")));
+  ustr_del(&s4, 4);
+  ASSERT(ustr_add(&s4, USTR1(\x4, "abcd")));
 
   ASSERT(!ustr_add_rep_chr(&s4, 'Z', 32));
   ASSERT( ustr_enomem(s4));

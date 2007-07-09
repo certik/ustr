@@ -6,7 +6,6 @@
 
  utf8 from: http://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt
 
-
  FIX
  ---
  ustr_io_*() can't tell if enomem, or FILE io?

@@ -32,8 +32,13 @@ static void usage(const char *prog_name, int xcode)
   exit (xcode);
 }
 
+/* This function is implemented showing how you can simply use the Ustr as
+   a container for storing a growable byte array+length, and then easily do
+   the more complex operations the same way you would if you managed the
+   entire thing by hand using just a malloc() and storing the length
+   separately. */
 static int cescape_decode(Ustr **ps1)
-{ /* convert \n \t etc. into their correct bytes */
+{ /* Convert \n \t etc. into their correct bytes. *//
   size_t fpos = 0;
   size_t len = ustr_len(*ps1);
   char  *src = NULL;
@@ -42,9 +47,8 @@ static int cescape_decode(Ustr **ps1)
   if (!(fpos = ustr_srch_chr_fwd(*ps1, 0, '\\')) || (fpos == len))
     return (USTR_TRUE);
 
-  if (!ustr_sc_ensure_owner(ps1))
+  if (!(dst = src = ustr_sc_wstr(ps1)))
     return (USTR_FALSE);
-  dst = src = ustr_wstr(*ps1);
 
   --fpos;
   src += fpos;

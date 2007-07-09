@@ -20,20 +20,26 @@ int ustrp__set_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t nlen)
 
   s1 = *ps1;
   clen = ustr_len(s1);
-  if ((nlen == clen) && ustr_owner(s1))
-    return (USTR_TRUE);
-  else if (nlen > clen)
+  if (nlen == clen)
   {
-    if (ustr__rw_add(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
-      return (ustrp__add_undef(p, ps1, (nlen - clen)));
+    if (ustr_owner(s1))
+      return (USTR_TRUE);
   }
   else
-    if (ustr__rw_del(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
-      return (ustrp__del(p, ps1, (clen - nlen)));
+  {
+    if (nlen > clen)
+    {
+      if (ustr__rw_add(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
+        return (ustrp__add_undef(p, ps1, (nlen - clen)));
+    }
+    else
+      if (ustr__rw_del(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
+        return (ustrp__del(p, ps1, (clen - nlen)));
   
-  if (ustr_limited(s1))
-    goto fail_enomem;
-
+    if (ustr_limited(s1))
+      goto fail_enomem;
+  }
+  
   if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen)))
     goto fail_enomem;
   
@@ -104,7 +110,7 @@ int ustrp__set(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
 
   if (*ps1 == s2)
     return (USTR_TRUE);
-  
+
   if (ustr__treat_as_buf(*ps1, 0, s2, ustr_len(s2)))
     return (ustrp__set_buf(p, ps1, ustr_cstr(s2), ustr_len(s2)));
 

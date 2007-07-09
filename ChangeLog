@@ -1,3 +1,29 @@
+2007-07-08  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr_setf_enomem_err): Don't change the enomem flag
+	if not owner.
+	(ustr_setf_enomem_clr): Don't change the enomem flag if not owner.
+
+	* ustr-set-code.h (ustrp__set_undef): Cleanup code path for set_undef
+	to current length.
+
+	* ustr-main-code.h (ustr__ref_set): Don't allow fixed storage Ustr's to
+	set anything.
+	(ustr_init_alloc): Remove if check for ustr__ref_set.
+	(ustr_init_fixed): Don't call ustr__ref_set, to it all manually.
+	(ustrp__add): Minor optimization for when we aren't adding anything.
+	(ustr_setf_enomem_err): Only set the enomem flag if we are the owner.
+	(ustr_setf_enomem_clr): Only clear the enomem flag if we are the owner.
+
+	* Documentation/functions.txt: More docs.
+
+	* ustr-main-code.h (ustr__ref_add): Remove macro function, minor
+	cleanup.
+
+2007-07-07  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_CONF_REF_BYTES): Change default to 1 byte.
+
 2007-07-06  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_add): Simplify the implimentation.

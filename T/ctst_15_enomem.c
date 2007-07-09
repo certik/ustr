@@ -57,8 +57,18 @@ int tst(void)
     MALLOC_CHECK_STORE.mem_fail_num = 1;
     ASSERT(!ustrp_enomem(sp1));
     ASSERT(!ustrp_set_buf(pool, &sp1, "ab", 1));
+    ASSERT(!ustrp_enomem(sp1));
+    ASSERT_PEQ(sp1, USTRP1(\1, "x"));
+    ASSERT(ustrp_sc_ensure_owner(pool, &sp1));
+    ASSERT_PEQ(sp1, USTRP1(\1, "x"));
+
+    /*
+    MALLOC_CHECK_STORE.mem_fail_num = 1;
+    ASSERT(!ustrp_set_buf(pool, &sp1, "ab", 1));
     ASSERT( ustrp_enomem(sp1));
     ASSERT( ustrp_setf_enomem_clr(sp1));
+    ASSERT_PEQ(sp1, USTRP1(\1, "x"));
+    */
     ASSERT( ustrp_set_buf(pool, &sp1, "ab", 1));
     ASSERT(!ustrp_enomem(sp1));
     ASSERT_PEQ(sp1, USTRP1(\1, "a"));
@@ -69,8 +79,8 @@ int tst(void)
     MALLOC_CHECK_STORE.mem_fail_num = 1;
     ASSERT(!ustrp_enomem(sp1));
     ASSERT(!ustrp_set_subustrp(pool, &sp1, sp1, 3, 1));
-    ASSERT( ustrp_enomem(sp1));
-    ASSERT( ustrp_setf_enomem_clr(sp1));
+    ASSERT(!ustrp_enomem(sp1));
+    ASSERT(!ustrp_setf_enomem_clr(sp1));
     ASSERT( ustrp_set_subustrp(pool, &sp1, sp1, 3, 1));
     ASSERT(!ustrp_enomem(sp1));
     ASSERT( ustrp_len(sp1) == 1);
@@ -81,8 +91,8 @@ int tst(void)
     MALLOC_CHECK_STORE.mem_fail_num = 1;
     ASSERT(!ustrp_enomem(sp1));
     ASSERT(!ustrp_set_empty(pool, &sp1));
-    ASSERT( ustrp_enomem(sp1));
-    ASSERT( ustrp_setf_enomem_clr(sp1));
+    ASSERT(!ustrp_enomem(sp1));
+    ASSERT(!ustrp_setf_enomem_clr(sp1));
     ASSERT( ustrp_set_empty(pool, &sp1));
     ASSERT(!ustrp_enomem(sp1));
     ASSERT(!ustrp_len(sp1));
@@ -392,6 +402,18 @@ int tst(void)
     ASSERT(!ustr_sc_reverse(&s1));
   }
   ASSERT( ustr_sc_reverse(&s1));
+  ASSERT_EQ(s1, USTR1(\x8, "87654321"));
+
+  ustr_sc_free2(&s1, USTR1(\x8, "12345678"));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s1, USTR1(\x8, "12345678"));
+    ASSERT(!ustr_sc_utf8_reverse(&s1));
+  }
+  ASSERT( ustr_sc_utf8_reverse(&s1));
   ASSERT_EQ(s1, USTR1(\x8, "87654321"));
 
   ustr_sc_free2(&s1, USTR1(\x34, "abcdefghijklmnopqrstuvwxyz"

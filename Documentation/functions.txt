@@ -171,6 +171,30 @@ Function: USTRP4()
 
 
 Section: Creating fixed Ustr functions
+Function: USTR_SIZE_FIXED()
+ Returns: Size of area of memory
+ Type: size_t
+
+ Parameter[1]: Size of area of memory
+ Type[1]: size_t
+
+ Explanation:
+
+  This macro function is replaced by a static conversion from the max length
+ desired (Parameter[1]) to the storage size needed. In other words it works out
+ what ustr_size_overhead() will be, and adds that value.
+
+ Note:
+
+  This is useful is you want a small fixed size allocation, as you can declare
+ it like so:
+
+  char buf[USTR_SIZE_FIXED(4)];
+
+ ...to give you exactly 4 bytes as a maximum, this is esp. useful if you want
+ a limited (ustr_limited() == USTR_TRUE) Ustr string.
+
+
 Function: ustr_init_fixed()
  Returns: Ustr string
  Type: struct Ustr *
@@ -974,7 +998,15 @@ Function: ustr_enomem()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function just returns the value of the user settable flag in the Ustr. It
+ can be set via. ustr_setf_enomem_err() and cleared by ustr_setf_enomem_clr().
+  This function is automatically set to on whever a memory allocation failure
+ happens for a Ustr.
+
+ Note:
+
+  If a Ustr is referenced multiple times, ustr_setf_enomem_err() will fail.
+  This always fails for Ustr's in read-only storage.
 
 
 Function: ustr_shared()
@@ -986,7 +1018,15 @@ Function: ustr_shared()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function says if the Ustr is in the "shared" mode. It can be set via.
+ ustr_setf_shared() and cleared by ustr_setf_owner() on allocated Ustr's.
+  Shared mode means that a Ustr can be referenced and unreferenced an infinite
+ number of times.
+
+ Note:
+
+  This always succeeds for Ustr's in read-only storage.
+  This always fails for Ustr's in fixed size storage.
 
 
 Function: ustr_limited()
@@ -998,12 +1038,13 @@ Function: ustr_limited()
 
  Explanation:
 
-  This function says if the Ustr is current in fixed size storage and cannot
+  This function says if the Ustr is currently in fixed size storage and cannot
  move to allocated storage.
 
  Note:
 
   This always fails for Ustr's in allocated storage.
+  This always fails for Ustr's in read-only storage.
 
 
 Function: ustr_owner()
@@ -1076,51 +1117,82 @@ Function: ustr_size_overhead()
 
 Section: Setting the "flags" of a Ustr
 Function: ustr_setf_enomem_err()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr *
+ Parameter[1]: A pointer to a Ustr string
  Type[1]: struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function sets the enomem flag, which can be observed via. the
+ ustr_enomem() function.
+  The implication of setting this flag is that a memory error has occured in a
+ previous function call on this Ustr.
+
+ Note:
+
+  This function fails if ustr_owner() fails for the Ustr.
 
 
 Function: ustr_setf_enomem_clr()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr *
+ Parameter[1]: A pointer to a Ustr string
  Type[1]: struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function clears the enomem flag, which can be observed via. the
+ ustr_enomem() function.
+  The implication of this flag being set is that a memory error has occured in
+ a previous function call on this Ustr, so on clearing the flag you should
+ know you have brought the Ustr back to a known state.
+
+ Note:
+
+  This function fails if ustr_owner() fails for the Ustr.
 
 
 Function: ustr_setf_share()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr *
+ Parameter[1]: A pointer to a Ustr string
  Type[1]: struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function sets the shared mode, which can be observed via. the
+ ustr_shared() function.
+  This is used on a Ustr so that it can have more references than it is able
+ to hold in it's reference count. After this call the Ustr can be referenced and
+ unreferenced an infinite number of times.
+
+ Note:
+
+  After this call the Ustr will never be deleted until ustr_setf_owner() is
+ called.
+  This function fails if ustr_alloc() fails for the Ustr.
 
 
 Function: ustr_setf_owner()
- Returns: int 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: struct Ustr *
+ Parameter[1]: A pointer to a Ustr string
  Type[1]: struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function removes the shared mode, which can be observed via. the
+ ustr_shared() function.
+  This is used so that a Ustr in shared mode can be free'd.
+
+ Note:
+
+  This function fails if ustr_alloc() fails for the Ustr.
 
 
 Section: Doing IO from or to a Ustr
@@ -1276,7 +1348,7 @@ Function: ustr_io_putfilename()
 
 Section: Dealing with UTF-8 in a Ustr
 Function: ustr_utf8_valid()
- Returns: Success or failure
+ Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
  Type: int 
 
  Parameter[1]: A pointer to a constant Ustr string
@@ -1284,11 +1356,12 @@ Function: ustr_utf8_valid()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function tries it's best to find out if the string is a valid utf-8
+ string.
 
 
 Function: ustr_utf8_len()
- Returns: size_t 
+ Returns: The number of the utf-8 characters in the Ustr
  Type: size_t 
 
  Parameter[1]: A pointer to a constant Ustr string
@@ -1296,7 +1369,11 @@ Function: ustr_utf8_len()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function counts the number of utf-8 characters inn the Ustr.
+
+ Note:
+
+  This function gives undefined answers on strings that aren't utf-8 valid.
 
 
 Function: ustr_utf8_width()

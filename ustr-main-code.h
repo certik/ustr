@@ -319,7 +319,7 @@ USTR_CONF_I_PROTO int ustr_setf_enomem_err(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (ustr_ro(s1))
+  if (!ustr_owner(s1))
     return (USTR_FALSE);
   
   s1->data[0] |=  USTR__BIT_ENOMEM;
@@ -329,8 +329,8 @@ USTR_CONF_I_PROTO int ustr_setf_enomem_clr(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (ustr_ro(s1))
-    return (USTR_TRUE);
+  if (!ustr_owner(s1))
+    return (USTR_FALSE);
   
   s1->data[0] &= ~USTR__BIT_ENOMEM;
   return (USTR_TRUE);
@@ -366,7 +366,7 @@ USTR_CONF_i_PROTO int ustr__ref_set(struct Ustr *s1, size_t ref)
   size_t len = 0;
   
   USTR_ASSERT(ustr_assert_valid(s1));
-  USTR_ASSERT(ustr_alloc(s1) || (ustr_fixed(s1) && !ref));
+  USTR_ASSERT(ustr_alloc(s1));
 
   if (!(len = USTR__REF_LEN(s1)))
     return (USTR_FALSE);
@@ -425,39 +425,42 @@ USTR_CONF_i_PROTO void ustr__sz_set(struct Ustr *s1, size_t sz)
   ustr__embed_val_set(s1->data + 1 + USTR__REF_LEN(s1) + lenn, lenn, sz);
 }
 
-#define USTR__REF_T_ADD(s1, num, lim)              \
-    case num:                                      \
-    {                                              \
-      ref = ustr_xi__ref_get(s1);                  \
-      if (ref == 0)   return (USTR_TRUE);          \
-      if (ref == lim) return (USTR_FALSE);         \
-      ustr__ref_set(s1, ref + 1);                  \
-    }                                              \
-    return (USTR_TRUE)
 USTR_CONF_i_PROTO int ustr__ref_add(struct Ustr *s1)
 {
   size_t ref = 0;
-
+  size_t lim = 0;
+  
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (ustr_ro(s1))    return (USTR_TRUE);
-  if (ustr_fixed(s1)) return (USTR_FALSE);
+  if (ustr_ro(s1))
+    return (USTR_TRUE);
+  if (ustr_fixed(s1))
+    return (USTR_FALSE);
   
   switch (USTR__REF_LEN(s1))
   {
-    case 0: return (USTR_FALSE); /* Ustr with no reference count */
-
-    USTR__REF_T_ADD(s1, 1, 0xFF);
-    USTR__REF_T_ADD(s1, 2, 0xFFFF);
-    USTR__REF_T_ADD(s1, 4, 0xFFFFFFFFUL);
 #if USTR_CONF_HAVE_64bit_SIZE_MAX
-    USTR__REF_T_ADD(s1, 8, 0xFFFFFFFFFFFFFFFFULL);
+    case 8: if (!lim) lim = 0xFFFFFFFFFFFFFFFFULL;
 #endif
+    case 4: if (!lim) lim = 0xFFFFFFFFUL;
+    case 2: if (!lim) lim = 0xFFFF;
+    case 1: if (!lim) lim = 0xFF;
       
-    USTR_ASSERT_NO_SWITCH_DEF("Ref. length bad for ustr__ref_add()");
+      ref = ustr_xi__ref_get(s1);
+      if (ref == 0)
+        return (USTR_TRUE);
+      if (ref == lim)
+        return (USTR_FALSE);
+      ustr__ref_set(s1, ref + 1);
+      return (USTR_TRUE);
+  
+    case 0: /* Ustr with no reference count */
+      
+      USTR_ASSERT_NO_SWITCH_DEF("Ref. length bad for ustr__ref_add()");
   }
+
+  return (USTR_FALSE);
 }
-#undef USTR__REF_T_ADD
 
 USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
 {
@@ -468,7 +471,10 @@ USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
 
   switch (USTR__REF_LEN(s1))
   {
-    case 8: case 4: case 2: case 1:
+    case 8:
+    case 4:
+    case 2:
+    case 1:
     {
       size_t ref = ustr_xi__ref_get(s1);
       
@@ -479,12 +485,12 @@ USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
       return (ref - 1);
     }
           
-    case 0: 
+    case 0: /* Ustr with no reference count */
 
       USTR_ASSERT_NO_SWITCH_DEF("Ref. length bad for ustr__ref_del()");
   }
 
-  return (0);  /* Ustr with no reference count */
+  return (0);
 }
 
 USTR_CONF_i_PROTO void ustrp__free(struct Ustr_pool *p, struct Ustr *s1)
@@ -547,7 +553,6 @@ USTR_CONF_I_PROTO size_t ustr_init_size(size_t sz, size_t rbytes, int exact,
   USTR_ASSERT_RET((rbytes == 0) ||
                   (rbytes == 1) || (rbytes == 2) || (rbytes == 4) ||
                   (USTR_CONF_HAVE_64bit_SIZE_MAX && (rbytes == 8)), 0);
-
 
   do
   {
@@ -661,8 +666,7 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   if (sz)
     ustr__sz_set(ret, sz);
   ustr__len_set(ret, len);
-  if (rbytes) /* any reference value is valid */
-    ustr__ref_set(ret, 1);
+  ustr__ref_set(ret,   1);
 
   USTR_ASSERT(ustr_assert_valid(ret));
   USTR_ASSERT( ustr_alloc(ret));
@@ -685,7 +689,7 @@ struct Ustr *ustr_init_fixed(void *data, size_t sz, int exact, size_t len)
 {
   struct Ustr *ret = data;
   void *tmp = 0; /* move type between char and unsigned char */
-  const size_t rbytes = 0;
+  size_t rbytes = 0;
   const int    emem   = USTR_FALSE;
   
   USTR_ASSERT(sz);
@@ -697,8 +701,9 @@ struct Ustr *ustr_init_fixed(void *data, size_t sz, int exact, size_t len)
                            as it might not be valid until we terminate */
 
   ret->data[0] &= ~USTR__BIT_ALLOCD;
-  ustr__terminate(tmp, ustr_alloc(ret), len);
-  ustr__ref_set(ret, 0);
+  ustr__terminate(tmp, USTR_FALSE, len);
+  if ((rbytes = USTR__REF_LEN(ret))) /* _large_ */
+    ustr__embed_val_set(ret->data + 1, rbytes, 0);
 
   USTR_ASSERT(ustr_assert_valid(ret));
   USTR_ASSERT( ustr_fixed(ret));
@@ -1402,8 +1407,12 @@ USTR_CONF_I_PROTO int ustrp_add_buf(struct Ustr_pool *p, struct Ustrp **ps1,
 USTR_CONF_i_PROTO int ustr__treat_as_buf(const struct Ustr *s1, size_t len1,
                                          const struct Ustr *s2, size_t len2)
 {
-  USTR_ASSERT(!len1 || (len1 == ustr_len(s1)));
-  USTR_ASSERT(len1 < (len1 + len2)); /* no overflow allowed */
+  USTR_ASSERT(!len1 || (len1 == ustr_len(s1))); /* set() uses 0 */
+  USTR_ASSERT(len2 == ustr_len(s2));
+  USTR_ASSERT((len1 < (len1 + len2)) || !len2); /* no overflow allowed */
+
+  if (len1)
+    return (USTR_TRUE);
   
   if (ustr_limited(s1))
     return (USTR_TRUE);
@@ -1432,8 +1441,11 @@ int ustrp__add(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
 
   if (len1 > (len1 + len2))
     return (USTR_FALSE);
+
+  if (!len2)
+    return (USTR_TRUE);
   
-  if (len1 || ustr__treat_as_buf(*ps1, len1, s2, len2))
+  if (ustr__treat_as_buf(*ps1, len1, s2, len2))
     return (ustrp__add_buf(p, ps1, ustr_cstr(s2), ustr_len(s2)));
     
   if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))

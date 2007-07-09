@@ -112,8 +112,8 @@
 #endif
 
 /* ---- BEG: static/dynamic config. ---- */
-#ifndef USTR_CONF_REF_BYTES /* how many bytes to use up for references */
-#define USTR_CONF_REF_BYTES 2
+#ifndef USTR_CONF_REF_BYTES /* how many bytes to use for reference count */
+#define USTR_CONF_REF_BYTES 1
 #endif
 
 #ifndef USTR_CONF_HAS_SIZE /* Include a size value */
