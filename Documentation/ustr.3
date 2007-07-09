@@ -1,4 +1,4 @@
-.TH ustr 3 "02-Jul-2007" "Ustr 0.99.3" "Ustr String Library"
+.TH ustr 3 "09-Jul-2007" "Ustr 0.99.3" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -39,6 +39,10 @@ struct Ustr *\fBUSTRP2\fR(symbol, symbol, const char[]);
 struct Ustrp *\fBUSTRP4\fR(symbol, symbol, symbol, symbol, const char[]);
 .sp
 .br
+.in \w'  size_t \fBUSTR_SIZE_FIXED\fR('u
+.ti \w'  'u
+size_t \fBUSTR_SIZE_FIXED\fR(size_t);
+.br
 .in \w'  struct Ustr *\fBustr_init_fixed\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_init_fixed\fR(void *, size_t, int, size_t);
@@ -75,23 +79,23 @@ int \fBustr_add_undef\fR(struct Ustr **, size_t);
 .br
 .in \w'  int \fBustr_add_buf\fR('u
 .ti \w'  'u
-int \fBustr_add_buf\fR(struct Ustr **,  const void *,  size_t);
+int \fBustr_add_buf\fR(struct Ustr **, const void *, size_t);
 .br
 .in \w'  int  \fBustr_add_cstr\fR('u
 .ti \w'  'u
-int  \fBustr_add_cstr\fR(struct Ustr **,  const char *);
+int  \fBustr_add_cstr\fR(struct Ustr **, const char *);
 .br
 .in \w'  int  \fBustr_add\fR('u
 .ti \w'  'u
-int  \fBustr_add\fR(struct Ustr **,  const struct Ustr *);
+int  \fBustr_add\fR(struct Ustr **, const struct Ustr *);
 .br
 .in \w'  int  \fBustr_add_subustr\fR('u
 .ti \w'  'u
-int  \fBustr_add_subustr\fR(struct Ustr **,  const struct Ustr *,  size_t,  size_t);
+int  \fBustr_add_subustr\fR(struct Ustr **, const struct Ustr *, size_t, size_t);
 .br
 .in \w'  int  \fBustr_add_rep_chr\fR('u
 .ti \w'  'u
-int  \fBustr_add_rep_chr\fR(struct Ustr **,  char,  size_t);
+int  \fBustr_add_rep_chr\fR(struct Ustr **, char, size_t);
 .sp
 .br
 .in \w'  int  \fBustr_del\fR('u
@@ -100,16 +104,41 @@ int  \fBustr_del\fR(struct Ustr **, size_t);
 .br
 .in \w'  int  \fBustr_del_subustr\fR('u
 .ti \w'  'u
-int  \fBustr_del_subustr\fR(struct Ustr **,  size_t,  size_t);
+int  \fBustr_del_subustr\fR(struct Ustr **, size_t,  size_t);
 .sp
 .br
-.in \w'  int  \fBustr_reallocx\fR('u
+.in \w'  int  \fBustr_set_undef\fR('u
 .ti \w'  'u
-int  \fBustr_reallocx\fR(struct Ustr **, int);
+int  \fBustr_set_undef\fR(struct Ustr **,  size_t);
 .br
-.in \w'  int  \fBustr_realloc\fR('u
+.in \w'  int \fBustr_set_empty\fR('u
 .ti \w'  'u
-int  \fBustr_realloc\fR(struct Ustr **);
+int \fBustr_set_empty\fR(struct Ustr **);
+.br
+.in \w'  int \fBustr_set_buf\fR('u
+.ti \w'  'u
+int \fBustr_set_buf\fR(struct Ustr **,  const void *,  size_t);
+.br
+.in \w'  int \fBustr_set_cstr\fR('u
+.ti \w'  'u
+int \fBustr_set_cstr\fR(struct Ustr **,  const char *);
+.br
+.in \w'  int \fBustr_set\fR('u
+.ti \w'  'u
+int \fBustr_set\fR(struct Ustr **, const struct Ustr *);
+.br
+.in \w'  int \fBustr_set_subustr\fR('u
+.ti \w'  'u
+int \fBustr_set_subustr\fR(struct Ustr **, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int \fBustr_set_rep_chr\fR('u
+.ti \w'  'u
+int \fBustr_set_rep_chr\fR(struct Ustr **, char, size_t);
+.sp
+.br
+.in \w'  int \fBustr_realloc\fR('u
+.ti \w'  'u
+int \fBustr_realloc\fR(struct Ustr **, size_t);
 .sp
 .br
 .in \w'  int  \fBustr_add_vfmt_lim\fR('u
@@ -131,28 +160,106 @@ int  \fBustr_add_fmt_lim\fR(struct Ustr **,  size_t, const char *,  ...);
 .br
 .in \w'  int  \fBustr_add_b_uint16\fR('u
 .ti \w'  'u
-int  \fBustr_add_b_uint16\fR(struct Ustr **,  uint_least16_t);
+int  \fBustr_add_b_uint16\fR(struct Ustr **, uint_least16_t);
 .br
 .in \w'  int  \fBustr_add_b_uint32\fR('u
 .ti \w'  'u
-int  \fBustr_add_b_uint32\fR(struct Ustr **,  uint_least32_t);
+int  \fBustr_add_b_uint32\fR(struct Ustr **, uint_least32_t);
 .br
 .in \w'  int  \fBustr_add_b_uint64\fR('u
 .ti \w'  'u
-int  \fBustr_add_b_uint64\fR(struct Ustr **,  uint_least64_t);
+int  \fBustr_add_b_uint64\fR(struct Ustr **, uint_least64_t);
 .sp
 .br
 .in \w'  uint_least16_t  \fBustr_parse_b_uint16\fR('u
 .ti \w'  'u
-uint_least16_t  \fBustr_parse_b_uint16\fR(struct Ustr *,  size_t);
+uint_least16_t  \fBustr_parse_b_uint16\fR(struct Ustr *, size_t);
 .br
 .in \w'  uint_least32_t  \fBustr_parse_b_uint32\fR('u
 .ti \w'  'u
-uint_least32_t  \fBustr_parse_b_uint32\fR(struct Ustr *,  size_t);
+uint_least32_t  \fBustr_parse_b_uint32\fR(struct Ustr *, size_t);
 .br
 .in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
 .ti \w'  'u
-uint_least64_t  \fBustr_parse_b_uint64\fR(struct Ustr *,  size_t);
+uint_least64_t  \fBustr_parse_b_uint64\fR(struct Ustr *, size_t);
+.sp
+.br
+.in \w'  size_t  \fBustr_len\fR('u
+.ti \w'  'u
+size_t  \fBustr_len\fR(const struct Ustr *);
+.br
+.in \w'  const char *\fBustr_cstr\fR('u
+.ti \w'  'u
+const char *\fBustr_cstr\fR(const struct Ustr *);
+.br
+.in \w'  char *\fBustr_wstr\fR('u
+.ti \w'  'u
+char *\fBustr_wstr\fR(struct Ustr *);
+.br
+.in \w'  int \fBustr_alloc\fR('u
+.ti \w'  'u
+int \fBustr_alloc\fR(const struct Ustr *);
+.br
+.in \w'  int \fBustr_exact\fR('u
+.ti \w'  'u
+int \fBustr_exact\fR(const struct Ustr *);
+.br
+.in \w'  int  \fBustr_sized\fR('u
+.ti \w'  'u
+int  \fBustr_sized\fR(const struct Ustr *);
+.br
+.in \w'  int \fBustr_ro\fR('u
+.ti \w'  'u
+int \fBustr_ro\fR(const struct Ustr *);
+.br
+.in \w'  int  \fBustr_fixed\fR('u
+.ti \w'  'u
+int  \fBustr_fixed\fR(const struct Ustr *);
+.br
+.in \w'  int  \fBustr_enomem\fR('u
+.ti \w'  'u
+int  \fBustr_enomem\fR(const struct Ustr *);
+.br
+.in \w'  int  \fBustr_shared\fR('u
+.ti \w'  'u
+int  \fBustr_shared\fR(const struct Ustr *);
+.br
+.in \w'  int  \fBustr_limited\fR('u
+.ti \w'  'u
+int  \fBustr_limited\fR(const struct Ustr *);
+.br
+.in \w'  int  \fBustr_owner\fR('u
+.ti \w'  'u
+int  \fBustr_owner\fR(const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_size\fR('u
+.ti \w'  'u
+size_t  \fBustr_size\fR(const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_size_alloc\fR('u
+.ti \w'  'u
+size_t  \fBustr_size_alloc\fR(const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_size_overhead\fR('u
+.ti \w'  'u
+size_t  \fBustr_size_overhead\fR(const struct Ustr *);
+.sp
+.br
+.in \w'  int  \fBustr_setf_enomem_err\fR('u
+.ti \w'  'u
+int  \fBustr_setf_enomem_err\fR(struct Ustr *);
+.br
+.in \w'  int  \fBustr_setf_enomem_clr\fR('u
+.ti \w'  'u
+int  \fBustr_setf_enomem_clr\fR(struct Ustr *);
+.br
+.in \w'  int  \fBustr_setf_share\fR('u
+.ti \w'  'u
+int  \fBustr_setf_share\fR(struct Ustr *);
+.br
+.in \w'  int  \fBustr_setf_owner\fR('u
+.ti \w'  'u
+int  \fBustr_setf_owner\fR(struct Ustr *);
 .sp
 .br
 .in \w'  int  \fBustr_io_get\fR('u
@@ -215,43 +322,43 @@ size_t  \fBustr_utf8_bytes2chars\fR(const struct Ustr *,  size_t,  size_t,  size
 .br
 .in \w'  uintmax_t  \fBustr_parse_uintmaxx\fR('u
 .ti \w'  'u
-uintmax_t  \fBustr_parse_uintmaxx\fR(const struct Ustr *, unsigned int, uintmax_t,  uintmax_t,  char,  unsigned int *);
-.br
-.in \w'  unsigned long  \fBustr_parse_ulongx\fR('u
-.ti \w'  'u
-unsigned long  \fBustr_parse_ulongx\fR(const struct Ustr *,  unsigned int, unsigned long,  unsigned long, const char *,  unsigned int *);
+uintmax_t  \fBustr_parse_uintmaxx\fR(const struct Ustr *, size_t, unsigned int, uintmax_t, uintmax_t, const char *, size_t *, unsigned int *);
 .br
 .in \w'  uintmax_t  \fBustr_parse_uintmax\fR('u
 .ti \w'  'u
-uintmax_t  \fBustr_parse_uintmax\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+uintmax_t  \fBustr_parse_uintmax\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .br
 .in \w'  intmax_t  \fBustr_parse_intmax\fR('u
 .ti \w'  'u
-intmax_t  \fBustr_parse_intmax\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+intmax_t  \fBustr_parse_intmax\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
+.br
+.in \w'  unsigned long  \fBustr_parse_ulongx\fR('u
+.ti \w'  'u
+unsigned long  \fBustr_parse_ulongx\fR(const struct Ustr *,  size_t,  unsigned int,  unsigned long,  unsigned long, const char *,  size_t *, unsigned int *);
 .br
 .in \w'  unsigned long  \fBustr_parse_ulong\fR('u
 .ti \w'  'u
-unsigned long  \fBustr_parse_ulong\fR(const struct Ustr *,  unsigned int, unsigned int *);
+unsigned long  \fBustr_parse_ulong\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .br
 .in \w'  long  \fBustr_parse_long\fR('u
 .ti \w'  'u
-long  \fBustr_parse_long\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+long  \fBustr_parse_long\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .br
 .in \w'  unsigned int  \fBustr_parse_uint\fR('u
 .ti \w'  'u
-unsigned int  \fBustr_parse_uint\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+unsigned int  \fBustr_parse_uint\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .br
 .in \w'  int  \fBustr_parse_int\fR('u
 .ti \w'  'u
-int  \fBustr_parse_int\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+int  \fBustr_parse_int\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .br
 .in \w'  unsigned short  \fBustr_parse_ushort\fR('u
 .ti \w'  'u
-unsigned short  \fBustr_parse_ushort\fR(const struct Ustr *, unsigned int,  unsigned int *);
+unsigned short  \fBustr_parse_ushort\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .br
 .in \w'  short  \fBustr_parse_short\fR('u
 .ti \w'  'u
-short  \fBustr_parse_short\fR(const struct Ustr *,  unsigned int,  unsigned int *);
+short  \fBustr_parse_short\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .sp
 .br
 .in \w'  struct Ustr_pool *\fBustr_pool_make_pool\fR('u
@@ -282,8 +389,6 @@ that use stack space upto a certain amount.
 put it another way it only uses 8 bytes to store a 2 byte string where
 strdup() uses 3.
 .SH Creating read-only Ustr functions
-
-
 .ti -2
 .br
 \fBFunction: \fR USTR()
@@ -542,8 +647,36 @@ Type\fB[5]\fR: const char[]
 .br
   This function works like USTR2(), but returns a Ustrp instead.
 
-
 .SH Creating fixed Ustr functions
+.ti -2
+.br
+\fBFunction: \fR USTR_SIZE_FIXED()
+.br
+Returns: Size of area of memory
+.br
+Type: size_t
+
+.br
+Parameter\fB[1]\fR: Size of area of memory
+.br
+Type\fB[1]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro function is replaced by a static conversion from the max length desired (Parameter[1]) to the storage size needed. In other words it works out what ustr_size_overhead() will be, and adds that value.
+.sp
+\fBNote:\fR
+
+.br
+  This is useful is you want a small fixed size allocation, as you can declare it like so:
+
+.br
+  char buf[USTR_SIZE_FIXED(4)];
+.Ve
+ ...to give you exactly 4 bytes as a maximum, this is esp. useful if you want
+ a limited (ustr_limited() == USTR_TRUE) Ustr string.
 
 .ti -2
 .br
@@ -629,7 +762,6 @@ Type\fB[3]\fR: size_t
 
 
 .SH Creating allocated Ustr functions
-
 .ti -2
 .br
 \fBFunction: \fR ustr_init_alloc()
@@ -698,7 +830,7 @@ Parameter\fB[2]\fR: Number of bytes to use for reference count
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Exact memory allocations
+Parameter\fB[3]\fR: Exact memory allocation flag
 .br
 Type\fB[3]\fR: int
 
@@ -713,7 +845,11 @@ Type\fB[4]\fR: int
 .br
   This function creates an empty Ustr, owned by you, that is allocated from system memory, or it returns NULL.
 .br
-  The size is the desired allocation size for the entire Ustr, including overhead for metadata. This value will be rounded up, if it's too small, so passing 1 as the size says you want a stored size but to allocate the smallest amount of memory possible.
+  The size is the desired allocation size for the entire Ustr, including overhead for metadata. This value will be rounded up, if it's too small, so passing 1 as the size means you want a stored size but to allocate the smallest amount of memory possible.
+.br
+  The exact memory allocation flag says if the Ustr should round allocations up to the nearest half power of two or should be no more than needed.
+.br
+  The ENOMEM memory error flag sets the iniital state of the user visible flag for memory allocation errors. Eg. ustr_enomem(), ustr_setf_enomem_clr() and ustr_setf_enomem_err()
 .sp
 \fBNote:\fR
 
@@ -811,7 +947,7 @@ Returns: Success or failure
 Type: int
 
 .br
-Parameter\fB[1]\fR: Pointer to a Ustr string
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -835,7 +971,260 @@ Returns: Success or failure
 Type: int
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Pointer to data
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of data
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_add_undef() and then copied the data into the new undefined spacee.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_cstr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Pointer to C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_add_buf() and passed strlen() as the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function mostly works as if you had called ustr_add_buf() with the ustr_cstr() and ustr_len() values of the Ustr string to be added.
+.sp
+\fBNote:\fR
+
+.br
+  If the Ustr string is zero length and isn't writable this function may just add a reference, this is fine for Ustr strings that are "constant" because if the Ustr is read-only then the memory will not be written to.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_subustr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to add from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function mostly works as if you had called ustr_add_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+.sp
+\fBNote:\fR
+
+.br
+  If the position is 1 and the length is the length of the Ustr string then it just calls ustrr_add().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_rep_chr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Byte value of data
+.br
+Type\fB[2]\fR: char
+
+.br
+Parameter\fB[3]\fR: Length of bytes as data
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_add_undef() and then copied the byte value to each position.
+
+.SH Deleting data from a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_del()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Length to delete from the Ustr
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function deletes data from the end of Ustr, possibly re-sizing the Ustr at the same time.
+.sp
+\fBNote:\fR
+
+.br
+  The Ustr is never re-sized when the size is stored explicitly, so the pointer never changes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_del_subustr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position in the Ustr
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length to delete from the Ustr
+.br
+Type\fB[3]\fR:  size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_del() but can delete an arbitrary section of the Ustr.
+
+.SH Setting a Ustr to some data
+.ti -2
+.br
+\fBFunction: \fR ustr_set_undef()
+.br
+Returns: Success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  size_t
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_del() for the entire string and the ustr_add_undef().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_set_empty()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_del() for the entire string, however the string will be allocated if this completes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_set_buf()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -849,21 +1238,22 @@ Parameter\fB[3]\fR:  size_t
 .br
 Type\fB[3]\fR:  size_t
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works as if you had called ustr_del() for the entire string and the ustr_add_buf().
 
 .ti -2
 .br
-\fBFunction: \fR ustr_add_cstr()
+\fBFunction: \fR ustr_set_cstr()
 .br
 Returns: Success or failure
 .br
-Type: int 
+Type: int
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -872,189 +1262,132 @@ Parameter\fB[2]\fR:  const char *
 .br
 Type\fB[2]\fR:  const char *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works as if you had called ustr_del() for the entire string and the ustr_add_cstr().
 
 .ti -2
 .br
-\fBFunction: \fR ustr_add()
+\fBFunction: \fR ustr_set()
 .br
 Returns: Success or failure
 .br
-Type: int 
+Type: int
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  const struct Ustr *
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
 .br
-Type\fB[2]\fR:  const struct Ustr *
-
-Explanation:
+Type\fB[2]\fR: const struct Ustr *
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_del() for the entire string and the ustr_add().
 
 .ti -2
 .br
-\fBFunction: \fR ustr_add_subustr()
+\fBFunction: \fR ustr_set_subustr()
 .br
 Returns: Success or failure
 .br
-Type: int 
+Type: int
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  const struct Ustr *
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
 .br
-Type\fB[2]\fR:  const struct Ustr *
+Type\fB[2]\fR: const struct Ustr *
 
 .br
-Parameter\fB[3]\fR:  size_t
+Parameter\fB[3]\fR: Position in the Ustr
 .br
-Type\fB[3]\fR:  size_t
+Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR:  size_t
+Parameter\fB[4]\fR: Length to set from the Ustr
 .br
-Type\fB[4]\fR:  size_t
-
-Explanation:
+Type\fB[4]\fR: size_t
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_del() for the entire string and the ustr_add_subustr().
 
 .ti -2
 .br
-\fBFunction: \fR ustr_add_rep_chr()
+\fBFunction: \fR ustr_set_rep_chr()
 .br
 Returns: Success or failure
 .br
-Type: int 
+Type: int
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  char
+Parameter\fB[2]\fR: Byte value of data
 .br
-Type\fB[2]\fR:  char
+Type\fB[2]\fR: char
 
 .br
-Parameter\fB[3]\fR:  size_t
+Parameter\fB[3]\fR: Length of bytes as data
 .br
-Type\fB[3]\fR:  size_t
-
-Explanation:
+Type\fB[3]\fR: size_t
 
 .br
-  This function is NOT DOCUMENTED YET!
-
-.SH Deleting data from a Ustr
-.ti -2
-.br
-\fBFunction: \fR ustr_del()
-.br
-Returns: int 
-.br
-Type: int 
+\fBExplanation:\fR
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
-.br
-Type\fB[1]\fR: struct Ustr **
+  This function works as if you had called ustr_del() for the entire string and the ustr_add_rep_chr().
 
-.br
-Parameter\fB[2]\fR: Length to delete.
-.br
-Type\fB[2]\fR: size_t
-
-Explanation:
-
-.br
-  This function deletes data from the end of Ustr, possibly re-sizing the Ustr at the same time.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_del_subustr()
-.br
-Returns: int 
-.br
-Type: int 
-
-.br
-Parameter\fB[1]\fR: struct Ustr **
-.br
-Type\fB[1]\fR: struct Ustr **
-.br
-Parameter\fB[2]\fR:  size_t
-.br
-Type\fB[2]\fR:  size_t
-
-.br
-Parameter\fB[3]\fR:  size_t
-.br
-Type\fB[3]\fR:  size_t
-
-Explanation:
-
-.br
-  This function works like ustr_del() but can delete an arbitrary section of the Ustr.
-
-.SH Resizing a Ustr
-.ti -2
-.br
-\fBFunction: \fR ustr_reallocx()
-.br
-Returns: int 
-.br
-Type: int 
-
-.br
-Parameter\fB[1]\fR: struct Ustr **
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-Parameter\fB[2]\fR: Exact size allocation
-.br
-Type\fB[2]\fR: int
-
-Explanation:
-
-.br
-  This function is re-sizes the Ustr if it is a sized Ustr (ustr_sized() returns USTR_TRUE). This is mostly used to shrink a Ustr that is now significantly smaller than it once was. Although this function will grow a Ustr under certain conditions.
-
+.SH Resizing a sized Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_realloc()
 .br
-Returns: int 
+Returns: Success or failure
 .br
-Type: int 
+Type: int
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
-Explanation:
+.br
+Parameter\fB[2]\fR: Size of allocation
+.br
+Type\fB[2]\fR: size_t
 
 .br
-  This function is like ustr_reallocx() but uses the current value of ustr_exact().
+\fBExplanation:\fR
 
-.SH Adding formatted data to Ustr
+.br
+  This function is re-sizes the Ustr to the specified size (Parameter[2]).
+.br
+  This is mostly used to shrink a sized Ustr that is now significantly smaller than it once was. Although this function can also grow a Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  To have a size that isn't implied from the length the Ustr must store a size value as well as a length (ustr_sized() must return USTR_TRUE).
+
+.SH Adding formatted data to a Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_add_vfmt_lim()
@@ -1064,7 +1397,7 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1083,7 +1416,8 @@ Parameter\fB[4]\fR:  va_list
 .br
 Type\fB[4]\fR:  va_list
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1097,7 +1431,7 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1111,7 +1445,8 @@ Parameter\fB[3]\fR:  va_list
 .br
 Type\fB[3]\fR:  va_list
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1125,7 +1460,7 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1139,7 +1474,8 @@ Parameter\fB[3]\fR:  ...
 .br
 Type\fB[3]\fR:  ...
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1153,7 +1489,7 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1172,82 +1508,86 @@ Parameter\fB[4]\fR:  ...
 .br
 Type\fB[4]\fR:  ...
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
 
-.SH Adding binary data to Ustr functions
+.SH Adding binary data to a Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_add_b_uint16()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  uint_least16_t
+Parameter\fB[2]\fR: Binary value to add to the Ustr
 .br
-Type\fB[2]\fR:  uint_least16_t
-
-Explanation:
+Type\fB[2]\fR: uint_least16_t
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
+
+.br
+  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
 .ti -2
 .br
 \fBFunction: \fR ustr_add_b_uint32()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
-.br
-Parameter\fB[2]\fR:  uint_least32_t
-.br
-Type\fB[2]\fR:  uint_least32_t
-
-Explanation:
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[2]\fR: Binary value to add to the Ustr
+.br
+Type\fB[2]\fR: uint_least32_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
 .ti -2
 .br
 \fBFunction: \fR ustr_add_b_uint64()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  uint_least64_t
+Parameter\fB[2]\fR: Binary value to add to the Ustr
 .br
-Type\fB[2]\fR:  uint_least64_t
-
-Explanation:
+Type\fB[2]\fR: uint_least64_t
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
 
+.br
+  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
-.SH Parsing binary data from Ustr
+.SH Parsing binary data from a Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_b_uint16()
@@ -1262,14 +1602,15 @@ Parameter\fB[1]\fR: struct Ustr *
 Type\fB[1]\fR: struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  size_t
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  size_t
-
-Explanation:
+Type\fB[2]\fR: size_t
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .ti -2
 .br
@@ -1285,14 +1626,15 @@ Parameter\fB[1]\fR: struct Ustr *
 Type\fB[1]\fR: struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  size_t
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  size_t
-
-Explanation:
+Type\fB[2]\fR: size_t
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .ti -2
 .br
@@ -1308,26 +1650,488 @@ Parameter\fB[1]\fR: struct Ustr *
 Type\fB[1]\fR: struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  size_t
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  size_t
-
-Explanation:
+Type\fB[2]\fR: size_t
 
 .br
-  This function is NOT DOCUMENTED YET!
+\fBExplanation:\fR
 
-.SH Ustr IO helpers
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
+
+.SH Accessing the "variables" of a Ustr
 .ti -2
 .br
-\fBFunction: \fR ustr_io_get()
+\fBFunction: \fR ustr_len()
 .br
-Returns: int 
+Returns: The length of the Ustr
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the data within the Ustr, much like strlen() but without getting the value wrong in the case of extra NIL bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cstr()
+.br
+Returns: Read-only pointer to the start of data in the Ustr
+.br
+Type: const char *
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns a read-only pointer to the start of the data of the Ustr string. Due to there always being a terminating NIL byte in a Ustr, this is also a valid C-style string.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_wstr()
+.br
+Returns: Writable pointer to the start of data in the Ustr, or NULL
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns a writable pointer to the start of the data of the Ustr string. Due to there always being a terminating NIL byte in a Ustr, this is also a valid C-style string.
+.br
+  If the ustr is read-only (ustr_ro() == USTR_TRUE) then this function will return NULL.
+.sp
+\fBNote:\fR
+
+.br
+  Unless the string is owned (ustr_owner() == USTR_TRUE) it can be a very bad idea to use this to change data, as then all references will be updated. See ustr_sc_wstr().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_alloc()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr is currently in allocated storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_exact()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr is doing exact allocations, so as the Ustr grows it will only have storage allocated exactly as required and not in half powers of two.
+.sp
+\fBNote:\fR
+
+.br
+  This will always be USTR_FALSE for read-only Ustr strings (ustr_ro() == USTR_TRUE), even though the default may be to used exact sized allocations when  adding data to them etc.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sized()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr stores an explicit allocation size, if not the size is implied as the next highest half power of two.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_ro()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr is current in read-only storage.
+.br
+  Read-only storage is not writable but can be referenced via. ustr_dup() an infinite amount of times.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_fixed()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr is current in fixed size storage.
+.br
+  Fixed size storage is writable but cannot be referenced.
+.sp
+\fBNote:\fR
+
+.br
+  Fixed size storage always explicitly stores the size of the storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_enomem()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function just returns the value of the user settable flag in the Ustr. It can be set via. ustr_setf_enomem_err() and cleared by ustr_setf_enomem_clr().
+.br
+  This function is automatically set to on whever a memory allocation failure happens for a Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  If a Ustr is referenced multiple times, ustr_setf_enomem_err() will fail.
+.br
+  This always fails for Ustr's in read-only storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_shared()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr is in the "shared" mode. It can be set via. ustr_setf_shared() and cleared by ustr_setf_owner() on allocated Ustr's.
+.br
+  Shared mode means that a Ustr can be referenced and unreferenced an infinite number of times.
+.sp
+\fBNote:\fR
+
+.br
+  This always succeeds for Ustr's in read-only storage.
+.br
+  This always fails for Ustr's in fixed size storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_limited()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if the Ustr is currently in fixed size storage and cannot move to allocated storage.
+.sp
+\fBNote:\fR
+
+.br
+  This always fails for Ustr's in allocated storage.
+.br
+  This always fails for Ustr's in read-only storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_owner()
+.br
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function says if their is only a single reference to the Ustr string.
+.sp
+\fBNote:\fR
+
+.br
+  This always fails for Ustr's in read-only storage.
+.br
+  This always succeeds for Ustr's in fixed size storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_size()
+.br
+Returns: size_t 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calculates the maximum amount of data that could be stored (Ie. the max ustr_len()) without having to re-size the Ustr string.
+.sp
+\fBNote:\fR
+
+.br
+  This is always zero for Ustr's in read-only storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_size_alloc()
+.br
+Returns: size_t 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the size of the storage for the Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  This is always zero for Ustr's in read-only storage.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_size_overhead()
+.br
+Returns: size_t 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the difference between the size of the storage and the maximum amount of data that could be stored without having to re-size the Ustr string.
+.sp
+\fBNote:\fR
+
+.br
+  This is always zero for Ustr's in read-only storage.
+
+.SH Setting the "flags" of a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_setf_enomem_err()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function sets the enomem flag, which can be observed via. the ustr_enomem() function.
+.br
+  The implication of setting this flag is that a memory error has occured in a previous function call on this Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  This function fails if ustr_owner() fails for the Ustr.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_setf_enomem_clr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function clears the enomem flag, which can be observed via. the ustr_enomem() function.
+.br
+  The implication of this flag being set is that a memory error has occured in a previous function call on this Ustr, so on clearing the flag you should know you have brought the Ustr back to a known state.
+.sp
+\fBNote:\fR
+
+.br
+  This function fails if ustr_owner() fails for the Ustr.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_setf_share()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function sets the shared mode, which can be observed via. the ustr_shared() function.
+.br
+  This is used on a Ustr so that it can have more references than it is able to hold in it's reference count. After this call the Ustr can be referenced and unreferenced an infinite number of times.
+.sp
+\fBNote:\fR
+
+.br
+  After this call the Ustr will never be deleted until ustr_setf_owner() is called.
+.br
+  This function fails if ustr_alloc() fails for the Ustr.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_setf_owner()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function removes the shared mode, which can be observed via. the ustr_shared() function.
+.br
+  This is used so that a Ustr in shared mode can be free'd.
+.sp
+\fBNote:\fR
+
+.br
+  This function fails if ustr_alloc() fails for the Ustr.
+
+.SH Doing IO from or to a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_io_get()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1346,7 +2150,8 @@ Parameter\fB[4]\fR:  size_t *
 .br
 Type\fB[4]\fR:  size_t *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1355,12 +2160,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_getfile()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1369,7 +2174,8 @@ Parameter\fB[2]\fR:  FILE *
 .br
 Type\fB[2]\fR:  FILE *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1378,12 +2184,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_getfilename()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1392,7 +2198,8 @@ Parameter\fB[2]\fR:  const char *
 .br
 Type\fB[2]\fR:  const char *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1401,12 +2208,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_getline()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1415,7 +2222,8 @@ Parameter\fB[2]\fR:  FILE *
 .br
 Type\fB[2]\fR:  FILE *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1429,7 +2237,7 @@ Returns: int
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1443,7 +2251,8 @@ Parameter\fB[3]\fR:  size_t
 .br
 Type\fB[3]\fR:  size_t
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1452,12 +2261,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_putline()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1471,7 +2280,8 @@ Parameter\fB[3]\fR:  size_t
 .br
 Type\fB[3]\fR:  size_t
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1480,12 +2290,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_putfile()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1494,7 +2304,8 @@ Parameter\fB[2]\fR:  FILE *
 .br
 Type\fB[2]\fR:  FILE *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1503,12 +2314,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_putfileline()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1517,7 +2328,8 @@ Parameter\fB[2]\fR:  FILE *
 .br
 Type\fB[2]\fR:  FILE *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1526,12 +2338,12 @@ Explanation:
 .br
 \fBFunction: \fR ustr_io_putfilename()
 .br
-Returns: int 
+Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: struct Ustr **
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1545,7 +2357,8 @@ Parameter\fB[3]\fR:  const char *
 .br
 Type\fB[3]\fR:  const char *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1555,37 +2368,44 @@ Explanation:
 .br
 \fBFunction: \fR ustr_utf8_valid()
 .br
-Returns: int 
+Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function tries it's best to find out if the string is a valid utf-8 string.
 
 .ti -2
 .br
 \fBFunction: \fR ustr_utf8_len()
 .br
-Returns: size_t 
+Returns: The number of the utf-8 characters in the Ustr
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function counts the number of utf-8 characters inn the Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  This function gives undefined answers on strings that aren't utf-8 valid.
 
 .ti -2
 .br
@@ -1596,11 +2416,12 @@ Returns: ssize_t
 Type: ssize_t 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1614,7 +2435,7 @@ Returns: size_t
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
@@ -1633,7 +2454,8 @@ Parameter\fB[4]\fR:  size_t *
 .br
 Type\fB[4]\fR:  size_t *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
@@ -1647,7 +2469,7 @@ Returns: size_t
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
@@ -1666,321 +2488,447 @@ Parameter\fB[4]\fR:  size_t *
 .br
 Type\fB[4]\fR:  size_t *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This function is NOT DOCUMENTED YET!
 
-.SH Parsing integer numbers from a Ustr
+.SH Parsing ASCII integer numbers from a Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_uintmaxx()
 .br
-Returns: uintmax_t 
+Returns: Parsed number, or zero on error
 .br
 Type: uintmax_t 
 
 .br
-Parameter\fB[1]\fR: Ustr
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: flags
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR: unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: min
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR: uintmax_t
+Type\fB[3]\fR: unsigned int
 
 .br
-Parameter\fB[4]\fR: max
+Parameter\fB[4]\fR: Absolute minimum value
 .br
-Type\fB[4]\fR:  uintmax_t
+Type\fB[4]\fR: uintmax_t
 
 .br
-Parameter\fB[5]\fR: seperator
+Parameter\fB[5]\fR: Absolute maximum value
 .br
-Type\fB[5]\fR:  char
+Type\fB[5]\fR: uintmax_t
 
 .br
-Parameter\fB[6]\fR: error number
+Parameter\fB[6]\fR: Thousands seperator
 .br
-Type\fB[6]\fR:  unsigned int *
-
-Explanation:
+Type\fB[6]\fR: const char *
 
 .br
-  This function is NOT DOCUMENTED YET!
-
-.ti -2
+Parameter\fB[7]\fR: Return length of parsed number
 .br
-\fBFunction: \fR ustr_parse_ulongx()
-.br
-Returns: unsigned long 
-.br
-Type: unsigned long 
+Type\fB[7]\fR: size_t *
 
 .br
-Parameter\fB[1]\fR: Ustr
+Parameter\fB[8]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
 .br
-Type\fB[1]\fR: const struct Ustr *
+Type\fB[8]\fR: unsigned int *
 
 .br
-Parameter\fB[2]\fR: flags
-.br
-Type\fB[2]\fR:  unsigned int
+\fBExplanation:\fR
 
 .br
-Parameter\fB[3]\fR: min val
-.br
-Type\fB[3]\fR: unsigned long
+  This function parses an ASCII representation of a number from a Ustr (Parameter[1]) starting at the offset (Parameter[2]).
+.sp
+\fBNote:\fR
 
 .br
-Parameter\fB[4]\fR: max val
-.br
-Type\fB[4]\fR:  unsigned long
-
-.br
-Parameter\fB[5]\fR: seperator
-.br
-Type\fB[5]\fR: const char *
-
-.br
-Parameter\fB[6]\fR: error number
-.br
-Type\fB[6]\fR:  unsigned int *
-
-Explanation:
-
-.br
-  This function is NOT DOCUMENTED YET!
+  If stdint.h isn't available this function won't be available.
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_uintmax()
 .br
-Returns: uintmax_t 
+Returns: Parsed number, or zero on error
 .br
 Type: uintmax_t 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
+.sp
+\fBNote:\fR
+
+.br
+  If stdint.h isn't available this function won't be available.
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_intmax()
 .br
-Returns: intmax_t 
+Returns: Parsed number, or zero on error
 .br
 Type: intmax_t 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
+.sp
+\fBNote:\fR
+
+.br
+  If stdint.h isn't available this function won't be available.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_ulongx()
+.br
+Returns: Parsed number, or zero on error
+.br
+Type: unsigned long 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+.br
+Type\fB[3]\fR:  unsigned int
+
+.br
+Parameter\fB[4]\fR: Absolute minimum value
+.br
+Type\fB[4]\fR:  unsigned long
+
+.br
+Parameter\fB[5]\fR: Absolute maximum value
+.br
+Type\fB[5]\fR:  unsigned long
+
+.br
+Parameter\fB[6]\fR: Thousands seperator
+.br
+Type\fB[6]\fR: const char *
+
+.br
+Parameter\fB[7]\fR: Return length of parsed number
+.br
+Type\fB[7]\fR:  size_t *
+
+.br
+Parameter\fB[8]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[8]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_uintmaxx() but returns an unsigned long, it is always available even when stdint.h isn't.
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_ulong()
 .br
-Returns: unsigned long 
+Returns: Parsed number, or zero on error
 .br
 Type: unsigned long 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR: unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_long()
 .br
-Returns: long 
+Returns: Parsed number, or zero on error
 .br
 Type: long 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_uint()
 .br
-Returns: unsigned int 
+Returns: Parsed number, or zero on error
 .br
 Type: unsigned int 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and UINT_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_int()
 .br
-Returns: int 
+Returns: Parsed number, or zero on error
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_ushort()
 .br
-Returns: unsigned short 
+Returns: Parsed number, or zero on error
 .br
 Type: unsigned short 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR: unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
 \fBFunction: \fR ustr_parse_short()
 .br
-Returns: short 
+Returns: Parsed number, or zero on error
 .br
 Type: short 
 
 .br
-Parameter\fB[1]\fR: const struct Ustr *
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR:  unsigned int
+Parameter\fB[2]\fR: Offset within string to start parsing at
 .br
-Type\fB[2]\fR:  unsigned int
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  unsigned int *
+Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
-Type\fB[3]\fR:  unsigned int *
-
-Explanation:
+Type\fB[3]\fR: unsigned int
 
 .br
-  This function is NOT DOCUMENTED YET!
+Parameter\fB[4]\fR: Return length of parsed number
+.br
+Type\fB[4]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_
+.br
+Type\fB[5]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
 .SH Simple Ustr pool API
 .ti -2
@@ -2014,7 +2962,8 @@ Parameter\fB[1]\fR: struct Ustr_pool *
 .br
 Type\fB[1]\fR: struct Ustr_pool *
 
-Explanation:
+.br
+\fBExplanation:\fR
 
 .br
   This allocates a new pool as a child of the passed in pool (Parameter[1]), The pool can be freed and cleared independantly of the parent pool however free and clear operations on the parent pool are automatically applied to all child pools.
