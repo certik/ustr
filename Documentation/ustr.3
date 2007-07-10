@@ -1,4 +1,4 @@
-.TH ustr 3 "09-Jul-2007" "Ustr 0.99.3" "Ustr String Library"
+.TH ustr 3 "10-Jul-2007" "Ustr 0.99.3" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -171,19 +171,6 @@ int  \fBustr_add_b_uint32\fR(struct Ustr **, uint_least32_t);
 int  \fBustr_add_b_uint64\fR(struct Ustr **, uint_least64_t);
 .sp
 .br
-.in \w'  uint_least16_t  \fBustr_parse_b_uint16\fR('u
-.ti \w'  'u
-uint_least16_t  \fBustr_parse_b_uint16\fR(struct Ustr *, size_t);
-.br
-.in \w'  uint_least32_t  \fBustr_parse_b_uint32\fR('u
-.ti \w'  'u
-uint_least32_t  \fBustr_parse_b_uint32\fR(struct Ustr *, size_t);
-.br
-.in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
-.ti \w'  'u
-uint_least64_t  \fBustr_parse_b_uint64\fR(struct Ustr *, size_t);
-.sp
-.br
 .in \w'  size_t  \fBustr_len\fR('u
 .ti \w'  'u
 size_t  \fBustr_len\fR(const struct Ustr *);
@@ -318,6 +305,19 @@ size_t  \fBustr_utf8_chars2bytes\fR(const struct Ustr *,  size_t,  size_t,  size
 .in \w'  size_t  \fBustr_utf8_bytes2chars\fR('u
 .ti \w'  'u
 size_t  \fBustr_utf8_bytes2chars\fR(const struct Ustr *,  size_t,  size_t,  size_t *);
+.sp
+.br
+.in \w'  uint_least16_t  \fBustr_parse_b_uint16\fR('u
+.ti \w'  'u
+uint_least16_t  \fBustr_parse_b_uint16\fR(struct Ustr *, size_t);
+.br
+.in \w'  uint_least32_t  \fBustr_parse_b_uint32\fR('u
+.ti \w'  'u
+uint_least32_t  \fBustr_parse_b_uint32\fR(struct Ustr *, size_t);
+.br
+.in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
+.ti \w'  'u
+uint_least64_t  \fBustr_parse_b_uint64\fR(struct Ustr *, size_t);
 .sp
 .br
 .in \w'  uintmax_t  \fBustr_parse_uintmaxx\fR('u
@@ -1587,79 +1587,6 @@ Type\fB[2]\fR: uint_least64_t
 .br
   This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
-.SH Parsing binary data from a Ustr
-.ti -2
-.br
-\fBFunction: \fR ustr_parse_b_uint16()
-.br
-Returns: uint_least16_t 
-.br
-Type: uint_least16_t 
-
-.br
-Parameter\fB[1]\fR: struct Ustr *
-.br
-Type\fB[1]\fR: struct Ustr *
-
-.br
-Parameter\fB[2]\fR: Offset within string to start parsing at
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
-
-.ti -2
-.br
-\fBFunction: \fR ustr_parse_b_uint32()
-.br
-Returns: uint_least32_t 
-.br
-Type: uint_least32_t 
-
-.br
-Parameter\fB[1]\fR: struct Ustr *
-.br
-Type\fB[1]\fR: struct Ustr *
-
-.br
-Parameter\fB[2]\fR: Offset within string to start parsing at
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
-
-.ti -2
-.br
-\fBFunction: \fR ustr_parse_b_uint64()
-.br
-Returns: uint_least64_t 
-.br
-Type: uint_least64_t 
-
-.br
-Parameter\fB[1]\fR: struct Ustr *
-.br
-Type\fB[1]\fR: struct Ustr *
-
-.br
-Parameter\fB[2]\fR: Offset within string to start parsing at
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
-
 .SH Accessing the "variables" of a Ustr
 .ti -2
 .br
@@ -1960,11 +1887,6 @@ Type\fB[1]\fR: const struct Ustr *
 
 .br
   This function calculates the maximum amount of data that could be stored (Ie. the max ustr_len()) without having to re-size the Ustr string.
-.sp
-\fBNote:\fR
-
-.br
-  This is always zero for Ustr's in read-only storage.
 
 .ti -2
 .br
@@ -1984,11 +1906,6 @@ Type\fB[1]\fR: const struct Ustr *
 
 .br
   This function returns the size of the storage for the Ustr.
-.sp
-\fBNote:\fR
-
-.br
-  This is always zero for Ustr's in read-only storage.
 
 .ti -2
 .br
@@ -2008,11 +1925,6 @@ Type\fB[1]\fR: const struct Ustr *
 
 .br
   This function returns the difference between the size of the storage and the maximum amount of data that could be stored without having to re-size the Ustr string.
-.sp
-\fBNote:\fR
-
-.br
-  This is always zero for Ustr's in read-only storage.
 
 .SH Setting the "flags" of a Ustr
 .ti -2
@@ -2493,6 +2405,79 @@ Type\fB[4]\fR:  size_t *
 
 .br
   This function is NOT DOCUMENTED YET!
+
+.SH Parsing binary data from a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint16()
+.br
+Returns: uint_least16_t 
+.br
+Type: uint_least16_t 
+
+.br
+Parameter\fB[1]\fR: struct Ustr *
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint32()
+.br
+Returns: uint_least32_t 
+.br
+Type: uint_least32_t 
+
+.br
+Parameter\fB[1]\fR: struct Ustr *
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint64()
+.br
+Returns: uint_least64_t 
+.br
+Type: uint_least64_t 
+
+.br
+Parameter\fB[1]\fR: struct Ustr *
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .SH Parsing ASCII integer numbers from a Ustr
 .ti -2

@@ -38,11 +38,11 @@
 <li><a href="#indx-Resizing_a_sized_Ustr">Resizing a sized Ustr (1)</a>
 <li><a href="#indx-Adding_formatted_data_to_a_Ustr">Adding formatted data to a Ustr (4)</a>
 <li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
-<li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr (15)</a>
 <li><a href="#indx-Setting_the_flags_of_a_Ustr">Setting the "flags" of a Ustr (4)</a>
 <li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (9)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (5)</a>
+<li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
 <li><a href="#indx-Simple_Ustr_pool_API">Simple Ustr pool API (4)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
@@ -104,11 +104,6 @@
 <li class="obj"><a href="#ustr_add_b_uint16">ustr_add_b_uint16()</a>
 <li class="obj"><a href="#ustr_add_b_uint32">ustr_add_b_uint32()</a>
 <li class="obj"><a href="#ustr_add_b_uint64">ustr_add_b_uint64()</a>
-</ul><li><a id="indx-Parsing_binary_data_from_a_Ustr" href="#Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr</a>
-<ul>
-<li class="obj"><a href="#ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
-<li class="obj"><a href="#ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
-<li class="obj"><a href="#ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
 </ul><li><a id="indx-Accessing_the_variables_of_a_Ustr" href="#Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_len">ustr_len()</a>
@@ -150,6 +145,11 @@
 <li class="obj"><a href="#ustr_utf8_width">ustr_utf8_width()</a>
 <li class="obj"><a href="#ustr_utf8_chars2bytes">ustr_utf8_chars2bytes()</a>
 <li class="obj"><a href="#ustr_utf8_bytes2chars">ustr_utf8_bytes2chars()</a>
+</ul><li><a id="indx-Parsing_binary_data_from_a_Ustr" href="#Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
+<li class="obj"><a href="#ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
+<li class="obj"><a href="#ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
 </ul><li><a id="indx-Parsing_ASCII_integer_numbers_from_a_Ustr" href="#Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a>
@@ -680,37 +680,6 @@
  Ustr (Parameter[1]).
 
 
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20binary%20data%20from%20a%20Ustr">Parsing binary data from a Ustr</a></h2>
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
-<br>Returns: uint_least16_t <br>Type: uint_least16_t 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
-<br>Returns: uint_least32_t <br>Type: uint_least32_t 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
-<br>Returns: uint_least64_t <br>Type: uint_least64_t 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Accessing%20the%20%22variables%22%20of%20a%20Ustr">Accessing the "variables" of a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_len">ustr_len()</a>
@@ -865,9 +834,6 @@
 </p><p>  This function calculates the maximum amount of data that could be stored (Ie.
  the max <a href="functions#ustr_len">ustr_len()</a>) without having to re-size the <a href="design">Ustr string</a>.
 
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is always zero for Ustr's in read-only storage.
-
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_size_alloc">ustr_size_alloc()</a>
@@ -875,9 +841,6 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function returns the size of the storage for the Ustr.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is always zero for Ustr's in read-only storage.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -888,9 +851,6 @@
 </p><p>  This function returns the difference between the size of the storage and the
  maximum amount of data that could be stored without having to re-size the Ustr
  string.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is always zero for Ustr's in read-only storage.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Setting%20the%20%22flags%22%20of%20a%20Ustr">Setting the "flags" of a Ustr</a></h2>
@@ -1089,6 +1049,37 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function is NOT DOCUMENTED YET!
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20binary%20data%20from%20a%20Ustr">Parsing binary data from a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
+<br>Returns: uint_least16_t <br>Type: uint_least16_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
+<br>Returns: uint_least32_t <br>Type: uint_least32_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
+<br>Returns: uint_least64_t <br>Type: uint_least64_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20ASCII%20integer%20numbers%20from%20a%20Ustr">Parsing ASCII integer numbers from a Ustr</a></h2>
