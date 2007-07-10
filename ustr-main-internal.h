@@ -6,25 +6,6 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-struct Ustr__pool_si_node
-{
- struct Ustr__pool_si_node *next;
- void *ptr;
-};
-
-struct Ustr__pool_si_base
-{ /* "simple" pool implementation */
- struct Ustr_pool cbs;
- struct Ustr__pool_si_node *beg;
- 
- struct Ustr__pool_si_base *sbeg; /* wasting a lot of space for sub pools */
- struct Ustr__pool_si_base *base;
- struct Ustr__pool_si_base *next;
- struct Ustr__pool_si_base *prev;
-};
-
-#define USTR__POOL_NULL ((struct Ustr__pool_si_base *) 0)
-
 #define USTR__PPTR(x) ((struct Ustr **) x) /* for converting a Ustrp** ...
                                             * safe from aliasing, I think */
 
@@ -40,24 +21,6 @@ struct Ustr__pool_si_base
 
  /* #include <stdio.h>
     printf("sz=%zu rbytes=%zu exact=%s len=%zu --> rsz=%zu\n", sz, rbytes, exact ? "TRUE" : "FALSE", len, rsz); */
-
-USTR_CONF_e_PROTO void *ustr__pool_sys_malloc(struct Ustr_pool *, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A()
-    USTR__COMPILE_ATTR_MALLOC();
-USTR_CONF_e_PROTO
-void *ustr__pool_sys_realloc(struct Ustr_pool *, void *, size_t, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1))
-    USTR__COMPILE_ATTR_MALLOC();
-USTR_CONF_e_PROTO void ustr__pool_sys_free(struct Ustr_pool *, void *)
-    USTR__COMPILE_ATTR_NONNULL_L((1));
-
-USTR_CONF_e_PROTO struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
-USTR_CONF_e_PROTO void ustr__pool__clear(struct Ustr__pool_si_base *, int);
-USTR_CONF_e_PROTO void ustr__pool_clear(struct Ustr_pool *)
-    USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_e_PROTO void ustr__pool__free(struct Ustr__pool_si_base *, int);
-USTR_CONF_e_PROTO void ustr__pool_free(struct Ustr_pool *);
 
 USTR_CONF_e_PROTO size_t ustr__dupx_cmp_eq(size_t, size_t, size_t, size_t,
                                            size_t, size_t, size_t, size_t)

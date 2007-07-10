@@ -23,7 +23,7 @@ int tst(void)
   ASSERT(pool->pool_sys_realloc(pool, NULL, 0, 1));
   
   ASSERT( ustrp_size_alloc(sp1));
-  ASSERT(!ustrp_size_alloc(sp2));
+  ASSERT( ustrp_size_alloc(sp2) >= 4);
   ASSERT(spa == (void *)buf_spa);
   ASSERT(!ustrp_alloc(spa));
   ASSERT( ustrp_owner(spa));
@@ -41,7 +41,7 @@ int tst(void)
 
   ASSERT((spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_TRUE, 0)));
   ASSERT( ustrp_size_alloc(sp1));
-  ASSERT(!ustrp_size_alloc(sp2));
+  ASSERT( ustrp_size_alloc(sp2) >= 4);
   ASSERT(spa == (void *)buf_spa);
   ASSERT(!ustrp_alloc(spa));
   ASSERT( ustrp_owner(spa));

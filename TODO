@@ -25,15 +25,26 @@
 
  ustr-import man page.
 
+ ustr_sc_reconfig()
+
  ustr_srch_case()
 
  ustr_parse_netstr() / ustr_parse_netstr2()
 
  ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
-   ustr_sub(Ustr **s1, size_t pos, Ustr *s2) == ustr_set + offset.
+   ustr_sub(Ustr **s1, size_t pos, Ustr *s2)
    ustr_sub(Ustr **s1, size_t pos, size_t len, Ustr *s2) ?
+ ... also requested:
+   ustr_sc_replace(Ustr **s1, const Ustr *from, const Ustr *to, size_t lim)
 
  ustr_ins()?
+
+ chomp/strip
+
+ ljust
+ rjust
+ center
+ zfill?
 
  ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
    Ie. the aotl() of strtol()

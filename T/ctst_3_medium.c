@@ -141,7 +141,7 @@ int tst(void)
   }
 
   s2 = USTR1(\x02, "xy");
-  ASSERT(!ustr_size(s2));
+  ASSERT(ustr_size(s2) == 2);
   ASSERT(ustr_len(s2) == 2);
   ASSERT( ustr_ro(s2));
   ASSERT( ustr_shared(s2));

@@ -814,55 +814,6 @@ Function: ustr_add_b_uint64()
  Ustr (Parameter[1]).
 
 
-Section: Parsing binary data from a Ustr
-Function: ustr_parse_b_uint16()
- Returns: uint_least16_t 
- Type: uint_least16_t 
-
- Parameter[1]: struct Ustr *
- Type[1]: struct Ustr *
-
- Parameter[2]: Offset within string to start parsing at
- Type[2]: size_t
-
- Explanation:
-
-  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-Function: ustr_parse_b_uint32()
- Returns: uint_least32_t 
- Type: uint_least32_t 
-
- Parameter[1]: struct Ustr *
- Type[1]: struct Ustr *
-
- Parameter[2]: Offset within string to start parsing at
- Type[2]: size_t
-
- Explanation:
-
-  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-Function: ustr_parse_b_uint64()
- Returns: uint_least64_t 
- Type: uint_least64_t 
-
- Parameter[1]: struct Ustr *
- Type[1]: struct Ustr *
-
- Parameter[2]: Offset within string to start parsing at
- Type[2]: size_t
-
- Explanation:
-
-  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
 Section: Accessing the "variables" of a Ustr
 Function: ustr_len()
  Returns: The length of the Ustr
@@ -1076,10 +1027,6 @@ Function: ustr_size()
   This function calculates the maximum amount of data that could be stored (Ie.
  the max ustr_len()) without having to re-size the Ustr string.
 
- Note:
-
-  This is always zero for Ustr's in read-only storage.
-
 
 Function: ustr_size_alloc()
  Returns: size_t 
@@ -1091,10 +1038,6 @@ Function: ustr_size_alloc()
  Explanation:
 
   This function returns the size of the storage for the Ustr.
-
- Note:
-
-  This is always zero for Ustr's in read-only storage.
 
 
 Function: ustr_size_overhead()
@@ -1109,10 +1052,6 @@ Function: ustr_size_overhead()
   This function returns the difference between the size of the storage and the
  maximum amount of data that could be stored without having to re-size the Ustr
  string.
-
- Note:
-
-  This is always zero for Ustr's in read-only storage.
 
 
 Section: Setting the "flags" of a Ustr
@@ -1428,6 +1367,55 @@ Function: ustr_utf8_bytes2chars()
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+
+Section: Parsing binary data from a Ustr
+Function: ustr_parse_b_uint16()
+ Returns: uint_least16_t 
+ Type: uint_least16_t 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
+
+ Explanation:
+
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+Function: ustr_parse_b_uint32()
+ Returns: uint_least32_t 
+ Type: uint_least32_t 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
+
+ Explanation:
+
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+Function: ustr_parse_b_uint64()
+ Returns: uint_least64_t 
+ Type: uint_least64_t 
+
+ Parameter[1]: struct Ustr *
+ Type[1]: struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
+
+ Explanation:
+
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 Section: Parsing ASCII integer numbers from a Ustr

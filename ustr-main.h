@@ -393,7 +393,7 @@ typedef struct Ustr_pool Ustr_pool;
 #define USTR__REF_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0] >> 2)
 #define USTR__LEN_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0])
 
-/* ---------------- Ustr "pool" because ther'es no stdlib. ---------------- */
+/* ---------------- Ustr "pool" because none in stdlib. ---------------- */
 
 USTR_CONF_EI_PROTO struct Ustr_pool *ustr_pool_make_subpool(struct Ustr_pool *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC()
@@ -401,9 +401,6 @@ USTR_CONF_EI_PROTO struct Ustr_pool *ustr_pool_make_subpool(struct Ustr_pool *)
 USTR_CONF_EI_PROTO void ustr_pool_clear(struct Ustr_pool *)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO void ustr_pool_free(struct Ustr_pool *);
-
-USTR_CONF_E_PROTO struct Ustr_pool *ustr_pool_make_pool(void)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_MALLOC();
 
 /* This converts a number n to 2**(n-1) -- for small values > 0.
  * Where  n==0 means 0.

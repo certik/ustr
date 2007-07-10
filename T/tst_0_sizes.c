@@ -55,6 +55,18 @@ int tst(void)
   ASSERT(ustr__ns(SIZE_MAX - (SIZE_MAX / 8)) == SIZE_MAX);
 
   assert(USTR_SIZE_FIXED(0) == (7 + sizeof(USTR_END_CONSTx)));
+
+  ASSERT(ustr_size_overhead(USTR("")) == 1);
+  ASSERT(ustr_size_alloc(USTR("")) == 1);
+  ASSERT(ustr_size(USTR("")) == 0);
+  
+  ASSERT(ustr_size_overhead(USTR1(\0, "")) >= 3);
+  ASSERT(ustr_size_alloc(USTR1(\0, "")) >= 3);
+  ASSERT(ustr_size(USTR1(\0, "")) == 0);
+  
+  ASSERT(ustr_size_overhead(USTR1(\1, "a")) >= 3);
+  ASSERT(ustr_size_alloc(USTR1(\1, "a")) >= 4);
+  ASSERT(ustr_size(USTR1(\1, "a")) == 1);
   
   return (EXIT_SUCCESS);
 }

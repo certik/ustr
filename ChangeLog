@@ -1,3 +1,14 @@
+2007-07-09  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr_size): Remove special casing for read-only
+	strings.
+	(ustr_size_alloc): Remove special casing for read-only strings.
+	(ustr_size_overhead): Change "" overhead value from 0 to 1, although
+	it's debatable this matches the other values better.
+
+	* ustr-pool-code.h (ustr_pool_make_pool): Move the bundled pool API into
+	it's own file.
+
 2007-07-08  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_setf_enomem_err): Don't change the enomem flag

@@ -101,6 +101,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-io.h \
            ustr-main.h \
            ustr-parse.h \
+           ustr-pool.h \
            ustr-sc.h \
            ustr-set.h \
            ustr-spn.h \
@@ -117,6 +118,7 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-main-code.h \
              ustr-main-internal.h \
              ustr-parse-code.h \
+             ustr-pool-code.h \
              ustr-sc-code.h \
              ustr-sc-internal.h \
              ustr-set-code.h \
@@ -133,6 +135,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-io-dbg-code.c \
              ustr-main-dbg-code.c \
              ustr-parse-dbg-code.c \
+             ustr-pool-dbg-code.c \
              ustr-sc-dbg-code.c \
              ustr-set-dbg-code.c \
              ustr-spn-dbg-code.c \
@@ -145,6 +148,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-io-opt-code.c \
              ustr-main-opt-code.c \
              ustr-parse-opt-code.c \
+             ustr-pool-opt-code.c \
              ustr-sc-opt-code.c \
              ustr-set-opt-code.c \
              ustr-spn-opt-code.c \
@@ -179,6 +183,7 @@ LIB_SHARED_DBG = \
   ustr-io-code-so-dbg.o \
   ustr-main-code-so-dbg.o \
   ustr-parse-code-so-dbg.o \
+  ustr-pool-code-so-dbg.o \
   ustr-sc-code-so-dbg.o \
   ustr-set-code-so-dbg.o \
   ustr-spn-code-so-dbg.o \
@@ -191,6 +196,7 @@ LIB_STATIC_DBG = \
   ustr-io-code-a-dbg.o \
   ustr-main-code-a-dbg.o \
   ustr-parse-code-a-dbg.o \
+  ustr-pool-code-a-dbg.o \
   ustr-sc-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
@@ -204,6 +210,7 @@ LIB_SHARED_OPT = \
   ustr-io-code-so-opt.o \
   ustr-main-code-so-opt.o \
   ustr-parse-code-so-opt.o \
+  ustr-pool-code-so-opt.o \
   ustr-sc-code-so-opt.o \
   ustr-set-code-so-opt.o \
   ustr-spn-code-so-opt.o \
@@ -216,6 +223,7 @@ LIB_STATIC_OPT = \
   ustr-io-code-a-opt.o \
   ustr-main-code-a-opt.o \
   ustr-parse-code-a-opt.o \
+  ustr-pool-code-a-opt.o \
   ustr-sc-code-a-opt.o \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \
@@ -228,7 +236,7 @@ all: ustr-import $(LIB_STATIC)
 all-shared: all $(LIB_SHARED)
 		@echo Done shared
 
-install: all ustr.pc ustr-debug.pc
+install: all-shared ustr.pc ustr-debug.pc
 		@echo Making directories
 		install -d $(DESTDIR)$(libdir)
 		install -d $(DESTDIR)/usr/include

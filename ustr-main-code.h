@@ -4,184 +4,6 @@
 #error " You should have already included ustr-main.h, or just include ustr.h."
 #endif
 
-USTR_CONF_i_PROTO void *ustr__pool_sys_malloc(struct Ustr_pool *p, size_t len)
-{
-  struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
-  struct Ustr__pool_si_node *np;
-  void *ret = USTR_CONF_MALLOC(len);
-
-  USTR_ASSERT(sip);
-  
-  if (!ret)
-    return (ret);
-
-  if (sip->beg && !sip->beg->ptr)
-    np = sip->beg;
-  else if (!(np = USTR_CONF_MALLOC(sizeof(struct Ustr__pool_si_node))))
-  {
-    USTR_CONF_FREE(ret);
-    return (0);
-  }
-  else
-  {
-    np->next = sip->beg;
-    sip->beg = np;
-  }
-  
-  np->ptr = ret;
-  
-  return (ret);
-}
-
-USTR_CONF_i_PROTO
-void *ustr__pool_sys_realloc(struct Ustr_pool *p, void *old,
-                             size_t olen, size_t nlen)
-{
-  struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
-  void *ret = 0;
-
-  USTR_ASSERT(sip && ((old && sip->beg && sip->beg->ptr) || !olen));
-
-  if (!nlen)
-    ++nlen;
-  
-  if (olen && (sip->beg->ptr == old))
-  { /* let the last allocated Ustrp grow/shrink */
-    if ((ret = USTR_CONF_REALLOC(old, nlen)))
-      sip->beg->ptr = ret;
-  }
-  else if (olen >= nlen) /* always allow reductions/nothing */
-    return (old);
-  else if ((ret = ustr__pool_sys_malloc(p, nlen)))
-    memcpy(ret, old, olen);
-  
-  return (ret);
-}
-
-USTR_CONF_i_PROTO
-void ustr__pool_sys_free(struct Ustr_pool *p, void *old)
-{
-  struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
-
-  if (sip->beg && (sip->beg->ptr == old))
-  {
-    USTR_CONF_FREE(old);
-    sip->beg->ptr = 0;
-  }  
-}
-
-USTR_CONF_i_PROTO void ustr__pool__clear(struct Ustr__pool_si_base *base,
-                                         int siblings)
-{
-  struct Ustr__pool_si_node *scan;
-  
-  if (!base)
-    return;
-
-  scan = base->beg;
-  while (scan)
-  {
-    struct Ustr__pool_si_node *scan_next = scan->next;
-
-    USTR_CONF_FREE(scan->ptr);
-    USTR_CONF_FREE(scan);
-
-    scan = scan_next;
-  }
-  base->beg = 0;
-
-  if (siblings)
-    ustr__pool__clear(base->next, USTR_TRUE);
-
-  ustr__pool__clear(base->sbeg, USTR_TRUE);
-}
-USTR_CONF_i_PROTO void ustr__pool_clear(struct Ustr_pool *base)
-{
-  USTR_ASSERT(base);
-  ustr__pool__clear((struct Ustr__pool_si_base *)base, USTR_FALSE);
-}
-
-USTR_CONF_i_PROTO void ustr__pool__free(struct Ustr__pool_si_base *base,
-                                        int siblings)
-{
-  if (!base)
-    return;
-  
-  if (siblings)
-    ustr__pool__free(base->next, USTR_TRUE);
-  ustr__pool__free(base->sbeg, USTR_TRUE);
-  base->sbeg = 0;
-  
-  ustr__pool__clear(base, USTR_FALSE);
-  USTR_CONF_FREE(base);
-}
-USTR_CONF_i_PROTO void ustr__pool_free(struct Ustr_pool *p)
-{
-  struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
-  
-  USTR_ASSERT(p);
-
-  if (sip->prev)
-    sip->prev->next = sip->next;
-  else if (sip->base)
-    sip->base->sbeg = sip->next;
-
-  if (sip->next)
-    sip->next->prev = sip->prev;
-  
-  ustr__pool__free(sip, USTR_FALSE);
-}
-
-USTR_CONF_i_PROTO
-struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *p)
-{
-  struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
-  struct Ustr__pool_si_base *tmp;
-
-  if (!(tmp = USTR_CONF_MALLOC(sizeof(struct Ustr__pool_si_base))))
-
-    return (0);
-
-  tmp->cbs.pool_sys_malloc   = ustr__pool_sys_malloc;
-  tmp->cbs.pool_sys_realloc  = ustr__pool_sys_realloc;
-  tmp->cbs.pool_sys_free     = ustr__pool_sys_free;
-
-  tmp->cbs.pool_make_subpool = ustr__pool_make_subpool;
-  tmp->cbs.pool_clear        = ustr__pool_clear;
-  tmp->cbs.pool_free         = ustr__pool_free;
-
-  tmp->beg  = 0;
-  tmp->sbeg = USTR__POOL_NULL;
-  tmp->prev = USTR__POOL_NULL;
-
-  if (!p)
-    return (&tmp->cbs);
-  
-  if ((tmp->next = sip->sbeg))
-    tmp->next->prev = tmp;
-  sip->sbeg = tmp;
-
-  tmp->base = sip;
-  
-  return (&tmp->cbs);
-}
-
-USTR_CONF_I_PROTO struct Ustr_pool *ustr_pool_make_pool(void)
-{
-  struct Ustr_pool *ret;
-  struct Ustr__pool_si_base *tmp;
-
-  if (!(ret = ustr__pool_make_subpool(0)))
-    return (0);
-
-  tmp = (struct Ustr__pool_si_base *)ret;
-
-  tmp->next = USTR__POOL_NULL;
-  tmp->base = USTR__POOL_NULL;
-
-  return (&tmp->cbs);
-}
-
 USTR_CONF_i_PROTO
 size_t ustr__dupx_cmp_eq(size_t w1, size_t x1, size_t y1, size_t z1,
                          size_t w2, size_t x2, size_t y2, size_t z2)
@@ -258,11 +80,11 @@ USTR_CONF_I_PROTO int ustr_assert_valid(const struct Ustr *s1)
   }
   
   if (ustr_ro(s1))
-    eos_ptr =        USTR_END_CONSTx;
+    eos_ptr = USTR_END_CONSTx;
   else if (ustr_fixed(s1))
-    eos_ptr =        USTR_END_FIXEDx;
+    eos_ptr = USTR_END_FIXEDx;
   else
-    eos_ptr =        USTR_END_ALOCDx;
+    eos_ptr = USTR_END_ALOCDx;
 
   USTR_ASSERT_RET(!memcmp(ustr_cstr(s1) + ustr_len(s1), eos_ptr, eos_len),
                   USTR_FALSE);
@@ -725,7 +547,8 @@ USTR_CONF_I_PROTO size_t ustr_size_overhead(const struct Ustr *s1)
   
   USTR_ASSERT(ustr_assert_valid(s1));
 
-  if (!s1->data[0]) return (0);
+  if (!s1->data[0])
+    return (1);
 
   lenn = USTR__LEN_LEN(s1);
   if (ustr_sized(s1))
@@ -739,10 +562,6 @@ USTR_CONF_I_PROTO size_t ustr_size(const struct Ustr *s1)
   size_t oh = 0;
 
   USTR_ASSERT(ustr_assert_valid(s1));
-
-  if (ustr_ro(s1))
-    return (0);
-  USTR_ASSERT(ustr_size_overhead(s1));
   
   if (ustr_sized(s1))
     return (ustr__sz_get(s1) - ustr_size_overhead(s1));
@@ -758,10 +577,6 @@ USTR_CONF_I_PROTO size_t ustr_size_alloc(const struct Ustr *s1)
   size_t oh = 0;
 
   USTR_ASSERT(ustr_assert_valid(s1));
-
-  if (ustr_ro(s1))
-    return (0);
-  USTR_ASSERT(ustr_size_overhead(s1));
   
   if (ustr_sized(s1))
     return (ustr__sz_get(s1));
@@ -844,24 +659,20 @@ int ustrp__rw_realloc(struct Ustr_pool *p, struct Ustr **ps1,
 USTR_CONF_i_PROTO void ustr__memcpy(struct Ustr *s1, size_t off,
                                     const void *ptr, size_t len)
 { /* can't call ustr_wstr() if len == 0, as it might be RO */
-  if (!len)
-    return;
-
+  if (!len) return;
   memcpy(ustr_wstr(s1) + off, ptr, len);
 }
 
 USTR_CONF_i_PROTO void ustr__memset(struct Ustr *s1, size_t off,
                                     int chr, size_t len)
 { /* can't call ustr_wstr() if len == 0, as it might be RO */
-  if (!len)
-    return;
-
+  if (!len) return;
   memset(ustr_wstr(s1) + off, chr, len);
 }
 
 /* ---------------- del ---------------- */
 
-/* Fine grained management of the space allocated to the Ustr */
+/* Fine grained management of the space allocated to a sized Ustr */
 USTR_CONF_i_PROTO
 int ustrp__realloc(struct Ustr_pool *p, struct Ustr **ps1, size_t nsz)
 {

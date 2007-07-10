@@ -86,13 +86,12 @@ int main(void)
   }
 #endif
   
-  /* puts((const char *)s2); */
-  ASSERT(!ustr_size(s1));
-  ASSERT(!ustr_size(s2));
-  ASSERT( ustr_ro(s1));
-  ASSERT( ustr_ro(s2));
-  ASSERT( ustr_dup(s1) == s1);
-  ASSERT( ustr_dup(s2) == s2);
+  ASSERT(ustr_size(s1) == 0);
+  ASSERT(ustr_size(s2) == 2);
+  ASSERT(ustr_ro(s1));
+  ASSERT(ustr_ro(s2));
+  ASSERT(ustr_dup(s1) == s1);
+  ASSERT(ustr_dup(s2) == s2);
   
   ASSERT(ustr_sc_ensure_owner(&s2));
   ASSERT(s2);

@@ -1,4 +1,5 @@
 
+
 CC = cc
 AR = ar
 RANLIB = ranlib
@@ -62,6 +63,7 @@ LIB_STATIC_DBG = \
   ustr-io-code-a-dbg.o \
   ustr-main-code-a-dbg.o \
   ustr-parse-code-a-dbg.o \
+  ustr-pool-code-a-dbg.o \
   ustr-sc-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
@@ -74,6 +76,7 @@ LIB_STATIC_OPT = \
   ustr-io-code-a-opt.o \
   ustr-main-code-a-opt.o \
   ustr-parse-code-a-opt.o \
+  ustr-pool-code-a-opt.o \
   ustr-sc-code-a-opt.o \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \

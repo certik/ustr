@@ -98,7 +98,7 @@
 # endif
 #endif
 
-#ifndef USTR_CONF_e_PROTO /* internal, unleustr INCLUDE_CODEONLY_HEADERS=1 */
+#ifndef USTR_CONF_e_PROTO /* internal, unless INCLUDE_CODEONLY_HEADERS=1 */
 #define USTR_CONF_e_PROTO static USTR__INLINE
 #endif
 #ifndef USTR_CONF_i_PROTO /* implementation of "external", dito. */

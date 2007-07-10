@@ -33,6 +33,7 @@ function usage
   echo "         io    = IO routines" 1>&2
   echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
   echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
+  echo "         pool  = A simplish bundled memory pool API" 1>&2
   echo "         sc    = Shortcut functions for Ustr's" 1>&2
   echo "         set   = strcpy() for Ustr's" 1>&2
   echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
@@ -78,6 +79,7 @@ fmt=false
 io=false
 main=false
 parse=false
+pool=false
 sc=false
 set=false
 spn=false
@@ -97,6 +99,7 @@ for i in $@; do
     io)    io=true;              main=true ;;
     main)                        main=true ;;
     parse) parse=true;           main=true ;;
+    pool)  pool=true;            main=true ;;
     sc)    sc=true;              main=true ;;
     set)   set=true;             main=true ;;
     spn)   spn=true;  srch=true; main=true ;;
@@ -116,6 +119,7 @@ if $all; then
   io=true
   main=true
   parse=true
+  pool=true
   sc=true
   set=true
   spn=true
@@ -188,6 +192,10 @@ copy main
 
 if $parse; then
   copy parse
+fi
+
+if $pool; then
+  copy pool
 fi
 
 if $sc; then
@@ -429,6 +437,10 @@ fi
 
 if $parse; then
   echo '#include "ustr-parse.h"'  >> $outname
+fi
+
+if $pool; then
+  echo '#include "ustr-pool.h"'  >> $outname
 fi
 
 if $sc; then
