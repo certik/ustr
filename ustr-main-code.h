@@ -1214,12 +1214,11 @@ USTR_CONF_I_PROTO int ustrp_add_buf(struct Ustr_pool *p, struct Ustrp **ps1,
                                     const void *s2, size_t len)
 { return (ustrp__add_buf(p, USTR__PPTR(ps1), s2, len)); }
 
-/* don't allocate, unless we have to ... also could be limited */
-USTR_CONF_i_PROTO int ustr__treat_as_buf(const struct Ustr *s1, size_t len1,
-                                         const struct Ustr *s2, size_t len2)
+/* If we can use _dup(), otherwise just pretend it's a buf+len */
+USTR_CONF_i_PROTO
+int ustr__treat_as_buf(const struct Ustr *s1, size_t len1, size_t len2)
 {
   USTR_ASSERT(!len1 || (len1 == ustr_len(s1))); /* set() uses 0 */
-  USTR_ASSERT(len2 == ustr_len(s2));
   USTR_ASSERT((len1 < (len1 + len2)) || !len2); /* no overflow allowed */
 
   if (len1)
@@ -1228,12 +1227,9 @@ USTR_CONF_i_PROTO int ustr__treat_as_buf(const struct Ustr *s1, size_t len1,
   if (ustr_limited(s1))
     return (USTR_TRUE);
 
-  if (ustr_owner(s1) && (ustr_size(s1) >= (len1 + len2)))
+  if (ustr_owner(s1) && (ustr_size(s1) >= len2))
     return (USTR_TRUE);
 
-  if (ustr_alloc(s1) && (s1 != s2))
-    return (USTR_TRUE);
-  
   return (USTR_FALSE);
 }
 
@@ -1256,8 +1252,21 @@ int ustrp__add(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   if (!len2)
     return (USTR_TRUE);
   
-  if (ustr__treat_as_buf(*ps1, len1, s2, len2))
-    return (ustrp__add_buf(p, ps1, ustr_cstr(s2), ustr_len(s2)));
+  if ((*ps1 == s2) && ustr_owner(s2) && ustr_alloc(s2))
+  { /* only one reference, so we can't take _cstr() before we realloc */
+    if (!ustrp__add_undef(p, ps1, len1))
+      return (USTR_FALSE);
+    
+    ustr__memcpy(*ps1, len1, ustr_cstr(*ps1), len1);
+    
+    USTR_ASSERT(ustr_assert_valid(*ps1));
+    return (USTR_TRUE);
+  }
+  
+  if (ustr__treat_as_buf(*ps1, len1, len2))
+    return (ustrp__add_buf(p, ps1, ustr_cstr(s2), len2));
+
+  USTR_ASSERT(!len1);
     
   if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
     return (USTR_FALSE);
@@ -1292,11 +1301,11 @@ int ustrp__add_subustr(struct Ustr_pool *p, struct Ustr **ps1,
   if (*ps1 != s2)
     return (ustrp__add_buf(p, ps1, ustr_cstr(s2) + pos - 1, len));
 
+  /* maybe only one reference, so we can't take _cstr() before we realloc */
   if (!ustrp__add_undef(p, ps1, len))
     return (USTR_FALSE);
-  s2 = *ps1;
 
-  ustr__memcpy(*ps1, clen, ustr_cstr(s2) + pos - 1, len);
+  ustr__memcpy(*ps1, clen, ustr_cstr(*ps1) + pos - 1, len);
 
   return (USTR_TRUE);
 }

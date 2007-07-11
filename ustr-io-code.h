@@ -43,16 +43,16 @@ USTR_CONF_i_PROTO int ustrp__io_getfile(void *p, struct Ustr **ps1, FILE *fp)
   const size_t blksz = (1024 * 8) - (1 + 8 + 8 + 8 + sizeof(USTR_END_ALOCDx));
   size_t num = blksz;
   size_t got = 0;
-  
-  while (ustrp__io_get(p, ps1, fp, num, &got) && (got == num))
-  { /* round up... */
+
+  do
+  { /* round up... not perfect as we'll be able to round up post add_undef */
     size_t sz   = ustr_size(*ps1);
     size_t clen = ustr_len(*ps1);
 
     num = blksz;
     if (num < (sz - clen))
       num = sz - clen;
-  }
+  } while (ustrp__io_get(p, ps1, fp, num, &got) && (got == num));
 
   return (feof(fp));
 }

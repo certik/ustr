@@ -26,6 +26,9 @@
  ustr-import man page.
 
  ustr_sc_reconfig()
+   Change sized?
+   Change rbytes
+   Change exact?
 
  ustr_srch_case()
 

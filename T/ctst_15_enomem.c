@@ -365,12 +365,13 @@ int tst(void)
   {
     ASSERT(ustrp_sized(sp2));
     MALLOC_CHECK_STORE.mem_fail_num = 1;
-    ustrp_sc_del(pool, &sp2);
+    ustrp_sc_del(pool, &sp2); /* failure path makes it constant */
   }
   ASSERT(!ustrp_sized(sp2));
   ASSERT(!ustrp_alloc(sp2));
   ASSERT(!ustrp_len(sp2));
-  
+
+  ASSERT(ustrp_owner(sp1));
   lim  = 1;
   scan = 0;
   while (scan++ < lim)
@@ -380,6 +381,63 @@ int tst(void)
   }
   ASSERT(ustrp_add(pool, &sp2, sp1));
   ASSERT_PEQ(sp1, sp2);
+
+  sp2 = USTRP("");
+  /* convert sp1 to default config. */
+  ASSERT((sp1 = ustrp_dup_buf(pool, ustrp_cstr(sp1), ustrp_len(sp1))));
+  ASSERT(ustrp_owner(sp1));
+  ASSERT(ustrp_add_rep_chr(pool, &sp1, '*', ustrp_size(sp1) - ustrp_len(sp1)));
+
+  if (USTR_CONF_INCLUDE_CODEONLY_HEADERS)
+  { /* no ref counts */
+    ASSERT(ustrp_add(pool, &sp2, sp1));
+    ASSERT_PEQ(sp1, sp2);
+    ASSERT(sp1 != sp2);
+  }
+  else
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = 1; /* only adds ref. ... won't fail */
+    ASSERT(ustrp_add(pool, &sp2, sp1));
+    ASSERT_PEQ(sp1, sp2);
+    ASSERT(sp1 == sp2);
+  
+    ASSERT(!ustrp_owner(sp2));
+  }
+  
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT(!ustrp_add(pool, &sp2, sp2));
+  }
+  ASSERT(ustrp_add(pool, &sp2, sp2));
+  ASSERT(ustrp_len(sp2) == (2 * ustrp_len(sp1)));
+  ASSERT(!(ustrp_len(sp2) % 2));
+  ASSERT(ustrp_cmp_prefix_buf_eq(sp2, ustrp_cstr(sp2), ustrp_len(sp2) / 2));
+  ASSERT(ustrp_cmp_suffix_buf_eq(sp2, ustrp_cstr(sp2), ustrp_len(sp2) / 2));
+  ASSERT(ustrp_cmp_subustrp_eq(sp1, sp2, 1, ustrp_len(sp2) / 2));
+
+  /* make sure sp1 isn't the last thing allocated */
+  ASSERT(pool->pool_sys_malloc(pool, 1));
+  
+  sp2 = sp1;
+  ASSERT( ustrp_alloc(sp2));
+  ASSERT( ustrp_owner(sp2));
+  ASSERT( ustrp_size(sp2) == ustrp_len(sp2));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT(!ustrp_add(pool, &sp2, sp2));
+  }
+  ASSERT(ustrp_add(pool, &sp2, sp2));
+  ASSERT(ustrp_len(sp2) == (2 * ustrp_len(sp1)));
+  ASSERT(!(ustrp_len(sp2) % 2));
+  ASSERT(ustrp_cmp_prefix_buf_eq(sp2, ustrp_cstr(sp2), ustrp_len(sp2) / 2));
+  ASSERT(ustrp_cmp_suffix_buf_eq(sp2, ustrp_cstr(sp2), ustrp_len(sp2) / 2));
+  ASSERT(ustrp_cmp_subustrp_eq(sp1, sp2, 1, ustrp_len(sp2) / 2));
 
   ustr_pool_free(pool);
 

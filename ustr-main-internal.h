@@ -114,8 +114,7 @@ int ustrp__add_undef(struct Ustr_pool *, struct Ustr **, size_t)
 USTR_CONF_e_PROTO
 int ustrp__add_buf(struct Ustr_pool *, struct Ustr **, const void *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_e_PROTO int ustr__treat_as_buf(const struct Ustr *, size_t,
-                                         const struct Ustr *, size_t)
+USTR_CONF_e_PROTO int ustr__treat_as_buf(const struct Ustr *, size_t, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO

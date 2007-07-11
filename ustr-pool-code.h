@@ -52,20 +52,15 @@ USTR_CONF_i_PROTO void *ustr__pool_sys_malloc(struct Ustr_pool *p, size_t len)
   if (!ret)
     return (ret);
 
-  if (sip->beg && !sip->beg->ptr)
-    np = sip->beg;
-  else if (!(np = USTR_CONF_MALLOC(sizeof(struct Ustr__pool_si_node))))
+  if (!(np = USTR_CONF_MALLOC(sizeof(struct Ustr__pool_si_node))))
   {
     USTR_CONF_FREE(ret);
     return (0);
   }
-  else
-  {
-    np->next = sip->beg;
-    sip->beg = np;
-  }
-  
-  np->ptr = ret;
+
+  np->next = sip->beg;
+  sip->beg = np;
+  np->ptr  = ret;
   
   return (ret);
 }
@@ -102,8 +97,12 @@ void ustr__pool_sys_free(struct Ustr_pool *p, void *old)
 
   if (sip->beg && (sip->beg->ptr == old))
   {
-    USTR_CONF_FREE(old);
-    sip->beg->ptr = 0;
+    struct Ustr__pool_si_node *op = sip->beg;
+
+    sip->beg = op->next;
+    
+    USTR_CONF_FREE(op->ptr);
+    USTR_CONF_FREE(op);
   }  
 }
 

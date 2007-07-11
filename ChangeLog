@@ -1,3 +1,13 @@
+2007-07-10  James Antill  <james@and.org>
+
+	* ustr-io-code.h (ustr_io_getfile): Round up on first pass.
+
+	* ustr-main-code.h (ustr_add): Fixup code path when using subustr on
+	self.
+
+	* ustr-set-code.h (ustr_set_subustr): Fixup code path when using subustr
+	on sellf.
+
 2007-07-09  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_size): Remove special casing for read-only

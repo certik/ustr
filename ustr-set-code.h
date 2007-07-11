@@ -44,7 +44,6 @@ int ustrp__set_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t nlen)
     goto fail_enomem;
   
   ustrp__sc_free2(p, ps1, ret);
-  
   return (USTR_TRUE);
 
  fail_enomem:
@@ -73,7 +72,6 @@ USTR_CONF_i_PROTO int ustrp__set_empty(struct Ustr_pool *p, struct Ustr **ps1)
   }
   
   ustrp__sc_free2(p, ps1, ret);
-  
   return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO int ustr_set_empty(struct Ustr **ps1)
@@ -111,7 +109,7 @@ int ustrp__set(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   if (*ps1 == s2)
     return (USTR_TRUE);
 
-  if (ustr__treat_as_buf(*ps1, 0, s2, ustr_len(s2)))
+  if (ustr__treat_as_buf(*ps1, 0, ustr_len(s2)))
     return (ustrp__set_buf(p, ps1, ustr_cstr(s2), ustr_len(s2)));
 
   if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
@@ -121,7 +119,6 @@ int ustrp__set(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   }
   
   ustrp__sc_free2(p, ps1, ret);
-  
   return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO int ustr_set(struct Ustr **ps1, const struct Ustr *s2)
@@ -144,14 +141,15 @@ int ustrp__set_subustr(struct Ustr_pool *p, struct Ustr **ps1,
   if (len == clen)
     return (ustrp__set(p, ps1, s2));
   
-  if ((*ps1 != s2) || !ustr_owner(s2))
-    return (ustrp__set_buf(p, ps1, ustr_cstr(s2) + pos - 1, len));
-
-  --pos;
-  ustrp__del(p, ps1, clen - (pos + len)); /* delete bit after */
-  ustrp__del_subustr(p, ps1, 1, pos);     /* delete bit before */
+  if ((*ps1 == s2) && ustr_owner(s2) && ustr_alloc(s2))
+  { /* only one reference, so we can't take _cstr() before we realloc */
+    --pos;
+    ustrp__del(p, ps1, clen - (pos + len)); /* delete bit after */
+    ustrp__del_subustr(p, ps1, 1, pos);     /* delete bit before */
+    return (USTR_TRUE);
+  }
   
-  return (USTR_TRUE);
+  return (ustrp__set_buf(p, ps1, ustr_cstr(s2) + pos - 1, len));
 }
 USTR_CONF_I_PROTO int ustr_set_subustr(struct Ustr **ps1, const struct Ustr *s2,
                                        size_t pos, size_t len)

@@ -80,7 +80,7 @@ int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
 USTR_CONF_i_PROTO
 int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
                         const char *fmt, va_list ap)
-{ /* you might think we want to juse use ustr_wstr()
+{ /* you might think we want to just use ustr_wstr()
    * if ustr_size() - ustr_len() > 0 ... however the problem there is about
    * screwing up the data when we fail. Which we just don't do */
   char *tmp = 0;
