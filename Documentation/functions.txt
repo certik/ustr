@@ -1134,6 +1134,1284 @@ Function: ustr_setf_owner()
   This function fails if ustr_alloc() fails for the Ustr.
 
 
+Section: Comparing data in a Ustr
+Function: ustr_cmp_buf()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_subustr()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_cstr()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_fast_buf()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr*
+
+ Parameter[2]: 
+ Type[2]: const void*
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_fast()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_fast_subustr()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_fast_cstr()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_buf()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_subustr()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_cstr()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_buf_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_subustr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_cstr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_buf_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_subustr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_cstr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_prefix_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_prefix_buf_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_prefix_cstr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_prefix_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_prefix_buf_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_prefix_cstr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_suffix_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_suffix_buf_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_suffix_cstr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_suffix_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_suffix_buf_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const void *
+
+ Parameter[3]: 
+ Type[3]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cmp_case_suffix_cstr_eq()
+ Returns: 
+ Type: int 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Section: Searching for data in a Ustr
+Function: ustr_srch_chr_fwd()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: Byte data to search for
+ Type[3]: char
+
+ Explanation:
+
+  This function searches for the data (Parameter[3]) in the Ustr, skipping an
+ offset (Parameter[2]) number of bytes.
+
+
+Function: ustr_srch_chr_rev()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]:  size_t
+
+ Parameter[3]: Byte data to search for
+ Type[3]: char
+
+ Explanation:
+
+  This function works like ustr_srch_chr_fwd() but it searches from the end of
+ the string to the beginning.
+
+
+Function: ustr_srch_buf_fwd()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to data to search for
+ Type[3]: const void *
+
+ Parameter[4]: Length of the data to search for
+ Type[4]: size_t
+
+ Explanation:
+
+  This function searches for the data (Parameter[3]) of length (Parameter[4])
+ in the Ustr, skipping an offset (Parameter[2]) number of bytes.
+
+
+Function: ustr_srch_buf_rev()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to data to search for
+ Type[3]: const void *
+
+ Parameter[4]: Length of the data to search for
+ Type[4]: size_t
+
+ Explanation:
+
+  This function works like ustr_srch_buf_fwd() but it searches from the end of
+ the string to the beginning.
+
+
+Function: ustr_srch_fwd()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to a constant Ustr string, to search for
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function works like ustr_srch_buf_fwd() but it gets the data pointer by
+ calling ustr_cstr() and the length by calling ustr_len() on the passed
+ Ustr (Parameter[3]).
+
+
+Function: ustr_srch_rev()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to a constant Ustr string
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function works like ustr_srch_fwd() but it searches from the end of
+ the string to the beginning.
+
+
+Function: ustr_srch_cstr_fwd()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to C-style string data, to search for
+ Type[3]: const char *
+
+ Explanation:
+
+  This function works like ustr_srch_buf_fwd() but it gets the length by
+ calling strlen() on the passed data (Parameter[3]).
+
+
+Function: ustr_srch_cstr_rev()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to C-style string data, to search for
+ Type[3]: const char *
+
+ Explanation:
+
+  This function works like ustr_srch_cstr_fwd() but it searches from the end of
+ the string to the beginning.
+
+
+Function: ustr_srch_subustr_fwd()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to a constant Ustr string
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: Position in the Ustr
+ Type[4]: size_t
+
+ Parameter[5]: Length of data to search, from the Ustr
+ Type[5]: size_t
+
+ Explanation:
+
+  This function works like ustr_srch_fwd() but it moves the data to start at
+ the correct position and limits the length to the value specified.
+
+
+Function: ustr_srch_subustr_rev()
+ Returns: Position in the Ustr, or zero if not found
+ Type: size_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start searching at
+ Type[2]:  size_t
+
+ Parameter[3]: A pointer to a constant Ustr string
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: Position in the Ustr
+ Type[4]: size_t
+
+ Parameter[5]: Length of data to search, from the Ustr
+ Type[5]: size_t
+
+ Explanation:
+
+  This function works like ustr_srch_rev() but it moves the data to start at
+ the correct position and limits the length to the value specified.
+
+
+Section: Span lengths of data in a Ustr
+
+Function: ustr_spn_chr_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: char
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_chr_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: char
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_chrs_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_chrs_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_cstr_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_spn_cstr_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_chr_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: char
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_chr_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: char
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_chrs_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_chrs_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_cstr_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_cspn_cstr_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_spn_chrs_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_spn_chrs_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_spn_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_spn_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_spn_cstr_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_spn_cstr_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_cspn_chrs_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_cspn_chrs_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Parameter[4]: 
+ Type[4]: size_t
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_cspn_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_cspn_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const struct Ustr *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_cspn_cstr_fwd()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
+Function: ustr_utf8_cspn_cstr_rev()
+ Returns: 
+ Type: size_t 
+
+ Parameter[1]: 
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: 
+ Type[2]: size_t
+
+ Parameter[3]: 
+ Type[3]: const char *
+
+ Explanation:
+
+  This function is NOT DOCUMENTED YET!
+
+
 Section: Doing IO from or to a Ustr
 Function: ustr_io_get()
  Returns: Success or failure
@@ -1374,8 +2652,8 @@ Function: ustr_parse_b_uint16()
  Returns: uint_least16_t 
  Type: uint_least16_t 
 
- Parameter[1]: struct Ustr *
- Type[1]: struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
  Type[2]: size_t
@@ -1390,8 +2668,8 @@ Function: ustr_parse_b_uint32()
  Returns: uint_least32_t 
  Type: uint_least32_t 
 
- Parameter[1]: struct Ustr *
- Type[1]: struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
  Type[2]: size_t
@@ -1406,8 +2684,8 @@ Function: ustr_parse_b_uint64()
  Returns: uint_least64_t 
  Type: uint_least64_t 
 
- Parameter[1]: struct Ustr *
- Type[1]: struct Ustr *
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start parsing at
  Type[2]: size_t

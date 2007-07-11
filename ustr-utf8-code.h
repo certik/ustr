@@ -383,7 +383,7 @@ size_t ustr_utf8_chars2bytes(const struct Ustr *s1, size_t pos, size_t len,
   const unsigned char *ret_beg = beg;
   size_t ret_pos = 0;
 
-  USTR_ASSERT(ustr__valid_subustr(s1, pos, len) || !len);
+  USTR_ASSERT(ustr_assert_valid_subustr(s1, pos, len) || !len);
   USTR_ASSERT(pret_pos || (pos == 1));
 
   while (*scan)
@@ -427,7 +427,7 @@ size_t ustr_utf8_bytes2chars(const struct Ustr *s1, size_t pos, size_t len,
   const unsigned char *beg  = (const unsigned char *)ustr_cstr(s1);
   const unsigned char *scan = beg;
   const unsigned char *ret_beg = beg;
-  size_t clen = ustr__valid_subustr(s1, pos, len);
+  size_t clen = ustr_assert_valid_subustr(s1, pos, len);
   size_t unum = 0;
   size_t ret_pos = 0;
 

@@ -41,7 +41,7 @@ int ustr_cmp_subustr(const struct Ustr *s1,
 {
   USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
 
-  if (!ustr__valid_subustr(s2, pos, len))
+  if (!ustr_assert_valid_subustr(s2, pos, len))
     return (ustr_cmp_buf(s1, "", 0));
 
   return (ustr_cmp_buf(s1, ustr_cstr(s2) + --pos, len));
@@ -114,7 +114,7 @@ int ustr_cmp_case_subustr(const struct Ustr *s1,
 {
   USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
 
-  if (!ustr__valid_subustr(s2, pos, len))
+  if (!ustr_assert_valid_subustr(s2, pos, len))
     return (ustr_cmp_case_buf(s1, "", 0));
 
   return (ustr_cmp_case_buf(s1, ustr_cstr(s2) + --pos, len));
@@ -154,7 +154,7 @@ int ustr_cmp_fast_subustr(const struct Ustr *s1,
 {
   USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
 
-  if (!ustr__valid_subustr(s2, pos, len))
+  if (!ustr_assert_valid_subustr(s2, pos, len))
     return (ustr_cmp_fast_buf(s1, "", 0));
 
   return (ustr_cmp_fast_buf(s1, ustr_cstr(s2) + --pos, len));

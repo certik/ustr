@@ -75,9 +75,6 @@ USTR_CONF_e_PROTO int ustr__rw_del(struct Ustr *, size_t, size_t *,
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO int ustrp__del(struct Ustr_pool *, struct Ustr **, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO size_t ustr__valid_subustr(const struct Ustr *, size_t,size_t)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO
 int ustrp__del_subustr(struct Ustr_pool *, struct Ustr **, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));

@@ -16,11 +16,11 @@ USTR_CONF_EI_PROTO int ustr_add_b_uint64(struct Ustr **, uint_least64_t)
 
 /* ---------------- parse ---------------- */
 
-USTR_CONF_EI_PROTO uint_least16_t ustr_parse_b_uint16(struct Ustr *, size_t)
+USTR_CONF_EI_PROTO uint_least16_t ustr_parse_b_uint16(const struct Ustr*,size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO uint_least32_t ustr_parse_b_uint32(struct Ustr *, size_t)
+USTR_CONF_EI_PROTO uint_least32_t ustr_parse_b_uint32(const struct Ustr*,size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO uint_least64_t ustr_parse_b_uint64(struct Ustr *, size_t)
+USTR_CONF_EI_PROTO uint_least64_t ustr_parse_b_uint64(const struct Ustr*,size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 /* ---------------- pool APIs ---------------- */
@@ -39,11 +39,14 @@ int ustrp_add_b_uint64(struct Ustr_pool *, struct Ustrp **, uint_least64_t)
 
 /* ---------------- parse ---------------- */
 
-USTR_CONF_EI_PROTO uint_least16_t ustrp_parse_b_uint16(struct Ustrp *, size_t)
+USTR_CONF_EI_PROTO
+uint_least16_t ustrp_parse_b_uint16(const struct Ustrp *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO uint_least32_t ustrp_parse_b_uint32(struct Ustrp *, size_t)
+USTR_CONF_EI_PROTO
+uint_least32_t ustrp_parse_b_uint32(const struct Ustrp *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO uint_least64_t ustrp_parse_b_uint64(struct Ustrp *, size_t)
+USTR_CONF_EI_PROTO
+uint_least64_t ustrp_parse_b_uint64(const struct Ustrp *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 
@@ -88,7 +91,7 @@ USTR_CONF_II_PROTO int ustr_add_b_uint64(struct Ustr **ps1, uint_least64_t data)
 }
 
 USTR_CONF_II_PROTO
-uint_least16_t ustr_parse_b_uint16(struct Ustr *s1, size_t off)
+uint_least16_t ustr_parse_b_uint16(const struct Ustr *s1, size_t off)
 {
   uint_least16_t ret = 0;
   const unsigned char *ptr = 0;
@@ -108,7 +111,7 @@ uint_least16_t ustr_parse_b_uint16(struct Ustr *s1, size_t off)
 }
 
 USTR_CONF_II_PROTO
-uint_least32_t ustr_parse_b_uint32(struct Ustr *s1, size_t off)
+uint_least32_t ustr_parse_b_uint32(const struct Ustr *s1, size_t off)
 {
   uint_least32_t ret = 0;
   const unsigned char *ptr = 0;
@@ -130,7 +133,7 @@ uint_least32_t ustr_parse_b_uint32(struct Ustr *s1, size_t off)
 }
 
 USTR_CONF_II_PROTO
-uint_least64_t ustr_parse_b_uint64(struct Ustr *s1, size_t off)
+uint_least64_t ustr_parse_b_uint64(const struct Ustr *s1, size_t off)
 {
   uint_least64_t ret = 0;
   const unsigned char *ptr = 0;
@@ -206,7 +209,7 @@ int ustrp_add_b_uint64(struct Ustr_pool *p, struct Ustrp **ps1,
 }
 
 USTR_CONF_II_PROTO
-uint_least16_t ustrp_parse_b_uint16(struct Ustrp *s1, size_t off)
+uint_least16_t ustrp_parse_b_uint16(const struct Ustrp *s1, size_t off)
 {
   uint_least16_t ret = 0;
   const unsigned char *ptr = 0;
@@ -226,7 +229,7 @@ uint_least16_t ustrp_parse_b_uint16(struct Ustrp *s1, size_t off)
 }
 
 USTR_CONF_II_PROTO
-uint_least32_t ustrp_parse_b_uint32(struct Ustrp *s1, size_t off)
+uint_least32_t ustrp_parse_b_uint32(const struct Ustrp *s1, size_t off)
 {
   uint_least32_t ret = 0;
   const unsigned char *ptr = 0;
@@ -248,7 +251,7 @@ uint_least32_t ustrp_parse_b_uint32(struct Ustrp *s1, size_t off)
 }
 
 USTR_CONF_II_PROTO
-uint_least64_t ustrp_parse_b_uint64(struct Ustrp *s1, size_t off)
+uint_least64_t ustrp_parse_b_uint64(const struct Ustrp *s1, size_t off)
 {
   uint_least64_t ret = 0;
   const unsigned char *ptr = 0;

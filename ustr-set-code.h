@@ -135,7 +135,7 @@ int ustrp__set_subustr(struct Ustr_pool *p, struct Ustr **ps1,
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
 
-  clen = ustr__valid_subustr(s2, pos, len);
+  clen = ustr_assert_valid_subustr(s2, pos, len);
   if (!clen)
     return (USTR_FALSE);
   if (len == clen)

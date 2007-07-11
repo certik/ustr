@@ -162,7 +162,7 @@ size_t ustr_srch_subustr_fwd(const struct Ustr *s1, size_t off,
 {
   USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
   
-  if (!ustr__valid_subustr(s2, pos, len))
+  if (!ustr_assert_valid_subustr(s2, pos, len))
     return (ustr_srch_buf_fwd(s1, off, "", 0));
   
   return (ustr_srch_buf_fwd(s1, off, ustr_cstr(s2) + --pos, len));
@@ -174,7 +174,7 @@ size_t ustr_srch_subustr_rev(const struct Ustr *s1, size_t off,
 {
   USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
   
-  if (!ustr__valid_subustr(s2, pos, len))
+  if (!ustr_assert_valid_subustr(s2, pos, len))
     return (ustr_srch_buf_rev(s1, off, "", 0));
   
   return (ustr_srch_buf_rev(s1, off, ustr_cstr(s2) + --pos, len));  

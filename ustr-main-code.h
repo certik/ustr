@@ -92,6 +92,24 @@ USTR_CONF_I_PROTO int ustr_assert_valid(const struct Ustr *s1)
   return (USTR_TRUE);
 }
 
+USTR_CONF_I_PROTO
+size_t ustr_assert_valid_subustr(const struct Ustr *s1, size_t pos, size_t len)
+{
+  size_t clen = 0;
+  
+  USTR_ASSERT(ustr_assert_valid(s1));
+  USTR_ASSERT_RET(pos, 0);
+  
+  clen = ustr_len(s1);
+  if (((pos == 1) || !len) && (len == clen))
+    return (clen);
+  
+  USTR_ASSERT_RET((clen >= pos), 0);
+  USTR_ASSERT_RET((clen >= (len + --pos)), 0);
+
+  return (clen);
+}
+
 USTR_CONF_I_PROTO char *ustr_wstr(struct Ustr *s1)
 { /* NOTE: Not EI/II so we can call ustr_assert_valid() here. */
   unsigned char *data = s1->data;
@@ -857,24 +875,6 @@ int ustrp_del(struct Ustr_pool *p, struct Ustrp **ps1, size_t len)
 { return (ustrp__del(p, USTR__PPTR(ps1), len)); }
 
 USTR_CONF_i_PROTO
-size_t ustr__valid_subustr(const struct Ustr *s1, size_t pos, size_t len)
-{
-  size_t clen = 0;
-  
-  USTR_ASSERT(ustr_assert_valid(s1));
-  USTR_ASSERT_RET(pos, 0);
-  
-  clen = ustr_len(s1);
-  if (((pos == 1) || !len) && (len == clen))
-    return (clen);
-  
-  USTR_ASSERT_RET((clen >= pos), 0);
-  USTR_ASSERT_RET((clen >= (len + --pos)), 0);
-
-  return (clen);
-}
-
-USTR_CONF_i_PROTO
 int ustrp__del_subustr(struct Ustr_pool *p,
                        struct Ustr **ps1, size_t pos, size_t len)
 {
@@ -894,7 +894,7 @@ int ustrp__del_subustr(struct Ustr_pool *p,
   if (!len) return (USTR_TRUE);
 
   s1   = *ps1;
-  clen = ustr__valid_subustr(s1, pos, len);
+  clen = ustr_assert_valid_subustr(s1, pos, len);
   if (!clen)
     return (USTR_FALSE);
   if (--pos == (clen - len)) /* deleting from the end */
@@ -1064,7 +1064,7 @@ struct Ustr *ustrp__dupx_subustr(struct Ustr_pool *p,
   if (!len)
     return (ustrp__dupx_undef(p, sz, rbytes, exact, emem, len));
   
-  clen = ustr__valid_subustr(s2, pos, len);
+  clen = ustr_assert_valid_subustr(s2, pos, len);
   if (!clen)
     return (USTR_NULL);
   if (len == clen)
@@ -1292,7 +1292,7 @@ int ustrp__add_subustr(struct Ustr_pool *p, struct Ustr **ps1,
 
   if (!len) return (USTR_TRUE);
   
-  clen = ustr__valid_subustr(s2, pos, len);
+  clen = ustr_assert_valid_subustr(s2, pos, len);
   if (!clen)
     return (USTR_FALSE);
   if (len == clen)
