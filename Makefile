@@ -1,5 +1,6 @@
 
-# FIXME: Lots of C&P of VERSION ... ustr*.pc, ustr.spec, Documentation/*.pl
+# FIXME: Lots of C&P of VERSION ... 
+#   ustr*.pc, ustr.spec, Documentation/*.pl, ./scripts/rpms-create-james.sh
 VERS=1.0
 VERS_FULL=$(VERS).0
 VERS_BSO =1.0

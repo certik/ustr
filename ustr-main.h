@@ -808,7 +808,8 @@ USTR_CONF_II_PROTO struct Ustr *ustr_dup_cstr(const char *cstr)
 USTR_CONF_EI_PROTO int ustrp_assert_valid(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO int ustrp_assert_valid_subustrp(const struct Ustrp *)
+USTR_CONF_EI_PROTO
+int ustrp_assert_valid_subustrp(const struct Ustrp *, size_t, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO size_t ustrp_len(const struct Ustrp *)
@@ -872,8 +873,9 @@ USTR_CONF_EI_PROTO size_t ustrp_size_overhead(const struct Ustrp *)
 #if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO int ustrp_assert_valid(const struct Ustrp *s1)
 { return (ustr_assert_valid(&s1->s)); }
-USTR_CONF_II_PROTO int ustrp_assert_valid_subustrp(const struct Ustrp *s1)
-{ return (ustr_assert_valid_subustr(&s1->s)); }
+USTR_CONF_II_PROTO
+int ustrp_assert_valid_subustrp(const struct Ustrp *s1, size_t pos, size_t len)
+{ return (ustr_assert_valid_subustr(&s1->s, pos, len)); }
 USTR_CONF_II_PROTO size_t ustrp_len(const struct Ustrp *s1)
 { return (ustr_len(&s1->s)); }
 USTR_CONF_II_PROTO const char *ustrp_cstr(const struct Ustrp *s1)
