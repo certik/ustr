@@ -2,6 +2,7 @@
  Compile with:
 
 make
+make all-shared
 
  Compile and Run test suite with:
 
@@ -20,10 +21,6 @@ make clean
 make distclean
 
 
+ See README-DEVELOPERS for what to do after that, or look at the website at:
 
-...after it's installed you can use it with either pkg-config, just linking with
--lustr or -lustr-debug ... and including ustr.h or ustr-debug.h.
-
- Or you can use "ustr-import all", and use the headers only.
-
- See example code etc. at: http://www.and.org/ustr/
+			http://www.and.org/ustr/

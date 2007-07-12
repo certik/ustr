@@ -25,6 +25,9 @@
 
  ustr-import man page.
 
+ ustr_cmp_prefix*_subustr()
+ ustr_cmp_suffix*_subustr()
+
  ustr_sc_reconfig()
    Change sized?
    Change rbytes
@@ -34,13 +37,13 @@
 
  ustr_parse_netstr() / ustr_parse_netstr2()
 
+ ustr_ins()?
+
  ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
    ustr_sub(Ustr **s1, size_t pos, Ustr *s2)
    ustr_sub(Ustr **s1, size_t pos, size_t len, Ustr *s2) ?
  ... also requested:
    ustr_sc_replace(Ustr **s1, const Ustr *from, const Ustr *to, size_t lim)
-
- ustr_ins()?
 
  chomp/strip
 

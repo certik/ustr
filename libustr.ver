@@ -12,8 +12,10 @@
   ustr_pool_make_subpool;
 
   ustr_assert_valid;
+  ustr_assert_valid_subustr;
 
   ustrp_assert_valid;
+  ustrp_assert_valid_subustrp;
 
   ustr_cstr;
   ustr_len;

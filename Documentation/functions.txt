@@ -1136,540 +1136,559 @@ Function: ustr_setf_owner()
 
 Section: Comparing data in a Ustr
 Function: ustr_cmp_buf()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like memcmp() on the Ustr and the passed data.
 
 
 Function: ustr_cmp()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_buf() but with the data from ustr_cstr()
+ and the length from ustr_len().
 
 
 Function: ustr_cmp_subustr()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
- Parameter[3]: 
+ Parameter[3]: Position in the Ustr
  Type[3]: size_t
 
- Parameter[4]: 
+ Parameter[4]: Length to compare from the Ustr
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp() but with a limit on the data and length.
 
 
 Function: ustr_cmp_cstr()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_buf() but with a length from strlen().
 
 
 Function: ustr_cmp_fast_buf()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
- Type[1]: const struct Ustr*
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
 
- Parameter[2]: 
- Type[2]: const void*
+ Parameter[2]: A pointer to constant bytes, to compare
+ Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_buf() but the order of comparison is
+ optimized for speed, but is much less friendly to humans.
 
 
 Function: ustr_cmp_fast()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_fast_buf() but with the data from
+ ustr_cstr() and the length from ustr_len().
 
 
 Function: ustr_cmp_fast_subustr()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
- Parameter[3]: 
+ Parameter[3]: Position in the Ustr
  Type[3]: size_t
 
- Parameter[4]: 
+ Parameter[4]: Length to compare from the Ustr
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_fast() but with a limit on the data and
+ length.
 
 
 Function: ustr_cmp_fast_cstr()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_fast_buf() but with a length from strlen().
 
 
 Function: ustr_cmp_case_buf()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_buf() but the order of comparison ignores
+ ASCII case.
 
 
 Function: ustr_cmp_case()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_case_buf() but with the data from
+ ustr_cstr() and the length from ustr_len().
 
 
 Function: ustr_cmp_case_subustr()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
- Parameter[3]: 
+ Parameter[3]: Position in the Ustr
  Type[3]: size_t
 
- Parameter[4]: 
+ Parameter[4]: Length to compare from the Ustr
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_case() but with a limit on the data and
+ length.
 
 
 Function: ustr_cmp_case_cstr()
- Returns: 
+ Returns: Less then zero, zero or greater than zero depending on comparison
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_case_buf() but with a length from strlen().
 
 
 Function: ustr_cmp_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp() against 0.
 
 
 Function: ustr_cmp_buf_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_buf() against 0.
 
 
 Function: ustr_cmp_subustr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
- Parameter[3]: 
+ Parameter[3]: Position in the Ustr
  Type[3]: size_t
 
- Parameter[4]: 
+ Parameter[4]: Length to compare from the Ustr
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_subustr() against 0.
 
 
 Function: ustr_cmp_cstr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_cstr() against 0.
 
 
 Function: ustr_cmp_case_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case() against 0.
 
 
 Function: ustr_cmp_case_buf_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case_buf() against 0.
 
 
 Function: ustr_cmp_case_subustr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
- Parameter[3]: 
+ Parameter[3]: Position in the Ustr
  Type[3]: size_t
 
- Parameter[4]: 
+ Parameter[4]: Length to compare from the Ustr
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case_subustr() against 0.
 
 
 Function: ustr_cmp_case_cstr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case_cstr() against 0.
 
 
 Function: ustr_cmp_prefix_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp() against 0, but the comparison
+ is limited to the length of the right hand side.
 
 
 Function: ustr_cmp_prefix_buf_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_buf() against 0, but the
+ comparison is limited to the length of the right hand side (Parameter[3]).
 
 
 Function: ustr_cmp_prefix_cstr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_cstr() against 0, but the
+ comparison is limited to the length of the right hand side.
 
 
 Function: ustr_cmp_case_prefix_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case() against 0, but the
+ comparison is limited to the length of the right hand side.
 
 
 Function: ustr_cmp_case_prefix_buf_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case_buf() against 0, but the
+ comparison is limited to the length of the right hand side (Parameter[3]).
 
 
 Function: ustr_cmp_case_prefix_cstr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like comparing ustr_cmp_case_cstr() against 0, but the
+ comparison is limited to the length of the right hand side.
 
 
 Function: ustr_cmp_suffix_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_prefix_eq() but compares the end of the left
+ hand side.
 
 
 Function: ustr_cmp_suffix_buf_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_prefix_buf_eq() but compares the end of
+ the left hand side.
 
 
 Function: ustr_cmp_suffix_cstr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_prefix_cstr_eq() but compares the end of
+ the left hand side.
 
 
 Function: ustr_cmp_case_suffix_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant Ustr string
  Type[2]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_case_prefix_eq() but compares the end of
+ the left hand side.
 
 
 Function: ustr_cmp_case_suffix_buf_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to constant bytes, to compare
  Type[2]: const void *
 
- Parameter[3]: 
+ Parameter[3]: Length of comparison bytes
  Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_case_prefix_buf_eq() but compares the end of
+ the left hand side.
 
 
 Function: ustr_cmp_case_suffix_cstr_eq()
- Returns: 
+ Returns: Success or failure
  Type: int 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a constant C-style string
  Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cmp_case_prefix_cstr_eq() but compares the end
+ of the left hand side.
 
 
 Section: Searching for data in a Ustr
@@ -1785,7 +1804,7 @@ Function: ustr_srch_rev()
  Parameter[2]: Offset within string to start searching at
  Type[2]: size_t
 
- Parameter[3]: A pointer to a constant Ustr string
+ Parameter[3]: A pointer to a constant Ustr string, to search for
  Type[3]: const struct Ustr *
 
  Explanation:
@@ -1883,339 +1902,369 @@ Function: ustr_srch_subustr_rev()
 
 
 Section: Span lengths of data in a Ustr
-
 Function: ustr_spn_chr_fwd()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Byte data
  Type[3]: char
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
 
 
 Function: ustr_spn_chr_rev()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Byte data
  Type[3]: char
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
 
 
 Function: ustr_spn_chrs_fwd()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Array of byte data
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of byte data
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
 
 
 Function: ustr_spn_chrs_rev()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Array of byte data
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of byte data
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
 
 
 Function: ustr_spn_fwd()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr string, containing spanning bytes
  Type[3]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_buf_fwd() but passing ustr_cstr() and
+ ustr_len()
 
 
 Function: ustr_spn_rev()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr string, containing spanning bytes
  Type[3]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_buf_rev() but passing ustr_cstr() and
+ ustr_len()
 
 
 Function: ustr_spn_cstr_fwd()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style string, containing spanning bytes
  Type[3]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_buf_fwd() but passing strlen() for the
+ length.
 
 
 Function: ustr_spn_cstr_rev()
- Returns: 
+ Returns: Number of bytes in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style string, containing spanning bytes
  Type[3]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_buf_rev() but passing strlen() for the
+ length.
 
 
 Function: ustr_cspn_chr_fwd()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Byte data
  Type[3]: char
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
 
 
 Function: ustr_cspn_chr_rev()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Byte data
  Type[3]: char
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
 
 
 Function: ustr_cspn_chrs_fwd()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Array of byte data
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of byte data
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
 
 
 Function: ustr_cspn_chrs_rev()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: Array of byte data
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of byte data
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
 
 
 Function: ustr_cspn_fwd()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr string, containing spanning bytes
  Type[3]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_buf_fwd() but passing ustr_cstr() and
+ ustr_len()
 
 
 Function: ustr_cspn_rev()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr string, containing spanning bytes
  Type[3]: const struct Ustr *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_buf_rev() but passing ustr_cstr() and
+ ustr_len()
 
 
 Function: ustr_cspn_cstr_fwd()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style string, containing spanning bytes
  Type[3]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_buf_fwd() but passing strlen() for the
+ length.
 
 
 Function: ustr_cspn_cstr_rev()
- Returns: 
+ Returns: Number of bytes not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style string, containing spanning bytes
  Type[3]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_buf_rev() but passing strlen() for the
+ length.
 
 
 Function: ustr_utf8_spn_chrs_fwd()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style UTF-8 string
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of the C-style UTF-8 string
  Type[4]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_chrs_fwd() but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
 
 
 Function: ustr_utf8_spn_chrs_rev()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style UTF-8 string
  Type[3]: const char *
 
  Parameter[4]: 
@@ -2224,192 +2273,258 @@ Function: ustr_utf8_spn_chrs_rev()
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
 
 
 Function: ustr_utf8_spn_fwd()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr UTF-8 string
  Type[3]: const struct Ustr *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
 
 
 Function: ustr_utf8_spn_rev()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr UTF-8 string
  Type[3]: const struct Ustr *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
 
 
 Function: ustr_utf8_spn_cstr_fwd()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style UTF-8 string
  Type[3]: const char *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
 
 
 Function: ustr_utf8_spn_cstr_rev()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style UTF-8 string
  Type[3]: const char *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
 
 
 Function: ustr_utf8_cspn_chrs_fwd()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style UTF-8 string
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of the C-style UTF-8 string
  Type[4]: size_t
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
 
 
 Function: ustr_utf8_cspn_chrs_rev()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant C-style UTF-8 string
  Type[3]: const char *
 
- Parameter[4]: 
+ Parameter[4]: Length of the C-style UTF-8 string
  Type[4]: size_t
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
 
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
 
 Function: ustr_utf8_cspn_fwd()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to a constant Ustr UTF-8 string, containing spanning data
  Type[3]: const struct Ustr *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
 
 
 Function: ustr_utf8_cspn_rev()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to constant Ustr UTF-8 string data, containing spanning data
  Type[3]: const struct Ustr *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
 
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
 
 Function: ustr_utf8_cspn_cstr_fwd()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to constant C-style UTF-8 string data, containing spanning data
  Type[3]: const char *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
 
 
 Function: ustr_utf8_cspn_cstr_rev()
- Returns: 
+ Returns: Number of UTF-8 characters not in the span
  Type: size_t 
 
- Parameter[1]: 
+ Parameter[1]: A pointer to a constant Ustr UTF-8 string
  Type[1]: const struct Ustr *
 
- Parameter[2]: 
+ Parameter[2]: Offset within string, in UTF-8 characters, to start compliment spanning from
  Type[2]: size_t
 
- Parameter[3]: 
+ Parameter[3]: A pointer to C-style UTF-8 string data, containing spanning data
  Type[3]: const char *
 
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+ Note:
+
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
 
 
 Section: Doing IO from or to a Ustr
@@ -2420,14 +2535,14 @@ Function: ustr_io_get()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: 
+ Type[2]: FILE *
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: 
+ Type[3]: size_t
 
- Parameter[4]:  size_t *
- Type[4]:  size_t *
+ Parameter[4]: 
+ Type[4]: size_t *
 
  Explanation:
 

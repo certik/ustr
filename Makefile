@@ -1,10 +1,10 @@
 
 # FIXME: Lots of C&P of VERSION ... ustr*.pc, ustr.spec, Documentation/*.pl
-VERS=0.99
-VERS_FULL=$(VERS).3
+VERS=1.0
+VERS_FULL=$(VERS).0
 VERS_BSO =1.0
-VERS_ESONAME =0
-VERS_ESO     =$(VERS_ESONAME).0.3
+VERS_ESONAME =1
+VERS_ESO     =$(VERS_ESONAME).0.0
 
 DESTDIR =
 datadir=/usr/share
@@ -41,7 +41,7 @@ CFLG_LIB = -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 CFLG_LIB_OPT = $(CFLG_LIB) -DNDEBUG
 CFLG_LIB_DBG = $(CFLG_LIB)
 
-DOCS = TODO \
+DOCS = README-DEVELOPERS TODO \
        Documentation/strdup\ vs.\ ustr.gnumeric \
        Documentation/index.html \
        Documentation/functions.html \
