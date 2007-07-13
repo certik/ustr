@@ -346,7 +346,7 @@ int tst(void)
     if (USTR_CONF_USE_DYNAMIC_CONF)
     {
       assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_REF_BYTES, 0));
-      assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_HAS_SIZE, 1));
+      assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_HAS_SIZE,  1));
   
       ASSERT((os1 = ustr_dupx_undef(1, 2, 0, 0, 0)));
       ASSERT(ustr_ro(os1));
