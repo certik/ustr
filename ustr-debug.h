@@ -23,5 +23,6 @@
 #include "ustr-srch.h"
 #include "ustr-utf8.h"
 #include "ustr-spn.h"
+#include "ustr-sub.h"
 
 #endif

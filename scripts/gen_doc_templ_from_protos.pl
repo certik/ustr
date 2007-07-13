@@ -6,7 +6,7 @@ use FileHandle;
 my $inc = undef;
    $inc ="./";
 
-my @files = qw(main set cmp srch spn fmt b io utf8 parse sc pool);
+my @files = qw(main set cmp srch spn fmt b io utf8 parse sc pool sub);
 
 for my $name (@files) {
 if (!open(IN, "< $inc/ustr-$name.h"))

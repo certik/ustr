@@ -1192,7 +1192,7 @@ Function: ustr_owner()
 
  Explanation:
 
-  This function says if their is only a single reference to the Ustr string.
+  This function says if there is only a single reference to the Ustr string.
 
  Note:
 
@@ -2861,6 +2861,125 @@ Function: ustr_io_putfilename()
  Explanation:
 
   This function is NOT DOCUMENTED YET!
+
+
+Section: String substitution/replacement
+Function: ustr_sub_buf()
+ Returns: success or failure 
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr
+ Type[1]: struct Ustr **
+
+ Parameter[2]:  Position where to start replacement
+ Type[2]:  size_t
+
+ Parameter[3]: Buffer containing replacement string 
+ Type[3]:  const void*
+
+ Parameter[4]:  Length of buffer
+ Type[4]:  size_t
+
+ Explanation:
+
+  This function will replace the characters in the Ustr starting at the
+ specified position using data from the buffer.
+ 
+ Note:
+  The Ustr will be automatically be resized if necessary.
+
+
+Function: ustr_sub_cstr()
+ Returns: success or failure 
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Position where to start replacement
+ Type[2]:  size_t
+
+ Parameter[3]:  Replacement Cstring
+ Type[3]:  const char *
+
+ Explanation:
+
+  This function will replace characters in the Ustr starting at the specified
+ position using data from the given Cstring.
+
+
+Function: ustr_sc_sub()
+ Returns: success or failure 
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Position where to start replacement
+ Type[2]:  size_t
+
+ Parameter[3]:  Length of replacement
+ Type[3]:  size_t
+
+ Parameter[4]:  Pointer to a Ustr containing the replacement string
+ Type[4]:  const struct Ustr *
+
+ Explanation:
+
+  Replaces a specified number of characters starting at the given position
+ with the characters from the given Ustr. 
+
+
+Function: ustr_sc_sub_buf()
+ Returns: success or failure 
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Position where to start replacement 
+ Type[2]:  size_t 
+
+ Parameter[3]:  Length of replacement
+ Type[3]:  size_t 
+
+ Parameter[4]:  Buffer containting replacement string
+ Type[4]:  const void *
+
+ Parameter[5]:  Length of Buffer
+ Type[5]:  size_t 
+
+ Explanation:
+
+  This function will replace a specific number of characters in a Ustr with
+ the data from a buffer. 
+
+
+Function: ustr_replace()
+ Returns: Number of tokens replaced 
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr (haystack)
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Ustr to search for (needle)
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: Ustr to replace needle with
+ Type[3]: const struct Ustr *
+
+ Parameter[4]:  Maximum number of matches to replace
+ Type[4]:  size_t
+
+ Explanation:
+
+  This function scans the "haystack" (Parameter[1]) for "needle" (Parameter[2])
+ and replaces max_replacements (Parameter[4]) matches with the
+ "replacement" (Parameter[3]).
+
+Note: 
+  If max_replacements (Parameter[4]) is 0, this function will replace ALL
+ occurrences.
 
 
 Section: Dealing with UTF-8 in a Ustr

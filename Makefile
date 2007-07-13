@@ -90,6 +90,8 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_15_enomem octst_15_enomem \
            tst_16_parse  ctst_16_parse \
           otst_16_parse octst_16_parse \
+           tst_17_sub    ctst_17_sub \
+          otst_17_sub   octst_17_sub \
            tst_99_64bit  ctst_99_64bit \
           otst_99_64bit octst_99_64bit
 XFAIL_TESTS = 
@@ -109,6 +111,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-set.h \
            ustr-spn.h \
            ustr-srch.h \
+           ustr-sub.h \
            ustr-utf8.h
 
 SRC_SRCS_H = ustr-b-code.h \
@@ -128,6 +131,7 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-spn-code.h \
              ustr-srch-code.h \
              ustr-srch-internal.h \
+             ustr-sub-code.h \
              ustr-utf8-code.h \
              ustr-utf8-internal.h
 
@@ -142,6 +146,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-set-dbg-code.c \
              ustr-spn-dbg-code.c \
              ustr-srch-dbg-code.c \
+             ustr-sub-dbg-code.c \
              ustr-utf8-dbg-code.c \
              \
              ustr-b-opt-code.c \
@@ -155,6 +160,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-set-opt-code.c \
              ustr-spn-opt-code.c \
              ustr-srch-opt-code.c \
+             ustr-sub-opt-code.c \
              ustr-utf8-opt-code.c
 
 SRC_SRCS = $(SRC_SRCS_C) $(SRC_SRCS_H)
@@ -190,6 +196,7 @@ LIB_SHARED_DBG = \
   ustr-set-code-so-dbg.o \
   ustr-spn-code-so-dbg.o \
   ustr-srch-code-so-dbg.o \
+  ustr-sub-code-so-dbg.o \
   ustr-utf8-code-so-dbg.o
 LIB_STATIC_DBG = \
   ustr-b-code-a-dbg.o \
@@ -203,6 +210,7 @@ LIB_STATIC_DBG = \
   ustr-set-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
   ustr-srch-code-a-dbg.o \
+  ustr-sub-code-a-dbg.o \
   ustr-utf8-code-a-dbg.o
 
 LIB_SHARED_OPT = \
@@ -217,6 +225,7 @@ LIB_SHARED_OPT = \
   ustr-set-code-so-opt.o \
   ustr-spn-code-so-opt.o \
   ustr-srch-code-so-opt.o \
+  ustr-sub-code-so-opt.o \
   ustr-utf8-code-so-opt.o
 LIB_STATIC_OPT = \
   ustr-b-code-a-opt.o \
@@ -230,7 +239,9 @@ LIB_STATIC_OPT = \
   ustr-set-code-a-opt.o \
   ustr-spn-code-a-opt.o \
   ustr-srch-code-a-opt.o \
+  ustr-sub-code-a-opt.o \
   ustr-utf8-code-a-opt.o
+
 
 all: ustr-import $(LIB_STATIC)
 		@echo Done static
@@ -250,11 +261,15 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -d $(DESTDIR)$(libdir)/pkgconfig
 		@echo Installing files
 		install -m 644 -t $(DESTDIR)$(libdir) $(LIB_SHARED) $(LIB_STATIC)
+		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
 		ln -s $(OPT_LIB_SHARED) $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
+		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
 		ln -s $(OPT_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
+		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
 		ln -s $(DBG_LIB_SHARED) $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
+		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
-		-ldconfig -n $(DESTDIR)$(libdir)
+		-/sbin/ldconfig -n $(DESTDIR)$(libdir)
 		install -m 644 -t $(DESTDIR)/usr/include $(SRC_HDRS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)

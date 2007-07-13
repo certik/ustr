@@ -33,9 +33,9 @@
   </Company_Info>
   <Program_Info>
     <Program_Name>ustr</Program_Name>
-    <Program_Version>0.99.3</Program_Version>
-    <Program_Release_Month>06</Program_Release_Month>
-    <Program_Release_Day>24</Program_Release_Day>
+    <Program_Version>1.0.0</Program_Version>
+    <Program_Release_Month>07</Program_Release_Month>
+    <Program_Release_Day>12</Program_Release_Day>
     <Program_Release_Year>2007</Program_Release_Year>
     <Program_Cost_Dollars>0</Program_Cost_Dollars>
     <Program_Cost_Other_Code>USD</Program_Cost_Other_Code>
@@ -54,12 +54,12 @@
     <Includes_DirectX>N</Includes_DirectX>
     <File_Info>
       <Filename_Generic>ustr</Filename_Generic>
-      <Filename_Versioned>ustr-0.99.3</Filename_Versioned>
-      <Filename_Previous>ustr-0.99.3</Filename_Previous>
-      <Filename_Long>ustr-0.99.3.tar.gz</Filename_Long>
-      <File_Size_Bytes>249424</File_Size_Bytes>
-      <File_Size_K>243.58</File_Size_K>
-      <File_Size_MB>0.24</File_Size_MB>
+      <Filename_Versioned>ustr-1.0.0</Filename_Versioned>
+      <Filename_Previous>ustr-1.0.0</Filename_Previous>
+      <Filename_Long>ustr-1.0.0.tar.gz</Filename_Long>
+      <File_Size_Bytes>293316</File_Size_Bytes>
+      <File_Size_K>286.44</File_Size_K>
+      <File_Size_MB>0.28</File_Size_MB>
     </File_Info>
     <Expire_Info>
       <Has_Expire_Info>N</Has_Expire_Info>
@@ -72,7 +72,7 @@
       <Char_Desc_80>String library, using safe dyanmic resizing of storage, small and easy to use.</Char_Desc_80>
       <Char_Desc_250>Ustr is a safe and very small string library for C. It is designed for usage with lots of small strings. It also contains a lot of helper functions, and can be used without linking.</Char_Desc_250>
       <Char_Desc_450>Ustr is a safe and very small string library for C. It is designed for usage with lots of small strings. It also contains a lot of helper functions, and can be used without linking.</Char_Desc_450>
-      <Char_Desc_2000>Ustr is a safe and very small string library for C. It is designed for usage with lots of small strings. It also contains a lot of helper functions, and can be used without linking.</Char_Desc_2000>
+      <Char_Desc_2000>Ustr is a safe and very small string library for C, with an average overhead of only 44% over plain strdup() for strings in the 0-20 byte range. It is designed for usage with lots of small strings, including reference counting etc. It can be used to constant/read-only strings and stack based allocated strings. It also contains a lot of helper functions, and can be used without linking.</Char_Desc_2000>
     </English>
   </Program_Descriptions>
   <Web_Info>
@@ -84,14 +84,14 @@
       <Application_XML_File_URL>http://www.and.org/ustr/ustr_pad.xml</Application_XML_File_URL>
     </Application_URLs>
     <Download_URLs>
-      <Primary_Download_URL>http://www.and.org/ustr/0.99.3/ustr-0.99.3.tar.gz</Primary_Download_URL>
-      <Secondary_Download_URL>ftp://ftp.and.org/pub/james/ustr/0.99.3/ustr-0.99.3.tar.gz</Secondary_Download_URL>
-      <Additional_Download_URL_1>http://www.and.org/ustr/0.99.3/rpms/</Additional_Download_URL_1>
-      <Additional_Download_URL_2>ftp://ftp.and.org/pub/james/ustr/0.99.3/rpms/</Additional_Download_URL_2>
+      <Primary_Download_URL>http://www.and.org/ustr/1.0.0/ustr-1.0.0.tar.gz</Primary_Download_URL>
+      <Secondary_Download_URL>ftp://ftp.and.org/pub/james/ustr/1.0.0/ustr-1.0.0.tar.gz</Secondary_Download_URL>
+      <Additional_Download_URL_1>http://www.and.org/ustr/1.0.0/rpms/</Additional_Download_URL_1>
+      <Additional_Download_URL_2>ftp://ftp.and.org/pub/james/ustr/1.0.0/rpms/</Additional_Download_URL_2>
     </Download_URLs>
   </Web_Info>
   <Permissions>
-    <Distribution_Permissions>LGPL (Version 2.1, February 1999)</Distribution_Permissions>
+    <Distribution_Permissions>MIT, BSD, LGPL (Version 2.1, February 1999)</Distribution_Permissions>
     <EULA>n/a</EULA>
   </Permissions>
 </XML_DIZ_INFO>
