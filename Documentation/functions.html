@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Ustr - 0.99.3 reference documentation -- functions</title>
+<title>Ustr - 1.0.0 reference documentation -- functions</title>
     <style type="text/css">
       A:visited { color: #ff4040; }
       A:hover { color: #20b2aa; }
@@ -25,25 +25,29 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 0.99.3 reference documentation -- functions (89)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.0 reference documentation -- functions (180)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
 <li><a href="#indx-Creating_readonly_Ustr_functions">Creating read-only Ustr functions (8)</a>
 <li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (3)</a>
-<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (5)</a>
+<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (7)</a>
 <li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (6)</a>
 <li><a href="#indx-Deleting_data_from_a_Ustr">Deleting data from a Ustr (2)</a>
 <li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (7)</a>
 <li><a href="#indx-Resizing_a_sized_Ustr">Resizing a sized Ustr (1)</a>
-<li><a href="#indx-Adding_formatted_data_to_a_Ustr">Adding formatted data to a Ustr (4)</a>
-<li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
+<li><a href="#indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr (12)</a>
 <li><a href="#indx-Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr (15)</a>
 <li><a href="#indx-Setting_the_flags_of_a_Ustr">Setting the "flags" of a Ustr (4)</a>
+<li><a href="#indx-Comparing_data_in_a_Ustr">Comparing data in a Ustr (32)</a>
+<li><a href="#indx-Searching_for_data_in_a_Ustr">Searching for data in a Ustr (10)</a>
+<li><a href="#indx-Span_lengths_of_data_in_a_Ustr">Span lengths of data in a Ustr (28)</a>
 <li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (9)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (5)</a>
-<li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
+<li><a href="#indx-Shortcut_helper_functions_for_Ustrs">Shortcut helper functions for Ustrs (11)</a>
+<li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
+<li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Simple_Ustr_pool_API">Simple Ustr pool API (4)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
@@ -69,6 +73,8 @@
 <li class="obj"><a href="#ustr_dup_empty">ustr_dup_empty()</a>
 <li class="obj"><a href="#ustr_dupx_undef">ustr_dupx_undef()</a>
 <li class="obj"><a href="#ustr_dup_undef">ustr_dup_undef()</a>
+<li class="obj"><a href="#ustr_dup">ustr_dup()</a>
+<li class="obj"><a href="#ustr_dupx">ustr_dupx()</a>
 </ul><li><a id="indx-Adding_data_to_a_Ustr" href="#Adding_data_to_a_Ustr">Adding data to a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_add_undef">ustr_add_undef()</a>
@@ -93,17 +99,20 @@
 </ul><li><a id="indx-Resizing_a_sized_Ustr" href="#Resizing_a_sized_Ustr">Resizing a sized Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_realloc">ustr_realloc()</a>
-</ul><li><a id="indx-Adding_formatted_data_to_a_Ustr" href="#Adding_formatted_data_to_a_Ustr">Adding formatted data to a Ustr</a>
+</ul><li><a id="indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr" href="#Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_add_vfmt_lim">ustr_add_vfmt_lim()</a>
 <li class="obj"><a href="#ustr_add_vfmt">ustr_add_vfmt()</a>
 <li class="obj"><a href="#ustr_add_fmt">ustr_add_fmt()</a>
 <li class="obj"><a href="#ustr_add_fmt_lim">ustr_add_fmt_lim()</a>
-</ul><li><a id="indx-Adding_binary_data_to_a_Ustr" href="#Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr</a>
-<ul>
-<li class="obj"><a href="#ustr_add_b_uint16">ustr_add_b_uint16()</a>
-<li class="obj"><a href="#ustr_add_b_uint32">ustr_add_b_uint32()</a>
-<li class="obj"><a href="#ustr_add_b_uint64">ustr_add_b_uint64()</a>
+<li class="obj"><a href="#ustr_dupx_fmt_lim">ustr_dupx_fmt_lim()</a>
+<li class="obj"><a href="#ustr_dup_fmt_lim">ustr_dup_fmt_lim()</a>
+<li class="obj"><a href="#ustr_dupx_fmt">ustr_dupx_fmt()</a>
+<li class="obj"><a href="#ustr_dup_fmt">ustr_dup_fmt()</a>
+<li class="obj"><a href="#ustr_set_vfmt_lim">ustr_set_vfmt_lim()</a>
+<li class="obj"><a href="#ustr_set_vfmt">ustr_set_vfmt()</a>
+<li class="obj"><a href="#ustr_set_fmt_lim">ustr_set_fmt_lim()</a>
+<li class="obj"><a href="#ustr_set_fmt">ustr_set_fmt()</a>
 </ul><li><a id="indx-Accessing_the_variables_of_a_Ustr" href="#Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_len">ustr_len()</a>
@@ -127,6 +136,82 @@
 <li class="obj"><a href="#ustr_setf_enomem_clr">ustr_setf_enomem_clr()</a>
 <li class="obj"><a href="#ustr_setf_share">ustr_setf_share()</a>
 <li class="obj"><a href="#ustr_setf_owner">ustr_setf_owner()</a>
+</ul><li><a id="indx-Comparing_data_in_a_Ustr" href="#Comparing_data_in_a_Ustr">Comparing data in a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_cmp_buf">ustr_cmp_buf()</a>
+<li class="obj"><a href="#ustr_cmp">ustr_cmp()</a>
+<li class="obj"><a href="#ustr_cmp_subustr">ustr_cmp_subustr()</a>
+<li class="obj"><a href="#ustr_cmp_cstr">ustr_cmp_cstr()</a>
+<li class="obj"><a href="#ustr_cmp_fast_buf">ustr_cmp_fast_buf()</a>
+<li class="obj"><a href="#ustr_cmp_fast">ustr_cmp_fast()</a>
+<li class="obj"><a href="#ustr_cmp_fast_subustr">ustr_cmp_fast_subustr()</a>
+<li class="obj"><a href="#ustr_cmp_fast_cstr">ustr_cmp_fast_cstr()</a>
+<li class="obj"><a href="#ustr_cmp_case_buf">ustr_cmp_case_buf()</a>
+<li class="obj"><a href="#ustr_cmp_case">ustr_cmp_case()</a>
+<li class="obj"><a href="#ustr_cmp_case_subustr">ustr_cmp_case_subustr()</a>
+<li class="obj"><a href="#ustr_cmp_case_cstr">ustr_cmp_case_cstr()</a>
+<li class="obj"><a href="#ustr_cmp_eq">ustr_cmp_eq()</a>
+<li class="obj"><a href="#ustr_cmp_buf_eq">ustr_cmp_buf_eq()</a>
+<li class="obj"><a href="#ustr_cmp_subustr_eq">ustr_cmp_subustr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_cstr_eq">ustr_cmp_cstr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_eq">ustr_cmp_case_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_buf_eq">ustr_cmp_case_buf_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_subustr_eq">ustr_cmp_case_subustr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_cstr_eq">ustr_cmp_case_cstr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_prefix_eq">ustr_cmp_prefix_eq()</a>
+<li class="obj"><a href="#ustr_cmp_prefix_buf_eq">ustr_cmp_prefix_buf_eq()</a>
+<li class="obj"><a href="#ustr_cmp_prefix_cstr_eq">ustr_cmp_prefix_cstr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_prefix_eq">ustr_cmp_case_prefix_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_prefix_buf_eq">ustr_cmp_case_prefix_buf_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_prefix_cstr_eq">ustr_cmp_case_prefix_cstr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_suffix_eq">ustr_cmp_suffix_eq()</a>
+<li class="obj"><a href="#ustr_cmp_suffix_buf_eq">ustr_cmp_suffix_buf_eq()</a>
+<li class="obj"><a href="#ustr_cmp_suffix_cstr_eq">ustr_cmp_suffix_cstr_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_suffix_eq">ustr_cmp_case_suffix_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_suffix_buf_eq">ustr_cmp_case_suffix_buf_eq()</a>
+<li class="obj"><a href="#ustr_cmp_case_suffix_cstr_eq">ustr_cmp_case_suffix_cstr_eq()</a>
+</ul><li><a id="indx-Searching_for_data_in_a_Ustr" href="#Searching_for_data_in_a_Ustr">Searching for data in a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_srch_chr_fwd">ustr_srch_chr_fwd()</a>
+<li class="obj"><a href="#ustr_srch_chr_rev">ustr_srch_chr_rev()</a>
+<li class="obj"><a href="#ustr_srch_buf_fwd">ustr_srch_buf_fwd()</a>
+<li class="obj"><a href="#ustr_srch_buf_rev">ustr_srch_buf_rev()</a>
+<li class="obj"><a href="#ustr_srch_fwd">ustr_srch_fwd()</a>
+<li class="obj"><a href="#ustr_srch_rev">ustr_srch_rev()</a>
+<li class="obj"><a href="#ustr_srch_cstr_fwd">ustr_srch_cstr_fwd()</a>
+<li class="obj"><a href="#ustr_srch_cstr_rev">ustr_srch_cstr_rev()</a>
+<li class="obj"><a href="#ustr_srch_subustr_fwd">ustr_srch_subustr_fwd()</a>
+<li class="obj"><a href="#ustr_srch_subustr_rev">ustr_srch_subustr_rev()</a>
+</ul><li><a id="indx-Span_lengths_of_data_in_a_Ustr" href="#Span_lengths_of_data_in_a_Ustr">Span lengths of data in a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_spn_chr_fwd">ustr_spn_chr_fwd()</a>
+<li class="obj"><a href="#ustr_spn_chr_rev">ustr_spn_chr_rev()</a>
+<li class="obj"><a href="#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a>
+<li class="obj"><a href="#ustr_spn_chrs_rev">ustr_spn_chrs_rev()</a>
+<li class="obj"><a href="#ustr_spn_fwd">ustr_spn_fwd()</a>
+<li class="obj"><a href="#ustr_spn_rev">ustr_spn_rev()</a>
+<li class="obj"><a href="#ustr_spn_cstr_fwd">ustr_spn_cstr_fwd()</a>
+<li class="obj"><a href="#ustr_spn_cstr_rev">ustr_spn_cstr_rev()</a>
+<li class="obj"><a href="#ustr_cspn_chr_fwd">ustr_cspn_chr_fwd()</a>
+<li class="obj"><a href="#ustr_cspn_chr_rev">ustr_cspn_chr_rev()</a>
+<li class="obj"><a href="#ustr_cspn_chrs_fwd">ustr_cspn_chrs_fwd()</a>
+<li class="obj"><a href="#ustr_cspn_chrs_rev">ustr_cspn_chrs_rev()</a>
+<li class="obj"><a href="#ustr_cspn_fwd">ustr_cspn_fwd()</a>
+<li class="obj"><a href="#ustr_cspn_rev">ustr_cspn_rev()</a>
+<li class="obj"><a href="#ustr_cspn_cstr_fwd">ustr_cspn_cstr_fwd()</a>
+<li class="obj"><a href="#ustr_cspn_cstr_rev">ustr_cspn_cstr_rev()</a>
+<li class="obj"><a href="#ustr_utf8_spn_chrs_fwd">ustr_utf8_spn_chrs_fwd()</a>
+<li class="obj"><a href="#ustr_utf8_spn_chrs_rev">ustr_utf8_spn_chrs_rev()</a>
+<li class="obj"><a href="#ustr_utf8_spn_fwd">ustr_utf8_spn_fwd()</a>
+<li class="obj"><a href="#ustr_utf8_spn_rev">ustr_utf8_spn_rev()</a>
+<li class="obj"><a href="#ustr_utf8_spn_cstr_fwd">ustr_utf8_spn_cstr_fwd()</a>
+<li class="obj"><a href="#ustr_utf8_spn_cstr_rev">ustr_utf8_spn_cstr_rev()</a>
+<li class="obj"><a href="#ustr_utf8_cspn_chrs_fwd">ustr_utf8_cspn_chrs_fwd()</a>
+<li class="obj"><a href="#ustr_utf8_cspn_chrs_rev">ustr_utf8_cspn_chrs_rev()</a>
+<li class="obj"><a href="#ustr_utf8_cspn_fwd">ustr_utf8_cspn_fwd()</a>
+<li class="obj"><a href="#ustr_utf8_cspn_rev">ustr_utf8_cspn_rev()</a>
+<li class="obj"><a href="#ustr_utf8_cspn_cstr_fwd">ustr_utf8_cspn_cstr_fwd()</a>
+<li class="obj"><a href="#ustr_utf8_cspn_cstr_rev">ustr_utf8_cspn_cstr_rev()</a>
 </ul><li><a id="indx-Doing_IO_from_or_to_a_Ustr" href="#Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_io_get">ustr_io_get()</a>
@@ -145,11 +230,6 @@
 <li class="obj"><a href="#ustr_utf8_width">ustr_utf8_width()</a>
 <li class="obj"><a href="#ustr_utf8_chars2bytes">ustr_utf8_chars2bytes()</a>
 <li class="obj"><a href="#ustr_utf8_bytes2chars">ustr_utf8_bytes2chars()</a>
-</ul><li><a id="indx-Parsing_binary_data_from_a_Ustr" href="#Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr</a>
-<ul>
-<li class="obj"><a href="#ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
-<li class="obj"><a href="#ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
-<li class="obj"><a href="#ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
 </ul><li><a id="indx-Parsing_ASCII_integer_numbers_from_a_Ustr" href="#Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a>
@@ -162,6 +242,29 @@
 <li class="obj"><a href="#ustr_parse_int">ustr_parse_int()</a>
 <li class="obj"><a href="#ustr_parse_ushort">ustr_parse_ushort()</a>
 <li class="obj"><a href="#ustr_parse_short">ustr_parse_short()</a>
+</ul><li><a id="indx-Shortcut_helper_functions_for_Ustrs" href="#Shortcut_helper_functions_for_Ustrs">Shortcut helper functions for Ustrs</a>
+<ul>
+<li class="obj"><a href="#ustr_sc_free">ustr_sc_free()</a>
+<li class="obj"><a href="#ustr_sc_free2">ustr_sc_free2()</a>
+<li class="obj"><a href="#ustr_sc_del">ustr_sc_del()</a>
+<li class="obj"><a href="#ustr_sc_dupx">ustr_sc_dupx()</a>
+<li class="obj"><a href="#ustr_sc_dup">ustr_sc_dup()</a>
+<li class="obj"><a href="#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>
+<li class="obj"><a href="#ustr_sc_free_shared">ustr_sc_free_shared()</a>
+<li class="obj"><a href="#ustr_sc_reverse">ustr_sc_reverse()</a>
+<li class="obj"><a href="#ustr_sc_tolower">ustr_sc_tolower()</a>
+<li class="obj"><a href="#ustr_sc_toupper">ustr_sc_toupper()</a>
+<li class="obj"><a href="#ustr_sc_wstr">ustr_sc_wstr()</a>
+</ul><li><a id="indx-Adding_binary_data_to_a_Ustr" href="#Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_add_b_uint16">ustr_add_b_uint16()</a>
+<li class="obj"><a href="#ustr_add_b_uint32">ustr_add_b_uint32()</a>
+<li class="obj"><a href="#ustr_add_b_uint64">ustr_add_b_uint64()</a>
+</ul><li><a id="indx-Parsing_binary_data_from_a_Ustr" href="#Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
+<li class="obj"><a href="#ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
+<li class="obj"><a href="#ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
 </ul><li><a id="indx-Simple_Ustr_pool_API" href="#Simple_Ustr_pool_API">Simple Ustr pool API</a>
 <ul>
 <li class="obj"><a href="#ustr_pool_make_pool">ustr_pool_make_pool()</a>
@@ -408,18 +511,55 @@
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_dup_undef">ustr_dup_undef()</a>
-<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Length of new undefined data<br>Type<strong>[1]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function is the same as calling <a href="functions#ustr_dupx_undef">ustr_dupx_undef()</a> with the current set
  of default options.
 
 
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dup">ustr_dup()</a>
+<br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function tries to increase the reference count on the passed <a href="design">Ustr string</a>,
+ and if that succeeds returns that as an argument. If that fails it tries
+ creates a new <a href="design">Ustr string</a> that looks identical to the old <a href="design">Ustr string</a>, apart
+ from the reference count.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Because the new <a href="design">Ustr string</a> is configured identically to the old <a href="design">Ustr string</a>
+ this means the result can be very different to what you get if you call
+ <a href="functions#ustr_dup_buf">ustr_dup_buf()</a> with <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> from the original string where
+ the configuration would be whatever the default is.
+</p><p>  Esp. worth of note is that if you <a href="functions#ustr_dup">ustr_dup()</a> a <a href="design">Ustr string</a> with an explicit
+ size of 900 but a length of 1, and the reference count is full the returned
+ <a href="design">Ustr string</a> will have a size of 900 bytes and so will have allocated a little
+ over that. <a href="functions#ustr_dup_buf">ustr_dup_buf()</a>, even with a sized configuration would only allocate
+ about 12 bytes and have a size a little less than that.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx">ustr_dupx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function tries to add a reference if the value of the size, reference
+ bytes, exact memory allocations and ENOMEM are the same as those in the passed
+ <a href="design">Ustr string</a> (Parameter[5]). If the comparison fails or the addition of a
+ reference fails it works like <a href="functions#ustr_dupx_buf">ustr_dupx_buf()</a> using <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a>.
+
+
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20data%20to%20a%20Ustr">Adding data to a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add_undef">ustr_add_undef()</a>
 <br>Returns: Success or failure<br>Type: int
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new undefined data<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  The <a href="design">Ustr string</a> is expanded (possibly reallocated) so that it can contain
@@ -442,7 +582,7 @@
 <strong>Function: </strong> <a id="ustr_add_cstr">ustr_add_cstr()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to constant C-style string<br>Type<strong>[2]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_add_buf">ustr_add_buf()</a> and passed strlen() as
  the length.
@@ -606,78 +746,147 @@
  value as well as a length (<a href="functions#ustr_sized">ustr_sized()</a> must return <a href="constants#USTR_TRUE">USTR_TRUE</a>).
 
 
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20formatted%20data%20to%20a%20Ustr">Adding formatted data to a Ustr</a></h2>
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%2c%20duplicating%20and%20setting%20formatted%20data%20to%20a%20Ustr">Adding, duplicating and setting formatted data to a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add_vfmt_lim">ustr_add_vfmt_lim()</a>
 <br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  const char *<br>Type<strong>[3]</strong>:  const char *
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  va_list<br>Type<strong>[4]</strong>:  va_list
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Limit of data to add<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable<br>Type<strong>[4]</strong>: va_list
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling the system vsnprintf() with the limit
+ (Parameter[2]) as the limit to vsnprintf() and then calling <a href="functions#ustr_add_buf">ustr_add_buf()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add_vfmt">ustr_add_vfmt()</a>
 <br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  va_list<br>Type<strong>[3]</strong>:  va_list
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[3]</strong>: va_list
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling the system vsnprintf() and then calling
+ <a href="functions#ustr_add_buf">ustr_add_buf()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add_fmt">ustr_add_fmt()</a>
 <br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  ...<br>Type<strong>[3]</strong>:  ...
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Options depending on value of Parameter[2]<br>Type<strong>[3]</strong>: ...
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling the system snprintf() and then calling
+ <a href="functions#ustr_add_buf">ustr_add_buf()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add_fmt_lim">ustr_add_fmt_lim()</a>
 <br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: const char *<br>Type<strong>[3]</strong>: const char *
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  ...<br>Type<strong>[4]</strong>:  ...
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Limit of data to add<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Options depending on value of Parameter[3]<br>Type<strong>[4]</strong>: ...
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
-
-
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20binary%20data%20to%20a%20Ustr">Adding binary data to a Ustr</a></h2>
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_add_b_uint16">ustr_add_b_uint16()</a>
-<br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least16_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
- Ustr (Parameter[1]).
+</p><p>  This function works like calling the system snprintf() with the limit
+ (Parameter[2]) as the limit to snprintf() and then calling <a href="functions#ustr_add_buf">ustr_add_buf()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_add_b_uint32">ustr_add_b_uint32()</a>
-<br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least32_t
+<strong>Function: </strong> <a id="ustr_dupx_fmt_lim">ustr_dupx_fmt_lim()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Limit of data to dup<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[6]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[7]</strong>: Options depending on value of Parameter[6]<br>Type<strong>[7]</strong>: ...
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
- Ustr (Parameter[1]).
+</p><p>  This function works like calling the system snprintf() with the limit
+ (Parameter[2]) as the limit to snprintf() and then calling <a href="functions#ustr_dupx_buf">ustr_dupx_buf()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_add_b_uint64">ustr_add_b_uint64()</a>
-<br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least64_t
+<strong>Function: </strong> <a id="ustr_dup_fmt_lim">ustr_dup_fmt_lim()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Limit of data to dup<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Options depending on value of Parameter[2]<br>Type<strong>[3]</strong>: ...
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
- Ustr (Parameter[1]).
+</p><p>  This function works like calling the system snprintf() with the limit
+ (Parameter[2]) as the limit to snprintf() and then calling <a href="functions#ustr_dup_buf">ustr_dup_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_fmt">ustr_dupx_fmt()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Options depending on value of Parameter[5]<br>Type<strong>[6]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() and then calling
+ <a href="functions#ustr_dup_bufx">ustr_dup_bufx()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dup_fmt">ustr_dup_fmt()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Options depending on value of Parameter[1]<br>Type<strong>[2]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() and then calling
+ <a href="functions#ustr_dup_buf">ustr_dup_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_set_vfmt_lim">ustr_set_vfmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Limit of data to set<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[4]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_del">ustr_del()</a> for all the data and then
+ <a href="functions#ustr_add_vfmt_lim">ustr_add_vfmt_lim()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_set_vfmt">ustr_set_vfmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[3]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_del">ustr_del()</a> for all the data and then
+ <a href="functions#ustr_add_vfmt">ustr_add_vfmt()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_set_fmt_lim">ustr_set_fmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Limit of data to set<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Options depending on value of Parameter[3]<br>Type<strong>[4]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_del">ustr_del()</a> for all the data and then
+ <a href="functions#ustr_add_fmt_lim">ustr_add_fmt_lim()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_set_fmt">ustr_set_fmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Options depending on value of Parameter[2]<br>Type<strong>[3]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_del">ustr_del()</a> for all the data and then
+ <a href="functions#ustr_add_fmt">ustr_add_fmt()</a>.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Accessing%20the%20%22variables%22%20of%20a%20Ustr">Accessing the "variables" of a Ustr</a></h2>
@@ -913,14 +1122,833 @@
 </p><p>  This function fails if <a href="functions#ustr_alloc">ustr_alloc()</a> fails for the Ustr.
 
 
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Comparing%20data%20in%20a%20Ustr">Comparing data in a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_buf">ustr_cmp_buf()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like memcmp() on the Ustr and the passed data.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp">ustr_cmp()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_buf">ustr_cmp_buf()</a> but with the data from <a href="functions#ustr_cstr">ustr_cstr()</a>
+ and the length from <a href="functions#ustr_len">ustr_len()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_subustr">ustr_cmp_subustr()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length to compare from the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp">ustr_cmp()</a> but with a limit on the data and length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_cstr">ustr_cmp_cstr()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_buf">ustr_cmp_buf()</a> but with a length from strlen().
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_fast_buf">ustr_cmp_fast_buf()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_buf">ustr_cmp_buf()</a> but the order of comparison is
+ optimized for speed, but is much less friendly to humans.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_fast">ustr_cmp_fast()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_fast_buf">ustr_cmp_fast_buf()</a> but with the data from
+ <a href="functions#ustr_cstr">ustr_cstr()</a> and the length from <a href="functions#ustr_len">ustr_len()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_fast_subustr">ustr_cmp_fast_subustr()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length to compare from the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_fast">ustr_cmp_fast()</a> but with a limit on the data and
+ length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_fast_cstr">ustr_cmp_fast_cstr()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_fast_buf">ustr_cmp_fast_buf()</a> but with a length from strlen().
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_buf">ustr_cmp_case_buf()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_buf">ustr_cmp_buf()</a> but the order of comparison ignores
+ ASCII case.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case">ustr_cmp_case()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_case_buf">ustr_cmp_case_buf()</a> but with the data from
+ <a href="functions#ustr_cstr">ustr_cstr()</a> and the length from <a href="functions#ustr_len">ustr_len()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_subustr">ustr_cmp_case_subustr()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length to compare from the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_case">ustr_cmp_case()</a> but with a limit on the data and
+ length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_cstr">ustr_cmp_case_cstr()</a>
+<br>Returns: Less then zero, zero or greater than zero depending on comparison<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_case_buf">ustr_cmp_case_buf()</a> but with a length from strlen().
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_eq">ustr_cmp_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp">ustr_cmp()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_buf_eq">ustr_cmp_buf_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_buf">ustr_cmp_buf()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_subustr_eq">ustr_cmp_subustr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length to compare from the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_subustr">ustr_cmp_subustr()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_cstr_eq">ustr_cmp_cstr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_cstr">ustr_cmp_cstr()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_eq">ustr_cmp_case_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case">ustr_cmp_case()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_buf_eq">ustr_cmp_case_buf_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case_buf">ustr_cmp_case_buf()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_subustr_eq">ustr_cmp_case_subustr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length to compare from the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case_subustr">ustr_cmp_case_subustr()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_cstr_eq">ustr_cmp_case_cstr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case_cstr">ustr_cmp_case_cstr()</a> against 0.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_prefix_eq">ustr_cmp_prefix_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp">ustr_cmp()</a> against 0, but the comparison
+ is limited to the length of the right hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_prefix_buf_eq">ustr_cmp_prefix_buf_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_buf">ustr_cmp_buf()</a> against 0, but the
+ comparison is limited to the length of the right hand side (Parameter[3]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_prefix_cstr_eq">ustr_cmp_prefix_cstr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_cstr">ustr_cmp_cstr()</a> against 0, but the
+ comparison is limited to the length of the right hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_prefix_eq">ustr_cmp_case_prefix_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case">ustr_cmp_case()</a> against 0, but the
+ comparison is limited to the length of the right hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_prefix_buf_eq">ustr_cmp_case_prefix_buf_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case_buf">ustr_cmp_case_buf()</a> against 0, but the
+ comparison is limited to the length of the right hand side (Parameter[3]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_prefix_cstr_eq">ustr_cmp_case_prefix_cstr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like comparing <a href="functions#ustr_cmp_case_cstr">ustr_cmp_case_cstr()</a> against 0, but the
+ comparison is limited to the length of the right hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_suffix_eq">ustr_cmp_suffix_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_prefix_eq">ustr_cmp_prefix_eq()</a> but compares the end of the left
+ hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_suffix_buf_eq">ustr_cmp_suffix_buf_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_prefix_buf_eq">ustr_cmp_prefix_buf_eq()</a> but compares the end of
+ the left hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_suffix_cstr_eq">ustr_cmp_suffix_cstr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_prefix_cstr_eq">ustr_cmp_prefix_cstr_eq()</a> but compares the end of
+ the left hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_suffix_eq">ustr_cmp_case_suffix_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_case_prefix_eq">ustr_cmp_case_prefix_eq()</a> but compares the end of
+ the left hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_suffix_buf_eq">ustr_cmp_case_suffix_buf_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to constant bytes, to compare<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of comparison bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_case_prefix_buf_eq">ustr_cmp_case_prefix_buf_eq()</a> but compares the end of
+ the left hand side.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cmp_case_suffix_cstr_eq">ustr_cmp_case_suffix_cstr_eq()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cmp_case_prefix_cstr_eq">ustr_cmp_case_prefix_cstr_eq()</a> but compares the end
+ of the left hand side.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Searching%20for%20data%20in%20a%20Ustr">Searching for data in a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_chr_fwd">ustr_srch_chr_fwd()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data to search for<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function searches for the data (Parameter[3]) in the Ustr, skipping an
+ offset (Parameter[2]) number of bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_chr_rev">ustr_srch_chr_rev()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data to search for<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_chr_fwd">ustr_srch_chr_fwd()</a> but it searches from the end of
+ the string to the beginning.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_buf_fwd">ustr_srch_buf_fwd()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to data to search for<br>Type<strong>[3]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the data to search for<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function searches for the data (Parameter[3]) of length (Parameter[4])
+ in the Ustr, skipping an offset (Parameter[2]) number of bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_buf_rev">ustr_srch_buf_rev()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to data to search for<br>Type<strong>[3]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the data to search for<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_buf_fwd">ustr_srch_buf_fwd()</a> but it searches from the end of
+ the string to the beginning.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_fwd">ustr_srch_fwd()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a>, to search for<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_buf_fwd">ustr_srch_buf_fwd()</a> but it gets the data pointer by
+ calling <a href="functions#ustr_cstr">ustr_cstr()</a> and the length by calling <a href="functions#ustr_len">ustr_len()</a> on the passed
+ Ustr (Parameter[3]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_rev">ustr_srch_rev()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a>, to search for<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_fwd">ustr_srch_fwd()</a> but it searches from the end of
+ the string to the beginning.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_cstr_fwd">ustr_srch_cstr_fwd()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to C-style string data, to search for<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_buf_fwd">ustr_srch_buf_fwd()</a> but it gets the length by
+ calling strlen() on the passed data (Parameter[3]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_cstr_rev">ustr_srch_cstr_rev()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to C-style string data, to search for<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_cstr_fwd">ustr_srch_cstr_fwd()</a> but it searches from the end of
+ the string to the beginning.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_subustr_fwd">ustr_srch_subustr_fwd()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Position in the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of data to search, from the Ustr<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_fwd">ustr_srch_fwd()</a> but it moves the data to start at
+ the correct position and limits the length to the value specified.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_srch_subustr_rev">ustr_srch_subustr_rev()</a>
+<br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Position in the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of data to search, from the Ustr<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_srch_rev">ustr_srch_rev()</a> but it moves the data to start at
+ the correct position and limits the length to the value specified.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Span%20lengths%20of%20data%20in%20a%20Ustr">Span lengths of data in a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_chr_fwd">ustr_spn_chr_fwd()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_chr_rev">ustr_spn_chr_rev()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Array of byte data<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of byte data<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_chrs_rev">ustr_spn_chrs_rev()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Array of byte data<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of byte data<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_fwd">ustr_spn_fwd()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing spanning bytes<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_spn_buf_fwd">ustr_spn_buf_fwd()</a> but passing <a href="functions#ustr_cstr">ustr_cstr()</a> and
+ <a href="functions#ustr_len">ustr_len()</a>
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_rev">ustr_spn_rev()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing spanning bytes<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_spn_buf_rev">ustr_spn_buf_rev()</a> but passing <a href="functions#ustr_cstr">ustr_cstr()</a> and
+ <a href="functions#ustr_len">ustr_len()</a>
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_cstr_fwd">ustr_spn_cstr_fwd()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_spn_buf_fwd">ustr_spn_buf_fwd()</a> but passing strlen() for the
+ length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_spn_cstr_rev">ustr_spn_cstr_rev()</a>
+<br>Returns: Number of bytes in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_spn_buf_rev">ustr_spn_buf_rev()</a> but passing strlen() for the
+ length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_chr_fwd">ustr_cspn_chr_fwd()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_chr_rev">ustr_cspn_chr_rev()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to the data (Parameter[3]), skipping
+ offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_chrs_fwd">ustr_cspn_chrs_fwd()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Array of byte data<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of byte data<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the start of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_chrs_rev">ustr_cspn_chrs_rev()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Array of byte data<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of byte data<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function returns the length of the end of the Ustr (Parameter[1]) that
+ only contains bytes that are not equal to any byte in the data (Parameter[3]),
+ skipping offset (Parameter[2]) bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_fwd">ustr_cspn_fwd()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing spanning bytes<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cspn_buf_fwd">ustr_cspn_buf_fwd()</a> but passing <a href="functions#ustr_cstr">ustr_cstr()</a> and
+ <a href="functions#ustr_len">ustr_len()</a>
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_rev">ustr_cspn_rev()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing spanning bytes<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cspn_buf_rev">ustr_cspn_buf_rev()</a> but passing <a href="functions#ustr_cstr">ustr_cstr()</a> and
+ <a href="functions#ustr_len">ustr_len()</a>
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_cstr_fwd">ustr_cspn_cstr_fwd()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cspn_buf_fwd">ustr_cspn_buf_fwd()</a> but passing strlen() for the
+ length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cspn_cstr_rev">ustr_cspn_cstr_rev()</a>
+<br>Returns: Number of bytes not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_cspn_buf_rev">ustr_cspn_buf_rev()</a> but passing strlen() for the
+ length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_spn_chrs_fwd">ustr_utf8_spn_chrs_fwd()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the C-style UTF-8 string<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_spn_chrs_rev">ustr_utf8_spn_chrs_rev()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: <br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_spn_fwd">ustr_utf8_spn_fwd()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_spn_rev">ustr_utf8_spn_rev()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_spn_cstr_fwd">ustr_utf8_spn_cstr_fwd()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_spn_cstr_rev">ustr_utf8_spn_cstr_rev()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
+ and not 3 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_cspn_chrs_fwd">ustr_utf8_cspn_chrs_fwd()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the C-style UTF-8 string<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_cspn_chrs_rev">ustr_utf8_cspn_chrs_rev()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the C-style UTF-8 string<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_cspn_fwd">ustr_utf8_cspn_fwd()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant Ustr UTF-8 string, containing spanning data<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_cspn_rev">ustr_utf8_cspn_rev()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to constant Ustr UTF-8 string data, containing spanning data<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_cspn_cstr_fwd">ustr_utf8_cspn_cstr_fwd()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to constant C-style UTF-8 string data, containing spanning data<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_utf8_cspn_cstr_rev">ustr_utf8_cspn_cstr_rev()</a>
+<br>Returns: Number of UTF-8 characters not in the span<br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to C-style UTF-8 string data, containing spanning data<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is NOT DOCUMENTED YET!
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+ UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
+ character and not 0 bytes.
+
+
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Doing%20IO%20from%20or%20to%20a%20Ustr">Doing IO from or to a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_get">ustr_io_get()</a>
 <br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: <br>Type<strong>[2]</strong>: FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: <br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: <br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function is NOT DOCUMENTED YET!
 
@@ -1049,37 +2077,6 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function is NOT DOCUMENTED YET!
-
-
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20binary%20data%20from%20a%20Ustr">Parsing binary data from a Ustr</a></h2>
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
-<br>Returns: uint_least16_t <br>Type: uint_least16_t 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
-<br>Returns: uint_least32_t <br>Type: uint_least32_t 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
-<br>Returns: uint_least64_t <br>Type: uint_least64_t 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr *<br>Type<strong>[1]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20ASCII%20integer%20numbers%20from%20a%20Ustr">Parsing ASCII integer numbers from a Ustr</a></h2>
@@ -1226,6 +2223,207 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Shortcut%20helper%20functions%20for%20Ustrs">Shortcut helper functions for Ustrs</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_free">ustr_sc_free()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function calls <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer (Parameter[1]) to
+ <a href="constants#USTR_NULL">USTR_NULL</a>, which is a noop when passed to <a href="functions#ustr_free">ustr_free()</a>. This can be used to
+ help prevent "double free" errors.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_free2">ustr_sc_free2()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_sc_free">ustr_sc_free()</a> but instead of setting the
+ pointer (Parameter[1]) to <a href="constants#USTR_NULL">USTR_NULL</a> it sets it to the Ustr
+ string (Parameter[2]).
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The passed value shouldn't be <a href="constants#USTR_NULL">USTR_NULL</a>, and in debugging mode the function
+ will assert() that it isn't.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_del">ustr_sc_del()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is like calling <a href="functions#ustr_del">ustr_del()</a> with <a href="functions#ustr_len">ustr_len()</a> as the length,
+ however if that fails it does a <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer to
+ USTR("").
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  While the benifit is that you don't have to check for memory failure errors,
+ if there is a memory failure and you have a non-default configuration the
+ configuration will revert back to the default.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_dupx">ustr_sc_dupx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
+ maxed out then and so a new <a href="design">Ustr string</a> is allocated then that is stored in
+ the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
+</p><p>  If the configurations of the new <a href="design">Ustr string</a> and the old <a href="design">Ustr string</a> are not
+ the same, this function works identically to <a href="functions#ustr_dupx">ustr_dupx()</a>.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using <a href="functions#ustr_dupx">ustr_dupx()</a> will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_dup">ustr_sc_dup()</a>
+<br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
+ maxed out then and so a new <a href="design">Ustr string</a> has been allocated then that is stored
+ in the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using <a href="functions#ustr_dup">ustr_dup()</a> will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function makes sure that the <a href="design">Ustr string</a> is owned when it returns (Ie.
+ <a href="functions#ustr_owner">ustr_owner()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), or it fails to allocate.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_free_shared">ustr_sc_free_shared()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is a simple way to &quot;free&quot; a <a href="design">Ustr string</a> that has been
+ shared (<a href="functions#ustr_shared">ustr_shared()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), normally <a href="functions#ustr_free">ustr_free()</a> is ignored on a
+ shared <a href="design">Ustr string</a>. It just calls <a href="functions#ustr_setf_owner">ustr_setf_owner()</a> and then <a href="functions#ustr_sc_free">ustr_sc_free()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_reverse">ustr_sc_reverse()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function reverses all the bytes in a <a href="design">Ustr string</a>, so the last one
+ becomes the first and the second to last becomes the second etc.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_tolower">ustr_sc_tolower()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function changes any ASCII upper case bytes into ASCII lower case bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_toupper">ustr_sc_toupper()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function changes any ASCII lower case bytes into ASCII upper case bytes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_wstr">ustr_sc_wstr()</a>
+<br>Returns: Writable pointer to the start of data in the Ustr, or NULL<br>Type: char *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>, to make sure the
+ <a href="design">Ustr string</a> is writable, and if that succeeds it returns <a href="functions#ustr_wstr">ustr_wstr()</a>. On
+ failure it returns NULL.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20binary%20data%20to%20a%20Ustr">Adding binary data to a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_b_uint16">ustr_add_b_uint16()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least16_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_b_uint32">ustr_add_b_uint32()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least32_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_add_b_uint64">ustr_add_b_uint64()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least64_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20binary%20data%20from%20a%20Ustr">Parsing binary data from a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
+<br>Returns: uint_least16_t <br>Type: uint_least16_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
+<br>Returns: uint_least32_t <br>Type: uint_least32_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
+<br>Returns: uint_least64_t <br>Type: uint_least64_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple Ustr pool API</a></h2>

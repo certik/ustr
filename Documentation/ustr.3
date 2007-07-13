@@ -1,4 +1,4 @@
-.TH ustr 3 "10-Jul-2007" "Ustr 0.99.3" "Ustr String Library"
+.TH ustr 3 "13-Jul-2007" "Ustr 1.0.0" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -71,6 +71,14 @@ struct Ustr *\fBustr_dupx_undef\fR(size_t, size_t, int, int, size_t);
 .in \w'  struct Ustr *\fBustr_dup_undef\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_undef\fR(size_t);
+.br
+.in \w'  struct Ustr *\fBustr_dup\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dup\fR(const struct Ustr *);
+.br
+.in \w'  struct Ustr *\fBustr_dupx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx\fR(size_t, size_t, int, int, const struct Ustr *);
 .sp
 .br
 .in \w'  int \fBustr_add_undef\fR('u
@@ -143,32 +151,51 @@ int \fBustr_realloc\fR(struct Ustr **, size_t);
 .br
 .in \w'  int  \fBustr_add_vfmt_lim\fR('u
 .ti \w'  'u
-int  \fBustr_add_vfmt_lim\fR(struct Ustr **,  size_t,  const char *,  va_list);
+int  \fBustr_add_vfmt_lim\fR(struct Ustr **, size_t, const char *, va_list);
 .br
 .in \w'  int  \fBustr_add_vfmt\fR('u
 .ti \w'  'u
-int  \fBustr_add_vfmt\fR(struct Ustr **,  const char *,  va_list);
+int  \fBustr_add_vfmt\fR(struct Ustr **, const char *, va_list);
 .br
 .in \w'  int  \fBustr_add_fmt\fR('u
 .ti \w'  'u
-int  \fBustr_add_fmt\fR(struct Ustr **,  const char *,  ...);
+int  \fBustr_add_fmt\fR(struct Ustr **, const char *, ...);
 .br
 .in \w'  int  \fBustr_add_fmt_lim\fR('u
 .ti \w'  'u
-int  \fBustr_add_fmt_lim\fR(struct Ustr **,  size_t, const char *,  ...);
-.sp
+int  \fBustr_add_fmt_lim\fR(struct Ustr **, size_t, const char *, ...);
 .br
-.in \w'  int  \fBustr_add_b_uint16\fR('u
+.in \w'  struct Ustr *\fBustr_dupx_fmt_lim\fR('u
 .ti \w'  'u
-int  \fBustr_add_b_uint16\fR(struct Ustr **, uint_least16_t);
+struct Ustr *\fBustr_dupx_fmt_lim\fR(size_t, size_t, int, int, size_t, const char *, ...);
 .br
-.in \w'  int  \fBustr_add_b_uint32\fR('u
+.in \w'  struct Ustr *\fBustr_dup_fmt_lim\fR('u
 .ti \w'  'u
-int  \fBustr_add_b_uint32\fR(struct Ustr **, uint_least32_t);
+struct Ustr *\fBustr_dup_fmt_lim\fR(size_t, const char *, ...);
 .br
-.in \w'  int  \fBustr_add_b_uint64\fR('u
+.in \w'  struct Ustr *\fBustr_dupx_fmt\fR('u
 .ti \w'  'u
-int  \fBustr_add_b_uint64\fR(struct Ustr **, uint_least64_t);
+struct Ustr *\fBustr_dupx_fmt\fR(size_t, size_t, int, int, const char *, ...);
+.br
+.in \w'  struct Ustr *\fBustr_dup_fmt\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dup_fmt\fR(const char *, ...);
+.br
+.in \w'  int  \fBustr_set_vfmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_set_vfmt_lim\fR(struct Ustr **, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_set_vfmt\fR('u
+.ti \w'  'u
+int  \fBustr_set_vfmt\fR(struct Ustr **, const char *, va_list);
+.br
+.in \w'  int  \fBustr_set_fmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_set_fmt_lim\fR(struct Ustr **, size_t, const char *, ...);
+.br
+.in \w'  int  \fBustr_set_fmt\fR('u
+.ti \w'  'u
+int  \fBustr_set_fmt\fR(struct Ustr **, const char *, ...);
 .sp
 .br
 .in \w'  size_t  \fBustr_len\fR('u
@@ -249,9 +276,292 @@ int  \fBustr_setf_share\fR(struct Ustr *);
 int  \fBustr_setf_owner\fR(struct Ustr *);
 .sp
 .br
+.in \w'  int  \fBustr_cmp_buf\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_buf\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp\fR('u
+.ti \w'  'u
+int  \fBustr_cmp\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_subustr\fR(const struct Ustr *, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBustr_cmp_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_cstr\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_fast_buf\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_fast_buf\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_fast\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_fast\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_fast_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_fast_subustr\fR(const struct Ustr *, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBustr_cmp_fast_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_fast_cstr\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_case_buf\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_buf\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_case\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_case_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_subustr\fR(const struct Ustr *, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBustr_cmp_case_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_cstr\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_eq\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_buf_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_buf_eq\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_subustr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_subustr_eq\fR(const struct Ustr *, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBustr_cmp_cstr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_cstr_eq\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_case_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_eq\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_case_buf_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_buf_eq\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_case_subustr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_subustr_eq\fR(const struct Ustr *, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBustr_cmp_case_cstr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_cstr_eq\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_prefix_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_prefix_eq\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_prefix_buf_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_prefix_buf_eq\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_prefix_cstr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_prefix_cstr_eq\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_case_prefix_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_prefix_eq\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_case_prefix_buf_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_prefix_buf_eq\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_case_prefix_cstr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_prefix_cstr_eq\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_suffix_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_suffix_eq\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_suffix_buf_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_suffix_buf_eq\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_suffix_cstr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_suffix_cstr_eq\fR(const struct Ustr *, const char *);
+.br
+.in \w'  int  \fBustr_cmp_case_suffix_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_suffix_eq\fR(const struct Ustr *, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_cmp_case_suffix_buf_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_suffix_buf_eq\fR(const struct Ustr *, const void *, size_t);
+.br
+.in \w'  int  \fBustr_cmp_case_suffix_cstr_eq\fR('u
+.ti \w'  'u
+int  \fBustr_cmp_case_suffix_cstr_eq\fR(const struct Ustr *, const char *);
+.sp
+.br
+.in \w'  size_t  \fBustr_srch_chr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_chr_fwd\fR(const struct Ustr *, size_t, char);
+.br
+.in \w'  size_t  \fBustr_srch_chr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_chr_rev\fR(const struct Ustr *,  size_t, char);
+.br
+.in \w'  size_t  \fBustr_srch_buf_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_buf_fwd\fR(const struct Ustr *, size_t, const void *, size_t);
+.br
+.in \w'  size_t  \fBustr_srch_buf_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_buf_rev\fR(const struct Ustr *, size_t, const void *, size_t);
+.br
+.in \w'  size_t  \fBustr_srch_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_fwd\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_srch_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_rev\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_srch_cstr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_cstr_fwd\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_srch_cstr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_cstr_rev\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_srch_subustr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_subustr_fwd\fR(const struct Ustr *, size_t, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  size_t  \fBustr_srch_subustr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_srch_subustr_rev\fR(const struct Ustr *,  size_t, const struct Ustr *, size_t, size_t);
+.sp
+.br
+.in \w'  size_t  \fBustr_spn_chr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_chr_fwd\fR(const struct Ustr *, size_t, char);
+.br
+.in \w'  size_t  \fBustr_spn_chr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_chr_rev\fR(const struct Ustr *, size_t, char);
+.br
+.in \w'  size_t  \fBustr_spn_chrs_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_chrs_fwd\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_spn_chrs_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_chrs_rev\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_spn_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_fwd\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_spn_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_rev\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_spn_cstr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_cstr_fwd\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_spn_cstr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_spn_cstr_rev\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_cspn_chr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_chr_fwd\fR(const struct Ustr *, size_t, char);
+.br
+.in \w'  size_t  \fBustr_cspn_chr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_chr_rev\fR(const struct Ustr *, size_t, char);
+.br
+.in \w'  size_t  \fBustr_cspn_chrs_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_chrs_fwd\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_cspn_chrs_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_chrs_rev\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_cspn_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_fwd\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_cspn_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_rev\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_cspn_cstr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_cstr_fwd\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_cspn_cstr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_cspn_cstr_rev\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_utf8_spn_chrs_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_spn_chrs_fwd\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_utf8_spn_chrs_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_spn_chrs_rev\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_utf8_spn_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_spn_fwd\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_utf8_spn_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_spn_rev\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_utf8_spn_cstr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_spn_cstr_fwd\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_utf8_spn_cstr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_spn_cstr_rev\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_utf8_cspn_chrs_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_cspn_chrs_fwd\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_utf8_cspn_chrs_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_cspn_chrs_rev\fR(const struct Ustr *, size_t, const char *, size_t);
+.br
+.in \w'  size_t  \fBustr_utf8_cspn_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_cspn_fwd\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_utf8_cspn_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_cspn_rev\fR(const struct Ustr *, size_t, const struct Ustr *);
+.br
+.in \w'  size_t  \fBustr_utf8_cspn_cstr_fwd\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_cspn_cstr_fwd\fR(const struct Ustr *, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_utf8_cspn_cstr_rev\fR('u
+.ti \w'  'u
+size_t  \fBustr_utf8_cspn_cstr_rev\fR(const struct Ustr *, size_t, const char *);
+.sp
+.br
 .in \w'  int  \fBustr_io_get\fR('u
 .ti \w'  'u
-int  \fBustr_io_get\fR(struct Ustr **,  FILE *,  size_t,  size_t *);
+int  \fBustr_io_get\fR(struct Ustr **, FILE *, size_t, size_t *);
 .br
 .in \w'  int  \fBustr_io_getfile\fR('u
 .ti \w'  'u
@@ -307,19 +617,6 @@ size_t  \fBustr_utf8_chars2bytes\fR(const struct Ustr *,  size_t,  size_t,  size
 size_t  \fBustr_utf8_bytes2chars\fR(const struct Ustr *,  size_t,  size_t,  size_t *);
 .sp
 .br
-.in \w'  uint_least16_t  \fBustr_parse_b_uint16\fR('u
-.ti \w'  'u
-uint_least16_t  \fBustr_parse_b_uint16\fR(struct Ustr *, size_t);
-.br
-.in \w'  uint_least32_t  \fBustr_parse_b_uint32\fR('u
-.ti \w'  'u
-uint_least32_t  \fBustr_parse_b_uint32\fR(struct Ustr *, size_t);
-.br
-.in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
-.ti \w'  'u
-uint_least64_t  \fBustr_parse_b_uint64\fR(struct Ustr *, size_t);
-.sp
-.br
 .in \w'  uintmax_t  \fBustr_parse_uintmaxx\fR('u
 .ti \w'  'u
 uintmax_t  \fBustr_parse_uintmaxx\fR(const struct Ustr *, size_t, unsigned int, uintmax_t, uintmax_t, const char *, size_t *, unsigned int *);
@@ -359,6 +656,77 @@ unsigned short  \fBustr_parse_ushort\fR(const struct Ustr *, size_t, unsigned in
 .in \w'  short  \fBustr_parse_short\fR('u
 .ti \w'  'u
 short  \fBustr_parse_short\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
+.sp
+.br
+.in \w'  void  \fBustr_sc_free\fR('u
+.ti \w'  'u
+void  \fBustr_sc_free\fR(struct Ustr **);
+.br
+.in \w'  void  \fBustr_sc_free2\fR('u
+.ti \w'  'u
+void  \fBustr_sc_free2\fR(struct Ustr **, struct Ustr *);
+.br
+.in \w'  void  \fBustr_sc_del\fR('u
+.ti \w'  'u
+void  \fBustr_sc_del\fR(struct Ustr **);
+.br
+.in \w'  struct Ustr *\fBustr_sc_dupx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_dupx\fR(size_t, size_t, int, int, struct Ustr **);
+.br
+.in \w'  struct Ustr *\fBustr_sc_dup\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_dup\fR(struct Ustr **);
+.br
+.in \w'  int  \fBustr_sc_ensure_owner\fR('u
+.ti \w'  'u
+int  \fBustr_sc_ensure_owner\fR(struct Ustr **);
+.br
+.in \w'  void  \fBustr_sc_free_shared\fR('u
+.ti \w'  'u
+void  \fBustr_sc_free_shared\fR(struct Ustr **);
+.br
+.in \w'  int  \fBustr_sc_reverse\fR('u
+.ti \w'  'u
+int  \fBustr_sc_reverse\fR(struct Ustr **);
+.br
+.in \w'  int  \fBustr_sc_tolower\fR('u
+.ti \w'  'u
+int  \fBustr_sc_tolower\fR(struct Ustr **);
+.br
+.in \w'  int  \fBustr_sc_toupper\fR('u
+.ti \w'  'u
+int  \fBustr_sc_toupper\fR(struct Ustr **);
+.br
+.in \w'  char *\fBustr_sc_wstr\fR('u
+.ti \w'  'u
+char *\fBustr_sc_wstr\fR(struct Ustr **);
+.sp
+.br
+.in \w'  int  \fBustr_add_b_uint16\fR('u
+.ti \w'  'u
+int  \fBustr_add_b_uint16\fR(struct Ustr **, uint_least16_t);
+.br
+.in \w'  int  \fBustr_add_b_uint32\fR('u
+.ti \w'  'u
+int  \fBustr_add_b_uint32\fR(struct Ustr **, uint_least32_t);
+.br
+.in \w'  int  \fBustr_add_b_uint64\fR('u
+.ti \w'  'u
+int  \fBustr_add_b_uint64\fR(struct Ustr **, uint_least64_t);
+.sp
+.br
+.in \w'  uint_least16_t  \fBustr_parse_b_uint16\fR('u
+.ti \w'  'u
+uint_least16_t  \fBustr_parse_b_uint16\fR(const struct Ustr *, size_t);
+.br
+.in \w'  uint_least32_t  \fBustr_parse_b_uint32\fR('u
+.ti \w'  'u
+uint_least32_t  \fBustr_parse_b_uint32\fR(const struct Ustr *, size_t);
+.br
+.in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
+.ti \w'  'u
+uint_least64_t  \fBustr_parse_b_uint64\fR(const struct Ustr *, size_t);
 .sp
 .br
 .in \w'  struct Ustr_pool *\fBustr_pool_make_pool\fR('u
@@ -922,7 +1290,7 @@ Type\fB[5]\fR: size_t
 .br
 \fBFunction: \fR ustr_dup_undef()
 .br
-Returns: Ustr string
+Returns: Pointer to a Ustr string
 .br
 Type: struct Ustr *
 
@@ -937,6 +1305,71 @@ Type\fB[1]\fR: size_t
 .br
   This function is the same as calling ustr_dupx_undef() with the current set of default options.
 
+.ti -2
+.br
+\fBFunction: \fR ustr_dup()
+.br
+Returns: A pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function tries to increase the reference count on the passed Ustr string, and if that succeeds returns that as an argument. If that fails it tries creates a new Ustr string that looks identical to the old Ustr string, apart from the reference count.
+.sp
+\fBNote:\fR
+
+.br
+  Because the new Ustr string is configured identically to the old Ustr string this means the result can be very different to what you get if you call ustr_dup_buf() with ustr_cstr() and ustr_len() from the original string where the configuration would be whatever the default is.
+.br
+  Esp. worth of note is that if you ustr_dup() a Ustr string with an explicit size of 900 but a length of 1, and the reference count is full the returned Ustr string will have a size of 900 bytes and so will have allocated a little over that. ustr_dup_buf(), even with a sized configuration would only allocate about 12 bytes and have a size a little less than that.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dupx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Pointer to a constant Ustr string
+.br
+Type\fB[5]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function tries to add a reference if the value of the size, reference bytes, exact memory allocations and ENOMEM are the same as those in the passed Ustr string (Parameter[5]). If the comparison fails or the addition of a reference fails it works like ustr_dupx_buf() using ustr_cstr() and ustr_len().
+
 .SH Adding data to a Ustr
 .ti -2
 .br
@@ -947,7 +1380,7 @@ Returns: Success or failure
 Type: int
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
@@ -1005,7 +1438,7 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Pointer to C-style string
+Parameter\fB[2]\fR: Pointer to constant C-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -1387,7 +1820,7 @@ Type\fB[2]\fR: size_t
 .br
   To have a size that isn't implied from the length the Ustr must store a size value as well as a length (ustr_sized() must return USTR_TRUE).
 
-.SH Adding formatted data to a Ustr
+.SH Adding, duplicating and setting formatted data to a Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_add_vfmt_lim()
@@ -1397,30 +1830,30 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  size_t
+Parameter\fB[2]\fR: Limit of data to add
 .br
-Type\fB[2]\fR:  size_t
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  const char *
+Parameter\fB[3]\fR: A pointer to a constant C-style string
 .br
-Type\fB[3]\fR:  const char *
+Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR:  va_list
+Parameter\fB[4]\fR: Variable argument list variable
 .br
-Type\fB[4]\fR:  va_list
+Type\fB[4]\fR: va_list
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system vsnprintf() with the limit (Parameter[2]) as the limit to vsnprintf() and then calling ustr_add_buf().
 
 .ti -2
 .br
@@ -1431,25 +1864,25 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  const char *
+Parameter\fB[2]\fR: A pointer to a constant C-style string
 .br
-Type\fB[2]\fR:  const char *
+Type\fB[2]\fR: const char *
 
 .br
-Parameter\fB[3]\fR:  va_list
+Parameter\fB[3]\fR: Variable argument list variable, from va_start()
 .br
-Type\fB[3]\fR:  va_list
+Type\fB[3]\fR: va_list
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system vsnprintf() and then calling ustr_add_buf().
 
 .ti -2
 .br
@@ -1460,25 +1893,25 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  const char *
+Parameter\fB[2]\fR: A pointer to a constant C-style string
 .br
-Type\fB[2]\fR:  const char *
+Type\fB[2]\fR: const char *
 
 .br
-Parameter\fB[3]\fR:  ...
+Parameter\fB[3]\fR: Options depending on value of Parameter[2]
 .br
-Type\fB[3]\fR:  ...
+Type\fB[3]\fR: ...
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system snprintf() and then calling ustr_add_buf().
 
 .ti -2
 .br
@@ -1489,103 +1922,302 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  size_t
+Parameter\fB[2]\fR: Limit of data to add
 .br
-Type\fB[2]\fR:  size_t
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: const char *
+Parameter\fB[3]\fR: A pointer to a constant C-style string
 .br
 Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR:  ...
+Parameter\fB[4]\fR: Options depending on value of Parameter[3]
 .br
-Type\fB[4]\fR:  ...
+Type\fB[4]\fR: ...
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system snprintf() with the limit (Parameter[2]) as the limit to snprintf() and then calling ustr_add_buf().
 
-.SH Adding binary data to a Ustr
 .ti -2
 .br
-\fBFunction: \fR ustr_add_b_uint16()
+\fBFunction: \fR ustr_dupx_fmt_lim()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Limit of data to dup
+.br
+Type\fB[5]\fR: size_t
+
+.br
+Parameter\fB[6]\fR: Pointer to a constant Ustr string
+.br
+Type\fB[6]\fR: const char *
+
+.br
+Parameter\fB[7]\fR: Options depending on value of Parameter[6]
+.br
+Type\fB[7]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() with the limit (Parameter[2]) as the limit to snprintf() and then calling ustr_dupx_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dup_fmt_lim()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Limit of data to dup
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: Options depending on value of Parameter[2]
+.br
+Type\fB[3]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() with the limit (Parameter[2]) as the limit to snprintf() and then calling ustr_dup_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dupx_fmt()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Pointer to a constant Ustr string
+.br
+Type\fB[5]\fR: const char *
+
+.br
+Parameter\fB[6]\fR: Options depending on value of Parameter[5]
+.br
+Type\fB[6]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() and then calling ustr_dup_bufx().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dup_fmt()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const char *
+
+.br
+Parameter\fB[2]\fR: Options depending on value of Parameter[1]
+.br
+Type\fB[2]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() and then calling ustr_dup_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_set_vfmt_lim()
 .br
 Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Binary value to add to the Ustr
+Parameter\fB[2]\fR: Limit of data to set
 .br
-Type\fB[2]\fR: uint_least16_t
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[4]\fR: va_list
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
+  This function works like calling ustr_del() for all the data and then ustr_add_vfmt_lim().
 
 .ti -2
 .br
-\fBFunction: \fR ustr_add_b_uint32()
+\fBFunction: \fR ustr_set_vfmt()
 .br
 Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Binary value to add to the Ustr
+Parameter\fB[2]\fR: A pointer to a constant C-style string
 .br
-Type\fB[2]\fR: uint_least32_t
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[3]\fR: va_list
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
+  This function works like calling ustr_del() for all the data and then ustr_add_vfmt().
 
 .ti -2
 .br
-\fBFunction: \fR ustr_add_b_uint64()
+\fBFunction: \fR ustr_set_fmt_lim()
 .br
 Returns: Success or failure
 .br
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Binary value to add to the Ustr
+Parameter\fB[2]\fR: Limit of data to set
 .br
-Type\fB[2]\fR: uint_least64_t
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Options depending on value of Parameter[3]
+.br
+Type\fB[4]\fR: ...
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
+  This function works like calling ustr_del() for all the data and then ustr_add_fmt_lim().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_set_fmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: Options depending on value of Parameter[2]
+.br
+Type\fB[3]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_del() for all the data and then ustr_add_fmt().
 
 .SH Accessing the "variables" of a Ustr
 .ti -2
@@ -2033,6 +2665,2104 @@ Type\fB[1]\fR: struct Ustr *
 .br
   This function fails if ustr_alloc() fails for the Ustr.
 
+.SH Comparing data in a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_buf()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like memcmp() on the Ustr and the passed data.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_buf() but with the data from ustr_cstr() and the length from ustr_len().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_subustr()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to compare from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp() but with a limit on the data and length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_cstr()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_buf() but with a length from strlen().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_fast_buf()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_buf() but the order of comparison is optimized for speed, but is much less friendly to humans.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_fast()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_fast_buf() but with the data from ustr_cstr() and the length from ustr_len().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_fast_subustr()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to compare from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_fast() but with a limit on the data and length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_fast_cstr()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_fast_buf() but with a length from strlen().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_buf()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_buf() but the order of comparison ignores ASCII case.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_case_buf() but with the data from ustr_cstr() and the length from ustr_len().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_subustr()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to compare from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_case() but with a limit on the data and length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_cstr()
+.br
+Returns: Less then zero, zero or greater than zero depending on comparison
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_case_buf() but with a length from strlen().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_buf_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_buf() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_subustr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to compare from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_subustr() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_cstr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_cstr() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_buf_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case_buf() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_subustr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to compare from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case_subustr() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_cstr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case_cstr() against 0.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_prefix_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp() against 0, but the comparison is limited to the length of the right hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_prefix_buf_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_buf() against 0, but the comparison is limited to the length of the right hand side (Parameter[3]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_prefix_cstr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_cstr() against 0, but the comparison is limited to the length of the right hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_prefix_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case() against 0, but the comparison is limited to the length of the right hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_prefix_buf_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case_buf() against 0, but the comparison is limited to the length of the right hand side (Parameter[3]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_prefix_cstr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like comparing ustr_cmp_case_cstr() against 0, but the comparison is limited to the length of the right hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_suffix_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_prefix_eq() but compares the end of the left hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_suffix_buf_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_prefix_buf_eq() but compares the end of the left hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_suffix_cstr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_prefix_cstr_eq() but compares the end of the left hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_suffix_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_case_prefix_eq() but compares the end of the left hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_suffix_buf_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to constant bytes, to compare
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of comparison bytes
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_case_prefix_buf_eq() but compares the end of the left hand side.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cmp_case_suffix_cstr_eq()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cmp_case_prefix_cstr_eq() but compares the end of the left hand side.
+
+.SH Searching for data in a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_chr_fwd()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Byte data to search for
+.br
+Type\fB[3]\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function searches for the data (Parameter[3]) in the Ustr, skipping an offset (Parameter[2]) number of bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_chr_rev()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR: Byte data to search for
+.br
+Type\fB[3]\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_chr_fwd() but it searches from the end of the string to the beginning.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_buf_fwd()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to data to search for
+.br
+Type\fB[3]\fR: const void *
+
+.br
+Parameter\fB[4]\fR: Length of the data to search for
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function searches for the data (Parameter[3]) of length (Parameter[4]) in the Ustr, skipping an offset (Parameter[2]) number of bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_buf_rev()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to data to search for
+.br
+Type\fB[3]\fR: const void *
+
+.br
+Parameter\fB[4]\fR: Length of the data to search for
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_buf_fwd() but it searches from the end of the string to the beginning.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_fwd()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string, to search for
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_buf_fwd() but it gets the data pointer by calling ustr_cstr() and the length by calling ustr_len() on the passed Ustr (Parameter[3]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_rev()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string, to search for
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_fwd() but it searches from the end of the string to the beginning.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_cstr_fwd()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to C-style string data, to search for
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_buf_fwd() but it gets the length by calling strlen() on the passed data (Parameter[3]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_cstr_rev()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to C-style string data, to search for
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_cstr_fwd() but it searches from the end of the string to the beginning.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_subustr_fwd()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR: Position in the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: Length of data to search, from the Ustr
+.br
+Type\fB[5]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_fwd() but it moves the data to start at the correct position and limits the length to the value specified.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_srch_subustr_rev()
+.br
+Returns: Position in the Ustr, or zero if not found
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start searching at
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR: Position in the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: Length of data to search, from the Ustr
+.br
+Type\fB[5]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_srch_rev() but it moves the data to start at the correct position and limits the length to the value specified.
+
+.SH Span lengths of data in a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_chr_fwd()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Byte data
+.br
+Type\fB[3]\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the start of the Ustr (Parameter[1]) that only contains bytes that are equal to the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_chr_rev()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Byte data
+.br
+Type\fB[3]\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the end of the Ustr (Parameter[1]) that only contains bytes that are equal to the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_chrs_fwd()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Array of byte data
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of byte data
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the start of the Ustr (Parameter[1]) that only contains bytes that are equal to any byte in the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_chrs_rev()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Array of byte data
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of byte data
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the end of the Ustr (Parameter[1]) that only contains bytes that are equal to any byte in the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_fwd()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string, containing spanning bytes
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_spn_buf_fwd() but passing ustr_cstr() and ustr_len()
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_rev()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string, containing spanning bytes
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_spn_buf_rev() but passing ustr_cstr() and ustr_len()
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_cstr_fwd()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_spn_buf_fwd() but passing strlen() for the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_spn_cstr_rev()
+.br
+Returns: Number of bytes in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_spn_buf_rev() but passing strlen() for the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_chr_fwd()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Byte data
+.br
+Type\fB[3]\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the start of the Ustr (Parameter[1]) that only contains bytes that are not equal to the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_chr_rev()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Byte data
+.br
+Type\fB[3]\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the end of the Ustr (Parameter[1]) that only contains bytes that are not equal to the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_chrs_fwd()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Array of byte data
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of byte data
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the start of the Ustr (Parameter[1]) that only contains bytes that are not equal to any byte in the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_chrs_rev()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Array of byte data
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of byte data
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function returns the length of the end of the Ustr (Parameter[1]) that only contains bytes that are not equal to any byte in the data (Parameter[3]), skipping offset (Parameter[2]) bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_fwd()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string, containing spanning bytes
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cspn_buf_fwd() but passing ustr_cstr() and ustr_len()
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_rev()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string, containing spanning bytes
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cspn_buf_rev() but passing ustr_cstr() and ustr_len()
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_cstr_fwd()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cspn_buf_fwd() but passing strlen() for the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cspn_cstr_rev()
+.br
+Returns: Number of bytes not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_cspn_buf_rev() but passing strlen() for the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_spn_chrs_fwd()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of the C-style UTF-8 string
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_spn_chrs_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_spn_chrs_rev()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: 
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_spn_fwd()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_spn_rev()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_spn_cstr_fwd()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_spn_cstr_rev()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_cspn_chrs_fwd()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of the C-style UTF-8 string
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_cspn_chrs_rev()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of the C-style UTF-8 string
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_cspn_fwd()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr UTF-8 string, containing spanning data
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_cspn_rev()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to constant Ustr UTF-8 string data, containing spanning data
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_cspn_cstr_fwd()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to constant C-style UTF-8 string data, containing spanning data
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_utf8_cspn_cstr_rev()
+.br
+Returns: Number of UTF-8 characters not in the span
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to C-style UTF-8 string data, containing spanning data
+.br
+Type\fB[3]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is NOT DOCUMENTED YET!
+.sp
+\fBNote:\fR
+
+.br
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+
 .SH Doing IO from or to a Ustr
 .ti -2
 .br
@@ -2043,24 +4773,24 @@ Returns: Success or failure
 Type: int 
 
 .br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 .br
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  FILE *
+Parameter\fB[2]\fR: 
 .br
-Type\fB[2]\fR:  FILE *
+Type\fB[2]\fR: FILE *
 
 .br
-Parameter\fB[3]\fR:  size_t
+Parameter\fB[3]\fR: 
 .br
-Type\fB[3]\fR:  size_t
+Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR:  size_t *
+Parameter\fB[4]\fR: 
 .br
-Type\fB[4]\fR:  size_t *
+Type\fB[4]\fR: size_t *
 
 .br
 \fBExplanation:\fR
@@ -2405,79 +5135,6 @@ Type\fB[4]\fR:  size_t *
 
 .br
   This function is NOT DOCUMENTED YET!
-
-.SH Parsing binary data from a Ustr
-.ti -2
-.br
-\fBFunction: \fR ustr_parse_b_uint16()
-.br
-Returns: uint_least16_t 
-.br
-Type: uint_least16_t 
-
-.br
-Parameter\fB[1]\fR: struct Ustr *
-.br
-Type\fB[1]\fR: struct Ustr *
-
-.br
-Parameter\fB[2]\fR: Offset within string to start parsing at
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
-
-.ti -2
-.br
-\fBFunction: \fR ustr_parse_b_uint32()
-.br
-Returns: uint_least32_t 
-.br
-Type: uint_least32_t 
-
-.br
-Parameter\fB[1]\fR: struct Ustr *
-.br
-Type\fB[1]\fR: struct Ustr *
-
-.br
-Parameter\fB[2]\fR: Offset within string to start parsing at
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
-
-.ti -2
-.br
-\fBFunction: \fR ustr_parse_b_uint64()
-.br
-Returns: uint_least64_t 
-.br
-Type: uint_least64_t 
-
-.br
-Parameter\fB[1]\fR: struct Ustr *
-.br
-Type\fB[1]\fR: struct Ustr *
-
-.br
-Parameter\fB[2]\fR: Offset within string to start parsing at
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .SH Parsing ASCII integer numbers from a Ustr
 .ti -2
@@ -2914,6 +5571,413 @@ Type\fB[5]\fR: unsigned int *
 
 .br
   This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
+
+.SH Shortcut helper functions for Ustrs
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_free()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calls ustr_free() and then sets the pointer (Parameter[1]) to USTR_NULL, which is a noop when passed to ustr_free(). This can be used to help prevent "double free" errors.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_free2()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Pointer to a Ustr string
+.br
+Type\fB[2]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_sc_free() but instead of setting the pointer (Parameter[1]) to USTR_NULL it sets it to the Ustr string (Parameter[2]).
+.sp
+\fBNote:\fR
+
+.br
+  The passed value shouldn't be USTR_NULL, and in debugging mode the function will assert() that it isn't.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_del()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is like calling ustr_del() with ustr_len() as the length, however if that fails it does a ustr_free() and then sets the pointer to USTR("").
+.sp
+\fBNote:\fR
+
+.br
+  While the benifit is that you don't have to check for memory failure errors, if there is a memory failure and you have a non-default configuration the configuration will revert back to the default.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_dupx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[5]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string is allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+.br
+  If the configurations of the new Ustr string and the old Ustr string are not the same, this function works identically to ustr_dupx().
+.sp
+\fBNote:\fR
+
+.br
+  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
+.br
+  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dupx() will create 256 Ustr strings using this function will create 4 Ustr strings.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_dup()
+.br
+Returns: A pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string has been allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+.sp
+\fBNote:\fR
+
+.br
+  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
+.br
+  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dup() will create 256 Ustr strings using this function will create 4 Ustr strings.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_ensure_owner()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function makes sure that the Ustr string is owned when it returns (Ie. ustr_owner() returns USTR_TRUE), or it fails to allocate.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_free_shared()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is a simple way to "free" a Ustr string that has been shared (ustr_shared() returns USTR_TRUE), normally ustr_free() is ignored on a shared Ustr string. It just calls ustr_setf_owner() and then ustr_sc_free().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_reverse()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function reverses all the bytes in a Ustr string, so the last one becomes the first and the second to last becomes the second etc.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_tolower()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function changes any ASCII upper case bytes into ASCII lower case bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_toupper()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function changes any ASCII lower case bytes into ASCII upper case bytes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_wstr()
+.br
+Returns: Writable pointer to the start of data in the Ustr, or NULL
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_sc_ensure_owner(), to make sure the Ustr string is writable, and if that succeeds it returns ustr_wstr(). On failure it returns NULL.
+
+.SH Adding binary data to a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_add_b_uint16()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Binary value to add to the Ustr
+.br
+Type\fB[2]\fR: uint_least16_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_b_uint32()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Binary value to add to the Ustr
+.br
+Type\fB[2]\fR: uint_least32_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_add_b_uint64()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Binary value to add to the Ustr
+.br
+Type\fB[2]\fR: uint_least64_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
+
+.SH Parsing binary data from a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint16()
+.br
+Returns: uint_least16_t 
+.br
+Type: uint_least16_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint32()
+.br
+Returns: uint_least32_t 
+.br
+Type: uint_least32_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_parse_b_uint64()
+.br
+Returns: uint_least64_t 
+.br
+Type: uint_least64_t 
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Offset within string to start parsing at
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .SH Simple Ustr pool API
 .ti -2
