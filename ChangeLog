@@ -1,5 +1,7 @@
 2007-07-12  James Antill  <james@and.org>
 
+	* ustr-main-code.h (ustr__dupx_cmp_eq): More fixes for dupx comparisons.
+
 	* examples/mkdir_p.c: Added example program.
 
 	* ustr-sc-code.h (ustr_sc_dup): Fix implementation to call ustr_dup()

@@ -60,8 +60,24 @@ int tst(void)
   
   ASSERT(s4 == USTR(buf_s4));
   
+  ustr_free(s3); /* does nothing */
   ustr_free(s3);
+  ustr_free(s3);
+  ustr_free(s3);
+  
   /* don't bother free'ing s4 */
+  
+  ASSERT((s3 = ustr_dup(s3)));
+  ASSERT(s3 != USTR(buf_s3));
+  ASSERT(ustr_alloc(s3));
+  ASSERT_EQ(s3, USTR(buf_s3));
+  ustr_free(s3);
+  
+  ASSERT((s4 = ustr_dup(s4)));
+  ASSERT(s4 != USTR(buf_s4));
+  ASSERT(ustr_alloc(s4));
+  ASSERT_EQ(s4, USTR(buf_s4));
+  ustr_free(s4);
   
   return (EXIT_SUCCESS);
 }

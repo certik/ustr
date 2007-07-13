@@ -8,11 +8,26 @@ USTR_CONF_i_PROTO
 int ustr__dupx_cmp_eq(size_t sz1, size_t rb1, int x1, int emem1,
                       size_t sz2, size_t rb2, int x2, int emem2)
 {
-  if (sz1 && (rb1 < 2))
-    rb1 = 2;
-  if (sz2 && (rb2 < 2))
-    rb2 = 2;
-  return ((!sz1 == !sz2) && (rb1 == rb2) && (!x1 == !x2) && (!emem1 == !emem2));
+  if ((!x1 != !x2) || (!emem1 != !emem2))
+    return (USTR_FALSE);
+  
+  if (sz1)
+  {
+    if (rb1 < 2)
+      rb1 = 2;
+  }
+  else if (rb1 > 4)
+    sz1 = 1;
+
+  if (sz2)
+  {
+    if (rb2 < 2)
+      rb2 = 2;
+  }
+  else if (rb2 > 4)
+    sz2 = 1;
+
+  return ((!sz1 == !sz2) && (rb1 == rb2));
 }
 
 USTR_CONF_i_PROTO size_t ustr__sz_get(const struct Ustr *s1)

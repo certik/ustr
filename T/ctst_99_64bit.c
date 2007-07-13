@@ -116,6 +116,17 @@ int tst(void)
   }
   
   ustr_free(s1);
+
+  if (USTR_CONF_USE_DYNAMIC_CONF)
+  {
+    assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_REF_BYTES, 8));
+    assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_HAS_SIZE,  0));
+    
+    ASSERT((s1 = ustr_dupx_undef(0, 8, 0, 0, 0)));
+    ASSERT(ustr_ro(s1));
+    ASSERT((s1 = ustr_dupx_undef(1, 8, 0, 0, 0)));
+    ASSERT(ustr_ro(s1));
+  }    
     
   ASSERT((s1 = ustr_dupx_empty(0, 8, USTR_FALSE, USTR_FALSE)));
   ASSERT(ustr_sized(s1));

@@ -111,6 +111,9 @@ int tst(void)
   
   ASSERT(ustrp_len(sp1) == 0);
   ASSERT(ustrp_len(sp2) == 2);
+  ASSERT(ustrp_assert_valid_subustrp(sp2, 1, 1));
+  ASSERT(ustrp_assert_valid_subustrp(sp2, 1, 2));
+  ASSERT(ustrp_assert_valid_subustrp(sp2, 2, 1));
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 1, 1));
   ASSERT(ustrp_len(sp1) == 1);
   if (!USTR_DEBUG)

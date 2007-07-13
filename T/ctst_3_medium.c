@@ -342,6 +342,15 @@ int tst(void)
     scan = 0;
     while (scan++ < 65534)
       ustr_free(s1);
+
+    if (USTR_CONF_USE_DYNAMIC_CONF)
+    {
+      assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_REF_BYTES, 0));
+      assert(ustr_cntl_opt(USTR_CNTL_OPT_SET_HAS_SIZE, 1));
+  
+      ASSERT((os1 = ustr_dupx_undef(1, 2, 0, 0, 0)));
+      ASSERT(ustr_ro(os1));
+    }
   }
   
   return (EXIT_SUCCESS);
