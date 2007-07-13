@@ -34,16 +34,21 @@ static int big_tst(size_t fsz, size_t usz, int hack, int tst_add)
 
   if (hack)
   {
-    if (USTR_DEBUG || !USTR_CONF_INCLUDE_INTERNAL_HEADERS)
+    if (USTR_DEBUG)
       goto fail_init;
 
-#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+#if ! USTR_CONF_INCLUDE_INTERNAL_HEADERS
+    goto fail_init;
+#else
     /* massive hack,
        ustr_assert_valid() fails here, as we aren't terminating */
     s3 = ptr;
     
-    s3->data[0]  = USTR__BIT_ALLOCD | USTR__BIT_HAS_SZ | USTR__BIT_NEXACT;
-    s3->data[0] |= (2 << 2) | 2;
+    s3->data[0] = USTR__BIT_ALLOCD | USTR__BIT_HAS_SZ | USTR__BIT_NEXACT;
+    if (!USTR_CONF_HAVE_64bit_SIZE_MAX)
+      s3->data[0] |= (1 << 2) | 1;
+    else
+      s3->data[0] |= (2 << 2) | 2;
     ustr__sz_set(s3, usz);
     ustr__len_set(s3, usz - 59);
     ustr__ref_set(s3, 1);

@@ -27,8 +27,8 @@ DEPS    =
 #LDFLAGS =
 
 ## Compile "static" using parent dir.
-PCFLAGS = $(CFLAGS) -I..
-LDFLAGS = ../libustr.a
+#PCFLAGS = $(CFLAGS) -I..
+#LDFLAGS = ../libustr.a
 
 ## Compile "inline" using ustr-import output
 # - do nothing
@@ -50,7 +50,7 @@ LDFLAGS = ../libustr.a
 
 # This is a simple makefile for example programs...
 
-ALL = hello_world netstr hexdump nums
+ALL = hello_world netstr hexdump nums mkdir_p
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
@@ -120,3 +120,10 @@ hexdump: hexdump.c
 nums: nums.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
+mkdir_p: mkdir_p.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
+strip: $(ALL)
+		@for i in $(ALL); do \
+		echo "Creating: $$i-s"; cp $$i $$i-s; strip $$i-s; \
+		done

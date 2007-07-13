@@ -82,9 +82,10 @@ each variable.
  You should also do the same for examples/Makefile, if any of the
 examples will use the new functions.
 
- You then want to add your namespace to the end of the list in:
+ You then want to add your namespace to the end of the file lists in:
 
 scripts/list_functions_src.pl
+scripts/gen_doc_templ_from_protos.pl
 
 ...after which you can run:
 

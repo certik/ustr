@@ -20,8 +20,10 @@
  ADD
  ---
  DOCS!
+  finish ref. documentation.
+  tutorial, hello world to mkdir_p to netstr?
 
- scons?
+ scons build?
 
  ustr-import man page.
 
@@ -38,6 +40,8 @@
  ustr_parse_netstr() / ustr_parse_netstr2()
 
  ustr_ins()?
+
+ ustr_fmttime == strftime()
 
  ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
    ustr_sub(Ustr **s1, size_t pos, Ustr *s2)

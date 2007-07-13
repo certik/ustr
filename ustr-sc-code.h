@@ -1,3 +1,9 @@
+/* Copyright (c) 2007 James Antill -- See LICENSE file for terms. */
+
+#ifndef USTR_SC_H
+#error " Include ustr-sc.h before this file."
+#endif
+
 USTR_CONF_i_PROTO
 void ustrp__sc_free_shared(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -24,11 +30,15 @@ struct Ustr *ustrp__sc_dupx(struct Ustr_pool *p,
 {
   struct Ustr *ret = ustrp__dupx(p, sz, rbytes, exact, emem, *ps1);
   struct Ustr *tmp = USTR_NULL;
-  
+
   if (!ret)
     return (USTR_NULL);
 
-  /* swap */
+  if (!ustr__dupx_cmp_eq(sz, rbytes, exact, emem, USTR__DUPX_FROM(*ps1)))
+    return (ret); /* different config. so just return */
+
+  /* swap, we only _need_ to do this when ret != *ps1 ... but it doesn't matter
+   * if we always do it. */
   tmp  = *ps1;
   *ps1 = ret;
   ret  = tmp;
@@ -47,9 +57,19 @@ struct Ustrp *ustrp_sc_dupx(struct Ustr_pool *p, size_t sz, size_t rbytes,
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__sc_dup(struct Ustr_pool *p, struct Ustr **ps1)
 {
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  struct Ustr *ret = ustrp__dup(p, *ps1);
+  struct Ustr *tmp = USTR_NULL;
   
-  return (ustrp__sc_dupx(p, USTR__DUPX_FROM(*ps1), ps1));
+  if (!ret)
+    return (USTR_NULL);
+
+  /* swap, we only _need_ to do this when ret != *ps1 ... but it doesn't matter
+   * if we always do it. */
+  tmp  = *ps1;
+  *ps1 = ret;
+  ret  = tmp;
+  
+  return (ret);
 }
 USTR_CONF_I_PROTO struct Ustr *ustr_sc_dup(struct Ustr **ps1)
 { return (ustrp__sc_dup(0, ps1)); }

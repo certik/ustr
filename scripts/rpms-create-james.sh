@@ -22,6 +22,7 @@ cd ./$pkg-$v
 
 ./scripts/clean.sh full
 ( cd Documentation && make )
+( cd examples && make clean )
 
 rm -rf tmp
 
@@ -67,11 +68,11 @@ bzip2 -9f $pkg-$v.tar
 tar -cf   $pkg-$v.tar $pkg-$v
 gzip -9f  $pkg-$v.tar
 
-sudo rpmbuild -ta --define "chk $chk" $pkg-$v.tar.gz
+# sudo rpmbuild -ts --define "chk $chk" $pkg-$v.tar.gz
+rpmbuild --define "_sourcedir `pwd`/tmp"   --define "_specdir `pwd`/tmp" \
+         --define "_srcrpmdir `pwd`" -ts \
+  $pkg-$v.tar.gz
 
-echo "/usr/src/redhat/RPMS/*/$pkg*-$v-$rel*"
-echo "/usr/src/redhat/SRPMS/$pkg*-$v-$rel*"
+mock --autocache "$pkg-$v-$rel.src.rpm"
 
-ls -ahslF /usr/src/redhat/RPMS/*/$pkg*-$v-$rel*
-ls -ahslF /usr/src/redhat/SRPMS/$pkg*-$v-$rel*
-
+echo "$pkg-$v-$rel.src.rpm"

@@ -3,7 +3,7 @@ Name: ustr
 # FIXME: More C&P of VERSION
 Version: 1.0.0
 Release: 1%{?dist}
-Summary: String library, very very low memory overhead, simple to import.
+Summary: String library, very low memory overhead, simple to import.
 Group: System Environment/Libraries
 License: MIT, LGPL, BSD
 URL: http://www.and.org/ustr/
@@ -12,10 +12,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # BuildRequires: make gcc sed
 
 %description
- Micro String library, very low overhead from plain strdup(). Very easy to
-use in any existing code ... at it's simplest you can just include a single
-file into your .c and start using it. This pacakge also distributes pre-built
-shared libraries.
+ Micro string library, very low overhead from plain strdup() (Ave. 44% for
+0-20B strings). Very easy to use in existing C code. At it's simplest you can
+just include a single header file into your .c and start using it.
+ This pacakge also distributes pre-built shared libraries.
 
 %package devel
 Summary: String library, very very low memory overhead, simple to import.
@@ -43,9 +43,17 @@ Group: Development/Libraries
 Requires: %{name}-static = %{version}
 
 %description debug
- Static libraries, header files and dynamic libraries for a debug build of
-the Ustr string library.
+ Header files and dynamic libraries for a debug build of the Ustr string
+library.
  Also includes a %{name}-debug.pc file for pkg-config usage.
+
+%package debug-static
+Summary: String library, very very low memory overhead, simple to import.
+Group: Development/Libraries
+Requires: %{name}-debug = %{version}
+
+%description debug-static
+ Static library for the debug build of the Ustr string library.
 
 %prep
 %setup -q
@@ -95,13 +103,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_libdir}/libustr-debug-1.0.so.*
 %{_libdir}/libustr-debug.so
-%{_libdir}/libustr-debug.a
 /usr/include/ustr-debug.h
 /usr/include/ustr-conf-debug.h
 %{_libdir}/pkgconfig/ustr-debug.pc
 
+%files debug-static
+%{_libdir}/libustr-debug.a
+
 
 %changelog
+* Wed Jul 11 2007 James Antill <james@and.org> - 1.0.0-1
+- Upgrade to 1.0.0
+- Minor fixes on specfile
+
 * Sun Jun  3 2007 James Antill <james@and.org> - 0.99.2-1
 - Upgrade to 0.99.2
 

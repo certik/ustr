@@ -1,3 +1,14 @@
+2007-07-12  James Antill  <james@and.org>
+
+	* examples/mkdir_p.c: Added example program.
+
+	* ustr-sc-code.h (ustr_sc_dup): Fix implementation to call ustr_dup()
+	directly.
+	(ustr_sc_dupx): Fix implementation when using different configurations.
+
+	* ustr-main-code.h (ustr__dupx_cmp_eq): Fix dupx comparisons, esp. when
+	sizes are involved.
+
 2007-07-11  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_assert_valid_subustr): Make this a public

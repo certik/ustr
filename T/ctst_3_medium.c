@@ -325,6 +325,25 @@ int tst(void)
   ASSERT(ustr_sc_tolower(&s1));
   ASSERT_EQ(s1, USTR1(\xa, "abcdefghij"));
   
+  { /* bug */
+    int scan = 0;
+    Ustr *os1 = s1;
+    
+    while (scan++ < 65534)
+    {
+      s1 = ustr_dupx(1, 1, 1, 1, s1);
+      ASSERT(s1 == os1);
+    }
+    ASSERT((s1 = ustr_dupx(1, 1, 1, 1, s1)));
+    ASSERT(s1 != os1);
+    ASSERT(s1->data[0] == os1->data[0]);
+
+    ustr_sc_free2(&s1, os1);
+    scan = 0;
+    while (scan++ < 65534)
+      ustr_free(s1);
+  }
+  
   return (EXIT_SUCCESS);
 }
 

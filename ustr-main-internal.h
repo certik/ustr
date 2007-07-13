@@ -22,8 +22,8 @@
  /* #include <stdio.h>
     printf("sz=%zu rbytes=%zu exact=%s len=%zu --> rsz=%zu\n", sz, rbytes, exact ? "TRUE" : "FALSE", len, rsz); */
 
-USTR_CONF_e_PROTO size_t ustr__dupx_cmp_eq(size_t, size_t, size_t, size_t,
-                                           size_t, size_t, size_t, size_t)
+USTR_CONF_e_PROTO int ustr__dupx_cmp_eq(size_t, size_t, int, int,
+                                        size_t, size_t, int, int)
     USTR__COMPILE_ATTR_CONST() USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 
 USTR_CONF_e_PROTO size_t ustr__sz_get(const struct Ustr *)

@@ -5,9 +5,15 @@
 #endif
 
 USTR_CONF_i_PROTO
-size_t ustr__dupx_cmp_eq(size_t w1, size_t x1, size_t y1, size_t z1,
-                         size_t w2, size_t x2, size_t y2, size_t z2)
-{ return ((w1 == w2) && (!x1 == !x2) && (y1 == y2) && (z1 == z2)); }
+int ustr__dupx_cmp_eq(size_t sz1, size_t rb1, int x1, int emem1,
+                      size_t sz2, size_t rb2, int x2, int emem2)
+{
+  if (sz1 && (rb1 < 2))
+    rb1 = 2;
+  if (sz2 && (rb2 < 2))
+    rb2 = 2;
+  return ((!sz1 == !sz2) && (rb1 == rb2) && (!x1 == !x2) && (!emem1 == !emem2));
+}
 
 USTR_CONF_i_PROTO size_t ustr__sz_get(const struct Ustr *s1)
 {

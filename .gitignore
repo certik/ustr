@@ -11,7 +11,13 @@
 /ustr-conf.h
 /ustr-import
 examples/hello_world
+examples/hello_world-s
 examples/netstr
+examples/netstr-s
 examples/hexdump
+examples/hexdump-s
 examples/nums
+examples/nums-s
+examples/mkdir_p
+examples/mkdir_p-s
 abcd

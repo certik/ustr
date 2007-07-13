@@ -367,7 +367,7 @@ Function: ustr_dupx_undef()
 
 
 Function: ustr_dup_undef()
- Returns: Ustr string
+ Returns: Pointer to a Ustr string
  Type: struct Ustr *
 
  Parameter[1]: Length of new undefined data
@@ -379,12 +379,66 @@ Function: ustr_dup_undef()
  of default options.
 
 
+Function: ustr_dup()
+ Returns: A pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Explanation:
+
+  This function tries to increase the reference count on the passed Ustr string,
+ and if that succeeds returns that as an argument. If that fails it tries
+ creates a new Ustr string that looks identical to the old Ustr string, apart
+ from the reference count.
+
+ Note:
+
+  Because the new Ustr string is configured identically to the old Ustr string
+ this means the result can be very different to what you get if you call
+ ustr_dup_buf() with ustr_cstr() and ustr_len() from the original string where
+ the configuration would be whatever the default is.
+  Esp. worth of note is that if you ustr_dup() a Ustr string with an explicit
+ size of 900 but a length of 1, and the reference count is full the returned
+ Ustr string will have a size of 900 bytes and so will have allocated a little
+ over that. ustr_dup_buf(), even with a sized configuration would only allocate
+ about 12 bytes and have a size a little less than that.
+
+
+Function: ustr_dupx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Pointer to a constant Ustr string
+ Type[5]: const struct Ustr *
+
+ Explanation:
+
+  This function tries to add a reference if the value of the size, reference
+ bytes, exact memory allocations and ENOMEM are the same as those in the passed
+ Ustr string (Parameter[5]). If the comparison fails or the addition of a
+ reference fails it works like ustr_dupx_buf() using ustr_cstr() and ustr_len().
+
+
 Section: Adding data to a Ustr
 Function: ustr_add_undef()
  Returns: Success or failure
  Type: int
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: Length of new undefined data
@@ -423,7 +477,7 @@ Function: ustr_add_cstr()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]: Pointer to C-style string
+ Parameter[2]: Pointer to constant C-style string
  Type[2]: const char *
 
  Explanation:
@@ -686,132 +740,263 @@ Function: ustr_realloc()
  value as well as a length (ustr_sized() must return USTR_TRUE).
 
 
-Section: Adding formatted data to a Ustr
+Section: Adding, duplicating and setting formatted data to a Ustr
 Function: ustr_add_vfmt_lim()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Limit of data to add
+ Type[2]: size_t
 
- Parameter[3]:  const char *
- Type[3]:  const char *
+ Parameter[3]: A pointer to a constant C-style string
+ Type[3]: const char *
 
- Parameter[4]:  va_list
- Type[4]:  va_list
+ Parameter[4]: Variable argument list variable
+ Type[4]: va_list
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system vsnprintf() with the limit
+ (Parameter[2]) as the limit to vsnprintf() and then calling ustr_add_buf().
 
 
 Function: ustr_add_vfmt()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const char *
- Type[2]:  const char *
+ Parameter[2]: A pointer to a constant C-style string
+ Type[2]: const char *
 
- Parameter[3]:  va_list
- Type[3]:  va_list
+ Parameter[3]: Variable argument list variable, from va_start()
+ Type[3]: va_list
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system vsnprintf() and then calling
+ ustr_add_buf().
 
 
 Function: ustr_add_fmt()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const char *
- Type[2]:  const char *
+ Parameter[2]: A pointer to a constant C-style string
+ Type[2]: const char *
 
- Parameter[3]:  ...
- Type[3]:  ...
+ Parameter[3]: Options depending on value of Parameter[2]
+ Type[3]: ...
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system snprintf() and then calling
+ ustr_add_buf().
 
 
 Function: ustr_add_fmt_lim()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Limit of data to add
+ Type[2]: size_t
 
- Parameter[3]: const char *
+ Parameter[3]: A pointer to a constant C-style string
  Type[3]: const char *
 
- Parameter[4]:  ...
- Type[4]:  ...
+ Parameter[4]: Options depending on value of Parameter[3]
+ Type[4]: ...
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling the system snprintf() with the limit
+ (Parameter[2]) as the limit to snprintf() and then calling ustr_add_buf().
 
 
-Section: Adding binary data to a Ustr
-Function: ustr_add_b_uint16()
+Function: ustr_dupx_fmt_lim()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Limit of data to dup
+ Type[5]: size_t
+
+ Parameter[6]: Pointer to a constant Ustr string
+ Type[6]: const char *
+
+ Parameter[7]: Options depending on value of Parameter[6]
+ Type[7]: ...
+
+ Explanation:
+
+  This function works like calling the system snprintf() with the limit
+ (Parameter[2]) as the limit to snprintf() and then calling ustr_dupx_buf().
+
+
+Function: ustr_dup_fmt_lim()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Limit of data to dup
+ Type[1]: size_t
+
+ Parameter[2]: Pointer to a constant Ustr string
+ Type[2]: const char *
+
+ Parameter[3]: Options depending on value of Parameter[2]
+ Type[3]: ...
+
+ Explanation:
+
+  This function works like calling the system snprintf() with the limit
+ (Parameter[2]) as the limit to snprintf() and then calling ustr_dup_buf().
+
+
+Function: ustr_dupx_fmt()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Pointer to a constant Ustr string
+ Type[5]: const char *
+
+ Parameter[6]: Options depending on value of Parameter[5]
+ Type[6]: ...
+
+ Explanation:
+
+  This function works like calling the system snprintf() and then calling
+ ustr_dup_bufx().
+
+
+Function: ustr_dup_fmt()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to a constant Ustr string
+ Type[1]: const char *
+
+ Parameter[2]: Options depending on value of Parameter[1]
+ Type[2]: ...
+
+ Explanation:
+
+  This function works like calling the system snprintf() and then calling
+ ustr_dup_buf().
+
+
+Function: ustr_set_vfmt_lim()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]: Binary value to add to the Ustr
- Type[2]: uint_least16_t
+ Parameter[2]: Limit of data to set
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to a constant C-style string
+ Type[3]: const char *
+
+ Parameter[4]: Variable argument list variable, from va_start()
+ Type[4]: va_list
 
  Explanation:
 
-  This function adds a binary representation of a value (Parameter[2]) to the
- Ustr (Parameter[1]).
+  This function works like calling ustr_del() for all the data and then
+ ustr_add_vfmt_lim().
 
 
-Function: ustr_add_b_uint32()
+Function: ustr_set_vfmt()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]: Binary value to add to the Ustr
- Type[2]: uint_least32_t
+ Parameter[2]: A pointer to a constant C-style string
+ Type[2]: const char *
+
+ Parameter[3]: Variable argument list variable, from va_start()
+ Type[3]: va_list
 
  Explanation:
 
-  This function adds a binary representation of a value (Parameter[2]) to the
- Ustr (Parameter[1]).
+  This function works like calling ustr_del() for all the data and then
+ ustr_add_vfmt().
 
 
-Function: ustr_add_b_uint64()
+Function: ustr_set_fmt_lim()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]: Binary value to add to the Ustr
- Type[2]: uint_least64_t
+ Parameter[2]: Limit of data to set
+ Type[2]: size_t
+
+ Parameter[3]: A pointer to a constant C-style string
+ Type[3]: const char *
+
+ Parameter[4]: Options depending on value of Parameter[3]
+ Type[4]: ...
 
  Explanation:
 
-  This function adds a binary representation of a value (Parameter[2]) to the
- Ustr (Parameter[1]).
+  This function works like calling ustr_del() for all the data and then
+ ustr_add_fmt_lim().
+
+
+Function: ustr_set_fmt()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant C-style string
+ Type[2]: const char *
+
+ Parameter[3]: Options depending on value of Parameter[2]
+ Type[3]: ...
+
+ Explanation:
+
+  This function works like calling ustr_del() for all the data and then
+ ustr_add_fmt().
 
 
 Section: Accessing the "variables" of a Ustr
@@ -2532,7 +2717,7 @@ Function: ustr_io_get()
  Returns: Success or failure
  Type: int 
 
- Parameter[1]: Pointer to a pointer to a Ustr string
+ Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
  Parameter[2]: 
@@ -2760,55 +2945,6 @@ Function: ustr_utf8_bytes2chars()
  Explanation:
 
   This function is NOT DOCUMENTED YET!
-
-
-Section: Parsing binary data from a Ustr
-Function: ustr_parse_b_uint16()
- Returns: uint_least16_t 
- Type: uint_least16_t 
-
- Parameter[1]: A pointer to a constant Ustr string
- Type[1]: const struct Ustr *
-
- Parameter[2]: Offset within string to start parsing at
- Type[2]: size_t
-
- Explanation:
-
-  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-Function: ustr_parse_b_uint32()
- Returns: uint_least32_t 
- Type: uint_least32_t 
-
- Parameter[1]: A pointer to a constant Ustr string
- Type[1]: const struct Ustr *
-
- Parameter[2]: Offset within string to start parsing at
- Type[2]: size_t
-
- Explanation:
-
-  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
-
-
-Function: ustr_parse_b_uint64()
- Returns: uint_least64_t 
- Type: uint_least64_t 
-
- Parameter[1]: A pointer to a constant Ustr string
- Type[1]: const struct Ustr *
-
- Parameter[2]: Offset within string to start parsing at
- Type[2]: size_t
-
- Explanation:
-
-  This function parses a binary representation from a Ustr (Parameter[1]) 
- starting at the offset (Parameter[2]).
 
 
 Section: Parsing ASCII integer numbers from a Ustr
@@ -3090,6 +3226,301 @@ Function: ustr_parse_short()
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
+
+
+Section: Shortcut helper functions for Ustrs
+Function: ustr_sc_free()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function calls ustr_free() and then sets the pointer (Parameter[1]) to
+ USTR_NULL, which is a noop when passed to ustr_free(). This can be used to
+ help prevent "double free" errors.
+
+
+Function: ustr_sc_free2()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Pointer to a Ustr string
+ Type[2]: struct Ustr *
+
+ Explanation:
+
+  This function works like ustr_sc_free() but instead of setting the
+ pointer (Parameter[1]) to USTR_NULL it sets it to the Ustr
+ string (Parameter[2]).
+
+ Note:
+
+  The passed value shouldn't be USTR_NULL, and in debugging mode the function
+ will assert() that it isn't.
+
+
+Function: ustr_sc_del()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function is like calling ustr_del() with ustr_len() as the length,
+ however if that fails it does a ustr_free() and then sets the pointer to
+ USTR("").
+
+ Note:
+
+  While the benifit is that you don't have to check for memory failure errors,
+ if there is a memory failure and you have a non-default configuration the
+ configuration will revert back to the default.
+
+
+Function: ustr_sc_dupx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: A pointer to a pointer to a Ustr string
+ Type[5]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_dupx(), but if the reference count is
+ maxed out then and so a new Ustr string is allocated then that is stored in
+ the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+  If the configurations of the new Ustr string and the old Ustr string are not
+ the same, this function works identically to ustr_dupx().
+
+ Note:
+
+  The reason to use this is that if you have a "main" Ustr string pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using ustr_dupx() will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+Function: ustr_sc_dup()
+ Returns: A pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_dupx(), but if the reference count is
+ maxed out then and so a new Ustr string has been allocated then that is stored
+ in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+
+ Note:
+
+  The reason to use this is that if you have a "main" Ustr string pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using ustr_dup() will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+Function: ustr_sc_ensure_owner()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function makes sure that the Ustr string is owned when it returns (Ie.
+ ustr_owner() returns USTR_TRUE), or it fails to allocate.
+
+
+Function: ustr_sc_free_shared()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function is a simple way to "free" a Ustr string that has been
+ shared (ustr_shared() returns USTR_TRUE), normally ustr_free() is ignored on a
+ shared Ustr string. It just calls ustr_setf_owner() and then ustr_sc_free().
+
+
+Function: ustr_sc_reverse()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function reverses all the bytes in a Ustr string, so the last one
+ becomes the first and the second to last becomes the second etc.
+
+
+Function: ustr_sc_tolower()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function changes any ASCII upper case bytes into ASCII lower case bytes.
+
+
+Function: ustr_sc_toupper()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function changes any ASCII lower case bytes into ASCII upper case bytes.
+
+
+Function: ustr_sc_wstr()
+ Returns: Writable pointer to the start of data in the Ustr, or NULL
+ Type: char *
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_sc_ensure_owner(), to make sure the
+ Ustr string is writable, and if that succeeds it returns ustr_wstr(). On
+ failure it returns NULL.
+
+
+Section: Adding binary data to a Ustr
+Function: ustr_add_b_uint16()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Binary value to add to the Ustr
+ Type[2]: uint_least16_t
+
+ Explanation:
+
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
+
+
+Function: ustr_add_b_uint32()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Binary value to add to the Ustr
+ Type[2]: uint_least32_t
+
+ Explanation:
+
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
+
+
+Function: ustr_add_b_uint64()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Binary value to add to the Ustr
+ Type[2]: uint_least64_t
+
+ Explanation:
+
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
+
+
+Section: Parsing binary data from a Ustr
+Function: ustr_parse_b_uint16()
+ Returns: uint_least16_t 
+ Type: uint_least16_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
+
+ Explanation:
+
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+Function: ustr_parse_b_uint32()
+ Returns: uint_least32_t 
+ Type: uint_least32_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
+
+ Explanation:
+
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
+
+
+Function: ustr_parse_b_uint64()
+ Returns: uint_least64_t 
+ Type: uint_least64_t 
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Offset within string to start parsing at
+ Type[2]: size_t
+
+ Explanation:
+
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
 
 Section: Simple Ustr pool API

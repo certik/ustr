@@ -56,6 +56,7 @@ MAN_PAGES = \
 EXAMPLES = examples/Makefile \
        examples/hello_world.c \
        examples/hexdump.c \
+       examples/mkdir_p.c \
        examples/netstr.c \
        examples/nums.c
 
@@ -98,6 +99,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-b.h \
            ustr-cmp.h \
            ustr-cntl.h \
+           ustr-compiler.h \
            ustr-fmt.h \
            ustr-io.h \
            ustr-main.h \
@@ -112,7 +114,6 @@ SRC_HDRS = ustr.h      ustr-debug.h \
 SRC_SRCS_H = ustr-b-code.h \
              ustr-cmp-code.h \
              ustr-cntl-code.h \
-             ustr-compiler.h \
              ustr-fmt-code.h \
              ustr-io-code.h \
              ustr-io-internal.h \
