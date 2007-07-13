@@ -3,7 +3,7 @@ Name: ustr
 # FIXME: More C&P of VERSION
 Version: 1.0.0
 Release: 1%{?dist}
-Summary: String library, very low memory overhead, simple to import.
+Summary: String library, very low memory overhead, simple to import
 Group: System Environment/Libraries
 License: MIT, LGPL, BSD
 URL: http://www.and.org/ustr/
@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
  Micro string library, very low overhead from plain strdup() (Ave. 44% for
 0-20B strings). Very easy to use in existing C code. At it's simplest you can
 just include a single header file into your .c and start using it.
- This pacakge also distributes pre-built shared libraries.
+ This package also distributes pre-built shared libraries.
 
 %package devel
 Summary: String library, very very low memory overhead, simple to import.

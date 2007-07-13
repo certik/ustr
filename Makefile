@@ -250,8 +250,10 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -d $(DESTDIR)$(libdir)/pkgconfig
 		@echo Installing files
 		install -m 644 -t $(DESTDIR)$(libdir) $(LIB_SHARED) $(LIB_STATIC)
-		ln -s $(OPT_LIB_SHARED) $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
-		ln -s $(DBG_LIB_SHARED) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
+		ln -s $(OPT_LIB_SHARED) $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
+		ln -s $(OPT_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
+		ln -s $(DBG_LIB_SHARED) $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
+		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		-ldconfig -n $(DESTDIR)$(libdir)
 		install -m 644 -t $(DESTDIR)/usr/include $(SRC_HDRS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
