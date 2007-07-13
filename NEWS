@@ -1,3 +1,8 @@
+1.0.0 - 2007-07-13
+ Lots of API and implementation fixes.
+ Lots of documentation.
+ Now has 100% code coverage.
+
 0.99.3 - 2007-06-24
  Added lots of functions, including utf8 and parsing integers.
  Increased unit test coverage to over 99%.

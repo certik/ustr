@@ -106,7 +106,7 @@ libustr-debug.a: $(LIB_STATIC_DBG)
 		@$(CC) $(CFLG_LIB_DBG) -o $@ -c $<
 
 clean:
-		rm -f *.o $(ALL) $(LIB_STATIC)
+		rm -f *.o $(ALL) $(LIB_STATIC) *-s
 
 hello_world: hello_world.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
