@@ -426,6 +426,16 @@
   ustrp_parse_ulongx;
   ustrp_parse_ushort;
 
+  ustr_sub;
+  ustr_sub_buf;
+  ustr_sub_cstr;
+  ustr_sub_subustr;
+
+  ustr_sc_replace;
+  ustr_sc_sub;
+  ustr_sc_sub_buf;
+  ustr_sc_sub_cstr;
+
     local:
   ustr__*;
   ustrp__*;
