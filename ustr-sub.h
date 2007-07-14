@@ -38,6 +38,9 @@ USTR_CONF_E_PROTO size_t ustr_sc_replace(struct Ustr **, const struct Ustr *,
 
 /* FIXME: ustrp_*() */
 
+/* FIXME: ustr_utf8_sub() / ustr_sc_utf8_sub() -- basic chars2bytes + sub */
+
+
 /*
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-sub-internal.h"

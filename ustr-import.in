@@ -38,6 +38,7 @@ function usage
   echo "         set   = strcpy() for Ustr's" 1>&2
   echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
   echo "         srch  = Searching, strchr() / strrchr() for Ustr's" 1>&2
+  echo "         sub   = Substituting data" 1>&2
   echo "         utf8  = UTF8 routines" 1>&2
   echo "" 1>&2
   echo "     Ustr Version: $VERS_FULL" 1>&2
@@ -84,6 +85,7 @@ sc=false
 set=false
 spn=false
 srch=false
+sub=false
 utf8=false
 
 gdb=false
@@ -104,6 +106,7 @@ for i in $@; do
     set)   set=true;             main=true ;;
     spn)   spn=true;  srch=true; main=true ;;
     srch)  srch=true;            main=true ;;
+    sub)   sc=true;   srch=true; main=true ;;
     utf8)  utf8=true;            main=true ;;
     *)
       usage
@@ -124,6 +127,7 @@ if $all; then
   set=true
   spn=true
   srch=true
+  sub=true
   utf8=true
 fi
 
@@ -212,6 +216,10 @@ fi
 
 if $srch; then
   copy srch
+fi
+
+if $sub; then
+  copy sub
 fi
 
 if $utf8; then
@@ -455,6 +463,10 @@ if $utf8; then
 fi
 if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
+fi
+
+if $sub; then # SUB hard deps. on sc, srch, utf8
+  echo '#include "ustr-sub.h"' >> $outname
 fi
 
 echo >> $outname

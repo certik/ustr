@@ -1,5 +1,7 @@
 2007-07-13  James Antill  <james@and.org>
 
+	* ustr-import.in: Add sub.
+
 	* T/ctst_17_sub.c: Initial fixups.
 
 	* ustr-sub-code.h (ustr_sub_subustr): Added function.
