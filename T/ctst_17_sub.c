@@ -1,7 +1,7 @@
 #include "tst.h"
 
 
-#ifdef PRINT_OUTPUT
+#if 0
 #	include <stdio.h>
 #	define PRINT_RESULT(x) printf("'%s'\n",ustr_cstr(x));
 #else
@@ -14,12 +14,20 @@ int tst()
 	Ustr *a = ustr_dup_cstr(str);
 	const char *repl_cstr = "smart";
 	Ustr *repl = ustr_dup_cstr(repl_cstr);
+        Ustr *c;
+        Ustr *blank;
+        Ustr *same_len_str;
+        Ustr *d;
+        Ustr *needle;        
+        const char *newstr;
+        
+#if 0
 	/* read only string */
 	Ustr *ro = USTR1(\x4, "abcd"); 
 	ASSERT(ustr_sub_buf(&ro,1,"aa",2) == USTR_FALSE);
 	ASSERT(ustr_cmp_cstr_eq(ro,"abcd"));
-	/* NULL buffer */
-	ASSERT(ustr_sub_buf(&a,1,0,0));
+#endif
+
 	ASSERT(ustr_cmp_cstr_eq(a,str));
 	/* replace will grow the string */
 	ASSERT(ustr_sub_cstr(&a,17,repl_cstr));
@@ -38,9 +46,10 @@ int tst()
 	ustr_free(repl);
 
 	str = "this is a test";
-	Ustr *c = ustr_dup_cstr(str);
+	c = ustr_dup_cstr(str);
 	repl = ustr_dup_cstr("a real donut");
 	/* invalid position */
+        if (!USTR_DEBUG)
 	ASSERT(ustr_sc_sub(&c,1500,3,repl) == FALSE);
 	PRINT_RESULT(c)
 	ASSERT(ustr_cmp_cstr_eq(c,str));
@@ -49,12 +58,12 @@ int tst()
 	ASSERT(ustr_cmp_cstr_eq(c,"this is a real donut"));
 
 	/* use sub as an erase */
-	Ustr *blank = ustr_dup_empty();
+	blank = ustr_dup_empty();
 	ASSERT(ustr_sc_sub(&c,1,10,blank));
 	PRINT_RESULT(c)
 	ASSERT(ustr_cmp_cstr_eq(c,"real donut"));
 	/* replacement string length = old string length */
-	Ustr *same_len_str = ustr_dup_cstr("mmmm");
+	same_len_str = ustr_dup_cstr("mmmm");
 	ASSERT(ustr_sc_sub(&c,1,4,same_len_str));
 	PRINT_RESULT(c)
 	ASSERT(ustr_cmp_cstr_eq(c,"mmmm donut"));
@@ -64,35 +73,31 @@ int tst()
 	ASSERT(ustr_sc_sub(&c,6,5,repl));
 	PRINT_RESULT(c)
 	ASSERT(ustr_cmp_cstr_eq(c,"mmmm sprinkles"));
-	/* invalid buffer (generates compilation warning though) */
-	ASSERT(ustr_sc_sub(0,4,5,repl) == USTR_FALSE);
 	ustr_free(repl);
-	Ustr *d = ustr_dup_cstr("aabbccabcabc");
+	d = ustr_dup_cstr("aabbccabcabc");
 	repl = ustr_dup_cstr(" ");
-	Ustr *needle = ustr_dup_cstr("a");
+	needle = ustr_dup_cstr("a");
 	/* replace */
-	ASSERT(ustr_replace(&d,needle,repl,0));
+	ASSERT(ustr_sc_replace(&d,needle,repl,0));
 	PRINT_RESULT(d)
-	const char *newstr = "  bbcc bc bc";
+	newstr = "  bbcc bc bc";
 	ASSERT(ustr_cmp_cstr_eq(d,newstr));
 	ustr_free(repl);
 	ustr_free(needle);
 	/* limited number of replacements */
 	repl = ustr_dup_cstr(".");
 	needle = ustr_dup_cstr("c");
-	ASSERT(ustr_replace(&d,needle,repl,1) == 1);
+	ASSERT(ustr_sc_replace(&d,needle,repl,1) == 1);
 	PRINT_RESULT(d)
 	newstr = "  bb.c bc bc";
 	ASSERT(ustr_cmp_cstr_eq(d,newstr));
 	ustr_free(needle);
 	/* replace w/ no matches */
 	needle = ustr_dup_cstr("ab");
-	ASSERT(ustr_replace(&d,needle,repl,0) == 0);
+	ASSERT(ustr_sc_replace(&d,needle,repl,0) == 0);
 	PRINT_RESULT(d)
 	ASSERT(ustr_cmp_cstr_eq(d,newstr));
 	ustr_free(repl);
-	/* invalid haystack in replace (generates compilation warning) */
-	ASSERT(ustr_replace(0,needle,repl,0) == USTR_FALSE);
 
 	PRINT_RESULT(c)
 	

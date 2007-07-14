@@ -1,3 +1,13 @@
+2007-07-13  James Antill  <james@and.org>
+
+	* T/ctst_17_sub.c: Initial fixups.
+
+	* ustr-sub-code.h (ustr_sub_subustr): Added function.
+
+	* ustr-sub-code.h: Initial fixups.
+
+	* ustr-sub.h: Initial fixups.
+
 2007-07-13  Paul Rosenfeld <prosenfeld@tresys.com>
 
 	* ustr-sub-code.h (ustr_sub_buf): Added function.
