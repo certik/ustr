@@ -1,5 +1,8 @@
 2007-07-15  James Antill  <james@and.org>
 
+	* ustr-sub-internal.h (USTR_SUB_INTERNAL_H): Added file, and all ustrp
+	wrapper APIs.
+
 	* ustr-main-code.h (ustr_del): Try to set enomem, if dupx fails.
 	(ustr_del_subustr): Try to set enomem, if dupx fails.
 	(ustr_add): Try to set enomem, if dupx fails.
