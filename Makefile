@@ -74,6 +74,8 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_7_auto octst_7_auto \
            tst_8_spn  ctst_8_spn \
           otst_8_spn octst_8_spn \
+           tst_9_ins  ctst_9_ins \
+          otst_9_ins octst_9_ins \
            tst_10_b  ctst_10_b \
           otst_10_b octst_10_b \
            tst_11_io  ctst_11_io \

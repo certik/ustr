@@ -1,5 +1,6 @@
 #include "tst.h"
 
+static const char *rf = __FILE__;
 
 #if 0
 #	include <stdio.h>
