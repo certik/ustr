@@ -74,8 +74,6 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_7_auto octst_7_auto \
            tst_8_spn  ctst_8_spn \
           otst_8_spn octst_8_spn \
-           tst_9_pool  ctst_9_pool \
-          otst_9_pool octst_9_pool \
            tst_10_b  ctst_10_b \
           otst_10_b octst_10_b \
            tst_11_io  ctst_11_io \
@@ -92,6 +90,8 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_16_parse octst_16_parse \
            tst_17_sub    ctst_17_sub \
           otst_17_sub   octst_17_sub \
+           tst_98_pool   ctst_98_pool \
+          otst_98_pool  octst_98_pool \
            tst_99_64bit  ctst_99_64bit \
           otst_99_64bit octst_99_64bit
 XFAIL_TESTS = 
