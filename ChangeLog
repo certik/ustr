@@ -1,3 +1,18 @@
+2007-07-14  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr_add_buf): Remove code.
+	(ustr_add_rep_chr): Remove code.
+
+	* ustr-sub-code.h (ustr_sub_rep_chr): Added function.
+	(ustr_sub_subustr): Fix typo of *ps1 into s2, must test!
+	(ustr_sc_sub_subustr): Added function.
+	(ustr_sc_replace_buf): Added function.
+	(ustr_sub_undef): Added function.
+
+	* ustr-sub.h (ustr_sc_replace_cstr): Added function.
+
+	* ustr-sub-code.h (ustr_sc_replace): Optimization, so we don't go n**2.
+
 2007-07-13  James Antill  <james@and.org>
 
 	* ustr-import.in: Add sub.

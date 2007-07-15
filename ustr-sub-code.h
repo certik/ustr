@@ -3,13 +3,13 @@
 #endif
 
 USTR_CONF_I_PROTO
-int ustr_sub_buf(struct Ustr **ps1, size_t pos, const void *buf, size_t blen)
+int ustr_sub_undef(struct Ustr **ps1, size_t pos, size_t len)
 {
   size_t clen;
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
-  if (!blen)
+  if (!len)
     return (USTR_TRUE);
 
   clen = ustr_assert_valid_subustr(*ps1, pos, 1);
@@ -17,15 +17,25 @@ int ustr_sub_buf(struct Ustr **ps1, size_t pos, const void *buf, size_t blen)
     return (USTR_FALSE);
   --pos;
   
-  if ((clen - pos) < blen)
+  if ((clen - pos) < len)
   { /* need to expand s1, it's basically like ustr_set() with an offset */
-    if (!ustr_add_undef(ps1, blen - (clen - pos)))
+    if (!ustr_add_undef(ps1, len - (clen - pos)))
       return (USTR_FALSE);
   }
   else if (!ustr_sc_ensure_owner(ps1))
     return (USTR_FALSE);
   
-  ustr__memcpy(*ps1, pos, buf, blen);
+  return (USTR_TRUE);
+}
+
+USTR_CONF_I_PROTO
+int ustr_sub_buf(struct Ustr **ps1, size_t pos, const void *buf, size_t len)
+{
+  if (!ustr_sub_undef(ps1, pos, len))
+    return (USTR_FALSE);
+  --pos;
+  
+  ustr__memcpy(*ps1, pos, buf, len);
 
   return (USTR_TRUE);
 }
@@ -39,12 +49,24 @@ int ustr_sub(struct Ustr **s1, size_t pos, const struct Ustr *s2)
 USTR_CONF_I_PROTO
 int ustr_sub_subustr(struct Ustr **ps1, size_t pos1,
                      const struct Ustr *s2, size_t pos2, size_t len2)
-{ /* opts needed? */
-  if (!ustr_assert_valid_subustr(*ps1, pos2, len2))
+{
+  if (!ustr_assert_valid_subustr(s2, pos2, len2))
     return (USTR_FALSE);
   --pos2;
   
   return (ustr_sub_buf(ps1, pos1, ustr_cstr(s2) + pos2, len2));
+}
+
+USTR_CONF_I_PROTO
+int ustr_sub_rep_chr(struct Ustr **ps1, size_t pos, char chr, size_t len)
+{
+  if (!ustr_sub_undef(ps1, pos, len))
+    return (USTR_FALSE);
+  --pos;
+  
+  ustr__memset(*ps1, pos, chr, len);
+
+  return (USTR_FALSE);
 }
 
 USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
@@ -58,12 +80,15 @@ USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
 
   if (blen <= olen)
   {
-    if (!ustr_sc_ensure_owner(ps1))
+    if (blen < olen)
+    {
+      if (!ustr_del_subustr(ps1, pos + blen, olen - blen))
+        return (USTR_FALSE);
+    }
+    else if (!ustr_sc_ensure_owner(ps1))
       return (USTR_FALSE);
     
     ustr_sub_buf(ps1, pos, buf, blen);
-    if (blen < olen)
-      ustr_del_subustr(ps1, pos + blen, olen - blen);
     return (USTR_TRUE);
   }
   
@@ -98,27 +123,40 @@ int ustr_sc_sub(struct Ustr **ps1,size_t pos,size_t olen, const struct Ustr *s2)
 }
 
 USTR_CONF_I_PROTO
-size_t ustr_sc_replace(struct Ustr **ps1, const struct Ustr *srch,
-                       const struct Ustr *repl, size_t lim)
+int ustr_sc_sub_subustr(struct Ustr **ps1, size_t pos1, size_t len1,
+                        const struct Ustr *s2, size_t pos2, size_t len2)
 {
-  size_t olen = ustr_len(srch);
-  size_t nlen = ustr_len(repl);
-  size_t num = 0;
-  size_t pos = 0;
+  if (!ustr_assert_valid_subustr(s2, pos2, len2))
+    return (USTR_FALSE);
+  --pos2;
+  
+  return (ustr_sc_sub_buf(ps1, pos1, len1, ustr_cstr(s2) + pos2, len2));
+}
+
+USTR_CONF_I_PROTO
+size_t ustr_sc_replace_buf(struct Ustr **ps1, const void *optr, size_t olen,
+                           const void *nptr, size_t nlen, size_t lim)
+{
+  size_t num  = 0;
+  size_t tlen = 0;
+  size_t pos  = 0;
   struct Ustr *ret = USTR_NULL;
+  const char *rptr;
+  size_t lpos = 0;
+  size_t roff = 0;
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
-  USTR_ASSERT(ustr_assert_valid(srch));
-  USTR_ASSERT(ustr_assert_valid(repl));
-
-  if (nlen <= olen)
-  { /* "fast path" ... as we can't fail after we are the owner() */
+  
+  if (nlen == olen)
+  { /* "fast path" ... as we can't fail after we are the owner(). In theory
+     * we can do nlen <= olen, but then we'll spend a lot of time calling
+     * memmove(). Which might be painful, so let that fall through to dupx(). */
     if (!ustr_sc_ensure_owner(ps1))
-      return (0);
+      goto fail_alloc;
     
-    while ((pos = ustr_srch_fwd(*ps1, pos, srch)))
+    while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
     {
-      ustr_sc_sub(ps1, pos, olen, repl);
+      ustr_sub_buf(ps1, pos, nptr, nlen);
       pos += nlen - 1;
       
       ++num;
@@ -128,44 +166,71 @@ size_t ustr_sc_replace(struct Ustr **ps1, const struct Ustr *srch,
     
     return (num);
   }
-
-  /* Other option is to pre-calc size, and do single alloc. Using dup is much
-   * slower but simpler.
-
-    while ((pos = ustr_srch_fwd(*ps1, pos, srch)))
-    {
-      pos += olen - 1;
-      ++num;
-      if (lim && (num == lim))
-        break;
-    }
-
-    if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1))))
-      fail;
-
-    while (srch)
-    { add_before; add_repl; }
-    add_after;
-  */
-  if (!(ret = ustr_dup(*ps1)))
-    return (0);
-
-  while ((pos = ustr_srch_fwd(ret, pos, srch)))
+  
+  /* pre-calc size, and do single alloc and then memcpy.
+   * Using dup()/ustr_sc_sub() is much simpler but very slow
+   * for large strings. */
+  tlen = ustr_len(*ps1);
+  while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
   {
-    if (!ustr_sc_sub(ps1, pos, olen, repl))
-      goto fail_sub;
-    pos += nlen - 1;
+    size_t tmp = tlen + (nlen - olen); /* can go up or down */
     
+    pos += olen - 1;
+
+    if (tmp < tlen)
+      return (0);
+    tlen = tmp;
+
     ++num;
     if (lim && (num == lim))
       break;
   }
 
+  if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1), tlen)))
+    goto fail_alloc;
+
+  if (!tlen) /* minor speed hack */
+    goto done_slow_sub;
+  
+  rptr = ustr_cstr(*ps1);
+  lpos = 1;
+  roff = 0;
+  pos  = 0;
+  num  = 0;
+  while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
+  {
+    const char *tptr = rptr + roff;
+    size_t blen = pos - lpos;
+    
+    ustr_sub_buf(&ret, lpos, tptr, blen);
+    ustr_sub_buf(&ret,  pos, nptr, nlen);
+
+    lpos = pos + nlen;
+    roff = pos + olen - 1;
+
+    ++num;
+    if (lim && (num == lim))
+      break;
+  }
+  ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - (lpos - 1));
+  
+ done_slow_sub:
   ustr_sc_free2(ps1, ret);
   
   return (num);
 
- fail_sub:
-  ustr_free(ret);
+ fail_alloc:
+  ustr_setf_enomem_err(*ps1);
   return (0);
+}
+
+USTR_CONF_I_PROTO
+size_t ustr_sc_replace(struct Ustr **ps1, const struct Ustr *srch,
+                       const struct Ustr *repl, size_t lim)
+{
+  USTR_ASSERT(ustr_assert_valid(srch));
+  USTR_ASSERT(ustr_assert_valid(repl));
+
+  return (ustr_sc_replace_buf(ps1, ustr_cstr(srch), ustr_len(srch),
+                              ustr_cstr(repl), ustr_len(repl), lim));
 }

@@ -1215,17 +1215,10 @@ int ustrp_add_undef(struct Ustr_pool *p, struct Ustrp **ps1, size_t len)
 USTR_CONF_i_PROTO int ustrp__add_buf(struct Ustr_pool *p, struct Ustr **ps1,
                                      const void *s2, size_t len)
 {
-  size_t os1len = 0;
-  
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
-  
-  if (!len) return (USTR_TRUE);
-
-  os1len = ustr_len(*ps1);
   if (!ustrp__add_undef(p, ps1, len))
     return (USTR_FALSE);
 
-  ustr__memcpy(*ps1, os1len, s2, len);
+  ustr__memcpy(*ps1, ustr_len(*ps1) - len, s2, len);
 
   return (USTR_TRUE);
 }
@@ -1341,17 +1334,10 @@ int ustrp_add_subustrp(struct Ustr_pool *p, struct Ustrp **ps1,
 USTR_CONF_i_PROTO int ustrp__add_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
                                          char chr, size_t len)
 {
-  size_t os1len = 0;
-  
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
-  
-  if (!len) return (USTR_TRUE);
-
-  os1len = ustr_len(*ps1);
   if (!ustrp__add_undef(p, ps1, len))
     return (USTR_FALSE);
 
-  ustr__memset(*ps1, os1len, chr, len);
+  ustr__memset(*ps1, ustr_len(*ps1) - len, chr, len);
 
   return (USTR_TRUE);
 }
