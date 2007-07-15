@@ -440,10 +440,7 @@ fi
 
 # ustr-cntl is hacked into ustr-main.h ... for various reasons.
 
-if $set; then
-  echo '#include "ustr-set.h"'  >> $outname
-fi
-if $fmt; then # FMT weak deps. on SET
+if $fmt; then
   echo '#include "ustr-fmt.h"'  >> $outname
 fi
 
@@ -451,7 +448,7 @@ if $io; then
   echo '#include "ustr-io.h"' >> $outname
 fi
 
-if $ins; then
+if $ins; then # INS weak deps. on FMT
   echo '#include "ustr-ins.h"' >> $outname
 fi
 
@@ -467,6 +464,10 @@ if $sc; then
   echo '#include "ustr-sc.h"' >> $outname
 fi
 
+if $set; then # SET weak deps. on FMT
+  echo '#include "ustr-set.h"'  >> $outname
+fi
+
 if $srch; then
   echo '#include "ustr-srch.h"' >> $outname
 fi
@@ -477,7 +478,7 @@ if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
 fi
 
-if $sub; then # SUB hard deps. on sc, srch, utf8
+if $sub; then # SUB hard deps. on sc, srch, utf8, week dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
 fi
 

@@ -178,3 +178,241 @@ int ustr_set_rep_chr(struct Ustr **ps1, char chr, size_t len)
 USTR_CONF_I_PROTO int ustrp_set_rep_chr(struct Ustr_pool *p, struct Ustrp **ps1,
                                         char chr, size_t len)
 { return (ustrp__set_rep_chr(p, USTR__PPTR(ps1), chr, len)); }
+
+#ifdef USTR_FMT_H
+# if USTR_CONF_HAVE_VA_COPY
+USTR_CONF_e_PROTO
+int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
+                        const char *fmt, va_list ap)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 4)) USTR__COMPILE_ATTR_FMT(4, 0);
+USTR_CONF_i_PROTO
+int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
+                        const char *fmt, va_list ap)
+{ /* NOTE: Copy and pasted so we can use ustrp_set_undef() */
+  va_list nap;
+  int rc = -1;
+  char buf[USTR__SNPRINTF_LOCAL];
+  
+  va_copy(nap, ap);
+  rc = vsnprintf(buf, sizeof(buf), fmt, nap);
+  va_end(nap);
+
+  if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
+    return (USTR_FALSE);
+
+  if (lim && ((size_t)rc > lim))
+    rc = lim;
+  
+  if ((size_t)rc < sizeof(buf)) /* everything is done */
+    return (ustrp__set_buf(p, ps1, buf, rc));
+  
+  if (!ustrp__set_undef(p, ps1, rc))
+  {
+    errno = ENOMEM; /* for EILSEQ etc. */
+    return (USTR_FALSE);
+  }
+  
+  vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
+
+  USTR_ASSERT(ustr_assert_valid(*ps1));
+  
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_set_vfmt_lim(struct Ustr **ps1, size_t lim,
+                                        const char *fmt, va_list ap)
+{ return (ustrp__set_vfmt_lim(0, ps1, lim, fmt, ap)); }
+USTR_CONF_I_PROTO
+int ustrp_set_vfmt_lim(struct Ustr_pool *p,struct Ustrp **ps1, size_t lim,
+                       const char *fmt, va_list ap)
+{ return (ustrp__set_vfmt_lim(p, USTR__PPTR(ps1), lim, fmt, ap)); }
+
+USTR_CONF_I_PROTO
+int ustr_set_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustr_set_vfmt_lim(ps1, lim, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+
+USTR_CONF_I_PROTO
+int ustrp_set_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1, size_t lim,
+                      const char*fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustrp_set_vfmt_lim(p, ps1, lim, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+
+USTR_CONF_I_PROTO int ustr_set_vfmt(struct Ustr **ps1,
+                                    const char *fmt, va_list ap)
+{ return (ustr_set_vfmt_lim(ps1, 0, fmt, ap)); }
+
+USTR_CONF_I_PROTO int ustrp_set_vfmt(struct Ustr_pool *p, struct Ustrp **ps1,
+                                     const char *fmt, va_list ap)
+{ return (ustrp_set_vfmt_lim(p, ps1, 0, fmt, ap)); }
+
+USTR_CONF_I_PROTO int ustr_set_fmt(struct Ustr **ps1, const char *fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustr_set_vfmt(ps1, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+
+USTR_CONF_I_PROTO int ustrp_set_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
+                                    const char *fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustrp_set_vfmt(p, ps1, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+# else
+USTR_CONF_I_PROTO
+int ustr_set_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
+{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
+  va_list ap;
+  char buf[USTR__SNPRINTF_LOCAL];
+  int ret = -1;
+  
+  va_start(ap, fmt);
+  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_end(ap);
+  
+  if (ret == -1)
+    return (USTR_FALSE);
+
+  if (lim && ((size_t)ret > lim))
+    ret = lim;
+  
+  if ((size_t)ret < sizeof(buf)) /* everything is done */
+    return (ustr_set_buf(ps1, buf, ret));
+  
+  if (!ustr_set_undef(ps1, ret))
+  {
+    errno = ENOMEM; /* for EILSEQ etc. */
+    return (USTR_FALSE);
+  }
+  
+  va_start(ap, fmt);
+  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
+  va_end(ap);
+
+  USTR_ASSERT(ustr_assert_valid(*ps1));
+  return (USTR_TRUE);
+}
+
+USTR_CONF_I_PROTO int ustrp_set_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1,
+                                        size_t lim, const char *fmt, ...)
+{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
+  va_list ap;
+  char buf[USTR__SNPRINTF_LOCAL];
+  int ret = -1;
+  
+  va_start(ap, fmt);
+  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_end(ap);
+  
+  if (ret == -1)
+    return (USTR_FALSE);
+
+  if (lim && ((size_t)ret > lim))
+    ret = lim;
+  
+  if ((size_t)ret < sizeof(buf)) /* everything is done */
+    return (ustrp_set_buf(p, ps1, buf, ret));
+  
+  if (!ustrp_set_undef(p, ps1, ret))
+  {
+    errno = ENOMEM; /* for EILSEQ etc. */
+    return (USTR_FALSE);
+  }
+  
+  va_start(ap, fmt);
+  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
+  va_end(ap);
+
+  USTR_ASSERT(ustr_assert_valid(*ps1));
+  return (USTR_TRUE);
+}
+
+USTR_CONF_I_PROTO int ustr_set_fmt(struct Ustr **ps1, const char *fmt, ...)
+{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
+  va_list ap;
+  char buf[USTR__SNPRINTF_LOCAL];
+  int ret = -1;
+  
+  va_start(ap, fmt);
+  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_end(ap);
+  
+  if (ret == -1)
+    return (USTR_FALSE);
+
+  if ((size_t)ret < sizeof(buf)) /* everything is done */
+    return (ustr_set_buf(ps1, buf, ret));
+  
+  if (!ustr_set_undef(ps1, ret))
+  {
+    errno = ENOMEM; /* for EILSEQ etc. */
+    return (USTR_FALSE);
+  }
+  
+  va_start(ap, fmt);
+  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
+  va_end(ap);
+
+  USTR_ASSERT(ustr_assert_valid(*ps1));
+  return (USTR_TRUE);
+}
+
+USTR_CONF_I_PROTO int ustrp_set_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
+                                    const char *fmt, ...)
+{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
+  va_list ap;
+  char buf[USTR__SNPRINTF_LOCAL];
+  int ret = -1;
+  
+  va_start(ap, fmt);
+  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_end(ap);
+  
+  if (ret == -1)
+    return (USTR_FALSE);
+
+  if ((size_t)ret < sizeof(buf)) /* everything is done */
+    return (ustrp_set_buf(p, ps1, buf, ret));
+  
+  if (!ustrp_set_undef(p, ps1, ret))
+  {
+    errno = ENOMEM; /* for EILSEQ etc. */
+    return (USTR_FALSE);
+  }
+  
+  va_start(ap, fmt);
+  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
+  va_end(ap);
+
+  USTR_ASSERT(ustr_assert_valid(*ps1));
+  return (USTR_TRUE);
+}
+# endif
+#endif

@@ -119,6 +119,7 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-cmp-code.h \
              ustr-cntl-code.h \
              ustr-fmt-code.h \
+             ustr-fmt-internal.h \
              ustr-io-code.h \
              ustr-io-internal.h \
              ustr-ins-code.h \
