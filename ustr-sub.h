@@ -26,6 +26,9 @@ USTR_CONF_E_PROTO int ustr_sub_rep_chr(struct Ustr **, size_t, char, size_t)
 /* FIXME: ustrp_*() */
 
 USTR_CONF_E_PROTO
+int ustr_sc_sub_undef(struct Ustr **, size_t, size_t, size_t)
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
 int ustr_sc_sub_buf(struct Ustr **, size_t, size_t, const void *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
@@ -37,6 +40,9 @@ int ustr_sc_sub_cstr(struct Ustr **, size_t, size_t, const char *)
 USTR_CONF_E_PROTO
 int ustr_sc_sub_subustr(struct Ustr **, size_t, size_t,
                         const struct Ustr *, size_t, size_t)
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+int ustr_sc_sub_rep_chr(struct Ustr **, size_t, size_t, char, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 /* FIXME: ustrp_*() */

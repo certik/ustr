@@ -1,3 +1,5 @@
+/* Copyright (c) 2007 Paul Rosenfeld
+                      James Antill -- See LICENSE file for terms. */
 #ifndef USTR_SUB_H
 #error " Include ustr-sub.h before this file."
 #endif
@@ -69,8 +71,8 @@ int ustr_sub_rep_chr(struct Ustr **ps1, size_t pos, char chr, size_t len)
   return (USTR_FALSE);
 }
 
-USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
-                                      const void *buf, size_t blen)
+USTR_CONF_I_PROTO
+int ustr_sc_sub_undef(struct Ustr **ps1, size_t pos,size_t olen, size_t len)
 {
   struct Ustr *s1 = *ps1;
   size_t clen;
@@ -78,31 +80,22 @@ USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));  
 
-  if (blen <= olen)
-  {
-    if (blen < olen)
-    {
-      if (!ustr_del_subustr(ps1, pos + blen, olen - blen))
-        return (USTR_FALSE);
-    }
-    else if (!ustr_sc_ensure_owner(ps1))
-      return (USTR_FALSE);
+  if (len < olen)
+    return (ustr_del_subustr(ps1, pos + len, olen - len));
+
+  if (len == olen)
+    return (ustr_sc_ensure_owner(ps1));
     
-    ustr_sub_buf(ps1, pos, buf, blen);
-    return (USTR_TRUE);
-  }
-  
   clen = ustr_assert_valid_subustr(s1, pos, olen);
   if (!clen)
     return (USTR_FALSE);
   
-  /* FIXME: slow, esp. when used for ustr_sc_replace()
-     ustr_ins_*() */
+  /* move to using ustr_ins_undef*() ? */
   if (!(ret = ustr_dupx_empty(USTR__DUPX_FROM(s1))))
     return (USTR_FALSE);
   
   ustr_add_subustr(&ret, s1, 1, pos - 1);
-  ustr_add_buf(&ret, buf, blen);
+  ustr_add_undef(&ret, len);
   ustr_add_subustr(&ret, s1, pos + olen, clen - (pos + olen) + 1);
   
   if (ustr_enomem(ret))
@@ -114,6 +107,15 @@ USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
   ustr_sc_free2(ps1, ret);
   
   return (USTR_TRUE);
+}
+
+USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
+                                      const void *buf, size_t len)
+{
+  if (!ustr_sc_sub_undef(ps1, pos, olen, len))
+    return (USTR_FALSE);
+
+  return (ustr_sub_buf(ps1, pos, buf, len));
 }
 
 USTR_CONF_I_PROTO
@@ -131,6 +133,16 @@ int ustr_sc_sub_subustr(struct Ustr **ps1, size_t pos1, size_t len1,
   --pos2;
   
   return (ustr_sc_sub_buf(ps1, pos1, len1, ustr_cstr(s2) + pos2, len2));
+}
+
+USTR_CONF_I_PROTO
+int ustr_sc_sub_rep_chr(struct Ustr **ps1, size_t pos, size_t olen,
+                        char chr, size_t len)
+{
+  if (!ustr_sc_sub_undef(ps1, pos, olen, len))
+    return (USTR_FALSE);
+
+  return (ustr_sub_rep_chr(ps1, pos, chr, len));
 }
 
 USTR_CONF_I_PROTO

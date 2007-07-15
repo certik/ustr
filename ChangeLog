@@ -1,3 +1,7 @@
+2007-07-15  James Antill  <james@and.org>
+
+	* ustr-sub-code.h (ustr_sc_sub_undef): Added function.
+
 2007-07-14  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_add_buf): Remove code.
