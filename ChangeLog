@@ -1,6 +1,18 @@
 2007-07-15  James Antill  <james@and.org>
 
+	* ustr-main-code.h (ustr_del): Try to set enomem, if dupx fails.
+	(ustr_del_subustr): Try to set enomem, if dupx fails.
+	(ustr_add): Try to set enomem, if dupx fails.
+
+	* ustr-ins-code.h (ustr_ins_undef): Added function.
+	(ustr_ins): Added function.
+	(ustr_ins_subustr): Added function.
+	(ustr_ins_rep_chr): Added function.
+
+	* ustr-ins.h (ustr_ins_cstr): Added function.
+
 	* ustr-sub-code.h (ustr_sc_sub_undef): Added function.
+	(ustr_sc_sub_undef): Move to using ustr_ins*().
 
 2007-07-14  James Antill  <james@and.org>
 

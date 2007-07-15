@@ -61,6 +61,7 @@ LIB_STATIC_DBG = \
   ustr-cmp-code-a-dbg.o \
   ustr-fmt-code-a-dbg.o \
   ustr-io-code-a-dbg.o \
+  ustr-ins-code-a-dbg.o \
   ustr-main-code-a-dbg.o \
   ustr-parse-code-a-dbg.o \
   ustr-pool-code-a-dbg.o \
@@ -74,6 +75,7 @@ LIB_STATIC_OPT = \
   ustr-cmp-code-a-opt.o \
   ustr-fmt-code-a-opt.o \
   ustr-io-code-a-opt.o \
+  ustr-ins-code-a-opt.o \
   ustr-main-code-a-opt.o \
   ustr-parse-code-a-opt.o \
   ustr-pool-code-a-opt.o \

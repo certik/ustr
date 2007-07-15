@@ -698,14 +698,16 @@ int ustrp__rw_realloc(struct Ustr_pool *p, struct Ustr **ps1,
 USTR_CONF_i_PROTO void ustr__memcpy(struct Ustr *s1, size_t off,
                                     const void *ptr, size_t len)
 { /* can't call ustr_wstr() if len == 0, as it might be RO */
-  if (!len) return;
+  if (!len)
+    return;
   memcpy(ustr_wstr(s1) + off, ptr, len);
 }
 
 USTR_CONF_i_PROTO void ustr__memset(struct Ustr *s1, size_t off,
                                     int chr, size_t len)
 { /* can't call ustr_wstr() if len == 0, as it might be RO */
-  if (!len) return;
+  if (!len)
+    return;
   memset(ustr_wstr(s1) + off, chr, len);
 }
 
@@ -845,7 +847,8 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
 
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
-  if (!len) return (USTR_TRUE);
+  if (!len)
+    return (USTR_TRUE);
 
   s1   = *ps1;
   clen = ustr_len(s1);
@@ -881,7 +884,10 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
   USTR_ASSERT(!ustr_limited(s1));
   
   if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen)))
+  {
+    ustr_setf_enomem_err(s1);
     return (USTR_FALSE);
+  }
 
   ustr__memcpy(ret, 0, ustr_cstr(s1), nlen);
   ustrp__sc_free2(p, ps1, ret);
@@ -907,12 +913,13 @@ int ustrp__del_subustr(struct Ustr_pool *p,
   size_t nsz = 0;
   size_t clen = 0;
   size_t nlen = 0;
-  const char *ocstr = 0;
   int alloc = USTR_FALSE;
+  const char *ocstr = 0;
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
 
-  if (!len) return (USTR_TRUE);
+  if (!len)
+    return (USTR_TRUE);
 
   s1   = *ps1;
   clen = ustr_assert_valid_subustr(s1, pos, len);
@@ -939,9 +946,12 @@ int ustrp__del_subustr(struct Ustr_pool *p,
   
   /* Can't do anything sane, give up and build a new string from scratch */
   if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen)))
+  {
+    ustr_setf_enomem_err(s1);
     return (USTR_FALSE);
+  }
 
-  ocstr = ustr_cstr(*ps1);
+  ocstr = ustr_cstr(s1);
 
   USTR_ASSERT(pos || (nlen - pos)); /* can be both */
   
@@ -1167,7 +1177,8 @@ int ustrp__add_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
-  if (!len) return (USTR_TRUE);
+  if (!len)
+    return (USTR_TRUE);
 
   s1   = *ps1;
   clen = ustr_len(s1);
@@ -1283,7 +1294,10 @@ int ustrp__add(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   USTR_ASSERT(!len1);
     
   if (!(ret = ustrp__dupx(p, USTR__DUPX_FROM(*ps1), s2)))
+  {
+    ustr_setf_enomem_err(*ps1);
     return (USTR_FALSE);
+  }
   
   ustrp__sc_free2(p, ps1, ret);
   return (USTR_TRUE);
@@ -1304,7 +1318,8 @@ int ustrp__add_subustr(struct Ustr_pool *p, struct Ustr **ps1,
   USTR_ASSERT(ustr_assert_valid(s2));
   USTR_ASSERT(pos);
 
-  if (!len) return (USTR_TRUE);
+  if (!len)
+    return (USTR_TRUE);
   
   clen = ustr_assert_valid_subustr(s2, pos, len);
   if (!clen)

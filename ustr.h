@@ -17,6 +17,7 @@
 #include "ustr-set.h"
 #include "ustr-fmt.h"
 #include "ustr-io.h"
+#include "ustr-ins.h"
 #include "ustr-parse.h"
 #include "ustr-pool.h"
 #include "ustr-sc.h"

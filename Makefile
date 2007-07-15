@@ -104,6 +104,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-compiler.h \
            ustr-fmt.h \
            ustr-io.h \
+           ustr-ins.h \
            ustr-main.h \
            ustr-parse.h \
            ustr-pool.h \
@@ -120,6 +121,8 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-fmt-code.h \
              ustr-io-code.h \
              ustr-io-internal.h \
+             ustr-ins-code.h \
+             ustr-ins-internal.h \
              ustr-main-code.h \
              ustr-main-internal.h \
              ustr-parse-code.h \
@@ -139,6 +142,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-cmp-dbg-code.c \
              ustr-fmt-dbg-code.c \
              ustr-io-dbg-code.c \
+             ustr-ins-dbg-code.c \
              ustr-main-dbg-code.c \
              ustr-parse-dbg-code.c \
              ustr-pool-dbg-code.c \
@@ -153,6 +157,7 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-cmp-opt-code.c \
              ustr-fmt-opt-code.c \
              ustr-io-opt-code.c \
+             ustr-ins-opt-code.c \
              ustr-main-opt-code.c \
              ustr-parse-opt-code.c \
              ustr-pool-opt-code.c \
@@ -189,6 +194,7 @@ LIB_SHARED_DBG = \
   ustr-cmp-code-so-dbg.o \
   ustr-fmt-code-so-dbg.o \
   ustr-io-code-so-dbg.o \
+  ustr-ins-code-so-dbg.o \
   ustr-main-code-so-dbg.o \
   ustr-parse-code-so-dbg.o \
   ustr-pool-code-so-dbg.o \
@@ -203,6 +209,7 @@ LIB_STATIC_DBG = \
   ustr-cmp-code-a-dbg.o \
   ustr-fmt-code-a-dbg.o \
   ustr-io-code-a-dbg.o \
+  ustr-ins-code-a-dbg.o \
   ustr-main-code-a-dbg.o \
   ustr-parse-code-a-dbg.o \
   ustr-pool-code-a-dbg.o \
@@ -218,6 +225,7 @@ LIB_SHARED_OPT = \
   ustr-cmp-code-so-opt.o \
   ustr-fmt-code-so-opt.o \
   ustr-io-code-so-opt.o \
+  ustr-ins-code-so-opt.o \
   ustr-main-code-so-opt.o \
   ustr-parse-code-so-opt.o \
   ustr-pool-code-so-opt.o \
@@ -232,6 +240,7 @@ LIB_STATIC_OPT = \
   ustr-cmp-code-a-opt.o \
   ustr-fmt-code-a-opt.o \
   ustr-io-code-a-opt.o \
+  ustr-ins-code-a-opt.o \
   ustr-main-code-a-opt.o \
   ustr-parse-code-a-opt.o \
   ustr-pool-code-a-opt.o \

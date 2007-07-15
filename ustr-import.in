@@ -30,16 +30,17 @@ function usage
   echo "         cntl  = Control options dynamically" 1>&2
   echo "         fmt   = Formatted output, sprintf() for Ustr's" 1>&2
   echo "         gdb   = Copy just the .gdbinit file to the local dir" 1>&2
-  echo "         io    = IO routines" 1>&2
+  echo "         io    = Input Output" 1>&2
+  echo "         ins   = Inserting data" 1>&2
   echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
   echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
   echo "         pool  = A simplish bundled memory pool API" 1>&2
   echo "         sc    = Shortcut functions for Ustr's" 1>&2
-  echo "         set   = strcpy() for Ustr's" 1>&2
+  echo "         set   = Setting to data" 1>&2
   echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
   echo "         srch  = Searching, strchr() / strrchr() for Ustr's" 1>&2
   echo "         sub   = Substituting data" 1>&2
-  echo "         utf8  = UTF8 routines" 1>&2
+  echo "         utf8  = UTF8" 1>&2
   echo "" 1>&2
   echo "     Ustr Version: $VERS_FULL" 1>&2
   exit 1
@@ -78,6 +79,7 @@ cmp=false
 cntl=false
 fmt=false
 io=false
+ins=false
 main=false
 parse=false
 pool=false
@@ -92,22 +94,23 @@ gdb=false
 
 for i in $@; do
   case "$i" in
-    all)   all=true                        ;;
-    b)     b=true;               main=true ;;
-    cmp)   cmp=true;             main=true ;;
-    cntl)  cntl=true             main=true ;;
-    fmt)   fmt=true;             main=true ;;
-    gdb)   gdb=true;                       ;;
-    io)    io=true;              main=true ;;
-    main)                        main=true ;;
-    parse) parse=true;           main=true ;;
-    pool)  pool=true;            main=true ;;
-    sc)    sc=true;              main=true ;;
-    set)   set=true;             main=true ;;
-    spn)   spn=true;  srch=true; main=true ;;
-    srch)  srch=true;            main=true ;;
-    sub)   sc=true;   srch=true; main=true ;;
-    utf8)  utf8=true;            main=true ;;
+    all)   all=true                                   ;;
+    b)     b=true;                          main=true ;;
+    cmp)   cmp=true;                        main=true ;;
+    cntl)  cntl=true                        main=true ;;
+    fmt)   fmt=true;                        main=true ;;
+    gdb)   gdb=true;                                  ;;
+    io)    io=true;                         main=true ;;
+    ins)   ins=true;                        main=true ;;
+    main)                                   main=true ;;
+    parse) parse=true;                      main=true ;;
+    pool)  pool=true;                       main=true ;;
+    sc)    sc=true;                         main=true ;;
+    set)   set=true;                        main=true ;;
+    spn)   spn=true;  srch=true;            main=true ;;
+    srch)  srch=true;                       main=true ;;
+    sub)   ins=true;  sc=true;   srch=true; main=true ;;
+    utf8)  utf8=true;                       main=true ;;
     *)
       usage
       ;;
@@ -120,6 +123,7 @@ if $all; then
   cntl=true
   fmt=true
   io=true
+  ins=true
   main=true
   parse=true
   pool=true
@@ -190,6 +194,10 @@ fi
 
 if $io; then
   copy io
+fi
+
+if $ins; then
+  copy ins
 fi
 
 copy main
@@ -441,6 +449,10 @@ fi
 
 if $io; then
   echo '#include "ustr-io.h"' >> $outname
+fi
+
+if $ins; then
+  echo '#include "ustr-ins.h"' >> $outname
 fi
 
 if $parse; then

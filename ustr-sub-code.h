@@ -72,41 +72,21 @@ int ustr_sub_rep_chr(struct Ustr **ps1, size_t pos, char chr, size_t len)
 }
 
 USTR_CONF_I_PROTO
-int ustr_sc_sub_undef(struct Ustr **ps1, size_t pos,size_t olen, size_t len)
+int ustr_sc_sub_undef(struct Ustr **ps1, size_t pos, size_t olen, size_t len)
 {
-  struct Ustr *s1 = *ps1;
-  size_t clen;
-  struct Ustr *ret = USTR_NULL;
-  
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));  
-
-  if (len < olen)
-    return (ustr_del_subustr(ps1, pos + len, olen - len));
+  USTR_ASSERT(ps1);
 
   if (len == olen)
     return (ustr_sc_ensure_owner(ps1));
-    
-  clen = ustr_assert_valid_subustr(s1, pos, olen);
-  if (!clen)
+
+  if (!ustr_assert_valid_subustr(*ps1, pos, olen))
     return (USTR_FALSE);
   
-  /* move to using ustr_ins_undef*() ? */
-  if (!(ret = ustr_dupx_empty(USTR__DUPX_FROM(s1))))
-    return (USTR_FALSE);
-  
-  ustr_add_subustr(&ret, s1, 1, pos - 1);
-  ustr_add_undef(&ret, len);
-  ustr_add_subustr(&ret, s1, pos + olen, clen - (pos + olen) + 1);
-  
-  if (ustr_enomem(ret))
-  {
-    ustr_free(ret);
-    return (USTR_FALSE);
-  }
-  
-  ustr_sc_free2(ps1, ret);
-  
-  return (USTR_TRUE);
+  /* work at end, so we don't have to memmove as much */
+  if (len < olen)
+    return (ustr_del_subustr(ps1, pos +  len,     olen -  len));
+
+  return (ustrp__ins_undef(0,ps1, pos + olen - 1,  len - olen));
 }
 
 USTR_CONF_I_PROTO int ustr_sc_sub_buf(struct Ustr **ps1, size_t pos,size_t olen,
