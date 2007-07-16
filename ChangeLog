@@ -1,5 +1,24 @@
 2007-07-15  James Antill  <james@and.org>
 
+	* ustr-ins-code.h (ustr_ins_rep_chr): Fix pos.
+	(ustr_ins_buf): Fix pos.
+	(ustr_ins_rep_chr): Fix return value.
+	(ustr_ins_undef): Get wstr after realloc().
+
+	* ustr-sub-code.h (ustr_sub_vfmt_lim): Added function.
+	(ustr_sub_fmt_lim): Added function.
+	(ustr_sub_vfmt): Added function.
+	(ustr_sub_fmt): Added function.
+	(ustr_sc_sub_vfmt_lim): Added function.
+	(ustr_sc_sub_fmt_lim): Added function.
+	(ustr_sc_sub_vfmt): Added function.
+	(ustr_sc_sub_fmt): Added function.
+
+	* ustr-ins-code.h (ustr_ins_vfmt_lim): Added function.
+	(ustr_ins_fmt_lim): Added function.
+	(ustr_ins_vfmt): Added function.
+	(ustr_ins_fmt): Added function.
+
 	* ustr-sub-internal.h (USTR_SUB_INTERNAL_H): Added file, and all ustrp
 	wrapper APIs.
 

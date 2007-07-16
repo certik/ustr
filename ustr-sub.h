@@ -87,7 +87,7 @@ int ustrp_sc_sub_rep_chr(struct Ustr_pool *, struct Ustrp **, size_t, size_t,
                          char, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 
-
+#ifdef USTR_SRCH_H
 USTR_CONF_E_PROTO size_t ustr_sc_replace_buf(struct Ustr **,
                                              const void *, size_t,
                                              const void *, size_t, size_t)
@@ -111,6 +111,74 @@ USTR_CONF_E_PROTO
 size_t ustrp_sc_replace(struct Ustr_pool *,struct Ustrp **,const struct Ustrp *,
                         const struct Ustrp *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
+#endif
+
+#ifdef USTR_FMT_H
+# if USTR_CONF_HAVE_VA_COPY
+/* sub_fmt */
+USTR_CONF_E_PROTO
+int ustr_sub_vfmt_lim(struct Ustr **, size_t, size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 4)) USTR__COMPILE_ATTR_FMT(4, 0);
+USTR_CONF_E_PROTO
+int ustr_sub_vfmt(struct Ustr **, size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 3)) USTR__COMPILE_ATTR_FMT(3, 0);
+
+USTR_CONF_E_PROTO
+int ustrp_sub_vfmt_lim(struct Ustr_pool *, struct Ustrp **, size_t, size_t,
+                       const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 5)) USTR__COMPILE_ATTR_FMT(5, 0);
+USTR_CONF_E_PROTO int ustrp_sub_vfmt(struct Ustr_pool *, struct Ustrp **,size_t,
+                                     const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 4)) USTR__COMPILE_ATTR_FMT(4, 0);
+USTR_CONF_E_PROTO
+int ustr_sub_fmt_lim(struct Ustr **, size_t, size_t, const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 4)) USTR__COMPILE_ATTR_FMT(4, 5);
+USTR_CONF_E_PROTO int ustr_sub_fmt(struct Ustr **, size_t, const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 3)) USTR__COMPILE_ATTR_FMT(3, 4);
+
+USTR_CONF_E_PROTO
+int ustrp_sub_fmt_lim(struct Ustr_pool *, struct Ustrp **, size_t, size_t,
+                      const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 5)) USTR__COMPILE_ATTR_FMT(5, 6);
+USTR_CONF_E_PROTO
+int ustrp_sub_fmt(struct Ustr_pool *, struct Ustrp **,size_t, const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 4)) USTR__COMPILE_ATTR_FMT(4, 5);
+
+/* sc_sub_fmt */
+USTR_CONF_E_PROTO
+int ustr_sc_sub_vfmt_lim(struct Ustr **, size_t, size_t,
+                         size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 5)) USTR__COMPILE_ATTR_FMT(5, 0);
+USTR_CONF_E_PROTO
+int ustr_sc_sub_vfmt(struct Ustr **, size_t, size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 4)) USTR__COMPILE_ATTR_FMT(4, 0);
+
+USTR_CONF_E_PROTO
+int ustrp_sc_sub_vfmt_lim(struct Ustr_pool *, struct Ustrp **, size_t, size_t,
+                          size_t, const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 6)) USTR__COMPILE_ATTR_FMT(6, 0);
+USTR_CONF_E_PROTO
+int ustrp_sc_sub_vfmt(struct Ustr_pool *, struct Ustrp **,size_t, size_t,
+                      const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 5)) USTR__COMPILE_ATTR_FMT(5, 0);
+USTR_CONF_E_PROTO
+int ustr_sc_sub_fmt_lim(struct Ustr **, size_t, size_t, size_t,
+                        const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 5)) USTR__COMPILE_ATTR_FMT(5, 6);
+USTR_CONF_E_PROTO int ustr_sc_sub_fmt(struct Ustr **, size_t, size_t,
+                                      const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 4)) USTR__COMPILE_ATTR_FMT(4, 5);
+
+USTR_CONF_E_PROTO
+int ustrp_sc_sub_fmt_lim(struct Ustr_pool *, struct Ustrp **, size_t, size_t,
+                         size_t, const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 6)) USTR__COMPILE_ATTR_FMT(6, 7);
+USTR_CONF_E_PROTO
+int ustrp_sc_sub_fmt(struct Ustr_pool *, struct Ustrp **, size_t, size_t,
+                     const char *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 5)) USTR__COMPILE_ATTR_FMT(5, 6);
+# endif
+#endif
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-sub-internal.h"
@@ -138,10 +206,12 @@ USTR_CONF_II_PROTO
 int ustrp_sc_sub_cstr(struct Ustr_pool *p, struct Ustrp **s1,
                       size_t pos, size_t len, const char *cstr)
 { return (ustrp_sc_sub_buf(p, s1, pos, len, cstr, strlen(cstr))); }
+# ifdef USTR_SRCH_H
 USTR_CONF_II_PROTO
 size_t ustrp_sc_replace_cstr(struct Ustr_pool *p, struct Ustrp **s1,
                              const char *oc, const char *nc, size_t lim)
 { return (ustrp_sc_replace_buf(p, s1, oc, strlen(oc), nc, strlen(nc), lim)); }
+# endif
 #endif
 
 

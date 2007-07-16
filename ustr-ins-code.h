@@ -35,11 +35,12 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
 
   if (ustr__rw_add(*ps1, nlen, &sz, &oh, &osz, &nsz, &alloc))
   {
-    char *ptr = ustr_wstr(s1);
+    char *ptr;
     
     if (!ustrp__add_undef(p, ps1, len))
       return (USTR_FALSE);
 
+    ptr = ustr_wstr(*ps1);
     memmove(ptr + pos + len, ptr + pos, (nlen - pos));
 
     USTR_ASSERT(ustr_assert_valid(*ps1));
@@ -76,7 +77,6 @@ USTR_CONF_i_PROTO int ustrp__ins_buf(struct Ustr_pool *p, struct Ustr **ps1,
 {
   if (!ustrp__ins_undef(p, ps1, pos, len))
     return (USTR_FALSE);
-  --pos;
   
   ustr__memcpy(*ps1, pos, buf, len);
 
@@ -125,11 +125,10 @@ USTR_CONF_i_PROTO int ustrp__ins_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
 {
   if (!ustrp__ins_undef(p, ps1, pos, len))
     return (USTR_FALSE);
-  --pos;
   
   ustr__memset(*ps1, pos, chr, len);
 
-  return (USTR_FALSE);
+  return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO
 int ustr_ins_rep_chr(struct Ustr **ps1, size_t pos, char chr, size_t len)
@@ -138,3 +137,109 @@ USTR_CONF_I_PROTO int ustrp_ins_rep_chr(struct Ustr_pool *p, struct Ustrp **ps1,
                                         size_t pos, char chr, size_t len)
 
 { return (ustrp__ins_rep_chr(p, USTR__PPTR(ps1), pos, chr, len)); }
+
+#ifdef USTR_FMT_H
+# if USTR_CONF_HAVE_VA_COPY
+USTR_CONF_i_PROTO
+int ustrp__ins_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
+                        size_t lim, const char *fmt, va_list ap)
+{ /* NOTE: Copy and pasted so we can use ustrp_set_undef() */
+  va_list nap;
+  int rc = -1;
+  char buf[USTR__SNPRINTF_LOCAL];
+  
+  va_copy(nap, ap);
+  rc = vsnprintf(buf, sizeof(buf), fmt, nap);
+  va_end(nap);
+
+  if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
+    return (USTR_FALSE);
+
+  if (lim && ((size_t)rc > lim))
+    rc = lim;
+  
+  if ((size_t)rc < sizeof(buf)) /* everything is done */
+    return (ustrp__ins_buf(p, ps1, pos, buf, rc));
+  
+  if (!ustrp__ins_undef(p, ps1, pos, rc))
+  {
+    errno = ENOMEM; /* for EILSEQ etc. */
+    return (USTR_FALSE);
+  }
+  
+  vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
+
+  USTR_ASSERT(ustr_assert_valid(*ps1));
+  
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_ins_vfmt_lim(struct Ustr **ps1,size_t pos,size_t lim,
+                                        const char *fmt, va_list ap)
+{ return (ustrp__ins_vfmt_lim(0, ps1, pos, lim, fmt, ap)); }
+USTR_CONF_I_PROTO
+int ustrp_ins_vfmt_lim(struct Ustr_pool *p,struct Ustrp **ps1, size_t pos,
+                       size_t lim, const char *fmt, va_list ap)
+{ return (ustrp__ins_vfmt_lim(p, USTR__PPTR(ps1), pos, lim, fmt, ap)); }
+
+USTR_CONF_I_PROTO int ustr_ins_fmt_lim(struct Ustr **ps1, size_t pos,
+                                       size_t lim, const char *fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustr_ins_vfmt_lim(ps1, pos, lim, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+
+USTR_CONF_I_PROTO
+int ustrp_ins_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1, size_t pos,
+                      size_t lim, const char*fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustrp_ins_vfmt_lim(p, ps1, pos, lim, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+
+USTR_CONF_I_PROTO int ustr_ins_vfmt(struct Ustr **ps1, size_t pos,
+                                    const char *fmt, va_list ap)
+{ return (ustr_ins_vfmt_lim(ps1, pos, 0, fmt, ap)); }
+
+USTR_CONF_I_PROTO int ustrp_ins_vfmt(struct Ustr_pool *p, struct Ustrp **ps1,
+                                     size_t pos, const char *fmt, va_list ap)
+{ return (ustrp_ins_vfmt_lim(p, ps1, pos, 0, fmt, ap)); }
+
+USTR_CONF_I_PROTO
+int ustr_ins_fmt(struct Ustr **ps1, size_t pos, const char *fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustr_ins_vfmt(ps1, pos, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+
+USTR_CONF_I_PROTO int ustrp_ins_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
+                                    size_t pos, const char *fmt, ...)
+{
+  va_list ap;
+  int ret = USTR_FALSE;
+  
+  va_start(ap, fmt);
+  ret = ustrp_ins_vfmt(p, ps1, pos, fmt, ap);
+  va_end(ap);
+  
+  return (ret);
+}
+# endif
+#endif

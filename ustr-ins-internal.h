@@ -24,4 +24,13 @@ USTR_CONF_E_PROTO
 int ustrp__ins_rep_chr(struct Ustr_pool *, struct Ustr **, size_t, char, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 
+#ifdef USTR_FMT_H
+# if USTR_CONF_HAVE_VA_COPY
+USTR_CONF_e_PROTO
+int ustrp__ins_vfmt_lim(struct Ustr_pool *, struct Ustr **, size_t, size_t,
+                        const char *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 5)) USTR__COMPILE_ATTR_FMT(5, 0);
+# endif
+#endif
+
 #endif

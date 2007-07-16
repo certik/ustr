@@ -94,23 +94,23 @@ gdb=false
 
 for i in $@; do
   case "$i" in
-    all)   all=true                                   ;;
-    b)     b=true;                          main=true ;;
-    cmp)   cmp=true;                        main=true ;;
-    cntl)  cntl=true                        main=true ;;
-    fmt)   fmt=true;                        main=true ;;
-    gdb)   gdb=true;                                  ;;
-    io)    io=true;                         main=true ;;
-    ins)   ins=true;                        main=true ;;
-    main)                                   main=true ;;
-    parse) parse=true;                      main=true ;;
-    pool)  pool=true;                       main=true ;;
-    sc)    sc=true;                         main=true ;;
-    set)   set=true;                        main=true ;;
-    spn)   spn=true;  srch=true;            main=true ;;
-    srch)  srch=true;                       main=true ;;
-    sub)   ins=true;  sc=true;   srch=true; main=true ;;
-    utf8)  utf8=true;                       main=true ;;
+    all)   all=true              ;;
+    b)     b=true;     main=true ;;
+    cmp)   cmp=true;   main=true ;;
+    cntl)  cntl=true   main=true ;;
+    fmt)   fmt=true;   main=true ;;
+    gdb)   gdb=true;             ;;
+    io)    io=true;    main=true ;;
+    ins)   ins=true;   main=true ;;
+    main)              main=true ;;
+    parse) parse=true; main=true ;;
+    pool)  pool=true;  main=true ;;
+    sc)    sc=true;    main=true ;;
+    set)   set=true;   main=true ;;
+    spn)   spn=true;   main=true ;;
+    srch)  srch=true;  main=true ;;
+    sub)   ins=true;   main=true ;;
+    utf8)  utf8=true;  main=true ;;
     *)
       usage
       ;;
@@ -133,6 +133,24 @@ if $all; then
   srch=true
   sub=true
   utf8=true
+else
+  if $utf8; then
+    sc=true
+  fi
+  if $sub; then
+    sc=true
+    ins=true
+  fi
+  if $sub && $cfiles; then
+    fmt=true
+    srch=true
+  fi
+  if $set && $cfiles; then
+    fmt=true
+  fi
+  if $spn; then
+    srch=true
+  fi
 fi
 
 if $gdb; then
@@ -471,14 +489,14 @@ fi
 if $srch; then
   echo '#include "ustr-srch.h"' >> $outname
 fi
-if $utf8; then
+if $utf8; then # UTF8 deps. on SC
   echo '#include "ustr-utf8.h"' >> $outname
 fi
 if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
 fi
 
-if $sub; then # SUB hard deps. on sc, srch, utf8, week dep. on FMT
+if $sub; then # SUB hard deps. on sc, srch, utf8, weak dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
 fi
 

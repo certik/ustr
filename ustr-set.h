@@ -52,9 +52,9 @@ int ustrp_set_rep_chr(struct Ustr_pool *, struct Ustrp **, char, size_t)
 # if USTR_CONF_HAVE_VA_COPY
 USTR_CONF_E_PROTO
 int ustr_set_vfmt_lim(struct Ustr **, size_t, const char *, va_list)
-    USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(3, 0);
+    USTR__COMPILE_ATTR_NONNULL_L((1, 3)) USTR__COMPILE_ATTR_FMT(3, 0);
 USTR_CONF_E_PROTO int ustr_set_vfmt(struct Ustr **, const char *, va_list)
-    USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(2, 0);
+    USTR__COMPILE_ATTR_NONNULL_L((1, 2)) USTR__COMPILE_ATTR_FMT(2, 0);
 
 USTR_CONF_E_PROTO
 int ustrp_set_vfmt_lim(struct Ustr_pool *, struct Ustrp **, size_t,
@@ -66,9 +66,9 @@ int ustrp_set_vfmt(struct Ustr_pool *, struct Ustrp **, const char *, va_list)
 # endif
 
 USTR_CONF_E_PROTO int ustr_set_fmt_lim(struct Ustr **, size_t,const char *, ...)
-    USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(3, 4);
+    USTR__COMPILE_ATTR_NONNULL_L((1, 3)) USTR__COMPILE_ATTR_FMT(3, 4);
 USTR_CONF_E_PROTO int ustr_set_fmt(struct Ustr **, const char *, ...)
-    USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(2, 3);
+    USTR__COMPILE_ATTR_NONNULL_L((1, 2)) USTR__COMPILE_ATTR_FMT(2, 3);
 
 USTR_CONF_E_PROTO
 int ustrp_set_fmt_lim(struct Ustr_pool *, struct Ustrp **, size_t,
