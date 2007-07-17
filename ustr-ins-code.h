@@ -27,7 +27,7 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
   s1   = *ps1;
   clen = ustr_len(s1);
   USTR_ASSERT_RET(pos <= clen, USTR_FALSE);
-  if (pos-- == clen) /* inserting at the end */
+  if (pos == clen) /* inserting at the end */
     return (ustrp__add_undef(p, ps1, len));
   
   if ((nlen = clen + len) < clen) /* overflow */
@@ -41,7 +41,7 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
       return (USTR_FALSE);
 
     ptr = ustr_wstr(*ps1);
-    memmove(ptr + pos + len, ptr + pos, (nlen - pos));
+    memmove(ptr + pos + len, ptr + pos, (clen - pos));
 
     USTR_ASSERT(ustr_assert_valid(*ps1));
     return (USTR_TRUE);
@@ -147,6 +147,8 @@ int ustrp__ins_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   va_list nap;
   int rc = -1;
   char buf[USTR__SNPRINTF_LOCAL];
+  char *ptr;
+  char save_end;
   
   va_copy(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
@@ -166,8 +168,12 @@ int ustrp__ins_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
     errno = ENOMEM; /* for EILSEQ etc. */
     return (USTR_FALSE);
   }
-  
-  vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
+
+  ptr = ustr_wstr(*ps1);
+
+  save_end = ptr[pos + rc]; /* might be NIL, might be a char */
+  vsnprintf(ptr + pos, rc + 1, fmt, ap);
+  ptr[pos + rc] = save_end;
 
   USTR_ASSERT(ustr_assert_valid(*ps1));
   

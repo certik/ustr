@@ -94,7 +94,7 @@ USTR_CONF_i_PROTO int ustrp__sub_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
   
   ustr__memset(*ps1, pos, chr, len);
 
-  return (USTR_FALSE);
+  return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO
 int ustr_sub_rep_chr(struct Ustr **ps1, size_t pos, char chr, size_t len)
@@ -241,19 +241,29 @@ size_t ustrp__sc_replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   tlen = ustr_len(*ps1);
   while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
   {
-    size_t tmp = tlen + (nlen - olen); /* can go up or down */
-    
     pos += olen - 1;
 
-    if (tmp < tlen)
-      return (0);
-    tlen = tmp;
+    if (nlen > olen) /* can go up or down */
+    {
+      if (tlen > (tlen + (nlen - olen)))
+        return (0);
+      tlen += (nlen - olen);
+    }
+    else
+    {
+      if (tlen < (tlen - (olen - nlen)))
+        return (0);
+      tlen -= (olen - nlen);
+    }
 
     ++num;
     if (lim && (num == lim))
       break;
   }
 
+  if (!num) /* minor speed hack */
+    return (0);
+  
   if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1), tlen)))
     goto fail_alloc;
 
@@ -268,19 +278,21 @@ size_t ustrp__sc_replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
   {
     const char *tptr = rptr + roff;
-    size_t blen = pos - lpos;
+    size_t blen = pos - (roff + 1);
     
-    ustr_sub_buf(&ret, lpos, tptr, blen);
-    ustr_sub_buf(&ret,  pos, nptr, nlen);
+    pos  += olen - 1;
+    USTR_ASSERT(pos == (roff + blen + olen));
+    
+    ustr_sub_buf(&ret, lpos, tptr, blen); lpos += blen;
+    ustr_sub_buf(&ret, lpos, nptr, nlen); lpos += nlen;
 
-    lpos = pos + nlen;
-    roff = pos + olen - 1;
-
+    roff = pos;
+    
     ++num;
     if (lim && (num == lim))
       break;
   }
-  ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - (lpos - 1));
+  ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
   
  done_slow_sub:
   ustr_sc_free2(ps1, ret);
@@ -333,6 +345,8 @@ int ustrp__sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   va_list nap;
   int rc = -1;
   char buf[USTR__SNPRINTF_LOCAL];
+  char *ptr;
+  char save_end;
   
   va_copy(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
@@ -347,13 +361,17 @@ int ustrp__sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   if ((size_t)rc < sizeof(buf)) /* everything is done */
     return (ustrp__sub_buf(p, ps1, pos, buf, rc));
   
-  if (!ustrp__sub_undef(p, ps1, pos, rc))
+  if (!ustrp__sub_undef(p, ps1, pos--, rc))
   {
     errno = ENOMEM; /* for EILSEQ etc. */
     return (USTR_FALSE);
   }
   
-  vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
+  ptr = ustr_wstr(*ps1);
+  
+  save_end = ptr[pos + rc]; /* might be NIL, might be a char */
+  vsnprintf(ptr + pos, rc + 1, fmt, ap);
+  ptr[pos + rc] = save_end;
 
   USTR_ASSERT(ustr_assert_valid(*ps1));
   
@@ -435,6 +453,8 @@ int ustrp__sc_sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   va_list nap;
   int rc = -1;
   char buf[USTR__SNPRINTF_LOCAL];
+  char *ptr;
+  char save_end;
   
   va_copy(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
@@ -449,13 +469,17 @@ int ustrp__sc_sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   if ((size_t)rc < sizeof(buf)) /* everything is done */
     return (ustrp__sc_sub_buf(p, ps1, pos, len, buf, rc));
   
-  if (!ustrp__sc_sub_undef(p, ps1, pos, len, rc))
+  if (!ustrp__sc_sub_undef(p, ps1, pos--, len, rc))
   {
     errno = ENOMEM; /* for EILSEQ etc. */
     return (USTR_FALSE);
   }
   
-  vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
+  ptr = ustr_wstr(*ps1);
+  
+  save_end = ptr[pos + rc]; /* might be NIL if at end, might be a char */
+  vsnprintf(ptr + pos, rc + 1, fmt, ap);
+  ptr[pos + rc] = save_end;
 
   USTR_ASSERT(ustr_assert_valid(*ps1));
   

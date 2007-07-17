@@ -1,3 +1,24 @@
+2007-07-16  James Antill  <james@and.org>
+
+	* ustr-sub-code.h (ustr_sc_replace_buf): Fix tlen calc.
+	(ustr_sc_replace_buf): Fix main loop for dupx path.
+	(ustr_sc_replace_buf): Fix length of final sub for dupx path.
+
+	* ustr-ins-code.h (ustr_ins_undef): Fix memmove length.
+
+	* ustr-sub-code.h (ustr_sub_rep_chr): Fix return value.
+
+	* ustr-ins-code.h (ustr_ins_undef): Fix offset.
+
+	* ustr-sub-code.h (ustr_sub_vfmt_lim): Add offset to vsnrptinf(), duh!
+	(ustr_sub_vfmt_lim): Fix NIL overwrite from vsnprintf()
+	(ustr_sc_sub_vfmt_lim): Add offset to vsnrptinf(), duh!
+	(ustr_sc_sub_vfmt_lim): Fix NIL overwrite from vsnprintf()
+
+	* ustr-ins-code.h (ustrp__ins_undef): Use current len, not new len.
+	(ustr_ins_vfmt_lim): Add offset to vsnrptinf(), duh!
+	(ustr_ins_vfmt_lim): Fix NIL overwrite from vsnprintf()
+
 2007-07-15  James Antill  <james@and.org>
 
 	* ustr-ins-code.h (ustr_ins_rep_chr): Fix pos.

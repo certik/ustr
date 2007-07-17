@@ -18,6 +18,14 @@ int tst(void)
   ASSERT_EQ(s2, USTR1(\x11, "sabcd-- 0004 xyz2"));
   ASSERT(ustr_ins_subustr(&s2, 6, USTR1(\5, "x-==-"), 3, 2));
   ASSERT_EQ(s2, USTR1(\x13, "sabcd-==- 0004 xyz2"));
+
+  ustr_sc_free2(&s1, USTR1(\4, "1234"));
+  ASSERT(ustr_ins_fmt_lim(&s1, 2, 150, "%75s%-75sXYZ", "|", "|"));
+  ASSERT(ustr_cmp_cstr_eq(s1, "12                                                                          ||                                                                          34"));
+  ASSERT(ustr_ins_fmt_lim(&s1, 75, 2, "%s%s", "", ""));
+  ASSERT(ustr_ins_fmt_lim(&s1, 75, 1, "%s%s", "", ""));
+  ASSERT(ustr_ins_fmt_lim(&s1, 75, 0, "%s%s", "", ""));
+  ASSERT(ustr_cmp_cstr_eq(s1, "12                                                                          ||                                                                          34"));
   
   return (EXIT_SUCCESS);
 }
