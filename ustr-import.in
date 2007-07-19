@@ -35,8 +35,10 @@ function usage
   echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
   echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
   echo "         pool  = A simplish bundled memory pool API" 1>&2
+  echo "         replace = Replacing all occurances of data" 1>&2
   echo "         sc    = Shortcut functions for Ustr's" 1>&2
   echo "         set   = Setting to data" 1>&2
+  echo "         split = Slit the data, strtok() / strsep() for Ustr's" 1>&2
   echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
   echo "         srch  = Searching, strchr() / strrchr() for Ustr's" 1>&2
   echo "         sub   = Substituting data" 1>&2
@@ -83,8 +85,10 @@ ins=false
 main=false
 parse=false
 pool=false
+repl=false
 sc=false
 set=false
+split=false
 spn=false
 srch=false
 sub=false
@@ -94,23 +98,25 @@ gdb=false
 
 for i in $@; do
   case "$i" in
-    all)   all=true              ;;
-    b)     b=true;     main=true ;;
-    cmp)   cmp=true;   main=true ;;
-    cntl)  cntl=true   main=true ;;
-    fmt)   fmt=true;   main=true ;;
-    gdb)   gdb=true;             ;;
-    io)    io=true;    main=true ;;
-    ins)   ins=true;   main=true ;;
-    main)              main=true ;;
-    parse) parse=true; main=true ;;
-    pool)  pool=true;  main=true ;;
-    sc)    sc=true;    main=true ;;
-    set)   set=true;   main=true ;;
-    spn)   spn=true;   main=true ;;
-    srch)  srch=true;  main=true ;;
-    sub)   ins=true;   main=true ;;
-    utf8)  utf8=true;  main=true ;;
+    all)     all=true              ;;
+    b)       b=true;     main=true ;;
+    cmp)     cmp=true;   main=true ;;
+    cntl)    cntl=true   main=true ;;
+    fmt)     fmt=true;   main=true ;;
+    gdb)     gdb=true;             ;;
+    io)      io=true;    main=true ;;
+    ins)     ins=true;   main=true ;;
+    main)                main=true ;;
+    parse)   parse=true; main=true ;;
+    pool)    pool=true;  main=true ;;
+    replace) repl=true;  main=true ;;
+    sc)      sc=true;    main=true ;;
+    set)     set=true;   main=true ;;
+    split)   split=true; main=true ;;
+    spn)     spn=true;   main=true ;;
+    srch)    srch=true;  main=true ;;
+    sub)     sub=true;   main=true ;;
+    utf8)    utf8=true;  main=true ;;
     *)
       usage
       ;;
@@ -127,15 +133,26 @@ if $all; then
   main=true
   parse=true
   pool=true
+  repl=true
   sc=true
   set=true
   spn=true
   srch=true
+  split=true
   sub=true
   utf8=true
 else
   if $utf8; then
     sc=true
+  fi
+  if $split; then
+    srch=true
+  fi
+  if $repl; then
+    sub=true
+  fi
+  if $repl && $cfiles; then
+    srch=true
   fi
   if $sub; then
     sc=true
@@ -143,9 +160,11 @@ else
   fi
   if $sub && $cfiles; then
     fmt=true
-    srch=true
   fi
   if $set && $cfiles; then
+    fmt=true
+  fi
+  if $ins && $cfiles; then
     fmt=true
   fi
   if $spn; then
@@ -228,12 +247,20 @@ if $pool; then
   copy pool
 fi
 
+if $repl; then
+  copy repl
+fi
+
 if $sc; then
   copy sc
 fi
 
 if $set; then
   copy set
+fi
+
+if $split; then
+  copy split
 fi
 
 if $spn; then
@@ -496,8 +523,16 @@ if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
 fi
 
-if $sub; then # SUB hard deps. on sc, srch, utf8, weak dep. on FMT
+if $split; then # SPLIT hard deps. on srch
+  echo '#include "ustr-split.h"' >> $outname
+fi
+
+if $sub; then # SUB hard deps. on ins, sc, srch, weak dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
+fi
+
+if $repl; then # REPLACE hard deps. on sc, srch, sub
+  echo '#include "ustr-replace.h"' >> $outname
 fi
 
 echo >> $outname
