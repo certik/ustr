@@ -539,14 +539,14 @@ int tst(void)
   ASSERT_PEQ(sp1, USTRP1(\6, "-*&y12"));
   
   ustrp_sc_free2(pool, &sp1, USTRP1(\x10, "123456789 123456"));
-  ASSERT(!ustrp_sc_replace(pool, &sp1, USTRP1(\1, "!"), USTRP1(\4, "abcd"), 0));
-  ASSERT(!ustrp_sc_replace_buf(pool, &sp1, "1", 2, "abcd", 4, 0));
+  ASSERT(!ustrp_replace(pool, &sp1, USTRP1(\1, "!"), USTRP1(\4, "abcd"), 0));
+  ASSERT(!ustrp_replace_buf(pool, &sp1, "1", 2, "abcd", 4, 0));
   ASSERT_PEQ(sp1, USTRP1(\x10, "123456789 123456"));
-  ASSERT(ustrp_sc_replace_cstr(pool, &sp1, "123", "xyz", 1));
+  ASSERT(ustrp_replace_cstr(pool, &sp1, "123", "xyz", 1));
   ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 123456"));
-  ASSERT(ustrp_sc_replace_cstr(pool, &sp1, "123", "xyz", 1));
+  ASSERT(ustrp_replace_cstr(pool, &sp1, "123", "xyz", 1));
   ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
-  ASSERT(!ustrp_sc_replace_cstr(pool, &sp1, "123", "xyz", 1));
+  ASSERT(!ustrp_replace_cstr(pool, &sp1, "123", "xyz", 1));
   ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
   
   ustr_pool_free(pool);

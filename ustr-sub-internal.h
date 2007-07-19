@@ -45,17 +45,6 @@ int ustrp__sc_sub_rep_chr(struct Ustr_pool *, struct Ustr **, size_t, size_t,
                          char, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 
-#ifdef USTR_SRCH_H
-USTR_CONF_e_PROTO
-size_t ustrp__sc_replace_buf(struct Ustr_pool *, struct Ustr **,
-                             const void *, size_t, const void *, size_t, size_t)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 5));
-USTR_CONF_e_PROTO
-size_t ustrp__sc_replace(struct Ustr_pool *, struct Ustr **,const struct Ustr *,
-                         const struct Ustr *, size_t)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
-#endif
-
 #ifdef USTR_FMT_H
 # if USTR_CONF_HAVE_VA_COPY
 USTR_CONF_e_PROTO

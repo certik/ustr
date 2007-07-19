@@ -92,6 +92,8 @@ TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_16_parse octst_16_parse \
            tst_17_sub    ctst_17_sub \
           otst_17_sub   octst_17_sub \
+           tst_18_split    ctst_18_split \
+          otst_18_split   octst_18_split \
            tst_98_pool   ctst_98_pool \
           otst_98_pool  octst_98_pool \
            tst_99_64bit  ctst_99_64bit \
@@ -115,6 +117,8 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-spn.h \
            ustr-srch.h \
            ustr-sub.h \
+           ustr-replace.h \
+           ustr-split.h \
            ustr-utf8.h
 
 SRC_SRCS_H = ustr-b-code.h \
@@ -138,6 +142,11 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-srch-code.h \
              ustr-srch-internal.h \
              ustr-sub-code.h \
+             ustr-sub-internal.h \
+             ustr-replace-code.h \
+             ustr-replace-internal.h \
+             ustr-split-code.h \
+             ustr-split-internal.h \
              ustr-utf8-code.h \
              ustr-utf8-internal.h
 
@@ -154,6 +163,8 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-spn-dbg-code.c \
              ustr-srch-dbg-code.c \
              ustr-sub-dbg-code.c \
+             ustr-replace-dbg-code.c \
+             ustr-split-dbg-code.c \
              ustr-utf8-dbg-code.c \
              \
              ustr-b-opt-code.c \
@@ -169,6 +180,8 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-spn-opt-code.c \
              ustr-srch-opt-code.c \
              ustr-sub-opt-code.c \
+             ustr-replace-opt-code.c \
+             ustr-split-opt-code.c \
              ustr-utf8-opt-code.c
 
 SRC_SRCS = $(SRC_SRCS_C) $(SRC_SRCS_H)
@@ -206,6 +219,8 @@ LIB_SHARED_DBG = \
   ustr-spn-code-so-dbg.o \
   ustr-srch-code-so-dbg.o \
   ustr-sub-code-so-dbg.o \
+  ustr-replace-code-so-dbg.o \
+  ustr-split-code-so-dbg.o \
   ustr-utf8-code-so-dbg.o
 LIB_STATIC_DBG = \
   ustr-b-code-a-dbg.o \
@@ -221,6 +236,8 @@ LIB_STATIC_DBG = \
   ustr-spn-code-a-dbg.o \
   ustr-srch-code-a-dbg.o \
   ustr-sub-code-a-dbg.o \
+  ustr-replace-code-a-dbg.o \
+  ustr-split-code-a-dbg.o \
   ustr-utf8-code-a-dbg.o
 
 LIB_SHARED_OPT = \
@@ -237,6 +254,8 @@ LIB_SHARED_OPT = \
   ustr-spn-code-so-opt.o \
   ustr-srch-code-so-opt.o \
   ustr-sub-code-so-opt.o \
+  ustr-replace-code-so-opt.o \
+  ustr-split-code-so-opt.o \
   ustr-utf8-code-so-opt.o
 LIB_STATIC_OPT = \
   ustr-b-code-a-opt.o \
@@ -252,6 +271,8 @@ LIB_STATIC_OPT = \
   ustr-spn-code-a-opt.o \
   ustr-srch-code-a-opt.o \
   ustr-sub-code-a-opt.o \
+  ustr-replace-code-a-opt.o \
+  ustr-split-code-a-opt.o \
   ustr-utf8-code-a-opt.o
 
 

@@ -25,5 +25,7 @@
 #include "ustr-utf8.h"
 #include "ustr-spn.h"
 #include "ustr-sub.h"
+#include "ustr-replace.h"
+#include "ustr-split.h"
 
 #endif

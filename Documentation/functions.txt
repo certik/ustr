@@ -3701,3 +3701,47 @@ Function: ustr_pool_clear()
 
   This also operates on all sub-pools.
 
+Section: Splitting a Ustr
+Function: ustr_split()
+ Returns: The next token in the Ustr or USTR_NULL if the end of the string has
+ been reached
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to a Ustr that is to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable where to start the split
+ Type[2]: size_t *
+
+ Parameter[3]: Pointer to a Ustr that is the separator string
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: flags (see below for descriptions)
+ Type[4]: unsigned int
+
+ Explanation:
+  This function works in a similar manner to strtok(). Each call returns a
+  token starting at the offset. After the function call, the offset variable
+  is updated with a position of the next offset (i.e. you can call ustr_split
+  in a loop with the same offset pointer each time). 
+
+  The flags parameter has the following components:
+    -USTR_SPLIT_RET_SEP -- return the separator in the token (ex: "a,b,c" with
+        separator "," would return the tokens: {"a," "b," "c"}
+    -USTR_SPLIT_RET_NON -- return a blank character for empty tokens instead
+      of skipping them (ex: "a,,b" would return the tokens {"a","","b"}
+    -USTR_SPLIT_KEEP_CONF -- ensure that the returned Ustr has the same
+    configuration options as the original string
+
+  The most typical use of this function would be as follows if you want to
+  split an existing Ustr called 'target' --
+
+  unsigned int flags = (USTR_SPLIT_RET_SEP|USTR_SPLIT_KEEP_CONF);
+  size_t off = 0;
+  Ustr *tok = USTR_NULL;
+  Ustr *sep = USTR1(\x1, ",");
+  while (tok = ustr_split(target,&off,sep,flags))
+  {
+    //do something with tok
+  }
+

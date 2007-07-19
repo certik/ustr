@@ -135,7 +135,7 @@ int tst(void)
 	repl = ustr_dup_cstr(" ");
 	needle = ustr_dup_cstr("a");
 	/* replace -- same len */
-	ASSERT(ustr_sc_replace(&d,needle,repl,0) == 4);
+	ASSERT(ustr_replace(&d,needle,repl,0) == 4);
 	PRINT_RESULT(d);
 	newstr = "  bbcc bc bc";
 	ASSERT(ustr_cmp_cstr_eq(d,newstr));
@@ -144,7 +144,7 @@ int tst(void)
 	/* limited number of replacements -- same len */
 	repl = ustr_dup_cstr(".");
 	needle = ustr_dup_cstr("c");
-	ASSERT(ustr_sc_replace(&d,needle,repl,1) == 1);
+	ASSERT(ustr_replace(&d,needle,repl,1) == 1);
 	PRINT_RESULT(d);
 	newstr = "  bb.c bc bc";
 	ASSERT(ustr_cmp_cstr_eq(d,newstr));
@@ -153,32 +153,32 @@ int tst(void)
 
 	/* limited number of replacements -- different len */
         ustr_sc_free2(&d, USTR1(\x20, "123456789 x123456789 x123456789 "));
-	ASSERT(ustr_sc_replace(&d, USTR1(\1, "x"), USTR1(\2, "ab"), 1) == 1);
+	ASSERT(ustr_replace(&d, USTR1(\1, "x"), USTR1(\2, "ab"), 1) == 1);
         ASSERT(ustr_cmp_cstr_eq(d, "123456789 ab123456789 x123456789 "));
 	/* replacement -- different len */
         ustr_sc_free2(&d, USTR1(\x20, "123456789 x123456789 x123456789 "));
-	ASSERT(ustr_sc_replace_cstr(&d, "x", "ab", 0) == 2);
+	ASSERT(ustr_replace_cstr(&d, "x", "ab", 0) == 2);
         ASSERT(ustr_cmp_cstr_eq(d, "123456789 ab123456789 ab123456789 "));
-	ASSERT(ustr_sc_replace_cstr(&d, "x", "ab", 0) == 0);
+	ASSERT(ustr_replace_cstr(&d, "x", "ab", 0) == 0);
         ASSERT(ustr_cmp_cstr_eq(d, "123456789 ab123456789 ab123456789 "));
         
-	ASSERT(ustr_sc_replace_cstr(&d, "ab1", "!", 0) == 2);
+	ASSERT(ustr_replace_cstr(&d, "ab1", "!", 0) == 2);
         ASSERT(ustr_cmp_cstr_eq(d, "123456789 !23456789 !23456789 "));
-	ASSERT(ustr_sc_replace_cstr(&d, "12", "!Z", 0) == 1);
+	ASSERT(ustr_replace_cstr(&d, "12", "!Z", 0) == 1);
         ASSERT(ustr_cmp_cstr_eq(d, "!Z3456789 !23456789 !23456789 "));
         
-	ASSERT(ustr_sc_replace(&d, USTR1(\2, "34"), USTR1(\1, "x"), 0) == 3);
+	ASSERT(ustr_replace(&d, USTR1(\2, "34"), USTR1(\1, "x"), 0) == 3);
         ASSERT(ustr_cmp_cstr_eq(d, "!Zx56789 !2x56789 !2x56789 "));
         
         ustr_sc_free2(&d, USTR1(\7, "xxxxxxx"));
         ASSERT(ustr_len(d) == 7);
-	ASSERT(ustr_sc_replace_buf(&d, "x", 1, "y", 0, 0) == 7);
+	ASSERT(ustr_replace_buf(&d, "x", 1, "y", 0, 0) == 7);
         ASSERT(!ustr_len(d));
         ustr_sc_free2(&d, USTR1(\7, "xxxxxxx"));
-	ASSERT(ustr_sc_replace_buf(&d, "x", 1, "yy", 1, 0) == 7);
+	ASSERT(ustr_replace_buf(&d, "x", 1, "yy", 1, 0) == 7);
         ASSERT(ustr_cmp_cstr_eq(d, "yyyyyyy"));
         ustr_sc_free2(&d, USTR1(\7, "xxxxxxx"));
-	ASSERT(ustr_sc_replace_buf(&d, "x", 1, "yy", 2, 0) == 7);
+	ASSERT(ustr_replace_buf(&d, "x", 1, "yy", 2, 0) == 7);
         ASSERT(ustr_cmp_cstr_eq(d, "yyyyyyyyyyyyyy"));
 
 	PRINT_RESULT(c);
