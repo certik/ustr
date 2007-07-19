@@ -485,6 +485,70 @@ int tst(void)
   ASSERT(ustrp_sc_reverse(pool, &sp1));
   ASSERT_PEQ(sp1, USTRP(""));  
   
+  ustr_pool_clear(pool);
+
+  sp1 = USTRP("");
+  ASSERT_PEQ(sp1, USTRP(""));  
+  ASSERT(ustrp_ins(pool, &sp1, 0, USTRP("")));
+  ASSERT(ustrp_ins(pool, &sp1, 0, USTRP("")));
+  ASSERT_PEQ(sp1, USTRP(""));  
+  ASSERT(ustrp_ins(pool, &sp1, 0, USTRP1(\4, "abcd")));
+  ASSERT_PEQ(sp1, USTRP1(\4, "abcd"));
+  ASSERT(ustrp_ins(pool, &sp1, 2, USTRP1(\1, "x")));
+  ASSERT_PEQ(sp1, USTRP1(\5, "abxcd"));
+  ASSERT(ustrp_ins_cstr(pool, &sp1, 2, "y"));
+  ASSERT_PEQ(sp1, USTRP1(\6, "abyxcd"));
+  ASSERT(ustrp_ins_buf(pool, &sp1, 1, "Zabcd", 1));
+  ASSERT_PEQ(sp1, USTRP1(\7, "aZbyxcd"));
+  ASSERT(ustrp_ins_rep_chr(pool, &sp1, 0, '-', 2));
+  ASSERT_PEQ(sp1, USTRP1(\x9, "--aZbyxcd"));
+  
+  ASSERT(ustrp_sc_sub_rep_chr(pool, &sp1, 1, 4, '=', 2));
+  ASSERT_PEQ(sp1, USTRP1(\7, "==byxcd"));
+  ASSERT(ustrp_sc_sub_cstr(pool, &sp1, 6, 2, "___"));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "==byx___"));
+  ASSERT(ustrp_sc_sub_buf(pool, &sp1, 1, 2, "___", 1));
+  ASSERT_PEQ(sp1, USTRP1(\7, "_byx___"));
+  ASSERT(ustrp_sc_sub_fmt(pool, &sp1, 2, 6, "%2s%4d%10s", "x", 4, "y"));
+  ASSERT_PEQ(sp1, USTRP1(\x11, "_ x   4         y"));
+  ASSERT(ustrp_sc_sub_fmt_lim(pool, &sp1, 2, 16, 1, "%s%4d%10s", "!", 4, "y"));
+  ASSERT_PEQ(sp1, USTRP1(\2, "_!"));
+  ASSERT(ustrp_ins_fmt(pool, &sp1, 1, "%s%2d%s", "x", 4, "y"));
+  ASSERT_PEQ(sp1, USTRP1(\6, "_x 4y!"));
+  ASSERT(ustrp_ins_fmt_lim(pool, &sp1, 0, 2, "%s%2d%s", "x", 4, "y"));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "x _x 4y!"));
+
+  ASSERT(ustrp_sub_rep_chr(pool, &sp1, 1, '=', 2));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "==_x 4y!"));
+  ASSERT(ustrp_sub_cstr(pool, &sp1, 4, "abcd"));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "==_abcd!"));
+  ASSERT(ustrp_sub_buf(pool, &sp1, 2, "___abcd", 3));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "=___bcd!"));
+  ASSERT(ustrp_sub(pool, &sp1, 1, USTRP1(\3, "---")));
+  ASSERT_PEQ(sp1, USTRP1(\x8, "---_bcd!"));
+  ASSERT(ustrp_sc_sub(pool, &sp1, 2, 4, USTRP1(\3, "===")));
+  ASSERT_PEQ(sp1, USTRP1(\7, "-===cd!"));
+
+  ASSERT(ustrp_sub_fmt(pool, &sp1, 5, "%s", "xyz"));
+  ASSERT_PEQ(sp1, USTRP1(\7, "-===xyz"));
+  ASSERT(ustrp_sub_subustrp(pool, &sp1, 2, USTRP1(\4, "1234"), 2, 2));
+  ASSERT_PEQ(sp1, USTRP1(\7, "-23=xyz"));
+  ASSERT(ustrp_sc_sub_subustrp(pool, &sp1, 2, 4, USTRP1(\4, "12*&"), 3, 2));
+  ASSERT_PEQ(sp1, USTRP1(\5, "-*&yz"));
+  ASSERT(ustrp_sub_fmt_lim(pool, &sp1, 5, 2, "%s", "123456789"));
+  ASSERT_PEQ(sp1, USTRP1(\6, "-*&y12"));
+  
+  ustrp_sc_free2(pool, &sp1, USTRP1(\x10, "123456789 123456"));
+  ASSERT(!ustrp_sc_replace(pool, &sp1, USTRP1(\1, "!"), USTRP1(\4, "abcd"), 0));
+  ASSERT(!ustrp_sc_replace_buf(pool, &sp1, "1", 2, "abcd", 4, 0));
+  ASSERT_PEQ(sp1, USTRP1(\x10, "123456789 123456"));
+  ASSERT(ustrp_sc_replace_cstr(pool, &sp1, "123", "xyz", 1));
+  ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 123456"));
+  ASSERT(ustrp_sc_replace_cstr(pool, &sp1, "123", "xyz", 1));
+  ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
+  ASSERT(!ustrp_sc_replace_cstr(pool, &sp1, "123", "xyz", 1));
+  ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
+  
   ustr_pool_free(pool);
   ustr_pool_free(NULL);
   
