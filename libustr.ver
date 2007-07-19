@@ -429,12 +429,62 @@
   ustr_sub;
   ustr_sub_buf;
   ustr_sub_cstr;
+  ustr_sub_fmt;
+  ustr_sub_fmt_lim;
+  ustr_sub_rep_chr;
   ustr_sub_subustr;
+  ustr_sub_undef;
+  ustr_sub_vfmt;
+  ustr_sub_vfmt_lim;
 
-  ustr_sc_replace;
+  ustrp_sub;
+  ustrp_sub_buf;
+  ustrp_sub_cstr;
+  ustrp_sub_fmt;
+  ustrp_sub_fmt_lim;
+  ustrp_sub_rep_chr;
+  ustrp_sub_subustrp;
+  ustrp_sub_undef;
+  ustrp_sub_vfmt;
+  ustrp_sub_vfmt_lim;
+
+  ustr_replace;
+  ustr_replace_buf;
+  ustr_replace_cstr;
+
+  ustrp_replace;
+  ustrp_replace_buf;
+  ustrp_replace_cstr;
+
   ustr_sc_sub;
   ustr_sc_sub_buf;
   ustr_sc_sub_cstr;
+  ustr_sc_sub_fmt;
+  ustr_sc_sub_fmt_lim;
+  ustr_sc_sub_rep_chr;
+  ustr_sc_sub_subustr;
+  ustr_sc_sub_undef;
+  ustr_sc_sub_vfmt;
+  ustr_sc_sub_vfmt_lim;
+
+  ustrp_sc_sub;
+  ustrp_sc_sub_buf;
+  ustrp_sc_sub_cstr;
+  ustrp_sc_sub_fmt;
+  ustrp_sc_sub_fmt_lim;
+  ustrp_sc_sub_rep_chr;
+  ustrp_sc_sub_subustrp;
+  ustrp_sc_sub_undef;
+  ustrp_sc_sub_vfmt;
+  ustrp_sc_sub_vfmt_lim;
+
+  ustr_split;
+  ustr_split_buf;
+  ustr_split_cstr;
+
+  ustrp_split;
+  ustrp_split_buf;
+  ustrp_split_cstr;
 
     local:
   ustr__*;
