@@ -112,13 +112,13 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-main.h \
            ustr-parse.h \
            ustr-pool.h \
+           ustr-replace.h \
            ustr-sc.h \
            ustr-set.h \
+           ustr-split.h \
            ustr-spn.h \
            ustr-srch.h \
            ustr-sub.h \
-           ustr-replace.h \
-           ustr-split.h \
            ustr-utf8.h
 
 SRC_SRCS_H = ustr-b-code.h \
@@ -134,19 +134,19 @@ SRC_SRCS_H = ustr-b-code.h \
              ustr-main-internal.h \
              ustr-parse-code.h \
              ustr-pool-code.h \
+             ustr-replace-code.h \
+             ustr-replace-internal.h \
              ustr-sc-code.h \
              ustr-sc-internal.h \
              ustr-set-code.h \
              ustr-set-internal.h \
+             ustr-split-code.h \
+             ustr-split-internal.h \
              ustr-spn-code.h \
              ustr-srch-code.h \
              ustr-srch-internal.h \
              ustr-sub-code.h \
              ustr-sub-internal.h \
-             ustr-replace-code.h \
-             ustr-replace-internal.h \
-             ustr-split-code.h \
-             ustr-split-internal.h \
              ustr-utf8-code.h \
              ustr-utf8-internal.h
 
@@ -158,13 +158,13 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-main-dbg-code.c \
              ustr-parse-dbg-code.c \
              ustr-pool-dbg-code.c \
+             ustr-replace-dbg-code.c \
              ustr-sc-dbg-code.c \
              ustr-set-dbg-code.c \
+             ustr-split-dbg-code.c \
              ustr-spn-dbg-code.c \
              ustr-srch-dbg-code.c \
              ustr-sub-dbg-code.c \
-             ustr-replace-dbg-code.c \
-             ustr-split-dbg-code.c \
              ustr-utf8-dbg-code.c \
              \
              ustr-b-opt-code.c \
@@ -175,13 +175,13 @@ SRC_SRCS_C = ustr-b-dbg-code.c \
              ustr-main-opt-code.c \
              ustr-parse-opt-code.c \
              ustr-pool-opt-code.c \
+             ustr-replace-opt-code.c \
              ustr-sc-opt-code.c \
              ustr-set-opt-code.c \
+             ustr-split-opt-code.c \
              ustr-spn-opt-code.c \
              ustr-srch-opt-code.c \
              ustr-sub-opt-code.c \
-             ustr-replace-opt-code.c \
-             ustr-split-opt-code.c \
              ustr-utf8-opt-code.c
 
 SRC_SRCS = $(SRC_SRCS_C) $(SRC_SRCS_H)
@@ -214,13 +214,13 @@ LIB_SHARED_DBG = \
   ustr-main-code-so-dbg.o \
   ustr-parse-code-so-dbg.o \
   ustr-pool-code-so-dbg.o \
+  ustr-replace-code-so-dbg.o \
   ustr-sc-code-so-dbg.o \
   ustr-set-code-so-dbg.o \
+  ustr-split-code-so-dbg.o \
   ustr-spn-code-so-dbg.o \
   ustr-srch-code-so-dbg.o \
   ustr-sub-code-so-dbg.o \
-  ustr-replace-code-so-dbg.o \
-  ustr-split-code-so-dbg.o \
   ustr-utf8-code-so-dbg.o
 LIB_STATIC_DBG = \
   ustr-b-code-a-dbg.o \
@@ -231,13 +231,13 @@ LIB_STATIC_DBG = \
   ustr-main-code-a-dbg.o \
   ustr-parse-code-a-dbg.o \
   ustr-pool-code-a-dbg.o \
+  ustr-replace-code-a-dbg.o \
   ustr-sc-code-a-dbg.o \
   ustr-set-code-a-dbg.o \
+  ustr-split-code-a-dbg.o \
   ustr-spn-code-a-dbg.o \
   ustr-srch-code-a-dbg.o \
   ustr-sub-code-a-dbg.o \
-  ustr-replace-code-a-dbg.o \
-  ustr-split-code-a-dbg.o \
   ustr-utf8-code-a-dbg.o
 
 LIB_SHARED_OPT = \
@@ -249,13 +249,13 @@ LIB_SHARED_OPT = \
   ustr-main-code-so-opt.o \
   ustr-parse-code-so-opt.o \
   ustr-pool-code-so-opt.o \
+  ustr-replace-code-so-opt.o \
   ustr-sc-code-so-opt.o \
   ustr-set-code-so-opt.o \
+  ustr-split-code-so-opt.o \
   ustr-spn-code-so-opt.o \
   ustr-srch-code-so-opt.o \
   ustr-sub-code-so-opt.o \
-  ustr-replace-code-so-opt.o \
-  ustr-split-code-so-opt.o \
   ustr-utf8-code-so-opt.o
 LIB_STATIC_OPT = \
   ustr-b-code-a-opt.o \
@@ -266,13 +266,13 @@ LIB_STATIC_OPT = \
   ustr-main-code-a-opt.o \
   ustr-parse-code-a-opt.o \
   ustr-pool-code-a-opt.o \
+  ustr-replace-code-a-opt.o \
   ustr-sc-code-a-opt.o \
   ustr-set-code-a-opt.o \
+  ustr-split-code-a-opt.o \
   ustr-spn-code-a-opt.o \
   ustr-srch-code-a-opt.o \
   ustr-sub-code-a-opt.o \
-  ustr-replace-code-a-opt.o \
-  ustr-split-code-a-opt.o \
   ustr-utf8-code-a-opt.o
 
 
