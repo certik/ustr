@@ -1,3 +1,8 @@
+2007-07-18  James Antill  <james@and.org>
+
+	* ustr-pool-code.h (ustr__pool_sys_free): Go back more than one ptr, so
+	dupx + copy + free etc. works better.
+
 2007-07-16  James Antill  <james@and.org>
 
 	* ustr-sub-code.h (ustr_sc_replace_buf): Fix tlen calc.

@@ -94,16 +94,24 @@ USTR_CONF_i_PROTO
 void ustr__pool_sys_free(struct Ustr_pool *p, void *old)
 {
   struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
+  struct Ustr__pool_si_node **op = &sip->beg;
+  unsigned int num = 2; /* how many levels deep, magic number */
 
-  if (sip->beg && (sip->beg->ptr == old))
+  while (*op && num--)
   {
-    struct Ustr__pool_si_node *op = sip->beg;
-
-    sip->beg = op->next;
+    if ((*op)->ptr == old)
+    {
+      struct Ustr__pool_si_node *rm = *op;
+      
+      *op = rm->next;
+      
+      USTR_CONF_FREE(rm->ptr);
+      USTR_CONF_FREE(rm);
+      return;
+    }
     
-    USTR_CONF_FREE(op->ptr);
-    USTR_CONF_FREE(op);
-  }  
+    op = &(*op)->next;
+  }
 }
 
 USTR_CONF_i_PROTO void ustr__pool__clear(struct Ustr__pool_si_base *base,
