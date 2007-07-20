@@ -7,8 +7,8 @@
 #ifdef USTR_SRCH_H
 USTR_CONF_i_PROTO
 size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
-                             const void *optr, size_t olen,
-                             const void *nptr, size_t nlen, size_t lim)
+                          const void *optr, size_t olen,
+                          const void *nptr, size_t nlen, size_t lim)
 {
   size_t num  = 0;
   size_t tlen = 0;
@@ -48,17 +48,13 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   {
     pos += olen - 1;
 
-    if (nlen > olen) /* can go up or down */
+    if (nlen < olen) /* can go up or down */
+      tlen -= (olen - nlen);
+    else
     {
       if (tlen > (tlen + (nlen - olen)))
         return (0);
       tlen += (nlen - olen);
-    }
-    else
-    {
-      if (tlen < (tlen - (olen - nlen)))
-        return (0);
-      tlen -= (olen - nlen);
     }
 
     ++num;
@@ -111,34 +107,34 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
 
 USTR_CONF_I_PROTO
 size_t ustr_replace_buf(struct Ustr **ps1, const void *optr, size_t olen,
-                           const void *nptr, size_t nlen, size_t lim)
+                        const void *nptr, size_t nlen, size_t lim)
 { return (ustrp__replace_buf(0, ps1, optr, olen, nptr, nlen, lim)); }
 USTR_CONF_I_PROTO
 size_t ustrp_replace_buf(struct Ustr_pool *p, struct Ustrp **ps1,
-                            const void *optr, size_t olen,
-                            const void *nptr, size_t nlen, size_t lim)
+                         const void *optr, size_t olen,
+                         const void *nptr, size_t nlen, size_t lim)
 { return (ustrp__replace_buf(p, USTR__PPTR(ps1), optr,olen,nptr,nlen,lim)); }
 
 USTR_CONF_i_PROTO
 size_t ustrp__replace(struct Ustr_pool *p, struct Ustr **ps1,
-                         const struct Ustr *srch,
-                         const struct Ustr *repl, size_t lim)
+                      const struct Ustr *srch,
+                      const struct Ustr *repl, size_t lim)
 {
   USTR_ASSERT(ustr_assert_valid(srch));
   USTR_ASSERT(ustr_assert_valid(repl));
 
   return (ustrp__replace_buf(p, ps1,
-                                ustr_cstr(srch), ustr_len(srch),
-                                ustr_cstr(repl), ustr_len(repl), lim));
+                             ustr_cstr(srch), ustr_len(srch),
+                             ustr_cstr(repl), ustr_len(repl), lim));
 }
 USTR_CONF_I_PROTO
 size_t ustr_replace(struct Ustr **ps1, const struct Ustr *srch,
-                       const struct Ustr *repl, size_t lim)
+                    const struct Ustr *repl, size_t lim)
 { return (ustrp__replace(0, ps1, srch, repl, lim)); }
 USTR_CONF_I_PROTO
 size_t ustrp_replace(struct Ustr_pool *p, struct Ustrp **ps1,
-                        const struct Ustrp *srch,
-                        const struct Ustrp *repl, size_t lim)
+                     const struct Ustrp *srch,
+                     const struct Ustrp *repl, size_t lim)
 { return (ustrp__replace(p, USTR__PPTR(ps1), &srch->s, &repl->s, lim)); }
 #endif
 

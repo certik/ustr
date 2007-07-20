@@ -31,7 +31,8 @@ static int big_tst(size_t fsz, size_t usz, int hack, int tst_add)
     goto fail_ftrunc;
   if (!(ptr = mmap(0, fsz, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)))
     goto fail_mmap;
-
+  memset(ptr, '-', ((fsz < 32) ? fsz : 32));
+  
   if (hack)
   {
     if (USTR_DEBUG)
@@ -63,7 +64,10 @@ static int big_tst(size_t fsz, size_t usz, int hack, int tst_add)
   ASSERT(ustr_sized(s3));
 
   if (tst_add)
+  {
     ASSERT(!ustr_add(&s3, s3));
+    ASSERT(!ustr_replace(&s3, USTR1(\1, "-"), s3, 0));
+  }
 
   munmap(ptr, fsz);
   close(fd);

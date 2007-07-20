@@ -563,6 +563,9 @@ int tst(void)
   ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0));
   ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0));
   
+  ASSERT(ustrp_sub_undef(pool, &sp1, 3, 2));
+  ASSERT(ustrp_sc_sub_undef(pool, &sp1, 1, 2, 2));
+        
   ustr_pool_free(pool);
   ustr_pool_free(NULL);
   

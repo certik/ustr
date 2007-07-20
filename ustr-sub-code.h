@@ -70,6 +70,9 @@ USTR_CONF_i_PROTO
 int ustrp__sub_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
                        const struct Ustr *s2, size_t pos2, size_t len2)
 {
+  if (!len2)
+    return (USTR_TRUE);
+  
   if (!ustr_assert_valid_subustr(s2, pos2, len2))
     return (USTR_FALSE);
   --pos2;
@@ -108,12 +111,15 @@ USTR_CONF_i_PROTO int ustrp__sc_sub_undef(struct Ustr_pool *p,struct Ustr **ps1,
 {
   USTR_ASSERT(ps1);
 
-  if (len == olen)
-    return (ustrp__sc_ensure_owner(p, ps1));
-
+  if (!olen)
+    return (ustrp__ins_undef(p, ps1, pos - 1, len));
+  
   if (!ustr_assert_valid_subustr(*ps1, pos, olen))
     return (USTR_FALSE);
   
+  if (len == olen)
+    return (ustrp__sc_ensure_owner(p, ps1));
+
   /* work at end, so we don't have to memmove as much */
   if (len < olen)
     return (ustrp__del_subustr(p, ps1, pos +  len,     olen -  len));
@@ -165,6 +171,9 @@ int ustrp__sc_sub_subustr(struct Ustr_pool *p,
                           struct Ustr **ps1, size_t pos1, size_t len1,
                           const struct Ustr *s2, size_t pos2, size_t len2)
 {
+  if (!len2)
+    return (ustrp__del_subustr(p, ps1, pos1, len1));
+  
   if (!ustr_assert_valid_subustr(s2, pos2, len2))
     return (USTR_FALSE);
   --pos2;

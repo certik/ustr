@@ -107,7 +107,7 @@ int tst(void)
 	repl = ustr_dup_cstr("a real donut");
 	/* invalid position */
         if (!USTR_DEBUG)
-	ASSERT(ustr_sc_sub(&c,1500,3,repl) == FALSE);
+	ASSERT(!ustr_sc_sub(&c,1500,3,repl));
 	PRINT_RESULT(c);
 	ASSERT(ustr_cmp_cstr_eq(c,str));
 
@@ -181,8 +181,30 @@ int tst(void)
 	ASSERT(ustr_replace_buf(&d, "x", 1, "yy", 2, 0) == 7);
         ASSERT(ustr_cmp_cstr_eq(d, "yyyyyyyyyyyyyy"));
 
+        ASSERT(ustr_sub_subustr(&d, 1, USTR1(\2, "aa"), 1, 0));
+        ASSERT(ustr_cmp_cstr_eq(d, "yyyyyyyyyyyyyy"));
+        ASSERT(ustr_sc_sub_subustr(&d, 1, 0, USTR1(\2, "aa"), 1, 0));
+        ASSERT(ustr_cmp_cstr_eq(d, "yyyyyyyyyyyyyy"));
+        ASSERT(ustr_sc_sub_subustr(&d, 1, 2, USTR1(\2, "aa"), 1, 2));
+        ASSERT(ustr_cmp_cstr_eq(d, "aayyyyyyyyyyyy"));
+        ASSERT(ustr_sc_sub_subustr(&d, 1, 2, USTR1(\2, "aa"), 1, 0));
+        ASSERT(ustr_cmp_cstr_eq(d, "yyyyyyyyyyyy"));
+        
+	ASSERT(ustr_sub_undef(&d, 3, 2));
+	ASSERT(ustr_sc_sub_undef(&d, 1, 2, 2));
+
+        if (!USTR_DEBUG)
+        ASSERT(!ustr_sub_undef(&d, 100, 1));
+        if (!USTR_DEBUG)
+        ASSERT(!ustr_sc_sub_undef(&d, 100, 1, 1));
 	PRINT_RESULT(c);
-	
+
+        if (!USTR_CONF_HAVE_64bit_SIZE_MAX) /* 10MB is probably enough... */
+        {
+          ASSERT(ustr_set_rep_chr(&s1, '-', 1000 * 1000 * 10));
+          ASSERT(!ustr_replace(&s1, USTR1(\1, "-"), s1, 0));
+        }
+        
 	ustr_free(a);
 	ustr_free(c);
 	ustr_free(d);

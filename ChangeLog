@@ -1,5 +1,12 @@
 2007-07-19  James Antill  <james@and.org>
 
+	* ustr-replace-code.h (ustrp__replace_buf): Remove underflow condition,
+	as that can't happen.
+
+	* ustr-sub-code.h (ustr_sub_subustr): Let subustr with len=0 work.
+	(ustr_sc_sub_undef): Let subustr with len=0 work.
+	(ustr_sc_sub_subustr): Let subustr with len=0 work.
+
 	* ustr-split-code.h (ustr_split_buf): Initial cleanup.
 
 	* ustr-main.h (USTR_POOL_NULL): Added NULL specific for Ustr_pool.

@@ -177,6 +177,9 @@ int tst(void)
   ASSERT(!ustr_add_fmt(&s2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
   ASSERT(!ustr_dup_fmt(     "%ls", (int *)"\xFF\xFF\xFF\xFF"));
   ASSERT(!ustr_set_fmt(&s2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_ins_fmt(&s2, 1, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_sub_fmt(&s2, 1, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_sc_sub_fmt(&s2, 1, 2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
 #endif
 #endif
   ustr_sc_free2(&s2, ustr_dupx(1, 0, 0, 0, s2));
