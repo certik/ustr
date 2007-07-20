@@ -25,36 +25,26 @@ struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
   if (!slen || (off == len))
     return (USTR_NULL);
 
-  /* Separator not found, just return the rest of the string 
-   * the user will have to interpret whether this is an error condition */
+  /* Separator not found, just return the rest of the string */
   if (!(found_pos = ustr_srch_buf_fwd(s1, off, sep, slen)))
   {
     ret_len = len - off;
     *poff   = len;
-    goto copy_buf; /* No more tokens, return remaining */
+    goto copy_buf;
   }
 
-  /* If we don't wish to return blanks or separators, we could get a situation
-   * where we have "a,,,,,,,,b" and sep="," in which case the only two tokens
-   * we need to return are 'a' and 'b' -- so skip all of the middle ones */
-  if (((found_pos - 1) == off) &&
-      !(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
-    /* The found position is one away from the start position 
-     * and we are not at the end of the string yet */
-  {
-    *poff += slen;
-    return (ustrp__split_buf(p, s1, poff, sep, slen, flags));
-  }
-
-  /* Make sure the offset for the next call is after the delimiter we found 
-   * this time */
+  /* Set the offset for the next, must skip sep */
   *poff = found_pos + slen - 1;
   
+  /* If we don't wish to return blanks or separators, we might get "a,,b" with
+   * sep="," so we need to skip the first "found" separator -- so just try
+   * again */
+  if (((found_pos - 1) == off) &&
+      !(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
+    return (ustrp__split_buf(p, s1, poff, sep, slen, flags));
+
   ret_len = (found_pos - 1) - off;
-  
-  /* Include sep in the substring we are about to return (if we are not at 
-   * end of line) */
-  if (flags & USTR_FLAG_SPLIT_RET_SEP)
+  if (flags & USTR_FLAG_SPLIT_RET_SEP) /* Include sep in the return value */
     ret_len += slen;
   
  copy_buf:
