@@ -19,6 +19,10 @@ struct Ustr__pool_si_base
  struct Ustr__pool_si_base *base;
  struct Ustr__pool_si_base *next;
  struct Ustr__pool_si_base *prev;
+
+ unsigned int free_num : 31; /* how many levels deep we search to free */
+
+ unsigned int call_realloc : 1;
 };
 
 #define USTR__POOL_NULL ((struct Ustr__pool_si_base *) 0)
@@ -77,7 +81,7 @@ void *ustr__pool_sys_realloc(struct Ustr_pool *p, void *old,
   if (!nlen)
     ++nlen;
   
-  if (olen && (sip->beg->ptr == old))
+  if (olen && (sip->beg->ptr == old) && sip->call_realloc)
   { /* let the last allocated Ustrp grow/shrink */
     if ((ret = USTR_CONF_REALLOC(old, nlen)))
       sip->beg->ptr = ret;
@@ -95,7 +99,7 @@ void ustr__pool_sys_free(struct Ustr_pool *p, void *old)
 {
   struct Ustr__pool_si_base *sip = (struct Ustr__pool_si_base *)p;
   struct Ustr__pool_si_node **op = &sip->beg;
-  unsigned int num = 2; /* how many levels deep, magic number */
+  unsigned int num = sip->free_num;
 
   while (*op && num--)
   {
@@ -198,6 +202,13 @@ struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *p)
   tmp->sbeg = USTR__POOL_NULL;
   tmp->prev = USTR__POOL_NULL;
 
+  tmp->next = USTR__POOL_NULL;
+  tmp->base = USTR__POOL_NULL;
+
+  tmp->free_num = 2; /* magic number, allows dupx + copy + free */
+
+  tmp->call_realloc = USTR_TRUE;
+  
   if (!p)
     return (&tmp->cbs);
   
@@ -211,17 +222,4 @@ struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *p)
 }
 
 USTR_CONF_I_PROTO struct Ustr_pool *ustr_pool_make_pool(void)
-{
-  struct Ustr_pool *ret;
-  struct Ustr__pool_si_base *tmp;
-
-  if (!(ret = ustr__pool_make_subpool(0)))
-    return (0);
-
-  tmp = (struct Ustr__pool_si_base *)ret;
-
-  tmp->next = USTR__POOL_NULL;
-  tmp->base = USTR__POOL_NULL;
-
-  return (&tmp->cbs);
-}
+{ return (ustr__pool_make_subpool(USTR__POOL_NULL)); }
