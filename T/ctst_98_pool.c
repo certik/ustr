@@ -12,7 +12,8 @@ int tst(void)
   Ustrp *sp2 = USTRP1(\x2, "s2");
   char buf_spa[1024];
   Ustrp *spa = USTRP_SC_INIT_AUTO(buf_spa, USTR_FALSE, 0);
-
+  size_t off = 0;
+  
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
   ASSERT( ((struct Ustr__pool_si_base *)pool)->beg);
   ASSERT( ((struct Ustr__pool_si_base *)pool)->beg->ptr == sp1);
@@ -548,6 +549,19 @@ int tst(void)
   ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
   ASSERT(!ustrp_replace_cstr(pool, &sp1, "123", "xyz", 1));
   ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
+
+  off = 0;
+  ASSERT_PEQ(ustrp_split_cstr(pool, sp1, &off, "xyz", 0),USTRP1(\7, "456789 "));
+  ASSERT_PEQ(ustrp_split_cstr(pool, sp1, &off, "xyz", 0),USTRP1(\3, "456"));
+  ASSERT(!ustrp_split_cstr(pool, sp1, &off, "xyz", 0));
+  ASSERT(!ustrp_split_cstr(pool, sp1, &off, "xyz", 0));
+  off = 0;
+  ASSERT_PEQ(ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0),
+             USTRP1(\7, "456789 "));
+  ASSERT_PEQ(ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0),
+             USTRP1(\3, "456"));
+  ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0));
+  ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0));
   
   ustr_pool_free(pool);
   ustr_pool_free(NULL);

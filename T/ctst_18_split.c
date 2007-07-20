@@ -54,6 +54,7 @@ int tst(void)
      ustr_sc_free(&tok);
   }
   ustr_sc_free(&sep);
+  
   /* multi-char sep; skip sep; skip blank */
   sep = ustr_dup_cstr(",,");
   i=0;
@@ -79,9 +80,53 @@ int tst(void)
   ASSERT((ret = ustr_split(a,&off,sep,flags)) == USTR_FALSE);
   ASSERT(off==0);
 
-  /* I'm not exactly sure how to test for KEEP_CONF */
-
   ustr_sc_free(&sep);
   ustr_sc_free(&ret);
-  return EXIT_SUCCESS;
+
+  a = USTR1(\x15, "a||bx||||cx||dx||||xx");
+  i   = 0;
+  off = 0;
+  while ((tok = ustr_split_cstr(a, &off, "||", 0)))
+  {
+    ASSERT(!ustr_sized(a));
+    ASSERT(!ustr_sized(tok));
+    ASSERT(ustr_cmp_cstr_eq(tok, ans3[i++]));
+    ustr_sc_free(&tok);
+  }
+
+  ASSERT((a = ustr_dupx(1, 0, 0, 0, a)));
+  
+  off = 1;
+  ASSERT((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_RET_NON)));
+  ASSERT( ustr_sized(a));
+  ASSERT(!ustr_sized(tok));
+  ASSERT( ustr_ro(tok));
+  ASSERT(!ustr_len(tok));
+  ustr_sc_free(&tok);
+  off = 1;
+  ASSERT((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_RET_SEP)));
+  ASSERT( ustr_sized(a));
+  ASSERT(!ustr_sized(tok));
+  ASSERT(!ustr_ro(tok));
+  ASSERT(ustr_cmp_cstr_eq(tok, "||"));
+  ustr_sc_free(&tok);
+  ASSERT((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_RET_SEP)));
+  ASSERT( ustr_sized(a));
+  ASSERT(!ustr_sized(tok));
+  ASSERT(!ustr_ro(tok));
+  ASSERT(ustr_cmp_cstr_eq(tok, "bx||"));
+  ustr_sc_free(&tok);
+    
+  i   = 2;
+  while ((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_KEEP_CONF)))
+  {
+    ASSERT( ustr_sized(a));
+    ASSERT( ustr_sized(tok));
+    ASSERT(ustr_cmp_cstr_eq(tok, ans3[i++]));
+    ustr_sc_free(&tok);
+  }
+  
+  ustr_sc_free(&a);
+  
+  return (EXIT_SUCCESS);
 }

@@ -26,6 +26,19 @@ USTR_CONF_EI_PROTO struct Ustr *ustr_split_cstr(const struct Ustr *, size_t *,
                                                 const char *, unsigned int)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_split_buf(struct Ustr_pool *, const struct Ustrp *,size_t *,
+                              const void *, size_t, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_split(struct Ustr_pool *, const struct Ustrp *, size_t *,
+                          const struct Ustrp *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
+USTR_CONF_EI_PROTO
+struct Ustrp *ustrp_split_cstr(struct Ustr_pool *,const struct Ustrp *,size_t *,
+                               const char *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
+
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-split-internal.h"
 #endif
@@ -39,6 +52,10 @@ USTR_CONF_II_PROTO
 struct Ustr *ustr_split_cstr(const struct Ustr *s1, size_t *off,
                              const char *cstr, unsigned int flags)
 { return (ustr_split_buf(s1, off, cstr, strlen(cstr), flags)); }
+USTR_CONF_II_PROTO
+struct Ustrp *ustrp_split_cstr(struct Ustr_pool *p, const struct Ustrp *sp1,
+                               size_t *off, const char *cstr, unsigned int flgs)
+{ return (ustrp_split_buf(p, sp1, off, cstr, strlen(cstr), flgs)); }
 #endif
 
 #endif

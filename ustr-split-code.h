@@ -34,7 +34,7 @@ struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
   }
 
   /* Set the offset for the next, must skip sep */
-  *poff = found_pos + slen - 1;
+  *poff = (found_pos - 1) + slen;
   
   /* If we don't wish to return blanks or separators, we might get "a,,b" with
    * sep="," so we need to skip the first "found" separator -- so just try
@@ -57,6 +57,11 @@ USTR_CONF_I_PROTO
 struct Ustr *ustr_split_buf(const struct Ustr *s1, size_t *off, 
                             const void *sep, size_t slen, unsigned int flags)
 { return (ustrp__split_buf(0, s1, off, sep, slen, flags)); }
+USTR_CONF_I_PROTO
+struct Ustrp *ustrp_split_buf(struct Ustr_pool *p,
+                              const struct Ustrp *s1, size_t *off, 
+                              const void *sep, size_t slen, unsigned int flags)
+{ return (USTRP(ustrp__split_buf(p, &s1->s, off, sep, slen, flags))); }
 
 USTR_CONF_I_PROTO
 struct Ustr *ustr_split(const struct Ustr *s1, size_t *off, 
@@ -64,5 +69,15 @@ struct Ustr *ustr_split(const struct Ustr *s1, size_t *off,
 {
   USTR_ASSERT(ustr_assert_valid(sep));
   return (ustrp__split_buf(0, s1, off, ustr_cstr(sep), ustr_len(sep), flags));
+}
+
+USTR_CONF_I_PROTO
+struct Ustrp *ustrp_split(struct Ustr_pool *p,
+                          const struct Ustrp *s1, size_t *off, 
+                          const struct Ustrp *sep, unsigned int flags)
+{
+  USTR_ASSERT(ustrp_assert_valid(sep));
+  return (USTRP(ustrp__split_buf(p, &s1->s, off,
+                                 ustrp_cstr(sep), ustrp_len(sep), flags)));
 }
 
