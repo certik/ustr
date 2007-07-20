@@ -25,7 +25,7 @@ struct Ustr__pool_si_base
  unsigned int call_realloc : 1;
 };
 
-#define USTR__POOL_NULL ((struct Ustr__pool_si_base *) 0)
+#define USTR__POOL_SIB_NULL ((struct Ustr__pool_si_base *) 0)
 
 USTR_CONF_e_PROTO void *ustr__pool_sys_malloc(struct Ustr_pool *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A()
@@ -188,7 +188,7 @@ struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *p)
 
   if (!(tmp = USTR_CONF_MALLOC(sizeof(struct Ustr__pool_si_base))))
 
-    return (0);
+    return (USTR_POOL_NULL);
 
   tmp->cbs.pool_sys_malloc   = ustr__pool_sys_malloc;
   tmp->cbs.pool_sys_realloc  = ustr__pool_sys_realloc;
@@ -199,11 +199,11 @@ struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *p)
   tmp->cbs.pool_free         = ustr__pool_free;
 
   tmp->beg  = 0;
-  tmp->sbeg = USTR__POOL_NULL;
-  tmp->prev = USTR__POOL_NULL;
+  tmp->sbeg = USTR__POOL_SIB_NULL;
+  tmp->prev = USTR__POOL_SIB_NULL;
 
-  tmp->next = USTR__POOL_NULL;
-  tmp->base = USTR__POOL_NULL;
+  tmp->next = USTR__POOL_SIB_NULL;
+  tmp->base = USTR__POOL_SIB_NULL;
 
   tmp->free_num = 2; /* magic number, allows dupx + copy + free */
 
@@ -222,4 +222,4 @@ struct Ustr_pool *ustr__pool_make_subpool(struct Ustr_pool *p)
 }
 
 USTR_CONF_I_PROTO struct Ustr_pool *ustr_pool_make_pool(void)
-{ return (ustr__pool_make_subpool(USTR__POOL_NULL)); }
+{ return (ustr__pool_make_subpool(USTR_POOL_NULL)); }

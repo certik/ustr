@@ -27,6 +27,7 @@
 #define USTR_TRUE  1
 #define USTR_NULL  ((struct Ustr *) 0)
 #define USTRP_NULL ((struct Ustrp *)0)
+#define USTR_POOL_NULL ((struct Ustr_pool *)0)
 
 #ifndef USTR_CONF_USE_ASSERT
 # ifdef NDEBUG

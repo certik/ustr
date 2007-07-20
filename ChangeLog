@@ -1,3 +1,7 @@
+2007-07-19  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_POOL_NULL): Added NULL specific for Ustr_pool.
+
 2007-07-18  James Antill  <james@and.org>
 
 	* ustr-pool-code.h (ustr__pool_sys_free): Go back more than one ptr, so
