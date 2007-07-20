@@ -1040,7 +1040,6 @@ struct Ustrp *ustrp_dupx_buf(struct Ustr_pool *p, size_t sz, size_t rb,
 
 USTR_CONF_I_PROTO struct Ustr *ustr_dup_buf(const void *data, size_t len)
 { return (ustr_dupx_buf(USTR__DUPX_DEF, data, len)); }
-
 USTR_CONF_I_PROTO
 struct Ustrp *ustrp_dup_buf(struct Ustr_pool *p, const void *data, size_t len)
 { return (USTRP(ustrp_dupx_buf(p, USTR__DUPX_DEF, data, len))); }

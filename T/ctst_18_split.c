@@ -4,16 +4,19 @@ static const char *rf = __FILE__;
 
 int tst(void)
 {
-
   /* single char sep; do not keep sep; do keep blank strings */
   Ustr *a = ustr_dup_cstr("blue,yellow,red,green,,orange");
   const char *ans[] = {"blue","yellow","red","green","","orange"};
   size_t off = 0;
-  unsigned int flags = (USTR_SPLIT_RET_NON);
+  unsigned int flags = (USTR_FLAG_SPLIT_RET_NON);
   Ustr *sep = ustr_dup_cstr(",");
-  size_t i=0;
-  if (ans) {};
   Ustr *tok;
+  Ustr *ret;
+  size_t i=0;
+  const char *ans2[] = {"a==","b,c==","d,c==","==","==",",12==","xzy==","=="};
+  const char *ans3[] = {"a","bx","cx","dx","xx"};
+  const char *ans4[] = {"a,bx","cx","dx",",xx"};
+  
   while ((tok = ustr_split(a,&off,sep,flags)))
   {
        ASSERT(ustr_cmp_cstr_eq(tok,ans[i]));
@@ -26,8 +29,7 @@ int tst(void)
   /* mult-char sep; keep sep; do not keep blank strings */
   a = ustr_dup_cstr("a==b,c==d,c======,12==xzy====");
   sep = ustr_dup_cstr("==");
-  flags = (USTR_SPLIT_RET_SEP);
-  const char *ans2[] = {"a==","b,c==","d,c==","==","==",",12==","xzy==","=="};
+  flags = (USTR_FLAG_SPLIT_RET_SEP);
   i=0;
   off=0;
   while ((tok = ustr_split(a,&off,sep,flags)))
@@ -43,7 +45,6 @@ int tst(void)
   a = ustr_dup_cstr("a,bx,,,,cx,,dx,,,xx,,,,");
   sep = ustr_dup_cstr(",");
   flags = 0;
-  const char *ans3[] = {"a","bx","cx","dx","xx"};
   i=0;
   off=0;
   while ((tok = ustr_split(a,&off,sep,flags)))
@@ -55,8 +56,7 @@ int tst(void)
   ustr_sc_free(&sep);
   /* multi-char sep; skip sep; skip blank */
   sep = ustr_dup_cstr(",,");
-  const char *ans4[] = {"a,bx","cx","dx",",xx"};
-   i=0;
+  i=0;
   off=0;
   while ((tok = ustr_split(a,&off,sep,flags)))
   {
@@ -69,7 +69,6 @@ int tst(void)
   /* blank sep */
   off = 0;
   sep = USTR("");
-  Ustr *ret;
   ASSERT((ret = ustr_split(a,&off,sep,flags)) == USTR_FALSE);
   ASSERT(off==0);
   ustr_sc_free(&ret);

@@ -27,6 +27,12 @@
 
  ustr-import man page.
 
+ ustr_pool_subpool_take() => move a pointer from a pool to a subpool
+
+ ustr_pool_setf_realloc() => toggle calling of realloc on/off
+ ustr_pool_setf_free_num() => Number of ptr's to compare on free
+  These two allow a zero free policy, except on clear/free.
+
  ustr_cmp_prefix*_subustr()
  ustr_cmp_suffix*_subustr()
 

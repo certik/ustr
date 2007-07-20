@@ -1,6 +1,15 @@
 2007-07-19  James Antill  <james@and.org>
 
+	* ustr-split-code.h (ustr_split_buf): Initial cleanup.
+
 	* ustr-main.h (USTR_POOL_NULL): Added NULL specific for Ustr_pool.
+
+2007-07-19  Paul Rosenfeld <prosenfeld@tresys.com>
+
+	* ustr-split.h (ustr_split_cstr): Added function.
+
+	* ustr-split-code.h (ustr_split_buf): Added function.
+	(ustr_split): Added function.
 
 2007-07-18  James Antill  <james@and.org>
 

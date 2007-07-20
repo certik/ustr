@@ -7,10 +7,8 @@
 # error " You should have already included ustr-main.h, or just include ustr.h"
 #endif
 
-#ifdef USTR_SRCH_H
 USTR_CONF_e_PROTO
-struct Ustr *ustr__split(const struct Ustr *, size_t *, const struct Ustr *,
-							unsigned int);
-#endif
+struct Ustr *ustrp__split_buf(struct Ustr_pool *, const struct Ustr *, size_t *,
+                              const void *, size_t, unsigned int);
 
 #endif

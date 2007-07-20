@@ -3,87 +3,76 @@
 #ifndef USTR_SPLIT_H
 #error " Include ustr-split.h before this file."
 #endif
-#include <stdio.h>
-USTR_CONF_i_PROTO
-struct Ustr *ustr__split(const struct Ustr *target, size_t *off, 
-                            const struct Ustr *sep, unsigned int flags)
-{
-  USTR_ASSERT(ustr_assert_valid(target) && ustr_assert_valid(sep));
-  size_t len = ustr_len(target);
-  size_t slen = ustr_len(sep);
-  size_t start_pos = *off;
-  unsigned int eol=0; /* End of Line flag -- true when there
-                         are no more tokens left in this string */
-  if (!len || !slen || start_pos > len - 1)
-    return USTR_NULL;
 
-  size_t found_pos = ustr_srch_fwd(target, start_pos, sep);
-  /* separator not found, just return the rest of the string 
-   *    the user will have to interpret whether this is an error condition */
-  if (!found_pos)
+#if !defined(USTR_FMT_INTERNAL_H) && !defined(USTR_IO_H)
+#include <stdio.h>
+#endif
+
+USTR_CONF_i_PROTO
+struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
+                              const struct Ustr *s1, size_t *poff, 
+                              const void *sep, size_t slen, unsigned int flags)
+{
+  size_t len = ustr_len(s1);
+  size_t off = *poff;
+  size_t found_pos = 0;
+  size_t ret_len   = 0;
+  
+  USTR_ASSERT(ustr_assert_valid(s1));
+
+  USTR_ASSERT_RET(off <= len, USTR_NULL);
+
+  if (!slen || (off == len))
+    return (USTR_NULL);
+
+  /* Separator not found, just return the rest of the string 
+   * the user will have to interpret whether this is an error condition */
+  if (!(found_pos = ustr_srch_buf_fwd(s1, off, sep, slen)))
   {
-    found_pos = len + 1; 
-    eol=1;
-    goto copy_buf;
+    ret_len = len - off;
+    *poff   = len;
+    goto copy_buf; /* No more tokens, return remaining */
   }
 
-  /* if we don't wish to return blanks or separators, we could get a situation
+  /* If we don't wish to return blanks or separators, we could get a situation
    * where we have "a,,,,,,,,b" and sep="," in which case the only two tokens
    * we need to return are 'a' and 'b' -- so skip all of the middle ones */
-  if (!(flags & USTR_SPLIT_RET_SEP)) 
+  if (((found_pos - 1) == off) &&
+      !(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
+    /* The found position is one away from the start position 
+     * and we are not at the end of the string yet */
   {
-    if (!(flags & USTR_SPLIT_RET_NON)) {
-      /* The found position is one away from the start position 
-       *    and we are not at the end of the string yet */
-      while ((found_pos - 1 == start_pos) && (start_pos + slen < len))
-      {
-        start_pos += slen;
-        found_pos = ustr_srch_fwd(target, start_pos, sep);
-        if (!found_pos)
-        {
-          eol=1;
-          found_pos=len + 1;
-          break;
-        }
-      }
-    }
+    *poff += slen;
+    return (ustrp__split_buf(p, s1, poff, sep, slen, flags));
   }
 
-    /* next character is a separator, and we DO want blank tokens */
-  if (!(flags & USTR_SPLIT_RET_SEP) && (flags & USTR_SPLIT_RET_NON) && 
-      (found_pos - start_pos) == 1) 
-  {
-    (*off) += slen;
-    return USTR("");
-  }
-
-copy_buf:
-  /* make sure the offset for the next call is after the delimiter we found 
+  /* Make sure the offset for the next call is after the delimiter we found 
    * this time */
-  *off = (found_pos - 1) + slen;
-
-  /* include sep in the substring we are about to return (if we are not at 
+  *poff = found_pos + slen - 1;
+  
+  ret_len = (found_pos - 1) - off;
+  
+  /* Include sep in the substring we are about to return (if we are not at 
    * end of line) */
-  if (!eol && flags & USTR_SPLIT_RET_SEP)
-    found_pos += slen;
+  if (flags & USTR_FLAG_SPLIT_RET_SEP)
+    ret_len += slen;
+  
+ copy_buf:
+  if (flags & USTR_FLAG_SPLIT_KEEP_CONF)
+    return (ustrp__dup_subustr(p, s1, off + 1, ret_len));
 
-  const char *buf = ustr_cstr(target) + start_pos;
-  size_t clen = (found_pos-1) - start_pos;
-  if (clen)
-  {
-    if (!(flags & USTR_SPLIT_KEEP_CONF))
-      return ustr_dup_buf(buf, clen); 
-    else
-     return ustr_dupx_buf(USTR__DUPX_FROM(target),buf,clen);
-  }
-  else
-    return USTR_NULL;
+  return (ustrp__dupx_buf(p, USTR__DUPX_DEF, ustr_cstr(s1) + off, ret_len));
 }
+USTR_CONF_I_PROTO
+struct Ustr *ustr_split_buf(const struct Ustr *s1, size_t *off, 
+                            const void *sep, size_t slen, unsigned int flags)
+{ return (ustrp__split_buf(0, s1, off, sep, slen, flags)); }
 
 USTR_CONF_I_PROTO
-struct Ustr *ustr_split(const struct Ustr *target, size_t *off, 
+struct Ustr *ustr_split(const struct Ustr *s1, size_t *off, 
                         const struct Ustr *sep, unsigned int flags)
 {
-	return ustr__split(target, off, sep, flags);	
+  USTR_ASSERT(ustr_assert_valid(sep));
+  return (ustrp__split_buf(0, s1, off, ustr_cstr(sep), ustr_len(sep), flags));
 }
 
