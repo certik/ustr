@@ -752,7 +752,10 @@ USTR_CONF_II_PROTO int ustr_shared(const struct Ustr *s1)
 { return (ustr_ro(s1) || (ustr_alloc(s1) && !ustr_xi__ref_get(s1))); }
 
 USTR_CONF_II_PROTO size_t ustr_len(const struct Ustr *s1)
-{ /* NOTE: can't call ustr_assert_valid() here due to recursion */
+{ /* NOTE: can't call ustr_assert_valid() here due to recursion,
+   * also because assert_valid() is inline, and defined later on. */
+  USTR_ASSERT(s1);
+  
   if (!s1->data[0]) return (0);
   
   return (ustr_xi__embed_val_get(s1->data + 1 + USTR__REF_LEN(s1),
@@ -762,6 +765,8 @@ USTR_CONF_II_PROTO const char *ustr_cstr(const struct Ustr *s1)
 { /* NOTE: can't call ustr_assert_valid() here due to recursion,
    * also because assert_valid() is inline, and defined later on. */
   size_t lenn = 0;
+
+  USTR_ASSERT(s1);
   
   if (!s1->data[0]) return ((const char *)s1->data);
 

@@ -125,6 +125,26 @@ int tst(void)
     ASSERT(ustr_cmp_cstr_eq(tok, ans3[i++]));
     ustr_sc_free(&tok);
   }
+
+  off = 0;
+  ASSERT(!ustr_split(a, &off, a, 0));
+  ASSERT((off == ustr_len(a)));
+  off = 0;
+  ASSERT((tok = ustr_split(a, &off, a, (USTR_FLAG_SPLIT_RET_NON |
+                                        USTR_FLAG_SPLIT_KEEP_CONF))));
+  ASSERT((off == ustr_len(a)));
+  ASSERT( ustr_sized(tok));
+  ASSERT( ustr_cstr(tok));
+  ASSERT_EQ(tok, USTR(""));
+  ustr_sc_free(&tok);
+  off = 0;
+  ASSERT((tok = ustr_split(a, &off, a, (USTR_FLAG_SPLIT_RET_SEP |
+                                        USTR_FLAG_SPLIT_KEEP_CONF))));
+  ASSERT((off == ustr_len(a)));
+  ASSERT_EQ(tok, a);
+  ASSERT( ustr_sized(tok));
+  ASSERT( ustr_cstr(tok));
+  ustr_sc_free(&tok);
   
   ustr_sc_free(&a);
   

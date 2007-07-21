@@ -1,3 +1,8 @@
+2007-07-20  James Antill  <james@and.org>
+
+	* ustr-main.h (ustr_len): Add assert for NULL.
+	(ustr_cstr): Add assert for NULL.
+
 2007-07-19  James Antill  <james@and.org>
 
 	* ustr-replace-code.h (ustrp__replace_buf): Remove underflow condition,
