@@ -9,6 +9,6 @@
 
 USTR_CONF_e_PROTO
 struct Ustr *ustrp__split_buf(struct Ustr_pool *, const struct Ustr *, size_t *,
-                              const void *, size_t, unsigned int);
+                              const void *, size_t, struct Ustr *,unsigned int);
 
 #endif

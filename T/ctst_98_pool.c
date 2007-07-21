@@ -551,17 +551,17 @@ int tst(void)
   ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
 
   off = 0;
-  ASSERT_PEQ(ustrp_split_cstr(pool, sp1, &off, "xyz", 0),USTRP1(\7, "456789 "));
-  ASSERT_PEQ(ustrp_split_cstr(pool, sp1, &off, "xyz", 0),USTRP1(\3, "456"));
-  ASSERT(!ustrp_split_cstr(pool, sp1, &off, "xyz", 0));
-  ASSERT(!ustrp_split_cstr(pool, sp1, &off, "xyz", 0));
+  ASSERT_PEQ(ustrp_split_cstr(pool, sp1, &off,"xyz",0,0),USTRP1(\7, "456789 "));
+  ASSERT_PEQ(ustrp_split_cstr(pool, sp1, &off,"xyz",0,0),USTRP1(\3, "456"));
+  ASSERT(!ustrp_split_cstr(pool, sp1, &off, "xyz", NULL, 0));
+  ASSERT(!ustrp_split_cstr(pool, sp1, &off, "xyz", NULL, 0));
   off = 0;
-  ASSERT_PEQ(ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0),
+  ASSERT_PEQ(ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), NULL, 0),
              USTRP1(\7, "456789 "));
-  ASSERT_PEQ(ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0),
+  ASSERT_PEQ(ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), NULL, 0),
              USTRP1(\3, "456"));
-  ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0));
-  ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), 0));
+  ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), NULL, 0));
+  ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), NULL, 0));
   
   ASSERT(ustrp_sub_undef(pool, &sp1, 3, 2));
   ASSERT(ustrp_sc_sub_undef(pool, &sp1, 1, 2, 2));

@@ -7,6 +7,7 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
+#define USTR_FLAG_SPLIT_DEF           0
 #define USTR_FLAG_SPLIT_RET_SEP   (1<<0)
 #define USTR_FLAG_SPLIT_RET_NON   (1<<1)
 #define USTR_FLAG_SPLIT_KEEP_CONF (1<<2)
@@ -16,27 +17,28 @@
 
 USTR_CONF_E_PROTO
 struct Ustr *ustr_split_buf(const struct Ustr *, size_t *,
-                            const void *, size_t, unsigned int)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+                            const void *, size_t, struct Ustr *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
 USTR_CONF_E_PROTO
 struct Ustr *ustr_split(const struct Ustr *, size_t *, const struct Ustr *,
-                        unsigned int)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
-USTR_CONF_EI_PROTO struct Ustr *ustr_split_cstr(const struct Ustr *, size_t *,
-                                                const char *, unsigned int)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+                        struct Ustr *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
+USTR_CONF_EI_PROTO
+struct Ustr *ustr_split_cstr(const struct Ustr *, size_t *,
+                             const char *, struct Ustr *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
 
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_split_buf(struct Ustr_pool *, const struct Ustrp *,size_t *,
-                              const void *, size_t, unsigned int)
+                              const void *, size_t, struct Ustrp *,unsigned int)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_split(struct Ustr_pool *, const struct Ustrp *, size_t *,
-                          const struct Ustrp *, unsigned int)
+                          const struct Ustrp *, struct Ustrp *, unsigned int)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
 USTR_CONF_EI_PROTO
 struct Ustrp *ustrp_split_cstr(struct Ustr_pool *,const struct Ustrp *,size_t *,
-                               const char *, unsigned int)
+                               const char *, struct Ustrp *, unsigned int)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
@@ -50,12 +52,14 @@ struct Ustrp *ustrp_split_cstr(struct Ustr_pool *,const struct Ustrp *,size_t *,
 #if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO
 struct Ustr *ustr_split_cstr(const struct Ustr *s1, size_t *off,
-                             const char *cstr, unsigned int flags)
-{ return (ustr_split_buf(s1, off, cstr, strlen(cstr), flags)); }
+                             const char *cstr, struct Ustr *ret,
+                             unsigned int flags)
+{ return (ustr_split_buf(s1, off, cstr, strlen(cstr), ret, flags)); }
 USTR_CONF_II_PROTO
 struct Ustrp *ustrp_split_cstr(struct Ustr_pool *p, const struct Ustrp *sp1,
-                               size_t *off, const char *cstr, unsigned int flgs)
-{ return (ustrp_split_buf(p, sp1, off, cstr, strlen(cstr), flgs)); }
+                               size_t *off, const char *cstr, struct Ustrp *ret,
+                               unsigned int flgs)
+{ return (ustrp_split_buf(p, sp1, off, cstr, strlen(cstr), ret, flgs)); }
 #endif
 
 #endif

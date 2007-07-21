@@ -146,6 +146,7 @@ else
     sc=true
   fi
   if $split; then
+    set=true
     srch=true
   fi
   if $repl; then
@@ -523,7 +524,7 @@ if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
 fi
 
-if $split; then # SPLIT hard deps. on srch
+if $split; then # SPLIT hard deps. on set, srch
   echo '#include "ustr-split.h"' >> $outname
 fi
 

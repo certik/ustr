@@ -10,14 +10,14 @@ int tst(void)
   size_t off = 0;
   unsigned int flags = (USTR_FLAG_SPLIT_RET_NON);
   Ustr *sep = ustr_dup_cstr(",");
-  Ustr *tok;
-  Ustr *ret;
-  size_t i=0;
+  Ustr *tok = NULL;
+  Ustr *ret = NULL;
+  size_t i = 0;
   const char *ans2[] = {"a==","b,c==","d,c==","==","==",",12==","xzy==","=="};
   const char *ans3[] = {"a","bx","cx","dx","xx"};
   const char *ans4[] = {"a,bx","cx","dx",",xx"};
   
-  while ((tok = ustr_split(a,&off,sep,flags)))
+  while ((tok = ustr_split(a,&off,sep, NULL,flags)))
   {
        ASSERT(ustr_cmp_cstr_eq(tok,ans[i]));
        ++i;
@@ -32,7 +32,7 @@ int tst(void)
   flags = (USTR_FLAG_SPLIT_RET_SEP);
   i=0;
   off=0;
-  while ((tok = ustr_split(a,&off,sep,flags)))
+  while ((tok = ustr_split(a,&off,sep, NULL,flags)))
   {
      ASSERT(ustr_cmp_cstr_eq(tok,ans2[i]));
      ++i;
@@ -47,7 +47,7 @@ int tst(void)
   flags = 0;
   i=0;
   off=0;
-  while ((tok = ustr_split(a,&off,sep,flags)))
+  while ((tok = ustr_split(a,&off,sep, NULL,flags)))
   {
      ASSERT(ustr_cmp_cstr_eq(tok,ans3[i]));
      ++i;
@@ -59,7 +59,7 @@ int tst(void)
   sep = ustr_dup_cstr(",,");
   i=0;
   off=0;
-  while ((tok = ustr_split(a,&off,sep,flags)))
+  while ((tok = ustr_split(a,&off,sep, NULL,flags)))
   {
      ASSERT(ustr_cmp_cstr_eq(tok,ans4[i]));
      ++i;
@@ -70,14 +70,14 @@ int tst(void)
   /* blank sep */
   off = 0;
   sep = USTR("");
-  ASSERT((ret = ustr_split(a,&off,sep,flags)) == USTR_FALSE);
+  ASSERT((ret = ustr_split(a,&off,sep, NULL,flags)) == USTR_FALSE);
   ASSERT(off==0);
   ustr_sc_free(&ret);
   /* blank target */
   sep = ustr_dup_cstr(",");
   ustr_sc_free(&a);
   a = USTR("");
-  ASSERT((ret = ustr_split(a,&off,sep,flags)) == USTR_FALSE);
+  ASSERT((ret = ustr_split(a,&off,sep, NULL,flags)) == USTR_FALSE);
   ASSERT(off==0);
 
   ustr_sc_free(&sep);
@@ -86,7 +86,7 @@ int tst(void)
   a = USTR1(\x15, "a||bx||||cx||dx||||xx");
   i   = 0;
   off = 0;
-  while ((tok = ustr_split_cstr(a, &off, "||", 0)))
+  while ((tok = ustr_split_cstr(a, &off, "||", NULL, USTR_FLAG_SPLIT_DEF)))
   {
     ASSERT(!ustr_sized(a));
     ASSERT(!ustr_sized(tok));
@@ -97,28 +97,28 @@ int tst(void)
   ASSERT((a = ustr_dupx(1, 0, 0, 0, a)));
   
   off = 1;
-  ASSERT((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_RET_NON)));
+  ASSERT((tok = ustr_split_cstr(a, &off, "||", NULL, USTR_FLAG_SPLIT_RET_NON)));
   ASSERT( ustr_sized(a));
   ASSERT(!ustr_sized(tok));
   ASSERT( ustr_ro(tok));
   ASSERT(!ustr_len(tok));
   ustr_sc_free(&tok);
   off = 1;
-  ASSERT((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_RET_SEP)));
+  ASSERT((tok = ustr_split_cstr(a, &off, "||", NULL, USTR_FLAG_SPLIT_RET_SEP)));
   ASSERT( ustr_sized(a));
   ASSERT(!ustr_sized(tok));
   ASSERT(!ustr_ro(tok));
   ASSERT(ustr_cmp_cstr_eq(tok, "||"));
   ustr_sc_free(&tok);
-  ASSERT((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_RET_SEP)));
+  ASSERT((tok = ustr_split_cstr(a, &off, "||", NULL, USTR_FLAG_SPLIT_RET_SEP)));
   ASSERT( ustr_sized(a));
   ASSERT(!ustr_sized(tok));
   ASSERT(!ustr_ro(tok));
   ASSERT(ustr_cmp_cstr_eq(tok, "bx||"));
   ustr_sc_free(&tok);
-    
+  
   i   = 2;
-  while ((tok = ustr_split_cstr(a, &off, "||", USTR_FLAG_SPLIT_KEEP_CONF)))
+  while ((tok = ustr_split_cstr(a, &off, "||", tok, USTR_FLAG_SPLIT_KEEP_CONF)))
   {
     ASSERT( ustr_sized(a));
     ASSERT( ustr_sized(tok));
@@ -127,24 +127,47 @@ int tst(void)
   }
 
   off = 0;
-  ASSERT(!ustr_split(a, &off, a, 0));
+  i   = 0;
+  flags = USTR_FLAG_SPLIT_KEEP_CONF;
+  while ((tok = ustr_split_cstr(a, &off, "||", tok, flags)))
+  {
+    ASSERT( ustr_sized(a));
+    ASSERT( ustr_sized(tok));
+    ASSERT(ustr_cmp_cstr_eq(tok, ans3[i++]));
+    flags = USTR_FLAG_SPLIT_DEF; /* doesn't matter after first one */
+  }
+
+  off = 0;
+  ASSERT(!ustr_split(a, &off, a, NULL, 0));
   ASSERT((off == ustr_len(a)));
   off = 0;
-  ASSERT((tok = ustr_split(a, &off, a, (USTR_FLAG_SPLIT_RET_NON |
-                                        USTR_FLAG_SPLIT_KEEP_CONF))));
+  ASSERT((tok = ustr_split(a, &off, a, NULL, (USTR_FLAG_SPLIT_RET_NON |
+                                              USTR_FLAG_SPLIT_KEEP_CONF))));
   ASSERT((off == ustr_len(a)));
   ASSERT( ustr_sized(tok));
   ASSERT( ustr_cstr(tok));
   ASSERT_EQ(tok, USTR(""));
   ustr_sc_free(&tok);
   off = 0;
-  ASSERT((tok = ustr_split(a, &off, a, (USTR_FLAG_SPLIT_RET_SEP |
-                                        USTR_FLAG_SPLIT_KEEP_CONF))));
+  ASSERT((tok = ustr_split(a, &off, a, NULL, (USTR_FLAG_SPLIT_RET_SEP |
+                                              USTR_FLAG_SPLIT_KEEP_CONF))));
   ASSERT((off == ustr_len(a)));
   ASSERT_EQ(tok, a);
   ASSERT( ustr_sized(tok));
   ASSERT( ustr_cstr(tok));
+
+  off = 0;
+  ASSERT((tok = ustr_split(a, &off, a, tok,  USTR_FLAG_SPLIT_RET_NON)));
+  ASSERT( ustr_sized(tok));
+  ASSERT(!ustr_ro(tok));
   ustr_sc_free(&tok);
+  off = 0;
+  ASSERT((tok = ustr_split(a, &off, a, tok,  USTR_FLAG_SPLIT_RET_NON)));
+  ASSERT(!ustr_sized(tok));
+  ASSERT( ustr_ro(tok));
+  off = 0;
+  ASSERT((tok = ustr_dup_cstr("abcd")));
+  ASSERT(!ustr_split(a, &off, a, tok, 0)); /* does the free */
   
   ustr_sc_free(&a);
   
