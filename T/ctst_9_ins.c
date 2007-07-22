@@ -26,6 +26,16 @@ int tst(void)
   ASSERT(ustr_ins_fmt_lim(&s1, 75, 1, "%s%s", "", ""));
   ASSERT(ustr_ins_fmt_lim(&s1, 75, 0, "%s%s", "", ""));
   ASSERT(ustr_cmp_cstr_eq(s1, "12                                                                          ||                                                                          34"));
+  ASSERT(ustr_len(s1) == 154);
+  ASSERT(ustr_ins_undef(&s1, 2, 2));
+  ASSERT(ustr_len(s1) == 156);
+  ASSERT(ustr_cmp_prefix_cstr_eq(s1, "12"));
+  ASSERT(ustr_cmp_suffix_cstr_eq(s1, "                                                                          ||                                                                          34"));
+
+  if (!USTR_DEBUG)
+  ASSERT(!ustr_ins_subustr(&s1, 2, USTR1(\4, "1248"), 4, 2));
+  if (!USTR_DEBUG)
+  ASSERT(!ustr_ins_subustr(&s1, 2, USTR1(\4, "1248"), 5, 1));
   
   return (EXIT_SUCCESS);
 }

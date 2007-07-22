@@ -562,10 +562,20 @@ int tst(void)
              USTRP1(\3, "456"));
   ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), NULL, 0));
   ASSERT(!ustrp_split(pool, sp1, &off, USTRP1(\3, "xyz"), NULL, 0));
-  
+
+  ASSERT(ustrp_len(sp1) == 16);
+  ASSERT(ustrp_ins_undef(pool, &sp1, 1, 2));
+  ASSERT(ustrp_len(sp1) == 18);
   ASSERT(ustrp_sub_undef(pool, &sp1, 3, 2));
+  ASSERT(ustrp_len(sp1) == 18);
   ASSERT(ustrp_sc_sub_undef(pool, &sp1, 1, 2, 2));
+  ASSERT(ustrp_len(sp1) == 18);
         
+  if (!USTR_DEBUG)
+  ASSERT(!ustrp_ins_subustrp(pool, &sp1, 2, USTRP1(\4, "1248"), 4, 2));
+  if (!USTR_DEBUG)
+  ASSERT(!ustrp_ins_subustrp(pool, &sp1, 2, USTRP1(\4, "1248"), 5, 1));
+  
   ustr_pool_free(pool);
   ustr_pool_free(NULL);
   

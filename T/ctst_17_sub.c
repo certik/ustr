@@ -196,7 +196,15 @@ int tst(void)
         if (!USTR_DEBUG)
         ASSERT(!ustr_sub_undef(&d, 100, 1));
         if (!USTR_DEBUG)
+        ASSERT(!ustr_sub_subustr(&d, 1, USTR1(\4, "abcd"), 4, 2));
+        if (!USTR_DEBUG)
+        ASSERT(!ustr_sub_subustr(&d, 1, USTR1(\4, "abcd"), 5, 1));
+        if (!USTR_DEBUG)
         ASSERT(!ustr_sc_sub_undef(&d, 100, 1, 1));
+        if (!USTR_DEBUG)
+        ASSERT(!ustr_sc_sub_subustr(&d, 1, 1, USTR1(\4, "abcd"), 4, 2));
+        if (!USTR_DEBUG)
+        ASSERT(!ustr_sc_sub_subustr(&d, 1, 1, USTR1(\4, "abcd"), 5, 1));
 	PRINT_RESULT(c);
 
         if (!USTR_CONF_HAVE_64bit_SIZE_MAX) /* 10MB is probably enough... */

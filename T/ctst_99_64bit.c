@@ -90,6 +90,7 @@ int tst(void)
   size_t large = 1;
   size_t small = 4096;
   size_t num = 0;
+  Ustr *s3 = USTR1(\3, "124");
   
   ASSERT((s1 = ustr_dupx_empty(0, 0, 0, 0)));
   ASSERT(ustr_size_alloc(s1) > 0);
@@ -97,11 +98,18 @@ int tst(void)
   /* max 32bit overhead */
   while (num < (1 + 4 + sizeof(USTR_END_ALOCDx)))
   {
-    ASSERT(!ustr_dup_undef(     end - num));
     ASSERT(!ustr_add_undef(&s1, end - num));
+    ASSERT(!ustr_dup_undef(     end - num));
+    ASSERT(!ustr_ins_undef(&s3, 1, end - num));
     ASSERT(!ustr_set_undef(&s1, end - num));
     ++num;
   }
+  while (num < (1 + 4 + sizeof(USTR_END_ALOCDx) + ustr_len(s3)))
+  {
+    ASSERT(!ustr_ins_undef(&s3, 1, end - num));
+    ++num;
+  }
+  num = (1 + 4 + sizeof(USTR_END_ALOCDx));
   
   if (!USTR_CONF_HAVE_64bit_SIZE_MAX)
   {
@@ -113,9 +121,15 @@ int tst(void)
   /* max 64bit overhead */
   while (num < (1 + 2 + 8 + 8 + sizeof(USTR_END_ALOCDx)))
   {
-    ASSERT(!ustr_dup_undef(     end - num));
     ASSERT(!ustr_add_undef(&s1, end - num));
+    ASSERT(!ustr_dup_undef(     end - num));
+    ASSERT(!ustr_ins_undef(&s3, 1, end - num));
     ASSERT(!ustr_set_undef(&s1, end - num));
+    ++num;
+  }
+  while (num < (1 + 2 + 8 + 8 + sizeof(USTR_END_ALOCDx) + ustr_len(s3)))
+  {
+    ASSERT(!ustr_ins_undef(&s3, 1, end - num));
     ++num;
   }
   

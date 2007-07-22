@@ -11,6 +11,7 @@ int tst(void)
   Ustr *s3 = NULL;
   unsigned int scan = 0;
   unsigned int lim  = 0;
+  size_t off = 0;
   
   lim  = 1;
   scan = 0;
@@ -209,6 +210,12 @@ int tst(void)
   ASSERT(!ustrp_add_fmt(pool, &sp1, "%.500d", 4));
   MALLOC_CHECK_STORE.mem_fail_num = 1;
   ASSERT(!ustrp_set_fmt(pool, &sp1, "%.500d", 4));
+  MALLOC_CHECK_STORE.mem_fail_num = 1;
+  ASSERT(!ustrp_ins_fmt(pool, &sp1, 1, "%.500d", 4));
+  MALLOC_CHECK_STORE.mem_fail_num = 1;
+  ASSERT(!ustrp_sub_fmt(pool, &sp1, 1, "%.500d", 4));
+  MALLOC_CHECK_STORE.mem_fail_num = 1;
+  ASSERT(!ustrp_sc_sub_fmt(pool, &sp1, 1, 2, "%.500d", 4));
   MALLOC_CHECK_STORE.mem_fail_num = 1;
   ASSERT(!(sp1 = ustrp_dup_fmt(pool, "%.500d", 4)));
 
@@ -535,6 +542,8 @@ int tst(void)
     ASSERT(!ustr_sc_sub_rep_chr(&s1, 4, 0x31, '-', 8));
   }
   MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s1, USTR1(\x34, "xyzDEFGHIJKLMNOPQRSTUVWXYZ"
+                            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
   ASSERT( ustr_sc_sub_rep_chr(&s1, 4, 0x31, '-', 8));
   ASSERT_EQ(s1, USTR1(\xb, "xyz--------"));
   ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
@@ -549,6 +558,7 @@ int tst(void)
     ASSERT(!ustr_sub_rep_chr(&s1, 8, '=', 8));
   }
   MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s1, USTR1(\xb, "xyz--------"));
   ASSERT( ustr_sub_rep_chr(&s1, 8, '=', 8));
   ASSERT_EQ(s1, USTR1(\xf, "xyz----========"));
   ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
@@ -563,6 +573,7 @@ int tst(void)
     ASSERT(!ustr_replace_cstr(&s1, "-", "#", 0));
   }
   MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s1, USTR1(\xf, "xyz----========"));
   ASSERT( ustr_replace_cstr(&s1, "-", "#", 0));
   ASSERT_EQ(s1, USTR1(\xf, "xyz####========"));
   ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
@@ -576,9 +587,107 @@ int tst(void)
     ASSERT(!ustr_replace_cstr(&s1, "x", "____", 0));
   }
   MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s1, USTR1(\xf, "xyz####========"));
   ASSERT( ustr_replace_cstr(&s1, "x", "____", 0));
   ASSERT_EQ(s1, USTR1(\x12, "____yz####========"));
   ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
 
+  ustr_sc_free2(&s2, USTR(""));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s2, USTR(""));
+    off = 0;
+    ASSERT(!ustr_split_cstr(s1, &off, "#", s2, 0));
+  }
+  MALLOC_CHECK_STORE.mem_fail_num = scan;
+  off = 0;
+  ASSERT_EQ(s2, USTR(""));
+  ASSERT((s2 = ustr_split_cstr(s1, &off, "#", s2, 0)));
+  ASSERT_EQ(s1, USTR1(\x12, "____yz####========"));
+  ASSERT_EQ(s2, USTR1(\6, "____yz"));
+  ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
+  
+  ustr_sc_free2(&s2, USTR1(\6, "____yz"));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s2, USTR1(\6, "____yz"));
+    ASSERT(!ustr_ins_cstr(&s2, 1, "#"));
+  }
+  MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s2, USTR1(\6, "____yz"));
+  ASSERT( ustr_ins_cstr(&s2, 1, "##"));
+  ASSERT_EQ(s2, USTR1(\x8, "_##___yz"));
+  ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
+  
+  ustr_sc_free2(&s2, USTR1(\x8, "_##___yz"));
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s2, USTR1(\x8, "_##___yz"));
+    ASSERT(!ustr_ins_rep_chr(&s2, 2, '+', 2));
+  }
+  MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s2, USTR1(\x8, "_##___yz"));
+  ASSERT( ustr_ins_rep_chr(&s2, 2, '+', 2));
+  ASSERT_EQ(s2, USTR1(\xa, "_#++#___yz"));
+  ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
+  
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s2, USTR1(\xa, "_#++#___yz"));
+    ASSERT(!ustr_ins_fmt(&s2, 3, "%s", "================"));
+  }
+  MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s2, USTR1(\xa, "_#++#___yz"));
+  ASSERT( ustr_ins_fmt(&s2, 3, "%s", "================"));
+  ASSERT_EQ(s2, USTR1(\x1a, "_#+================+#___yz"));
+  ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
+
+  s3 = ustr_dup(s2);
+  if (!ustr_owner(s2)) {
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s2, USTR1(\x1a, "_#+================+#___yz"));
+    ASSERT(!ustr_sub_fmt(&s2, 4, "%s", "----------------"));
+  }
+  MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s2, USTR1(\x1a, "_#+================+#___yz"));
+  ASSERT( ustr_sub_fmt(&s2, 4, "%s", "----------------"));
+  ASSERT_EQ(s2, USTR1(\x1a, "_#+----------------+#___yz"));
+  ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
+  }
+  ustr_sc_free2(&s3, ustr_dup(s2));
+  
+  if (!ustr_owner(s2)) {
+  lim  = 1;
+  scan = 0;
+  while (scan++ < lim)
+  {
+    MALLOC_CHECK_STORE.mem_fail_num = scan;
+    ASSERT_EQ(s2, USTR1(\x1a, "_#+----------------+#___yz"));
+    ASSERT(!ustr_sc_sub_fmt(&s2, 4, 16, "%s", "................"));
+  }
+  MALLOC_CHECK_STORE.mem_fail_num = scan;
+  ASSERT_EQ(s2, USTR1(\x1a, "_#+----------------+#___yz"));
+  ASSERT( ustr_sc_sub_fmt(&s2, 4, 16, "%s", "................"));
+  ASSERT_EQ(s2, USTR1(\x1a, "_#+................+#___yz"));
+  ASSERT(MALLOC_CHECK_STORE.mem_fail_num == 1);
+  }
+  ustr_sc_free2(&s3, USTR(""));
+  
   return (EXIT_SUCCESS);
 }
