@@ -381,15 +381,23 @@ typedef struct Ustr_pool Ustr_pool;
                               (((x) - 1) >= 0xFFFFFFFF)) ? 8 : 0) +     \
                             sizeof(USTR_END_FIXEDx))
 
-#define USTR_ADD_OBJ(x, y) ustr_add_buf(x, y, sizeof(y))
-#define USTR_DUP_OBJ(y)    ustr_dup_buf(y, sizeof(y))
+#define USTR_ADD_OBJ(x, y)  ustr_add_buf(x, y, sizeof(y))
+#define USTR_ADD_OSTR(x, y) ustr_add_buf(x, y, sizeof(y) - 1)
+#define USTR_DUP_OBJ(y)     ustr_dup_buf(y, sizeof(y))
+#define USTR_DUP_OSTR(y)    ustr_dup_buf(y, sizeof(y) - 1)
 #define USTR_DUPX_OBJ(x1, x2, x3, x4, y)        \
     ustr_dupx_buf(x1, x2, x3, x4, y, sizeof(y))
+#define USTR_DUPX_OSTR(x1, x2, x3, x4, y)        \
+    ustr_dupx_buf(x1, x2, x3, x4, y, sizeof(y) - 1)
 
-#define USTRP_ADD_OBJ(p, x, y) ustrp_add_buf(p, x, y, sizeof(y))
-#define USTRP_DUP_OBJ(p, y)    ustrp_dup_buf(p, y, sizeof(y))
+#define USTRP_ADD_OBJ(p, x, y)  ustrp_add_buf(p, x, y, sizeof(y))
+#define USTRP_ADD_OSTR(p, x, y) ustrp_add_buf(p, x, y, sizeof(y) - 1)
+#define USTRP_DUP_OBJ(p, y)     ustrp_dup_buf(p, y, sizeof(y))
+#define USTRP_DUP_OSTR(p, y)    ustrp_dup_buf(p, y, sizeof(y) - 1)
 #define USTRP_DUPX_OBJ(p, x1, x2, x3, x4, y)        \
     ustrp_dupx_buf(p, x1, x2, x3, x4, y, sizeof(y))
+#define USTRP_DUPX_OSTR(p, x1, x2, x3, x4, y)        \
+    ustrp_dupx_buf(p, x1, x2, x3, x4, y, sizeof(y) - 1)
 
 #define USTR__REF_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0] >> 2)
 #define USTR__LEN_LEN(x)     ustr_xi__pow2(ustr_sized(x), (x)->data[0])

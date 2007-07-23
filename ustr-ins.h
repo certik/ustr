@@ -7,6 +7,13 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
+#define USTR_INS_OBJ(x, y, z)  ustr_ins_buf(x, y, z, sizeof(z))
+#define USTR_INS_OSTR(x, y, z) ustr_ins_buf(x, y, z, sizeof(z) - 1)
+
+#define USTRP_INS_OBJ(p, x, y, z)  ustrp_ins_buf(p, x, y, z, sizeof(z))
+#define USTRP_INS_OSTR(p, x, y, z) ustrp_ins_buf(p, x, y, z, sizeof(z) - 1)
+
+
 USTR_CONF_E_PROTO int ustr_ins_undef(struct Ustr **, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_ins_buf(struct Ustr **, size_t, const void *, size_t)

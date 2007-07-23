@@ -7,6 +7,21 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
+#define USTR_SUB_OBJ(x, y, z)  ustr_sub_buf(x, y, z, sizeof(z))
+#define USTR_SUB_OSTR(x, y, z) ustr_sub_buf(x, y, z, sizeof(z) - 1)
+
+#define USTRP_SUB_OBJ(p, x, y, z)  ustrp_sub_buf(p, x, y, z, sizeof(z))
+#define USTRP_SUB_OSTR(p, x, y, z) ustrp_sub_buf(p, x, y, z, sizeof(z) - 1)
+
+#define USTR_SC_SUB_OBJ(w, x, y, z)  ustr_sc_sub_buf(w, x, y, z, sizeof(z))
+#define USTR_SC_SUB_OSTR(w, x, y, z) ustr_sc_sub_buf(w, x, y, z, sizeof(z) - 1)
+
+#define USTRP_SC_SUB_OBJ(p, w, x, y, z)         \
+    ustrp_sc_sub_buf(p, w, x, y, z, sizeof(z))
+#define USTRP_SC_SUB_OSTR(p, w, x, y, z)        \
+    ustrp_sc_sub_buf(p, w, x, y, z, sizeof(z) - 1)
+
+
 USTR_CONF_E_PROTO int ustr_sub_undef(struct Ustr **ps1, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_sub_buf(struct Ustr **, size_t, const void *, size_t)

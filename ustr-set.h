@@ -6,9 +6,11 @@
 #error " You should have already included ustr-main.h, or just include ustr.h."
 #endif
 
-#define USTR_SET_OBJ(x, y) ustr_set_buf(x, y, sizeof(y))
+#define USTR_SET_OBJ(x, y)  ustr_set_buf(x, y, sizeof(y))
+#define USTR_SET_OSTR(x, y) ustr_set_buf(x, y, sizeof(y) - 1)
 
-#define USTRP_SET_OBJ(p, x, y) ustrp_set_buf(p, x, y, sizeof(y))
+#define USTRP_SET_OBJ(p, x, y)  ustrp_set_buf(p, x, y, sizeof(y))
+#define USTRP_SET_OSTR(p, x, y) ustrp_set_buf(p, x, y, sizeof(y) - 1)
 
 USTR_CONF_E_PROTO int ustr_set_undef(struct Ustr **, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();

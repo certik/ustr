@@ -1,3 +1,19 @@
+2007-07-22  James Antill  <james@and.org>
+
+	* ustr-sub.h (USTR_SUB_OBJ): Added macro.
+	(USTR_SUB_OSTR): Added macro.
+	(USTR_SC_SUB_OBJ): Added macro.
+	(USTR_SC_SUB_OSTR): Added macro.
+
+	* ustr-ins.h (USTR_INS_OBJ): Added macro.
+	(USTR_INS_OSTR): Added macro.
+
+	* ustr-set.h (USTR_SET_OSTR): Added macro.
+
+	* ustr-main.h (USTR_ADD_OSTR): Added macro.
+	(USTR_DUP_OSTR): Added macro.
+	(USTR_DUPX_OSTR): Added macro.
+
 2007-07-21  James Antill  <james@and.org>
 
 	* ustr-split-code.h (ustr_split_buf): Added storage parameter, and/or

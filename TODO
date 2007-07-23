@@ -22,6 +22,7 @@
  DOCS!
   finish ref. documentation.
   tutorial, hello world to mkdir_p to netstr?
+  example perl -pie ... using sutr_sc_sub/ustr_replace/etc.
 
  scons build?
 
@@ -29,8 +30,8 @@
 
  ustr_pool_subpool_take() => move a pointer from a pool to a subpool
 
- ustr_pool_setf_realloc() => toggle calling of realloc on/off
- ustr_pool_setf_free_num() => Number of ptr's to compare on free
+ ustr_poolsi_setf_realloc() => toggle calling of realloc on/off
+ ustr_poolsi_setf_free_num() => Number of ptr's to compare on free
   These two allow a zero free policy, except on clear/free.
 
  ustr_cmp_prefix*_subustr()
@@ -45,15 +46,7 @@
 
  ustr_parse_netstr() / ustr_parse_netstr2()
 
- ustr_ins()?
-
  ustr_fmttime == strftime()
-
- ustr_sub()? just ustr_ins_buf() and/or ustr_del_subustr()?
-   ustr_sub(Ustr **s1, size_t pos, Ustr *s2)
-   ustr_sub(Ustr **s1, size_t pos, size_t len, Ustr *s2) ?
- ... also requested:
-   ustr_sc_replace(Ustr **s1, const Ustr *from, const Ustr *to, size_t lim)
 
  chomp/strip
 
