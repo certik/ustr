@@ -12,9 +12,6 @@
 #define USTR_FLAG_SPLIT_RET_NON   (1<<1)
 #define USTR_FLAG_SPLIT_KEEP_CONF (1<<2)
 
-/* FIXME: ustr_split_chrs ... if anyone of the chars is found, split.
- * Do we need this? */
-
 USTR_CONF_E_PROTO
 struct Ustr *ustr_split_buf(const struct Ustr *, size_t *,
                             const void *, size_t, struct Ustr *, unsigned int)
@@ -40,6 +37,10 @@ USTR_CONF_EI_PROTO
 struct Ustrp *ustrp_split_cstr(struct Ustr_pool *,const struct Ustrp *,size_t *,
                                const char *, struct Ustrp *, unsigned int)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
+
+USTR_CONF_E_PROTO
+struct Ustr *ustr_sc_split_chrs(struct Ustr *,size_t *, const char *, struct Ustr *, int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1,2,3));
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-split-internal.h"

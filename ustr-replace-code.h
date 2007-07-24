@@ -1,7 +1,7 @@
 /* Copyright (c) 2007 Paul Rosenfeld
                       James Antill -- See LICENSE file for terms. */
 #ifndef USTR_REPLACE_H
-#error " Include ustr-sub.h before this file."
+#error " Include ustr-replace.h before this file."
 #endif
 
 #ifdef USTR_SRCH_H
@@ -136,5 +136,55 @@ size_t ustrp_replace(struct Ustr_pool *p, struct Ustrp **ps1,
                      const struct Ustrp *srch,
                      const struct Ustrp *repl, size_t lim)
 { return (ustrp__replace(p, USTR__PPTR(ps1), &srch->s, &repl->s, lim)); }
-#endif
 
+USTR_CONF_I_PROTO
+size_t ustr_replace_rep_chr(struct Ustr **ps1, char odata, size_t olen, 
+                      char ndata, size_t nlen, size_t lim)
+{
+  if (odata == ndata && olen == nlen)
+    return 0;
+  if (!ps1 || !ustr_assert_valid(*ps1))
+    return 0;
+  size_t num_replaced = 0;
+  size_t len = ustr_len(*ps1);
+  size_t rlen = len; /* remaining length to scan */
+  const char *beg = ustr_cstr(*ps1);
+  const char *end = beg + len;
+  const char *tmp = beg;
+scan:
+  while (tmp < end && (tmp = memchr(tmp, odata, rlen)))
+  {
+    /* shortest case -- the span would go off the end */
+    if (olen > rlen) 
+    {
+      break;
+    }
+    /* start scanning at where the needle would end because we can
+     * eliminate more characters from the search this way */
+    const char *spn_beg = tmp;
+    const char *spn_end = tmp + olen - 1;
+    for (tmp = spn_end ; tmp > spn_beg ; --tmp)
+    {
+      if (*tmp != odata)
+      {
+        rlen = end - tmp;
+        goto scan; /* this is a shortcut to continue the while loop */
+      }
+    }
+    size_t pos = (size_t)(tmp - beg)+1; /* pos indexed at 1 */ 
+    ustr_sc_sub_rep_chr(ps1, pos, olen, ndata, nlen);
+    /* after modifying the internals of the ustr, we need to recalculate 
+     * all of the pointers */
+    beg = ustr_cstr(*ps1);
+    len = ustr_len(*ps1);
+    end = beg + len;
+    tmp = beg + (pos - 1) + nlen;
+    rlen = end - tmp;
+    num_replaced++;
+    if (lim && num_replaced == lim)
+      break;
+    }
+  return num_replaced;
+}
+
+#endif

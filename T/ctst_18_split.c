@@ -170,6 +170,101 @@ int tst(void)
   ASSERT(!ustr_split(a, &off, a, tok, 0)); /* does the free */
   
   ustr_sc_free(&a);
-  
+
+/* ustr_sc_split_chrs */
+  a = ustr_dup_cstr("this is a test of the\temergency\n broadcast system");
+  off = 0;
+  i=0;
+  tok = USTR_NULL;
+  const char *chrs = "\t\n ";
+  const char *ans5[] = {"this","is","a","test","of","the","emergency","broadcast","system"};
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,USTR_NULL,0)))
+  {
+     ASSERT(ustr_cmp_cstr_eq(tok,ans5[i++]));
+     ustr_sc_free(&tok);
+  }
+  ASSERT(i==9);
+  i=0;
+  off=0;
+  const char *ans6[] = {"this ","is ","a ","test ","of ","the\t","emergency\n"," ","broadcast ","system"};
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_SEP)))
+  {
+     ASSERT(ustr_cmp_cstr_eq(tok,ans6[i++]));
+     ustr_sc_free(&tok);
+  }
+  ASSERT(i==10);
+  i=0;
+  off=0;
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_SEP|USTR_FLAG_SPLIT_RET_NON)))
+  {
+     ASSERT(ustr_cmp_cstr_eq(tok,ans6[i++]));
+     ustr_sc_free(&tok);
+  }
+  ASSERT(i==10);
+  ustr_sc_free(&a);
+  chrs = " |";
+  a = ustr_dup_cstr("a b c d          e|f|g||h");
+  i=0;
+  off=0;
+  const char *ans7[] = {"a ","b ","c ","d "," "," "," "," "," "," "," "," "," ","e|","f|","g|","|","h"};
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_SEP|USTR_FLAG_SPLIT_RET_NON)))
+  {
+    ASSERT(ustr_cmp_cstr_eq(tok,ans7[i++]));
+    ustr_sc_free(&tok);
+  }
+  ASSERT(i==18);
+  i=0;
+  off=0;
+  const char *ans8[] = {"a","b","c","d","e","f","g","h"};
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,USTR_NULL,0)))
+  {
+    ASSERT(ustr_cmp_cstr_eq(tok,ans8[i++]));
+    ustr_sc_free(&tok);
+  }
+  ASSERT(i==8); 
+  i=0;
+  off=0;
+  const char *ans9[] = {"a","b","c","d","","","","","","","","","","e","f","g","","h"};
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_NON)))
+  {
+    ASSERT(ustr_cmp_cstr_eq(tok,ans9[i++]));
+    ustr_sc_free(&tok);
+  }
+  ASSERT(i==18);
+  chrs = "xyz";
+  i=0;
+  off=0;
+  const char *ans10[] = {"a b c d          e|f|g||h"};
+
+  while ((tok = ustr_sc_split_chrs(a,&off,chrs,tok,USTR_FLAG_SPLIT_RET_NON)))
+  {
+    ASSERT(ustr_cmp_cstr_eq(tok,ans10[i++]));
+  }
+  off=0;
+  chrs = "g";
+  ASSERT(i==1);
+  ustr_sc_free(&a);
+  a = USTR1(\x3, "agg");
+  ASSERT(ustr_assert_valid(a));
+  ASSERT( ustr_ro(a));
+  ASSERT(!ustr_sized(a));
+  tok = ustr_sc_split_chrs(a,&off,chrs,tok,USTR_FLAG_SPLIT_RET_NON);
+  ASSERT(ustr_cmp_cstr_eq(tok,"a"));
+  ASSERT(!ustr_ro(tok));
+  ASSERT(!ustr_sized(tok));
+  tok = ustr_sc_split_chrs(a,&off,chrs,tok,USTR_FLAG_SPLIT_RET_NON);
+  ASSERT(ustr_cmp_cstr_eq(tok,""));
+  ASSERT( ustr_ro(tok));
+  ASSERT(!ustr_sized(tok));
+  ustr_sc_free(&tok);
+  ASSERT((a = ustr_dupx(1, 0, 0, 0, a)));
+  off=0;
+  tok = ustr_sc_split_chrs(a,&off,chrs,tok,USTR_FLAG_SPLIT_KEEP_CONF);
+  ASSERT(ustr_cmp_cstr_eq(tok,"a"));
+  ASSERT(ustr_sized(a));
+  ASSERT(ustr_sized(tok));
+  ustr_sc_free(&a);
+  ustr_sc_free(&tok);
+ 
   return (EXIT_SUCCESS);
 }

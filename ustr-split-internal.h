@@ -11,4 +11,9 @@ USTR_CONF_e_PROTO
 struct Ustr *ustrp__split_buf(struct Ustr_pool *, const struct Ustr *, size_t *,
                               const void *, size_t, struct Ustr *,unsigned int);
 
+
+USTR_CONF_e_PROTO
+struct Ustr *ustrp__split_chrs(struct Ustr_pool *, struct Ustr *, size_t *, 
+                              const char *, struct Ustr * , int);
+
 #endif

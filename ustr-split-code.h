@@ -97,3 +97,72 @@ struct Ustrp *ustrp_split(struct Ustr_pool *p,
                                  &ret->s, flags)));
 }
 
+USTR_CONF_i_PROTO
+struct Ustr *ustrp__split_chrs(struct Ustr_pool *p, struct Ustr *s1, 
+            size_t *poff, const char *seps, struct Ustr *ret , int flags)
+{
+  size_t len = ustr_len(s1);
+  size_t off = *poff;
+  if (off >= len)
+  {
+    ustrp__free(p,ret);
+    return USTR_NULL;
+  }
+  const char *beg = ustr_cstr(s1);
+  const char *start_off = beg + off;
+  size_t sep_len = strlen(seps);
+  size_t ret_len = 0; 
+  /* want the earliest match, so default to the end of the string */
+  const char *first_found = beg + len;
+  size_t sep_found=0;
+  size_t i;
+  for (i=0; i < sep_len; ++i)
+  {
+    const char *tmp=NULL;
+    if ((tmp = memchr(start_off, seps[i], (size_t)(first_found-start_off))))
+    {
+      if (tmp < first_found)
+      {
+        first_found=tmp;
+        sep_found=i;
+      }
+    }
+  }
+  /* from this point forward, this function is very similar to 
+   * ustrp__split_buf() */
+  if (first_found == (beg + len)) 
+  {
+  /* i.e., unchanged by the loop, so a sep was not found */
+    ret_len = len - off;
+    *poff = len;
+    goto copy_buf;
+  }
+  *poff = (size_t)(first_found - beg) + 1;
+  /* skip sep and blanks */
+  if (((size_t)(first_found - beg) == off) && 
+        !(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
+    return (ustrp__split_chrs(p, s1, poff, seps, ret, flags));
+
+  ret_len = (size_t)(first_found - beg) - off;
+  if (flags & USTR_FLAG_SPLIT_RET_SEP) /* Include sep in the return value */
+    ret_len += 1; 
+
+copy_buf:
+  if (ret)
+  {
+    if (!ustrp__set_subustr(p, &ret, s1, off + 1, ret_len))
+      return (USTR_NULL);
+    
+    return (ret);
+  }
+  
+  if (flags & USTR_FLAG_SPLIT_KEEP_CONF)
+    return (ustrp__dup_subustr(p, s1, off + 1, ret_len));
+
+  return (ustrp__dupx_buf(p, USTR__DUPX_DEF, ustr_cstr(s1) + off, ret_len));
+}
+
+USTR_CONF_I_PROTO
+struct Ustr *ustr_sc_split_chrs(struct Ustr *s1, size_t *poff, 
+                              const char *seps, struct Ustr *ret , int flags)
+{  return ustrp__split_chrs(0, s1, poff, seps, ret, flags); }

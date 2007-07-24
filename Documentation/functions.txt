@@ -2968,7 +2968,7 @@ Function: ustr_replace()
  Parameter[3]: Ustr to replace needle with
  Type[3]: const struct Ustr *
 
- Parameter[4]:  Maximum number of matches to replace
+ Parameter[4]:  Maximum number of matches to replace (0 for unlimited)
  Type[4]:  size_t
 
  Explanation:
@@ -2982,6 +2982,43 @@ Note:
  occurrences.
 
 
+Function: ustr_replace_rep_chr()
+ Returns: number of replacements made
+ Type: size_t
+
+ Parameter[1]: pointer to a pointer to a Ustr to be modified
+ Type[1]: struct Ustr **ps1
+
+ Parameter[2]: character to replace
+ Type[2]: char
+
+ Parameter[3]: number of characters to replace
+ Type[3]: size_t
+
+ Parameter[4]: character to replace with
+ Type[4]: char
+
+ Parameter[5]: number of characters to replace with
+ Type[5]: size_t nlen
+
+ Parameter[6]: maximum number of replacements to make (use 0 for unlimited)
+ Type[6]: size_t lim
+
+ Explanation:
+  This function replaces a repeating sequence of characters with another
+  repeating sequence of characters. 
+
+  For example:
+  Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
+  ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
+  would change data to be "yxByCxDyx".
+
+ Note:
+  Changing the same letter the same number of times is considered a No-op
+  since it is a vast performance improvement this way. So passing in 
+  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
+  unchanged.
+
 Section: Dealing with UTF-8 in a Ustr
 Function: ustr_utf8_valid()
  Returns: A boolean flag of either USTR_TRUE or USTR_FALSE
@@ -2994,6 +3031,7 @@ Function: ustr_utf8_valid()
 
   This function tries it's best to find out if the string is a valid utf-8
  string.
+
 
 
 Function: ustr_utf8_len()
@@ -3702,46 +3740,152 @@ Function: ustr_pool_clear()
   This also operates on all sub-pools.
 
 Section: Splitting a Ustr
-Function: ustr_split()
- Returns: The next token in the Ustr or USTR_NULL if the end of the string has
- been reached
+
+Function: ustr_split_buf()
+ Returns: pointer to a Ustr representing the next token
  Type: struct Ustr *
 
- Parameter[1]: Pointer to a Ustr that is to be split
+ Parameter[1]: pointer to a Ustr to be split
  Type[1]: const struct Ustr *
 
- Parameter[2]: pointer to an offset variable where to start the split
+ Parameter[2]: pointer to an offset variable
  Type[2]: size_t *
 
- Parameter[3]: Pointer to a Ustr that is the separator string
- Type[3]: const struct Ustr *
+ Parameter[3]: buffer to use as split search pattern 
+ Type[3]: const void *
 
- Parameter[4]: flags (see below for descriptions)
- Type[4]: unsigned int
+ Parameter[4]: length of buffer
+ Type[4]: size_t
+
+ Parameter[5]: pointer to a Ustr where the return value will be placed
+ Type[5]: struct Ustr *
+
+ Parameter[6]: flags
+ Type[6]: unsigned int
 
  Explanation:
-  This function works in a similar manner to strtok(). Each call returns a
-  token starting at the offset. After the function call, the offset variable
-  is updated with a position of the next offset (i.e. you can call ustr_split
-  in a loop with the same offset pointer each time). 
+  This function works in a manner similar to strtok(). Each time the function
+  is called, the string inside of the buffer (Parameter[3]) is used as a search
+  pattern at which to split. If the pattern is not found, the entire string
+  will be returned. A USTR_NULL return value indicates there are no more
+  tokens remaining.
 
-  The flags parameter has the following components:
-    -USTR_SPLIT_RET_SEP -- return the separator in the token (ex: "a,b,c" with
-        separator "," would return the tokens: {"a," "b," "c"}
-    -USTR_SPLIT_RET_NON -- return a blank character for empty tokens instead
-      of skipping them (ex: "a,,b" would return the tokens {"a","","b"}
-    -USTR_SPLIT_KEEP_CONF -- ensure that the returned Ustr has the same
-    configuration options as the original string
+  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
+  Passing a USTR_NULL to this parameter will cause the string to be allocated
+  and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
+  this parameter, each call to ustr_split_buf() will free what is in this
+  pointer and place the new token there (when USTR_NULL is returned, nothing
+  needs to be free'd).
 
-  The most typical use of this function would be as follows if you want to
-  split an existing Ustr called 'target' --
-
-  unsigned int flags = (USTR_SPLIT_RET_SEP|USTR_SPLIT_KEEP_CONF);
-  size_t off = 0;
+  For example: 
+  Ustr *data = ...;
   Ustr *tok = USTR_NULL;
-  Ustr *sep = USTR1(\x1, ",");
-  while (tok = ustr_split(target,&off,sep,flags))
-  {
-    //do something with tok
-  }
+  const char *sep = "=";
+  size_t off;
+  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+
+  Now, there are two options:
+
+  while (tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags){
+    /* do something with tok -- but next iteration of the loop will free
+       and overwrite tok, so you must ustr_dup() if you want to keep it */
+   }
+   /* tok is now NULL again after the loop */
+
+   OR
+
+  while (tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags){
+    /*do something with tok, and it will NOT be freed in the next iteration of
+    the loop*/
+    ustr_sc_free(&tok); /* have to free to avoid mem leaks */
+    }
+  
+  Note:
+    Explanation of flags --
+    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
+    example: splitting "a,b," using separator "," will return the tokens "a,"
+    and "b," whereas without this option only "a" and "b" would be returned.
+    
+    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
+    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
+
+    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
+    configuration parameters as the original string.
+
+    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
+    the above.
+
+
+Function: ustr_split()
+ Returns:  pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: pointer to a Ustr to use as the split search pattern
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: pointer to a Ustr where the return value will be placed
+ Type[4]: struct Ustr *
+
+ Parameter[5]: flags
+ Type[5]: unsigned int
+
+ Explanation:
+  Works like ustr_split_buf() but takes a Ustr as the split search pattern
+  instead.
+
+
+Function: ustr_split_cstr()
+ Returns:  pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: C string to use as split search pattern
+ Type[3]: const char *
+
+ Parameter[4]: pointer to a Ustr where the return value will be placed
+ Type[4]: struct Ustr *
+
+ Parameter[5]:
+ Type[5]: unsigned int
+
+ Explanation:
+  Works like ustr_split_buf() but takes a C string as the split search
+  pattern.
+
+Function: ustr_sc_split_chrs()
+ Returns:  pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: cstring representing a set of chars to use as split chars
+ Type[3]: const char *
+
+ Parameter[4]:  pointer to a Ustr where the return value will be placed
+ Type[4]: struct Ustr *
+
+ Parameter[5]: flags
+ Type[5]: int
+
+ Explanation:
+  Works like ustr_split_buf() but uses the individual characters in the
+  separator string (Parameter[3]) as search patterns. It will split if ANY of
+  these individual characters are matched (much like strtok()). For example:
+  if splitting "thisXisYaZtest" with the separator string "XYZ" the tokens
+  returned would be {"this" "is" "a" "test"};
 
