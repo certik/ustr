@@ -6,6 +6,13 @@
 #error " You should have already included ustr-main.h, or just include ustr.h."
 #endif
 
+#ifdef __unix__ /* FIXME: Hacky, but this isn't a 9899:1999 type */
+#define USTR__SSIZE ssize_t
+#else
+#define USTR__SSIZE long
+#endif
+
+
 USTR_CONF_E_PROTO
 int ustr_utf8_valid(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
@@ -15,7 +22,7 @@ size_t ustr_utf8_len(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
-ssize_t ustr_utf8_width(const struct Ustr *)
+USTR__SSIZE ustr_utf8_width(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
@@ -39,7 +46,7 @@ size_t ustrp_utf8_len(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
-ssize_t ustrp_utf8_width(const struct Ustrp *)
+USTR__SSIZE ustrp_utf8_width(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
@@ -70,7 +77,7 @@ USTR_CONF_II_PROTO
 size_t ustrp_utf8_len(const struct Ustrp *s1)
 { return (ustr_utf8_len(&s1->s)); }
 USTR_CONF_II_PROTO
-ssize_t ustrp_utf8_width(const struct Ustrp *s1)
+USTR__SSIZE ustrp_utf8_width(const struct Ustrp *s1)
 { return (ustr_utf8_width(&s1->s)); }
 USTR_CONF_II_PROTO
 size_t ustrp_utf8_chars2bytes(const struct Ustrp *s1, size_t pos, size_t len,

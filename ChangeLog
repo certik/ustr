@@ -1,3 +1,8 @@
+2007-07-24  James Antill  <james@and.org>
+
+	* ustr-utf8.h (USTR__SSIZE): Add special type for ssize_t, as it's not
+	an ISO 9899:1999 type ... currently unix only.
+
 2007-07-22  James Antill  <james@and.org>
 
 	* ustr-sub.h (USTR_SUB_OBJ): Added macro.

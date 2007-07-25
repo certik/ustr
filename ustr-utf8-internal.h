@@ -21,8 +21,8 @@ struct ustr__utf8_interval
 USTR_CONF_e_PROTO
 int ustr__utf8_bisearch(USTR__UTF8_WCHAR,const struct ustr__utf8_interval*,int);
 USTR_CONF_e_PROTO
-ssize_t ustr__utf8_mk_wcwidth(USTR__UTF8_WCHAR)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
+USTR__SSIZE ustr__utf8_mk_wcwidth(USTR__UTF8_WCHAR)
+   USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 
 USTR_CONF_e_PROTO
 USTR__UTF8_WCHAR ustr__utf8_check(const unsigned char **)
