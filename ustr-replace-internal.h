@@ -16,6 +16,10 @@ USTR_CONF_e_PROTO
 size_t ustrp__replace(struct Ustr_pool *, struct Ustr **,const struct Ustr *,
                          const struct Ustr *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
+USTR_CONF_e_PROTO
+size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
+                              char, size_t, char, size_t, size_t)
+    USTR__COMPILE_ATTR_NONNULL_L((2));
 #endif
 
 #endif

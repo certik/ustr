@@ -1,7 +1,24 @@
 2007-07-24  James Antill  <james@and.org>
 
+	* ustr-replace-code.h (ustr_replace_rep_chr): Completely re-wrote
+	function to work like ustr_replace_buf() using ustr_srch_rep_chr_fwd().
+
+	* ustr-srch-code.h (ustr_srch_rep_chr_fwd): Added function.
+	(ustr_srch_rep_chr_rev): Added function.
+
+	* ustr-split-code.h (ustr_split_spn_chrs): Renamed function
+	(ustr_split_spn): Added function.
+	(ustr_split_spn_chrs): Use ustr_spn / ustr_cspn for main piece of code,
+	incl. minor cleanup.
+
+	* ustr-split.h (ustr_split_spn_cstr): Added function.
+
 	* ustr-utf8.h (USTR__SSIZE): Add special type for ssize_t, as it's not
 	an ISO 9899:1999 type ... currently unix only.
+
+2007-07-24  Paul Rosenfeld <prosenfeld@tresys.com>
+
+	* ustr-split-code.h (ustr_sc_split_chrs): Added function.
 
 2007-07-22  James Antill  <james@and.org>
 

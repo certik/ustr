@@ -147,12 +147,14 @@ else
   fi
   if $split; then
     set=true
+    spn=true
     srch=true
   fi
   if $repl; then
     sub=true
   fi
   if $repl && $cfiles; then
+    spn=true
     srch=true
   fi
   if $sub; then
@@ -524,7 +526,7 @@ if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
 fi
 
-if $split; then # SPLIT hard deps. on set, srch
+if $split; then # SPLIT hard deps. on set, spn, srch
   echo '#include "ustr-split.h"' >> $outname
 fi
 
@@ -532,7 +534,7 @@ if $sub; then # SUB hard deps. on ins, sc, srch, weak dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
 fi
 
-if $repl; then # REPLACE hard deps. on sc, srch, sub
+if $repl; then # REPLACE hard deps. on sc, spn, srch, sub
   echo '#include "ustr-replace.h"' >> $outname
 fi
 

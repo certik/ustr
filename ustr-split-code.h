@@ -98,56 +98,43 @@ struct Ustrp *ustrp_split(struct Ustr_pool *p,
 }
 
 USTR_CONF_i_PROTO
-struct Ustr *ustrp__split_chrs(struct Ustr_pool *p, struct Ustr *s1, 
-            size_t *poff, const char *seps, struct Ustr *ret , int flags)
+struct Ustr *ustrp__split_spn_chrs(struct Ustr_pool *p, const struct Ustr *s1, 
+                                   size_t *poff, const char *seps, size_t slen,
+                                   struct Ustr *ret, unsigned int flags)
 {
   size_t len = ustr_len(s1);
   size_t off = *poff;
-  if (off >= len)
-  {
-    ustrp__free(p,ret);
-    return USTR_NULL;
-  }
-  const char *beg = ustr_cstr(s1);
-  const char *start_off = beg + off;
-  size_t sep_len = strlen(seps);
-  size_t ret_len = 0; 
-  /* want the earliest match, so default to the end of the string */
-  const char *first_found = beg + len;
-  size_t sep_found=0;
-  size_t i;
-  for (i=0; i < sep_len; ++i)
-  {
-    const char *tmp=NULL;
-    if ((tmp = memchr(start_off, seps[i], (size_t)(first_found-start_off))))
-    {
-      if (tmp < first_found)
-      {
-        first_found=tmp;
-        sep_found=i;
-      }
-    }
-  }
-  /* from this point forward, this function is very similar to 
-   * ustrp__split_buf() */
-  if (first_found == (beg + len)) 
-  {
-  /* i.e., unchanged by the loop, so a sep was not found */
-    ret_len = len - off;
-    *poff = len;
-    goto copy_buf;
-  }
-  *poff = (size_t)(first_found - beg) + 1;
-  /* skip sep and blanks */
-  if (((size_t)(first_found - beg) == off) && 
-        !(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
-    return (ustrp__split_chrs(p, s1, poff, seps, ret, flags));
+  size_t spn = 0;
+  size_t sep = 0;
+  size_t ret_len = 0;
+  
+  USTR_ASSERT(ustr_assert_valid(s1));
 
-  ret_len = (size_t)(first_found - beg) - off;
-  if (flags & USTR_FLAG_SPLIT_RET_SEP) /* Include sep in the return value */
-    ret_len += 1; 
+  USTR_ASSERT_RET(off <= len, USTR_NULL);
 
-copy_buf:
+  if (!slen || (off == len))
+  {
+    ustrp__free(p, ret);
+    return (USTR_NULL);
+  }
+
+  spn = ustr_cspn_chrs_fwd(s1, off, seps, slen);
+  if (!spn && !(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
+  {
+    *poff += ustr_spn_chrs_fwd(s1, off, seps, slen);
+    return (ustrp__split_spn_chrs(p, s1, poff, seps, slen, ret, flags));
+  }
+
+  /* if there's any data left the first byte must be in seps */
+  sep = !((off + spn) == len);
+  USTR_ASSERT(sep == !!ustr_spn_chrs_fwd(s1, off + spn, seps, slen));
+  
+  *poff += spn + sep;
+  
+  ret_len = spn;
+  if (flags & USTR_FLAG_SPLIT_RET_SEP) /* Include seps in the return value */
+    ret_len += sep;
+  
   if (ret)
   {
     if (!ustrp__set_subustr(p, &ret, s1, off + 1, ret_len))
@@ -161,8 +148,35 @@ copy_buf:
 
   return (ustrp__dupx_buf(p, USTR__DUPX_DEF, ustr_cstr(s1) + off, ret_len));
 }
+USTR_CONF_I_PROTO
+struct Ustr *ustr_split_spn_chrs(const struct Ustr *s1, size_t *poff, 
+                                 const char *seps, size_t slen,
+                                 struct Ustr *ret, unsigned int flags)
+{ return (ustrp__split_spn_chrs(0, s1, poff, seps, slen, ret, flags)); }
+USTR_CONF_I_PROTO
+struct Ustrp *ustrp_split_spn_chrs(struct Ustr_pool *p, const struct Ustrp *s1,
+                                   size_t *poff, const char *seps, size_t slen,
+                                   struct Ustrp *ret, unsigned int flags)
+{ return (USTRP(ustrp__split_spn_chrs(p, &s1->s, poff, seps, slen,
+                                      &ret->s, flags))); }
 
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_split_chrs(struct Ustr *s1, size_t *poff, 
-                              const char *seps, struct Ustr *ret , int flags)
-{  return ustrp__split_chrs(0, s1, poff, seps, ret, flags); }
+struct Ustr *ustr_split_spn(const struct Ustr *s1, size_t *off, 
+                            const struct Ustr *sep, struct Ustr *ret,
+                            unsigned int flags)
+{
+  USTR_ASSERT(ustr_assert_valid(sep));
+  return (ustrp__split_spn_chrs(0, s1, off, ustr_cstr(sep), ustr_len(sep),
+                                ret, flags));
+}
+
+USTR_CONF_I_PROTO
+struct Ustrp *ustrp_split_spn(struct Ustr_pool *p,
+                              const struct Ustrp *s1, size_t *off, 
+                              const struct Ustrp *sep, struct Ustrp *ret,
+                              unsigned int flags)
+{
+  USTR_ASSERT(ustrp_assert_valid(sep));
+  return (USTRP(ustrp__split_spn_chrs(p, &s1->s, off, ustrp_cstr(sep),
+                                      ustrp_len(sep), &ret->s, flags)));
+}

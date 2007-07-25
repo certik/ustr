@@ -39,8 +39,33 @@ struct Ustrp *ustrp_split_cstr(struct Ustr_pool *,const struct Ustrp *,size_t *,
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
 
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_split_chrs(struct Ustr *,size_t *, const char *, struct Ustr *, int)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1,2,3));
+struct Ustr *ustr_split_spn_chrs(const struct Ustr *, size_t *, const char *,
+                                 size_t, struct Ustr *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
+USTR_CONF_E_PROTO
+struct Ustr *ustr_split_spn(const struct Ustr *, size_t *, const struct Ustr *,
+                            struct Ustr *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
+USTR_CONF_EI_PROTO
+struct Ustr *ustr_split_spn_cstr(const struct Ustr *, size_t *, const char *,
+                                 struct Ustr *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
+
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_split_spn_chrs(struct Ustr_pool *, const struct Ustrp *,
+                                   size_t *, const char *, size_t,
+                                   struct Ustrp *, unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_split_spn(struct Ustr_pool *, const struct Ustrp *,size_t *,
+                              const struct Ustrp *, struct Ustrp *,
+                              unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
+USTR_CONF_EI_PROTO
+struct Ustrp *ustrp_split_spn_cstr(struct Ustr_pool *, const struct Ustrp *,
+                                   size_t *, const char *, struct Ustrp *,
+                                   unsigned int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-split-internal.h"
@@ -61,6 +86,17 @@ struct Ustrp *ustrp_split_cstr(struct Ustr_pool *p, const struct Ustrp *sp1,
                                size_t *off, const char *cstr, struct Ustrp *ret,
                                unsigned int flgs)
 { return (ustrp_split_buf(p, sp1, off, cstr, strlen(cstr), ret, flgs)); }
+
+USTR_CONF_II_PROTO
+struct Ustr *ustr_split_spn_cstr(const struct Ustr *s1, size_t *off,
+                                 const char *cstr, struct Ustr *ret,
+                                 unsigned int flags)
+{ return (ustr_split_spn_chrs(s1, off, cstr, strlen(cstr), ret, flags)); }
+USTR_CONF_II_PROTO
+struct Ustrp *ustrp_split_spn_cstr(struct Ustr_pool *p, const struct Ustrp *sp1,
+                                   size_t *off, const char *cstr,
+                                   struct Ustrp *ret, unsigned int flgs)
+{ return (ustrp_split_spn_chrs(p, sp1, off, cstr, strlen(cstr), ret, flgs)); }
 #endif
 
 #endif
