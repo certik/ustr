@@ -16,7 +16,14 @@ int tst(void)
   const char *ans2[] = {"a==","b,c==","d,c==","==","==",",12==","xzy==","=="};
   const char *ans3[] = {"a","bx","cx","dx","xx"};
   const char *ans4[] = {"a,bx","cx","dx",",xx"};
-  
+  const char *ans5[] = {"this","is","a","test","of","the","emergency","broadcast","system"};
+  const char *ans6[] = {" ", " ", "this ","is ","a ","test ","of ","the\t","emergency\n"," ","broadcast ","system"};
+  const char *ans7[] = {"a ","b ","c ","d "," "," "," "," "," "," "," "," "," ","e|","f|","g|","|","h"};
+  const char *ans8[] = {"a","b","c","d","e","f","g","h"};
+  const char *ans9[] = {"a","b","c","d","","","","","","","","","","e","f","g","","h"};
+  const char *ans10[] = {"a b c d          e|f|g||h"};
+  const char *chrs = "\t\n ";
+
   while ((tok = ustr_split(a,&off,sep, NULL,flags)))
   {
        ASSERT(ustr_cmp_cstr_eq(tok,ans[i]));
@@ -172,12 +179,10 @@ int tst(void)
   ustr_sc_free(&a);
 
 /* ustr_split_spn_cstr */
-  a = ustr_dup_cstr("this is a test of the\temergency\n broadcast system");
+  a = ustr_dup_cstr("  this is a test of the\temergency\n broadcast system");
   off = 0;
   i=0;
   tok = USTR_NULL;
-  const char *chrs = "\t\n ";
-  const char *ans5[] = {"this","is","a","test","of","the","emergency","broadcast","system"};
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,USTR_NULL,0)))
   {
      ASSERT(ustr_cmp_cstr_eq(tok,ans5[i++]));
@@ -186,13 +191,12 @@ int tst(void)
   ASSERT(i==9);
   i=0;
   off=0;
-  const char *ans6[] = {"this ","is ","a ","test ","of ","the\t","emergency\n"," ","broadcast ","system"};
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_SEP)))
   {
      ASSERT(ustr_cmp_cstr_eq(tok,ans6[i++]));
      ustr_sc_free(&tok);
   }
-  ASSERT(i==10);
+  ASSERT(i==12);
   i=0;
   off=0;
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_SEP|USTR_FLAG_SPLIT_RET_NON)))
@@ -200,13 +204,12 @@ int tst(void)
      ASSERT(ustr_cmp_cstr_eq(tok,ans6[i++]));
      ustr_sc_free(&tok);
   }
-  ASSERT(i==10);
+  ASSERT(i==12);
   ustr_sc_free(&a);
   chrs = " |";
   a = ustr_dup_cstr("a b c d          e|f|g||h");
   i=0;
   off=0;
-  const char *ans7[] = {"a ","b ","c ","d "," "," "," "," "," "," "," "," "," ","e|","f|","g|","|","h"};
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_SEP|USTR_FLAG_SPLIT_RET_NON)))
   {
     ASSERT(ustr_cmp_cstr_eq(tok,ans7[i++]));
@@ -215,7 +218,6 @@ int tst(void)
   ASSERT(i==18);
   i=0;
   off=0;
-  const char *ans8[] = {"a","b","c","d","e","f","g","h"};
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,USTR_NULL,0)))
   {
     ASSERT(ustr_cmp_cstr_eq(tok,ans8[i++]));
@@ -224,7 +226,6 @@ int tst(void)
   ASSERT(i==8); 
   i=0;
   off=0;
-  const char *ans9[] = {"a","b","c","d","","","","","","","","","","e","f","g","","h"};
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,USTR_NULL,USTR_FLAG_SPLIT_RET_NON)))
   {
     ASSERT(ustr_cmp_cstr_eq(tok,ans9[i++]));
@@ -234,7 +235,6 @@ int tst(void)
   chrs = "xyz";
   i=0;
   off=0;
-  const char *ans10[] = {"a b c d          e|f|g||h"};
 
   while ((tok = ustr_split_spn_cstr(a,&off,chrs,tok,USTR_FLAG_SPLIT_RET_NON)))
   {
@@ -259,7 +259,7 @@ int tst(void)
   ustr_sc_free(&tok);
   ASSERT((a = ustr_dupx(1, 0, 0, 0, a)));
   off=0;
-  tok = ustr_split_spn_cstr(a,&off,chrs,tok,USTR_FLAG_SPLIT_KEEP_CONF);
+  tok = ustr_split_spn(a,&off,USTR1(\1, "g"),tok,USTR_FLAG_SPLIT_KEEP_CONF);
   ASSERT(ustr_cmp_cstr_eq(tok,"a"));
   ASSERT(ustr_sized(a));
   ASSERT(ustr_sized(tok));

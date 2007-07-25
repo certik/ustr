@@ -605,6 +605,9 @@ int tst(void)
   ASSERT(off == 13);
   ASSERT_PEQ(ustrp_split_spn_cstr(pool, sp1, &off, "xx", NULL, 0),
              USTRP1(\3, "456"));
+  off = 13;
+  ASSERT_PEQ(ustrp_split_spn(pool, sp1, &off, USTRP1(\2, "xx"), NULL, 0),
+             USTRP1(\3, "456"));
   
   ustr_pool_free(pool);
   ustr_pool_free(NULL);

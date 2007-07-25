@@ -4,6 +4,7 @@
 	extra seperators at the end too.
 	(ustr_split_buf): In the default mode skip extra seperators at the
 	end too.
+	(ustr_split_buf): Add missing free.
 
 	* ustr-srch-code.h (ustr__sys_memrepchr): Fix bounds overrun.
 	(ustr__sys_memrepchr): Move to Boyer-Moore algo. for faster searches.

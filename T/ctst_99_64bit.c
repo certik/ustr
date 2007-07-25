@@ -67,6 +67,7 @@ static int big_tst(size_t fsz, size_t usz, int hack, int tst_add)
   {
     ASSERT(!ustr_add(&s3, s3));
     ASSERT(!ustr_replace(&s3, USTR1(\1, "-"), s3, 0));
+    ASSERT(!ustr_replace_rep_chr(&s3, '-', 1, 'x', usz, 0));
   }
 
   munmap(ptr, fsz);

@@ -62,7 +62,10 @@ struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
   if (ret)
   {
     if (!ustrp__set_subustr(p, &ret, s1, off + 1, ret_len))
+    {
+      ustrp__free(p, ret);
       return (USTR_NULL);
+    }
     
     return (ret);
   }

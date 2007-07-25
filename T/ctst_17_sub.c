@@ -253,5 +253,11 @@ int tst(void)
   ASSERT(ustr_replace_rep_chr(&haystack, 'y', 7, 'a', 1, 0) == 1);
   ASSERT(ustr_cmp_cstr_eq(haystack,"xxABCDyyEFGaz"));
   ustr_sc_free(&haystack);
+
+  ustr_sc_free2(&haystack, USTR1(\4, "aaaa"));
+  ASSERT(ustr_replace_rep_chr(&haystack, 'a', 1, 'x', 0, 0) == 4);
+  ASSERT(!ustr_len(haystack));
+  ASSERT(ustr_ro(haystack));
+  
   return EXIT_SUCCESS;
 }
