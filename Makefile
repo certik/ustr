@@ -11,6 +11,7 @@ DESTDIR =
 datadir=/usr/share
 libdir=/usr/lib
 bindir=/usr/bin
+incdir=/usr/include
 SHRDIR=$(datadir)/ustr-$(VERS_FULL)
 DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
 EXAMDIR=$(datadir)/ustr-$(VERS_FULL)/examples
@@ -285,7 +286,7 @@ all-shared: all $(LIB_SHARED)
 install: all-shared ustr.pc ustr-debug.pc
 		@echo Making directories
 		install -d $(DESTDIR)$(libdir)
-		install -d $(DESTDIR)/usr/include
+		install -d $(DESTDIR)$(incdir)
 		install -d $(DESTDIR)$(SHRDIR)
 		install -d $(DESTDIR)$(DOCSHRDIR)
 		install -d $(DESTDIR)$(EXAMDIR)
@@ -303,7 +304,7 @@ install: all-shared ustr.pc ustr-debug.pc
 		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		-/sbin/ldconfig -n $(DESTDIR)$(libdir)
-		install -m 644 -t $(DESTDIR)/usr/include $(SRC_HDRS)
+		install -m 644 -t $(DESTDIR)$(incdir) $(SRC_HDRS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(DOCSHRDIR) $(DOCS)
@@ -365,14 +366,14 @@ ustr-conf.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 		@echo Creating $@
 		@have_stdint_h=0; dbg1=0; dbg2=0; \
                 sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
-                if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
+                if test -f "$(incdir)/stdint.h"; then have_stdint_h=1; fi; \
 		sed -e "s,@HAVE_STDINT_H@,$$have_stdint_h,g" -e "s,@USE_ASSERT@,$$dbg1,g" -e "s,@USE_EOS_MARK@,$$dbg2,g" -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
 
 ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 		@echo Creating $@
 		@have_stdint_h=0; dbg1=1; dbg2=1; \
                 sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
-                if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
+                if test -f "$(incdir)/stdint.h"; then have_stdint_h=1; fi; \
 		sed -e "s,@HAVE_STDINT_H@,$$have_stdint_h,g" -e "s,@USE_ASSERT@,$$dbg1,g" -e "s,@USE_EOS_MARK@,$$dbg2,g" -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
 
 
