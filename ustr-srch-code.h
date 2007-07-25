@@ -190,22 +190,24 @@ USTR_CONF_i_PROTO void *ustr__sys_memrepchr(const void *hs, size_t hslen,
 
   while (hslen >= ndlen)
   {
-    const char *beg = memchr(ptr, nd, ndlen);
-    const char *tmp = beg;
+    const char *tmp = memchr(ptr, nd, hslen);
     size_t len = ndlen;
     
     if (!tmp)
-      return (0);
-    
+      break;
+    if (ndlen > (hslen - (tmp - ptr)))
+      break;
+
+    tmp += len;
     while (len > 0)
     {
+      --tmp;
       if (*tmp != nd)
         break;
       --len;
-      ++tmp;
     }
     if (!len)
-      return ((void *)beg);
+      return ((void *)tmp);
 
     hslen -= (tmp - ptr);
     ptr = tmp;

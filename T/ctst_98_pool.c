@@ -576,6 +576,29 @@ int tst(void)
   if (!USTR_DEBUG)
   ASSERT(!ustrp_ins_subustrp(pool, &sp1, 2, USTRP1(\4, "1248"), 5, 1));
   
+  ustrp_sc_free2(pool, &sp1, USTRP1(\x10, "xyz456789 xyz456"));
+  ASSERT_PEQ(sp1, USTRP1(\x10, "xyz456789 xyz456"));
+  ASSERT(ustrp_replace_rep_chr(pool, &sp1, 'x', 1, 'y', 1, 0) == 2);
+  ASSERT_PEQ(sp1, USTRP1(\x10, "yyz456789 yyz456"));
+  ASSERT(ustrp_replace_rep_chr(pool, &sp1, 'y', 1, 'z', 1, 0) == 4);
+  ASSERT_PEQ(sp1, USTRP1(\x10, "zzz456789 zzz456"));
+  ASSERT(ustrp_replace_rep_chr(pool, &sp1, 'z', 3, 'x', 3, 0) == 2);
+  ASSERT_PEQ(sp1, USTRP1(\x10, "xxx456789 xxx456"));
+
+  ASSERT(!ustrp_srch_rep_chr_fwd(sp1, 0, 'x', 4));
+  ASSERT(!ustrp_srch_rep_chr_rev(sp1, 0, 'x', 4));
+  ASSERT(ustrp_srch_rep_chr_fwd(sp1, 0, 'x', 3) ==  1);
+  ASSERT(ustrp_srch_rep_chr_rev(sp1, 0, 'x', 3) == 11);
+  ASSERT(ustrp_srch_rep_chr_fwd(sp1, 0, 'x', 2) ==  1);
+  ASSERT(ustrp_srch_rep_chr_rev(sp1, 0, 'x', 2) == 12);
+  ASSERT(ustrp_srch_rep_chr_fwd(sp1, 0, 'x', 1) ==  1);
+  ASSERT(ustrp_srch_rep_chr_rev(sp1, 0, 'x', 1) == 13);
+  ASSERT(ustrp_srch_rep_chr_fwd(sp1, 0, 'x', 0) ==  1);
+  ASSERT(ustrp_srch_rep_chr_rev(sp1, 0, 'x', 0) == 16);
+  
+  ASSERT(ustrp_replace_rep_chr(pool, &sp1, 'x', 3, '!', 3, 1) == 1);
+  ASSERT_PEQ(sp1, USTRP1(\x10, "!!!456789 xxx456"));
+  
   ustr_pool_free(pool);
   ustr_pool_free(NULL);
   

@@ -1,3 +1,10 @@
+2007-07-25  James Antill  <james@and.org>
+
+	* ustr-srch-code.h (ustr__sys_memrepchr): Fix bounds overrun.
+	(ustr__sys_memrepchr): Move to Boyer-Moore algo. for faster searches.
+	(ustr__sys_memrepchr): Fix length for memchr, so we don't miss things
+	if they are > needle len away.
+
 2007-07-24  James Antill  <james@and.org>
 
 	* ustr-replace-code.h (ustr_replace_rep_chr): Completely re-wrote

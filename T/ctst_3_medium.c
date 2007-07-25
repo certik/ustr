@@ -327,6 +327,12 @@ int tst(void)
   ASSERT_EQ(s1, USTR1(\xa, "ABCDEFGHIJ"));
   ASSERT(ustr_sc_tolower(&s1));
   ASSERT_EQ(s1, USTR1(\xa, "abcdefghij"));
+
+  ASSERT(!ustr_srch_rep_chr_fwd(s1, 0, 'j', 2));
+  ASSERT(!ustr_srch_rep_chr_rev(s1, 0, 'j', 2));
+  
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'j', 1) == 10);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'j', 1) == 10);
   
   { /* bug */
     int scan = 0;
@@ -355,6 +361,34 @@ int tst(void)
       ASSERT(ustr_ro(os1));
     }
   }
+  
+  ustr_sc_free2(&s1, USTR1(\x14, "123456789912345xxxxx"));
+  
+  ASSERT(!ustr_srch_rep_chr_fwd(s1, 0, 'x', 6));
+  ASSERT(!ustr_srch_rep_chr_rev(s1, 0, 'x', 6));
+  
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'x', 5) == 16);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'x', 5) == 16);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'x', 4) == 16);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'x', 4) == 17);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'x', 3) == 16);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'x', 3) == 18);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'x', 2) == 16);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'x', 2) == 19);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'x', 1) == 16);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'x', 1) == 20);
+  
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, '9', 2) ==  9);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, '9', 2) ==  9);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, '9', 1) ==  9);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, '9', 1) == 10);
+  
+  ASSERT(!ustr_srch_rep_chr_fwd(s1, 0, '5', 2));
+  ASSERT(!ustr_srch_rep_chr_rev(s1, 0, '5', 2));
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, '5', 1) ==  5);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, '5', 1) == 15);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 0, '5', 0) ==  1);
+  ASSERT(ustr_srch_rep_chr_rev(s1, 0, '5', 0) == 20);
   
   return (EXIT_SUCCESS);
 }
