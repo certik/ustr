@@ -18,6 +18,8 @@
 
 2007-07-24  Paul Rosenfeld <prosenfeld@tresys.com>
 
+	* ustr-replace-code.h (ustr_replace_rep_chr): Added function.
+
 	* ustr-split-code.h (ustr_sc_split_chrs): Added function.
 
 2007-07-22  James Antill  <james@and.org>
