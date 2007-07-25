@@ -598,6 +598,13 @@ int tst(void)
   
   ASSERT(ustrp_replace_rep_chr(pool, &sp1, 'x', 3, '!', 3, 1) == 1);
   ASSERT_PEQ(sp1, USTRP1(\x10, "!!!456789 xxx456"));
+
+  off = 0;
+  ASSERT_PEQ(ustrp_split_spn_cstr(pool, sp1, &off, "xx", NULL, 0),
+             USTRP1(\xa, "!!!456789 "));
+  ASSERT(off == 13);
+  ASSERT_PEQ(ustrp_split_spn_cstr(pool, sp1, &off, "xx", NULL, 0),
+             USTRP1(\3, "456"));
   
   ustr_pool_free(pool);
   ustr_pool_free(NULL);

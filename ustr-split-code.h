@@ -39,6 +39,13 @@ struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
 
   /* Set the offset for the next, must skip sep */
   *poff = (found_pos - 1) + slen;
+  if (!(flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON)))
+  {
+    const char *ptr = ustr_cstr(s1);
+    
+    while (((len - *poff) >= slen) && !memcmp(ptr + *poff, sep, slen))
+      *poff += slen;
+  }
   
   /* If we don't wish to return blanks or separators, we might get "a,,b" with
    * sep="," so we need to skip the first "found" separator -- so just try
@@ -126,8 +133,12 @@ struct Ustr *ustrp__split_spn_chrs(struct Ustr_pool *p, const struct Ustr *s1,
   }
 
   /* if there's any data left the first byte must be in seps */
-  sep = !((off + spn) == len);
-  USTR_ASSERT(sep == !!ustr_spn_chrs_fwd(s1, off + spn, seps, slen));
+  
+  if (flags & (USTR_FLAG_SPLIT_RET_SEP | USTR_FLAG_SPLIT_RET_NON))
+    sep = !((off + spn) == len);
+  else
+    sep = ustr_spn_chrs_fwd(s1, off + spn, seps, slen);
+  USTR_ASSERT(!sep == !ustr_spn_chrs_fwd(s1, off + spn, seps, slen));
   
   *poff += spn + sep;
   
