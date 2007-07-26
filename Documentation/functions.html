@@ -25,15 +25,15 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.0 reference documentation -- functions (180)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.0 reference documentation -- functions (192)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
 <li><a href="#indx-Creating_readonly_Ustr_functions">Creating read-only Ustr functions (8)</a>
 <li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (3)</a>
-<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (7)</a>
+<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (9)</a>
+<li><a href="#indx-Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr (8)</a>
 <li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (6)</a>
-<li><a href="#indx-Deleting_data_from_a_Ustr">Deleting data from a Ustr (2)</a>
 <li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (7)</a>
 <li><a href="#indx-Resizing_a_sized_Ustr">Resizing a sized Ustr (1)</a>
 <li><a href="#indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr (12)</a>
@@ -43,9 +43,11 @@
 <li><a href="#indx-Searching_for_data_in_a_Ustr">Searching for data in a Ustr (10)</a>
 <li><a href="#indx-Span_lengths_of_data_in_a_Ustr">Span lengths of data in a Ustr (28)</a>
 <li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (9)</a>
+<li><a href="#indx-String_substitutionreplacement">String substitution/replacement (6)</a>
+<li><a href="#indx-Splitting_a_Ustr">Splitting a Ustr (4)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (5)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
-<li><a href="#indx-Shortcut_helper_functions_for_Ustrs">Shortcut helper functions for Ustrs (11)</a>
+<li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (5)</a>
 <li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
 <li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Simple_Ustr_pool_API">Simple Ustr pool API (4)</a></ul>
@@ -75,6 +77,18 @@
 <li class="obj"><a href="#ustr_dup_undef">ustr_dup_undef()</a>
 <li class="obj"><a href="#ustr_dup">ustr_dup()</a>
 <li class="obj"><a href="#ustr_dupx">ustr_dupx()</a>
+<li class="obj"><a href="#ustr_sc_dupx">ustr_sc_dupx()</a>
+<li class="obj"><a href="#ustr_sc_dup">ustr_sc_dup()</a>
+</ul><li><a id="indx-Deleting_a_Ustr_or_data_within_a_Ustr" href="#Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_free">ustr_free()</a>
+<li class="obj"><a href="#ustrp_free">ustrp_free()</a>
+<li class="obj"><a href="#ustr_sc_free">ustr_sc_free()</a>
+<li class="obj"><a href="#ustr_sc_free2">ustr_sc_free2()</a>
+<li class="obj"><a href="#ustr_sc_free_shared">ustr_sc_free_shared()</a>
+<li class="obj"><a href="#ustr_del">ustr_del()</a>
+<li class="obj"><a href="#ustr_del_subustr">ustr_del_subustr()</a>
+<li class="obj"><a href="#ustr_sc_del">ustr_sc_del()</a>
 </ul><li><a id="indx-Adding_data_to_a_Ustr" href="#Adding_data_to_a_Ustr">Adding data to a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_add_undef">ustr_add_undef()</a>
@@ -83,10 +97,6 @@
 <li class="obj"><a href="#ustr_add">ustr_add()</a>
 <li class="obj"><a href="#ustr_add_subustr">ustr_add_subustr()</a>
 <li class="obj"><a href="#ustr_add_rep_chr">ustr_add_rep_chr()</a>
-</ul><li><a id="indx-Deleting_data_from_a_Ustr" href="#Deleting_data_from_a_Ustr">Deleting data from a Ustr</a>
-<ul>
-<li class="obj"><a href="#ustr_del">ustr_del()</a>
-<li class="obj"><a href="#ustr_del_subustr">ustr_del_subustr()</a>
 </ul><li><a id="indx-Setting_a_Ustr_to_some_data" href="#Setting_a_Ustr_to_some_data">Setting a Ustr to some data</a>
 <ul>
 <li class="obj"><a href="#ustr_set_undef">ustr_set_undef()</a>
@@ -223,6 +233,20 @@
 <li class="obj"><a href="#ustr_io_putfile">ustr_io_putfile()</a>
 <li class="obj"><a href="#ustr_io_putfileline">ustr_io_putfileline()</a>
 <li class="obj"><a href="#ustr_io_putfilename">ustr_io_putfilename()</a>
+</ul><li><a id="indx-String_substitutionreplacement" href="#String_substitutionreplacement">String substitution/replacement</a>
+<ul>
+<li class="obj"><a href="#ustr_sub_buf">ustr_sub_buf()</a>
+<li class="obj"><a href="#ustr_sub_cstr">ustr_sub_cstr()</a>
+<li class="obj"><a href="#ustr_sc_sub">ustr_sc_sub()</a>
+<li class="obj"><a href="#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
+<li class="obj"><a href="#ustr_replace">ustr_replace()</a>
+<li class="obj"><a href="#ustr_replace_rep_chr">ustr_replace_rep_chr()</a>
+</ul><li><a id="indx-Splitting_a_Ustr" href="#Splitting_a_Ustr">Splitting a Ustr</a>
+<ul>
+<li class="obj"><a href="#ustr_split_buf">ustr_split_buf()</a>
+<li class="obj"><a href="#ustr_split">ustr_split()</a>
+<li class="obj"><a href="#ustr_split_cstr">ustr_split_cstr()</a>
+<li class="obj"><a href="#ustr_split_spn_chrs">ustr_split_spn_chrs()</a>
 </ul><li><a id="indx-Dealing_with_UTF8_in_a_Ustr" href="#Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_utf8_valid">ustr_utf8_valid()</a>
@@ -242,15 +266,9 @@
 <li class="obj"><a href="#ustr_parse_int">ustr_parse_int()</a>
 <li class="obj"><a href="#ustr_parse_ushort">ustr_parse_ushort()</a>
 <li class="obj"><a href="#ustr_parse_short">ustr_parse_short()</a>
-</ul><li><a id="indx-Shortcut_helper_functions_for_Ustrs" href="#Shortcut_helper_functions_for_Ustrs">Shortcut helper functions for Ustrs</a>
+</ul><li><a id="indx-Misc_shortcut_helper_functions_for_Ustrs" href="#Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs</a>
 <ul>
-<li class="obj"><a href="#ustr_sc_free">ustr_sc_free()</a>
-<li class="obj"><a href="#ustr_sc_free2">ustr_sc_free2()</a>
-<li class="obj"><a href="#ustr_sc_del">ustr_sc_del()</a>
-<li class="obj"><a href="#ustr_sc_dupx">ustr_sc_dupx()</a>
-<li class="obj"><a href="#ustr_sc_dup">ustr_sc_dup()</a>
 <li class="obj"><a href="#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>
-<li class="obj"><a href="#ustr_sc_free_shared">ustr_sc_free_shared()</a>
 <li class="obj"><a href="#ustr_sc_reverse">ustr_sc_reverse()</a>
 <li class="obj"><a href="#ustr_sc_tolower">ustr_sc_tolower()</a>
 <li class="obj"><a href="#ustr_sc_toupper">ustr_sc_toupper()</a>
@@ -555,6 +573,144 @@
  reference fails it works like <a href="functions#ustr_dupx_buf">ustr_dupx_buf()</a> using <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a>.
 
 
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_dupx">ustr_sc_dupx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
+ maxed out then and so a new <a href="design">Ustr string</a> is allocated then that is stored in
+ the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
+</p><p>  If the configurations of the new <a href="design">Ustr string</a> and the old <a href="design">Ustr string</a> are not
+ the same, this function works identically to <a href="functions#ustr_dupx">ustr_dupx()</a>.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using <a href="functions#ustr_dupx">ustr_dupx()</a> will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_dup">ustr_sc_dup()</a>
+<br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
+ maxed out then and so a new <a href="design">Ustr string</a> has been allocated then that is stored
+ in the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using <a href="functions#ustr_dup">ustr_dup()</a> will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Deleting%20a%20Ustr%2c%20or%20data%20within%20a%20Ustr">Deleting a Ustr, or data within a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_free">ustr_free()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function decrements the reference count on a Ustr, if there is one, and
+ free's it if it is allocated and the reference count becomes zero.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustrp_free">ustrp_free()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr_pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a Ustrp (pool allocated Ustr)<br>Type<strong>[2]</strong>: struct Ustrp *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_free">ustr_free()</a> but calls the pool_free member function
+ of the Ustr_pool (Parameter[1]) instead of the system free.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_free">ustr_sc_free()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function calls <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer (Parameter[1]) to
+ <a href="constants#USTR_NULL">USTR_NULL</a>, which is a noop when passed to <a href="functions#ustr_free">ustr_free()</a>. This can be used to
+ help prevent "double free" errors.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_free2">ustr_sc_free2()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_sc_free">ustr_sc_free()</a> but instead of setting the
+ pointer (Parameter[1]) to <a href="constants#USTR_NULL">USTR_NULL</a> it sets it to the Ustr
+ string (Parameter[2]).
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The passed value shouldn't be <a href="constants#USTR_NULL">USTR_NULL</a>, and in debugging mode the function
+ will assert() that it isn't.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_free_shared">ustr_sc_free_shared()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is a simple way to &quot;free&quot; a <a href="design">Ustr string</a> that has been
+ shared (<a href="functions#ustr_shared">ustr_shared()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), normally <a href="functions#ustr_free">ustr_free()</a> is ignored on a
+ shared <a href="design">Ustr string</a>. It just calls <a href="functions#ustr_setf_owner">ustr_setf_owner()</a> and then <a href="functions#ustr_sc_free">ustr_sc_free()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_del">ustr_del()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Length to delete from the Ustr<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function deletes data from the end of Ustr, possibly re-sizing the Ustr
+ at the same time.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The Ustr is never re-sized when the size is stored explicitly, so the pointer
+ never changes.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_del_subustr">ustr_del_subustr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position in the Ustr<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length to delete from the Ustr<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_del">ustr_del()</a> but can delete an arbitrary section of the
+ Ustr.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_del">ustr_sc_del()</a>
+<br>Returns: Nothing<br>Type: void 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is like calling <a href="functions#ustr_del">ustr_del()</a> with <a href="functions#ustr_len">ustr_len()</a> as the length,
+ however if that fails it does a <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer to
+ USTR("").
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  While the benifit is that you don't have to check for memory failure errors,
+ if there is a memory failure and you have a non-default configuration the
+ configuration will revert back to the default.
+
+
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20data%20to%20a%20Ustr">Adding data to a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add_undef">ustr_add_undef()</a>
@@ -628,32 +784,6 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_add_undef">ustr_add_undef()</a> and then copied the
  byte value to each position.
-
-
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Deleting%20data%20from%20a%20Ustr">Deleting data from a Ustr</a></h2>
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_del">ustr_del()</a>
-<br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Length to delete from the Ustr<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function deletes data from the end of Ustr, possibly re-sizing the Ustr
- at the same time.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The Ustr is never re-sized when the size is stored explicitly, so the pointer
- never changes.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_del_subustr">ustr_del_subustr()</a>
-<br>Returns: Success or failure<br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Position in the Ustr<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Length to delete from the Ustr<br>Type<strong>[3]</strong>:  size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_del">ustr_del()</a> but can delete an arbitrary section of the
- Ustr.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Setting%20a%20Ustr%20to%20some%20data">Setting a Ustr to some data</a></h2>
@@ -1028,7 +1158,7 @@
 <br>Returns: A boolean flag of either <a href="constants#USTR_TRUE">USTR_TRUE</a> or USTR_FALSE<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function says if their is only a single reference to the <a href="design">Ustr string</a>.
+</p><p>  This function says if there is only a single reference to the <a href="design">Ustr string</a>.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  This always fails for Ustr's in read-only storage.
@@ -2028,14 +2158,210 @@
 </p><p>  This function is NOT DOCUMENTED YET!
 
 
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="String%20substitution%2freplacement">String substitution/replacement</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_buf">ustr_sub_buf()</a>
+<br>Returns: success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  Position where to start replacement<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Buffer containing replacement string <br>Type<strong>[3]</strong>:  const void*
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  Length of buffer<br>Type<strong>[4]</strong>:  size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function will replace the characters in the Ustr starting at the
+ specified position using data from the buffer.
+ 
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p></p><p>  The Ustr will be automatically be resized if necessary.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_cstr">ustr_sub_cstr()</a>
+<br>Returns: success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  Replacement Cstring<br>Type<strong>[3]</strong>:  const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function will replace characters in the Ustr starting at the specified
+ position using data from the given Cstring.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub">ustr_sc_sub()</a>
+<br>Returns: success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of replacement<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Pointer to a Ustr containing the replacement string<br>Type<strong>[4]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  Replaces a specified number of characters starting at the given position
+ with the characters from the given Ustr. 
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
+<br>Returns: success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement <br>Type<strong>[2]</strong>:  size_t 
+</td></tr><tr><td>Parameter<strong>[3]</strong>:  Length of replacement<br>Type<strong>[3]</strong>:  size_t 
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  Buffer containting replacement string<br>Type<strong>[4]</strong>:  const void *
+</td></tr><tr><td>Parameter<strong>[5]</strong>:  Length of Buffer<br>Type<strong>[5]</strong>:  size_t 
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function will replace a specific number of characters in a Ustr with
+ the data from a buffer. 
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_replace">ustr_replace()</a>
+<br>Returns: Number of tokens replaced <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr (haystack)<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Ustr to search for (needle)<br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Ustr to replace needle with<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>:  Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[4]</strong>:  size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function scans the &quot;haystack&quot; (Parameter[1]) for &quot;needle&quot; (Parameter[2])
+ and replaces max_replacements (Parameter[4]) matches with the
+ "replacement" (Parameter[3]).
+
+Note: 
+</p><p>  If max_replacements (Parameter[4]) is 0, this function will replace ALL
+ occurrences.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_replace_rep_chr">ustr_replace_rep_chr()</a>
+<br>Returns: number of replacements made<br>Type: size_t
+</td></tr><tr><td>Parameter<strong>[1]</strong>: pointer to a pointer to a Ustr to be modified<br>Type<strong>[1]</strong>: struct Ustr **ps1
+</td></tr><tr><td>Parameter<strong>[2]</strong>: character to replace<br>Type<strong>[2]</strong>: char
+</td></tr><tr><td>Parameter<strong>[3]</strong>: number of characters to replace<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: character to replace with<br>Type<strong>[4]</strong>: char
+</td></tr><tr><td>Parameter<strong>[5]</strong>: number of characters to replace with<br>Type<strong>[5]</strong>: size_t nlen
+</td></tr><tr><td>Parameter<strong>[6]</strong>: maximum number of replacements to make (use 0 for unlimited)<br>Type<strong>[6]</strong>: size_t lim
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>  This function replaces a repeating sequence of characters with another
+</p><p>  repeating sequence of characters. 
+
+</p><p>  For example:
+</p><p>  Ustr *data = ustr_dup_cstr(&quot;xxxBxxCxDxxx&quot;);
+</p><p>  ustr_replace_rep_chr(&amp;data,'x',2,'y',1, 0)
+</p><p>  would change data to be &quot;yxByCxDyx&quot;.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p></p><p>  Changing the same letter the same number of times is considered a No-op
+</p><p>  since it is a vast performance improvement this way. So passing in 
+</p><p>  (&amp;data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
+</p><p>  unchanged.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Splitting%20a%20Ustr">Splitting a Ustr</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_split_buf">ustr_split_buf()</a>
+<br>Returns: pointer to a Ustr representing the next token<br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: pointer to a Ustr to be split<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: pointer to an offset variable<br>Type<strong>[2]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: buffer to use as split search pattern <br>Type<strong>[3]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: length of buffer<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: pointer to a Ustr where the return value will be placed<br>Type<strong>[5]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: flags<br>Type<strong>[6]</strong>: unsigned int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>  This function works in a manner similar to strtok(). Each time the function
+ is called, the string inside of the buffer (Parameter[3]) is used as a search
+ pattern at which to split. If the pattern is not found, the entire string
+ will be returned. A <a href="constants#USTR_NULL">USTR_NULL</a> return value indicates there are no more
+ tokens remaining.
+
+</p><p>  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
+ Passing a <a href="constants#USTR_NULL">USTR_NULL</a> to this parameter will cause the string to be allocated
+ and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
+ this parameter, each call to <a href="functions#ustr_split_buf">ustr_split_buf()</a> will free what is in this
+ pointer and place the new token there (when <a href="constants#USTR_NULL">USTR_NULL</a> is returned, nothing
+ needs to be free'd).
+
+  For example...
+</p><pre>
+  Ustr *data = ...;
+  Ustr *tok = USTR_NULL;
+  const char *sep = "=";
+  size_t off;
+  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+
+  ...there are two options...
+</p><pre>
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
+    /* do something with tok -- but next iteration of the loop will free
+       and overwrite tok, so you must ustr_dup() if you want to keep it */
+  }
+   /* tok is now NULL again after the loop */
+
+   OR
+
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
+    /*do something with tok, and it will NOT be freed in the next iteration of
+    the loop*/
+      ustr_free(tok); /* have to free to avoid mem leaks */
+  }
+  
+  Note:
+
+  Explanation of flags --
+    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
+    example: splitting "a,b," using separator "," will return the tokens "a,"
+    and "b," whereas without this option only "a" and "b" would be returned.
+    
+    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
+    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
+
+    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
+    configuration parameters as the original string.
+
+    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
+    the above.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_split">ustr_split()</a>
+<br>Returns:  pointer to a Ustr representing the next token<br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: pointer to a Ustr to be split<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: pointer to an offset variable<br>Type<strong>[2]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: pointer to a Ustr to use as the split search pattern<br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: pointer to a Ustr where the return value will be placed<br>Type<strong>[4]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: flags<br>Type<strong>[5]</strong>: unsigned int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>   Works like ustr_split_buf() but takes a Ustr as the split search pattern
+  instead.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_split_cstr">ustr_split_cstr()</a>
+<br>Returns:  pointer to a Ustr representing the next token<br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: pointer to a Ustr to be split<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: pointer to an offset variable<br>Type<strong>[2]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: C string to use as split search pattern<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: pointer to a Ustr where the return value will be placed<br>Type<strong>[4]</strong>: struct Ustr *
+ Parameter[5]:
+<br>Type<strong>[5]</strong>: unsigned int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>  Works like ustr_split_buf() but takes a C string as the split search
+  pattern.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_split_spn_chrs">ustr_split_spn_chrs()</a>
+<br>Returns: Pointer to a Ustr representing the next token<br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr to be split<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to an offset variable<br>Type<strong>[2]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: String representing a set of bytes to use as split chars<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the string of set of bytes<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to a Ustr where the return value will be placed<br>Type<strong>[5]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: flags<br>Type<strong>[6]</strong>: unsigned int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>  Works like ustr_split_buf() but uses the individual characters in the
+ separator string (Parameter[3]) as search patterns. It will split if ANY of
+ these individual characters are matched (much like strtok()). For example:
+ if splitting "thisXisYaZtest" with the separator string "XYZ" the tokens
+ returned would be {"this" "is" "a" "test"};
+
+
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Dealing%20with%20UTF%2d8%20in%20a%20Ustr">Dealing with UTF-8 in a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_utf8_valid">ustr_utf8_valid()</a>
 <br>Returns: A boolean flag of either <a href="constants#USTR_TRUE">USTR_TRUE</a> or USTR_FALSE<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function tries it's best to find out if the string is a valid utf-8
+  This function tries it's best to find out if the string is a valid utf-8
  string.
+
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2043,10 +2369,10 @@
 <br>Returns: The number of the utf-8 characters in the Ustr<br>Type: size_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function counts the number of utf-8 characters inn the Ustr.
+  This function counts the number of utf-8 characters inn the Ustr.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This function gives undefined answers on strings that aren't utf-8 valid.
+  This function gives undefined answers on strings that aren't utf-8 valid.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2054,7 +2380,7 @@
 <br>Returns: ssize_t <br>Type: ssize_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2065,7 +2391,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2076,7 +2402,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20ASCII%20integer%20numbers%20from%20a%20Ustr">Parsing ASCII integer numbers from a Ustr</a></h2>
@@ -2092,11 +2418,11 @@
 </td></tr><tr><td>Parameter<strong>[7]</strong>: Return length of parsed number<br>Type<strong>[7]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[8]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[8]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses an ASCII representation of a number from a
+  This function parses an ASCII representation of a number from a
  Ustr (Parameter[1]) starting at the offset (Parameter[2]).
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  If stdint.h isn't available this function won't be available.
+  If stdint.h isn't available this function won't be available.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2108,11 +2434,11 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> with the minimum and maximum
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum
  values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  If stdint.h isn't available this function won't be available.
+  If stdint.h isn't available this function won't be available.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2124,11 +2450,11 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> with the minimum and maximum
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum
  values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  If stdint.h isn't available this function won't be available.
+  If stdint.h isn't available this function won't be available.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2143,7 +2469,7 @@
 </td></tr><tr><td>Parameter<strong>[7]</strong>: Return length of parsed number<br>Type<strong>[7]</strong>:  size_t *
 </td></tr><tr><td>Parameter<strong>[8]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[8]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> but returns an unsigned long,
+  This function works like ustr_parse_uintmaxx() but returns an unsigned long,
  it is always available even when stdint.h isn't.
 
 
@@ -2156,7 +2482,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
+  This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
 
 
@@ -2169,7 +2495,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
+  This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
 
 
@@ -2182,7 +2508,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
+  This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as 0 and UINT_MAX, and the thousands seperator as "_".
 
 
@@ -2195,7 +2521,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
+  This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
 
 
@@ -2208,7 +2534,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
+  This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
 
 
@@ -2221,112 +2547,18 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
+  This function works like ustr_parse_ulongx() with the minimum and maximum
  values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
 
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Shortcut%20helper%20functions%20for%20Ustrs">Shortcut helper functions for Ustrs</a></h2>
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_free">ustr_sc_free()</a>
-<br>Returns: Nothing<br>Type: void 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function calls <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer (Parameter[1]) to
- <a href="constants#USTR_NULL">USTR_NULL</a>, which is a noop when passed to <a href="functions#ustr_free">ustr_free()</a>. This can be used to
- help prevent "double free" errors.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_free2">ustr_sc_free2()</a>
-<br>Returns: Nothing<br>Type: void 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: struct Ustr *
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_sc_free">ustr_sc_free()</a> but instead of setting the
- pointer (Parameter[1]) to <a href="constants#USTR_NULL">USTR_NULL</a> it sets it to the Ustr
- string (Parameter[2]).
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The passed value shouldn't be <a href="constants#USTR_NULL">USTR_NULL</a>, and in debugging mode the function
- will assert() that it isn't.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_del">ustr_sc_del()</a>
-<br>Returns: Nothing<br>Type: void 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is like calling <a href="functions#ustr_del">ustr_del()</a> with <a href="functions#ustr_len">ustr_len()</a> as the length,
- however if that fails it does a <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer to
- USTR("").
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  While the benifit is that you don't have to check for memory failure errors,
- if there is a memory failure and you have a non-default configuration the
- configuration will revert back to the default.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_dupx">ustr_sc_dupx()</a>
-<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
-</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
-</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: struct Ustr **
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
- maxed out then and so a new <a href="design">Ustr string</a> is allocated then that is stored in
- the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
-</p><p>  If the configurations of the new <a href="design">Ustr string</a> and the old <a href="design">Ustr string</a> are not
- the same, this function works identically to <a href="functions#ustr_dupx">ustr_dupx()</a>.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
- a lot of things are getting references too then when the reference count maxes
- out you'll degrade into worst case behaviour which acts as though there are no
- reference counts. This function stops that problem.
-</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
- references then using <a href="functions#ustr_dupx">ustr_dupx()</a> will create 256 Ustr strings using this
- function will create 4 Ustr strings.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_dup">ustr_sc_dup()</a>
-<br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
- maxed out then and so a new <a href="design">Ustr string</a> has been allocated then that is stored
- in the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
- a lot of things are getting references too then when the reference count maxes
- out you'll degrade into worst case behaviour which acts as though there are no
- reference counts. This function stops that problem.
-</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
- references then using <a href="functions#ustr_dup">ustr_dup()</a> will create 256 Ustr strings using this
- function will create 4 Ustr strings.
-
-
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Misc%20shortcut%20helper%20functions%20for%20Ustrs">Misc shortcut helper functions for Ustrs</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function makes sure that the <a href="design">Ustr string</a> is owned when it returns (Ie.
- <a href="functions#ustr_owner">ustr_owner()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), or it fails to allocate.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_free_shared">ustr_sc_free_shared()</a>
-<br>Returns: Nothing<br>Type: void 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is a simple way to &quot;free&quot; a <a href="design">Ustr string</a> that has been
- shared (<a href="functions#ustr_shared">ustr_shared()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), normally <a href="functions#ustr_free">ustr_free()</a> is ignored on a
- shared <a href="design">Ustr string</a>. It just calls <a href="functions#ustr_setf_owner">ustr_setf_owner()</a> and then <a href="functions#ustr_sc_free">ustr_sc_free()</a>.
+  This function makes sure that the Ustr string is owned when it returns (Ie.
+ ustr_owner() returns USTR_TRUE), or it fails to allocate.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2334,7 +2566,7 @@
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function reverses all the bytes in a <a href="design">Ustr string</a>, so the last one
+  This function reverses all the bytes in a Ustr string, so the last one
  becomes the first and the second to last becomes the second etc.
 
 
@@ -2343,7 +2575,7 @@
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function changes any ASCII upper case bytes into ASCII lower case bytes.
+  This function changes any ASCII upper case bytes into ASCII lower case bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2351,7 +2583,7 @@
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function changes any ASCII lower case bytes into ASCII upper case bytes.
+  This function changes any ASCII lower case bytes into ASCII upper case bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2359,8 +2591,8 @@
 <br>Returns: Writable pointer to the start of data in the Ustr, or NULL<br>Type: char *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like calling <a href="functions#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>, to make sure the
- <a href="design">Ustr string</a> is writable, and if that succeeds it returns <a href="functions#ustr_wstr">ustr_wstr()</a>. On
+  This function works like calling ustr_sc_ensure_owner(), to make sure the
+ Ustr string is writable, and if that succeeds it returns ustr_wstr(). On
  failure it returns NULL.
 
 
@@ -2371,7 +2603,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least16_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
+  This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
@@ -2381,7 +2613,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least32_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
+  This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
@@ -2391,7 +2623,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least64_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
+  This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
@@ -2402,7 +2634,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
@@ -2412,7 +2644,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
@@ -2422,7 +2654,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
+  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
@@ -2432,14 +2664,14 @@
 <br>Returns: Ustr pool object<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This allocates a new pool.
+  This allocates a new pool.
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_make_subpool">ustr_pool_make_subpool()</a>
 <br>Returns: struct Ustr_pool *<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr_pool *<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This allocates a new pool as a child of the passed in pool (Parameter[1]),
+  This allocates a new pool as a child of the passed in pool (Parameter[1]),
  The pool can be freed and cleared independantly of the parent pool however
  free and clear operations on the parent pool are automatically applied to all
  child pools.
@@ -2450,10 +2682,10 @@
 <br>Returns: Nothing<br>Type: void
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This deallocates a pool, and all sub-pools.
+  This deallocates a pool, and all sub-pools.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This also operates on all sub-pools.
+  This also operates on all sub-pools.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2461,11 +2693,11 @@
 <br>Returns: Nothing<br>Type: void
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This allows all the data in the pool to be reused, it may also free some/all
+  This allows all the data in the pool to be reused, it may also free some/all
  of the data in the pool, from the pool API.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This also operates on all sub-pools.
+  This also operates on all sub-pools.
 
 
 </td></tr></table>

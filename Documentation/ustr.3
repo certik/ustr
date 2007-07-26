@@ -1,4 +1,4 @@
-.TH ustr 3 "13-Jul-2007" "Ustr 1.0.0" "Ustr String Library"
+.TH ustr 3 "25-Jul-2007" "Ustr 1.0.0" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -79,6 +79,47 @@ struct Ustr *\fBustr_dup\fR(const struct Ustr *);
 .in \w'  struct Ustr *\fBustr_dupx\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dupx\fR(size_t, size_t, int, int, const struct Ustr *);
+.br
+.in \w'  struct Ustr *\fBustr_sc_dupx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_dupx\fR(size_t, size_t, int, int, struct Ustr **);
+.br
+.in \w'  struct Ustr *\fBustr_sc_dup\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_dup\fR(struct Ustr **);
+.sp
+.br
+.in \w'  void  \fBustr_free\fR('u
+.ti \w'  'u
+void  \fBustr_free\fR(struct Ustr *);
+.br
+.in \w'  void  \fBustrp_free\fR('u
+.ti \w'  'u
+void  \fBustrp_free\fR(struct Ustr_pool *, struct Ustrp *);
+.br
+.in \w'  void  \fBustr_sc_free\fR('u
+.ti \w'  'u
+void  \fBustr_sc_free\fR(struct Ustr **);
+.br
+.in \w'  void  \fBustr_sc_free2\fR('u
+.ti \w'  'u
+void  \fBustr_sc_free2\fR(struct Ustr **, struct Ustr *);
+.br
+.in \w'  void  \fBustr_sc_free_shared\fR('u
+.ti \w'  'u
+void  \fBustr_sc_free_shared\fR(struct Ustr **);
+.br
+.in \w'  int  \fBustr_del\fR('u
+.ti \w'  'u
+int  \fBustr_del\fR(struct Ustr **, size_t);
+.br
+.in \w'  int  \fBustr_del_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_del_subustr\fR(struct Ustr **, size_t,  size_t);
+.br
+.in \w'  void  \fBustr_sc_del\fR('u
+.ti \w'  'u
+void  \fBustr_sc_del\fR(struct Ustr **);
 .sp
 .br
 .in \w'  int \fBustr_add_undef\fR('u
@@ -104,15 +145,6 @@ int  \fBustr_add_subustr\fR(struct Ustr **, const struct Ustr *, size_t, size_t)
 .in \w'  int  \fBustr_add_rep_chr\fR('u
 .ti \w'  'u
 int  \fBustr_add_rep_chr\fR(struct Ustr **, char, size_t);
-.sp
-.br
-.in \w'  int  \fBustr_del\fR('u
-.ti \w'  'u
-int  \fBustr_del\fR(struct Ustr **, size_t);
-.br
-.in \w'  int  \fBustr_del_subustr\fR('u
-.ti \w'  'u
-int  \fBustr_del_subustr\fR(struct Ustr **, size_t,  size_t);
 .sp
 .br
 .in \w'  int  \fBustr_set_undef\fR('u
@@ -596,6 +628,48 @@ int  \fBustr_io_putfileline\fR(struct Ustr **,  FILE *);
 int  \fBustr_io_putfilename\fR(struct Ustr **,  const char *,  const char *);
 .sp
 .br
+.in \w'  int  \fBustr_sub_buf\fR('u
+.ti \w'  'u
+int  \fBustr_sub_buf\fR(struct Ustr **,  size_t,  const void*,  size_t);
+.br
+.in \w'  int  \fBustr_sub_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_sub_cstr\fR(struct Ustr **,  size_t,  const char *);
+.br
+.in \w'  int  \fBustr_sc_sub\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub\fR(struct Ustr **, size_t, size_t, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_sc_sub_buf\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_buf\fR(struct Ustr **,  size_t ,  size_t ,  const void *,  size_t );
+.br
+.in \w'  int  \fBustr_replace\fR('u
+.ti \w'  'u
+int  \fBustr_replace\fR(struct Ustr **, const struct Ustr *, const struct Ustr *,  size_t);
+.br
+.in \w'  size_t \fBustr_replace_rep_chr\fR('u
+.ti \w'  'u
+size_t \fBustr_replace_rep_chr\fR(struct Ustr **ps1, char, size_t, char, size_t nlen, size_t lim);
+.sp
+.br
+.in \w'  struct Ustr *\fBustr_split_buf\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_split_buf\fR(const struct Ustr *, size_t *, const void *, size_t, struct Ustr *, unsigned int);
+.br
+.in \w'  struct Ustr *\fBustr_split\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_split\fR(const struct Ustr *, size_t *, const struct Ustr *, struct Ustr *, unsigned int);
+.br
+.in \w'  struct Ustr *\fBustr_split_cstr\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_split_cstr\fR(const struct Ustr *, size_t *, const char *, struct Ustr *, unsigned int);
+.br
+.in \w'  struct Ustr *\fBustr_split_spn_chrs\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_split_spn_chrs\fR(const struct Ustr *, size_t *, const char *, size_t, struct Ustr *, unsigned int);
+.sp
+.br
 .in \w'  int  \fBustr_utf8_valid\fR('u
 .ti \w'  'u
 int  \fBustr_utf8_valid\fR(const struct Ustr *);
@@ -658,33 +732,9 @@ unsigned short  \fBustr_parse_ushort\fR(const struct Ustr *, size_t, unsigned in
 short  \fBustr_parse_short\fR(const struct Ustr *, size_t, unsigned int, size_t *, unsigned int *);
 .sp
 .br
-.in \w'  void  \fBustr_sc_free\fR('u
-.ti \w'  'u
-void  \fBustr_sc_free\fR(struct Ustr **);
-.br
-.in \w'  void  \fBustr_sc_free2\fR('u
-.ti \w'  'u
-void  \fBustr_sc_free2\fR(struct Ustr **, struct Ustr *);
-.br
-.in \w'  void  \fBustr_sc_del\fR('u
-.ti \w'  'u
-void  \fBustr_sc_del\fR(struct Ustr **);
-.br
-.in \w'  struct Ustr *\fBustr_sc_dupx\fR('u
-.ti \w'  'u
-struct Ustr *\fBustr_sc_dupx\fR(size_t, size_t, int, int, struct Ustr **);
-.br
-.in \w'  struct Ustr *\fBustr_sc_dup\fR('u
-.ti \w'  'u
-struct Ustr *\fBustr_sc_dup\fR(struct Ustr **);
-.br
 .in \w'  int  \fBustr_sc_ensure_owner\fR('u
 .ti \w'  'u
 int  \fBustr_sc_ensure_owner\fR(struct Ustr **);
-.br
-.in \w'  void  \fBustr_sc_free_shared\fR('u
-.ti \w'  'u
-void  \fBustr_sc_free_shared\fR(struct Ustr **);
 .br
 .in \w'  int  \fBustr_sc_reverse\fR('u
 .ti \w'  'u
@@ -1370,6 +1420,272 @@ Type\fB[5]\fR: const struct Ustr *
 .br
   This function tries to add a reference if the value of the size, reference bytes, exact memory allocations and ENOMEM are the same as those in the passed Ustr string (Parameter[5]). If the comparison fails or the addition of a reference fails it works like ustr_dupx_buf() using ustr_cstr() and ustr_len().
 
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_dupx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[5]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string is allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+.br
+  If the configurations of the new Ustr string and the old Ustr string are not the same, this function works identically to ustr_dupx().
+.sp
+\fBNote:\fR
+
+.br
+  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
+.br
+  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dupx() will create 256 Ustr strings using this function will create 4 Ustr strings.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_dup()
+.br
+Returns: A pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string has been allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+.sp
+\fBNote:\fR
+
+.br
+  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
+.br
+  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dup() will create 256 Ustr strings using this function will create 4 Ustr strings.
+
+.SH Deleting a Ustr, or data within a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_free()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: Pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function decrements the reference count on a Ustr, if there is one, and free's it if it is allocated and the reference count becomes zero.
+.ti -2
+.br
+\fBFunction: \fR ustrp_free()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: Pointer to a Ustr_pool object
+.br
+Type\fB[1]\fR: struct Ustr_pool *
+
+.br
+Parameter\fB[2]\fR: Pointer to a Ustrp (pool allocated Ustr)
+.br
+Type\fB[2]\fR: struct Ustrp *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_free() but calls the pool_free member function of the Ustr_pool (Parameter[1]) instead of the system free.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_free()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calls ustr_free() and then sets the pointer (Parameter[1]) to USTR_NULL, which is a noop when passed to ustr_free(). This can be used to help prevent "double free" errors.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_free2()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Pointer to a Ustr string
+.br
+Type\fB[2]\fR: struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_sc_free() but instead of setting the pointer (Parameter[1]) to USTR_NULL it sets it to the Ustr string (Parameter[2]).
+.sp
+\fBNote:\fR
+
+.br
+  The passed value shouldn't be USTR_NULL, and in debugging mode the function will assert() that it isn't.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_free_shared()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is a simple way to "free" a Ustr string that has been shared (ustr_shared() returns USTR_TRUE), normally ustr_free() is ignored on a shared Ustr string. It just calls ustr_setf_owner() and then ustr_sc_free().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_del()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Length to delete from the Ustr
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function deletes data from the end of Ustr, possibly re-sizing the Ustr at the same time.
+.sp
+\fBNote:\fR
+
+.br
+  The Ustr is never re-sized when the size is stored explicitly, so the pointer never changes.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_del_subustr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position in the Ustr
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length to delete from the Ustr
+.br
+Type\fB[3]\fR:  size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_del() but can delete an arbitrary section of the Ustr.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_del()
+.br
+Returns: Nothing
+.br
+Type: void 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is like calling ustr_del() with ustr_len() as the length, however if that fails it does a ustr_free() and then sets the pointer to USTR("").
+.sp
+\fBNote:\fR
+
+.br
+  While the benifit is that you don't have to check for memory failure errors, if there is a memory failure and you have a non-default configuration the configuration will revert back to the default.
+
 .SH Adding data to a Ustr
 .ti -2
 .br
@@ -1544,65 +1860,6 @@ Type\fB[3]\fR: size_t
 
 .br
   This function works as if you had called ustr_add_undef() and then copied the byte value to each position.
-
-.SH Deleting data from a Ustr
-.ti -2
-.br
-\fBFunction: \fR ustr_del()
-.br
-Returns: Success or failure
-.br
-Type: int 
-
-.br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-Parameter\fB[2]\fR: Length to delete from the Ustr
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function deletes data from the end of Ustr, possibly re-sizing the Ustr at the same time.
-.sp
-\fBNote:\fR
-
-.br
-  The Ustr is never re-sized when the size is stored explicitly, so the pointer never changes.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_del_subustr()
-.br
-Returns: Success or failure
-.br
-Type: int 
-
-.br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-Parameter\fB[2]\fR: Position in the Ustr
-.br
-Type\fB[2]\fR: size_t
-
-.br
-Parameter\fB[3]\fR: Length to delete from the Ustr
-.br
-Type\fB[3]\fR:  size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works like ustr_del() but can delete an arbitrary section of the Ustr.
 
 .SH Setting a Ustr to some data
 .ti -2
@@ -2492,7 +2749,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function says if their is only a single reference to the Ustr string.
+  This function says if there is only a single reference to the Ustr string.
 .sp
 \fBNote:\fR
 
@@ -5005,6 +5262,456 @@ Type\fB[3]\fR:  const char *
 .br
   This function is NOT DOCUMENTED YET!
 
+.SH String substitution/replacement
+.ti -2
+.br
+\fBFunction: \fR ustr_sub_buf()
+.br
+Returns: success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR:  Position where to start replacement
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR: Buffer containing replacement string 
+.br
+Type\fB[3]\fR:  const void*
+
+.br
+Parameter\fB[4]\fR:  Length of buffer
+.br
+Type\fB[4]\fR:  size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function will replace the characters in the Ustr starting at the specified position using data from the buffer. .sp
+\fBNote:\fR
+.br
+  The Ustr will be automatically be resized if necessary.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sub_cstr()
+.br
+Returns: success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start replacement
+.br
+Type\fB[2]\fR:  size_t
+
+.br
+Parameter\fB[3]\fR:  Replacement Cstring
+.br
+Type\fB[3]\fR:  const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function will replace characters in the Ustr starting at the specified position using data from the given Cstring.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub()
+.br
+Returns: success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start replacement
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of replacement
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Pointer to a Ustr containing the replacement string
+.br
+Type\fB[4]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  Replaces a specified number of characters starting at the given position with the characters from the given Ustr. 
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_buf()
+.br
+Returns: success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start replacement 
+.br
+Type\fB[2]\fR:  size_t 
+
+.br
+Parameter\fB[3]\fR:  Length of replacement
+.br
+Type\fB[3]\fR:  size_t 
+
+.br
+Parameter\fB[4]\fR:  Buffer containting replacement string
+.br
+Type\fB[4]\fR:  const void *
+
+.br
+Parameter\fB[5]\fR:  Length of Buffer
+.br
+Type\fB[5]\fR:  size_t 
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function will replace a specific number of characters in a Ustr with the data from a buffer. 
+
+.ti -2
+.br
+\fBFunction: \fR ustr_replace()
+.br
+Returns: Number of tokens replaced 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr (haystack)
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Ustr to search for (needle)
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Ustr to replace needle with
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR:  Maximum number of matches to replace (0 for unlimited)
+.br
+Type\fB[4]\fR:  size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function scans the "haystack" (Parameter[1]) for "needle" (Parameter[2]) and replaces max_replacements (Parameter[4]) matches with the "replacement" (Parameter[3]).
+Note: 
+.br
+  If max_replacements (Parameter[4]) is 0, this function will replace ALL occurrences.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_replace_rep_chr()
+.br
+Returns: number of replacements made
+.br
+Type: size_t
+
+.br
+Parameter\fB[1]\fR: pointer to a pointer to a Ustr to be modified
+.br
+Type\fB[1]\fR: struct Ustr **ps1
+
+.br
+Parameter\fB[2]\fR: character to replace
+.br
+Type\fB[2]\fR: char
+
+.br
+Parameter\fB[3]\fR: number of characters to replace
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: character to replace with
+.br
+Type\fB[4]\fR: char
+
+.br
+Parameter\fB[5]\fR: number of characters to replace with
+.br
+Type\fB[5]\fR: size_t nlen
+
+.br
+Parameter\fB[6]\fR: maximum number of replacements to make (use 0 for unlimited)
+.br
+Type\fB[6]\fR: size_t lim
+
+.br
+\fBExplanation:\fR
+.br
+  This function replaces a repeating sequence of characters with another
+.br
+  repeating sequence of characters. 
+
+.br
+  For example:
+.br
+  Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
+.br
+  ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
+.br
+  would change data to be "yxByCxDyx".
+.sp
+\fBNote:\fR
+.br
+  Changing the same letter the same number of times is considered a No-op
+.br
+  since it is a vast performance improvement this way. So passing in 
+.br
+  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
+.br
+  unchanged.
+
+.SH Splitting a Ustr
+.ti -2
+.br
+\fBFunction: \fR ustr_split_buf()
+.br
+Returns: pointer to a Ustr representing the next token
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: pointer to a Ustr to be split
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: pointer to an offset variable
+.br
+Type\fB[2]\fR: size_t *
+
+.br
+Parameter\fB[3]\fR: buffer to use as split search pattern 
+.br
+Type\fB[3]\fR: const void *
+
+.br
+Parameter\fB[4]\fR: length of buffer
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: pointer to a Ustr where the return value will be placed
+.br
+Type\fB[5]\fR: struct Ustr *
+
+.br
+Parameter\fB[6]\fR: flags
+.br
+Type\fB[6]\fR: unsigned int
+
+.br
+\fBExplanation:\fR
+.br
+  This function works in a manner similar to strtok(). Each time the function is called, the string inside of the buffer (Parameter[3]) is used as a search pattern at which to split. If the pattern is not found, the entire string will be returned. A USTR_NULL return value indicates there are no more tokens remaining.
+
+.br
+  Parameter[5] is a a pointer to a Ustr where the return value will be placed. Passing a USTR_NULL to this parameter will cause the string to be allocated and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to this parameter, each call to ustr_split_buf() will free what is in this pointer and place the new token there (when USTR_NULL is returned, nothing needs to be free'd).
+  For example...
+
+.Vb 4
+  Ustr *data = ...;
+  Ustr *tok = USTR_NULL;
+  const char *sep = "=";
+  size_t off;
+  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+
+  ...there are two options...
+
+.Vb 4
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
+    /* do something with tok -- but next iteration of the loop will free
+       and overwrite tok, so you must ustr_dup() if you want to keep it */
+  }
+   /* tok is now NULL again after the loop */
+
+   OR
+
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
+    /*do something with tok, and it will NOT be freed in the next iteration of
+    the loop*/
+      ustr_free(tok); /* have to free to avoid mem leaks */
+  }
+  
+  Note:
+
+  Explanation of flags --
+    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
+    example: splitting "a,b," using separator "," will return the tokens "a,"
+    and "b," whereas without this option only "a" and "b" would be returned.
+    
+    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
+    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
+
+    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
+    configuration parameters as the original string.
+
+    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
+    the above.
+
+
+.ti -2
+.br
+\fBFunction: \fR ustr_split()
+.br
+Returns:  pointer to a Ustr representing the next token
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: pointer to a Ustr to be split
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: pointer to an offset variable
+.br
+Type\fB[2]\fR: size_t *
+
+.br
+Parameter\fB[3]\fR: pointer to a Ustr to use as the split search pattern
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR: pointer to a Ustr where the return value will be placed
+.br
+Type\fB[4]\fR: struct Ustr *
+
+.br
+Parameter\fB[5]\fR: flags
+.br
+Type\fB[5]\fR: unsigned int
+
+.br
+\fBExplanation:\fR   Works like ustr_split_buf() but takes a Ustr as the split search pattern
+  instead.
+
+
+.ti -2
+.br
+\fBFunction: \fR ustr_split_cstr()
+.br
+Returns:  pointer to a Ustr representing the next token
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: pointer to a Ustr to be split
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: pointer to an offset variable
+.br
+Type\fB[2]\fR: size_t *
+
+.br
+Parameter\fB[3]\fR: C string to use as split search pattern
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: pointer to a Ustr where the return value will be placed
+.br
+Type\fB[4]\fR: struct Ustr *
+
+ Parameter[5]:
+.br
+Type\fB[5]\fR: unsigned int
+
+.br
+\fBExplanation:\fR  Works like ustr_split_buf() but takes a C string as the split search
+  pattern.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_split_spn_chrs()
+.br
+Returns: Pointer to a Ustr representing the next token
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Pointer to a Ustr to be split
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Pointer to an offset variable
+.br
+Type\fB[2]\fR: size_t *
+
+.br
+Parameter\fB[3]\fR: String representing a set of bytes to use as split chars
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Length of the string of set of bytes
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: Pointer to a Ustr where the return value will be placed
+.br
+Type\fB[5]\fR: struct Ustr *
+
+.br
+Parameter\fB[6]\fR: flags
+.br
+Type\fB[6]\fR: unsigned int
+
+.br
+\fBExplanation:\fR  Works like ustr_split_buf() but uses the individual characters in the
+ separator string (Parameter[3]) as search patterns. It will split if ANY of
+ these individual characters are matched (much like strtok()). For example:
+ if splitting "thisXisYaZtest" with the separator string "XYZ" the tokens
+ returned would be {"this" "is" "a" "test"};
+
+
 .SH Dealing with UTF-8 in a Ustr
 .ti -2
 .br
@@ -5021,9 +5728,10 @@ Type\fB[1]\fR: const struct Ustr *
 
 .br
 \fBExplanation:\fR
+  This function tries it's best to find out if the string is a valid utf-8
+ string.
 
-.br
-  This function tries it's best to find out if the string is a valid utf-8 string.
+
 
 .ti -2
 .br
@@ -5040,14 +5748,12 @@ Type\fB[1]\fR: const struct Ustr *
 
 .br
 \fBExplanation:\fR
-
-.br
   This function counts the number of utf-8 characters inn the Ustr.
+
 .sp
 \fBNote:\fR
-
-.br
   This function gives undefined answers on strings that aren't utf-8 valid.
+
 
 .ti -2
 .br
@@ -5064,9 +5770,8 @@ Type\fB[1]\fR: const struct Ustr *
 
 .br
 \fBExplanation:\fR
-
-.br
   This function is NOT DOCUMENTED YET!
+
 
 .ti -2
 .br
@@ -5098,9 +5803,8 @@ Type\fB[4]\fR:  size_t *
 
 .br
 \fBExplanation:\fR
-
-.br
   This function is NOT DOCUMENTED YET!
+
 
 .ti -2
 .br
@@ -5132,9 +5836,8 @@ Type\fB[4]\fR:  size_t *
 
 .br
 \fBExplanation:\fR
-
-.br
   This function is NOT DOCUMENTED YET!
+
 
 .SH Parsing ASCII integer numbers from a Ustr
 .ti -2
@@ -5187,14 +5890,13 @@ Type\fB[8]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function parses an ASCII representation of a number from a
+ Ustr (Parameter[1]) starting at the offset (Parameter[2]).
 
-.br
-  This function parses an ASCII representation of a number from a Ustr (Parameter[1]) starting at the offset (Parameter[2]).
 .sp
 \fBNote:\fR
-
-.br
   If stdint.h isn't available this function won't be available.
+
 
 .ti -2
 .br
@@ -5231,14 +5933,13 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum
+ values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
 .sp
 \fBNote:\fR
-
-.br
   If stdint.h isn't available this function won't be available.
+
 
 .ti -2
 .br
@@ -5275,14 +5976,13 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum
+ values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
 .sp
 \fBNote:\fR
-
-.br
   If stdint.h isn't available this function won't be available.
+
 
 .ti -2
 .br
@@ -5334,9 +6034,9 @@ Type\fB[8]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_uintmaxx() but returns an unsigned long,
+ it is always available even when stdint.h isn't.
 
-.br
-  This function works like ustr_parse_uintmaxx() but returns an unsigned long, it is always available even when stdint.h isn't.
 
 .ti -2
 .br
@@ -5373,9 +6073,9 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
@@ -5412,9 +6112,9 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
@@ -5451,9 +6151,9 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as 0 and UINT_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and UINT_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
@@ -5490,9 +6190,9 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
@@ -5529,9 +6229,9 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
 
 .ti -2
 .br
@@ -5568,157 +6268,11 @@ Type\fB[5]\fR: unsigned int *
 
 .br
 \fBExplanation:\fR
+  This function works like ustr_parse_ulongx() with the minimum and maximum
+ values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
-.br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
-.SH Shortcut helper functions for Ustrs
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_free()
-.br
-Returns: Nothing
-.br
-Type: void 
-
-.br
-Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function calls ustr_free() and then sets the pointer (Parameter[1]) to USTR_NULL, which is a noop when passed to ustr_free(). This can be used to help prevent "double free" errors.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_free2()
-.br
-Returns: Nothing
-.br
-Type: void 
-
-.br
-Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-Parameter\fB[2]\fR: Pointer to a Ustr string
-.br
-Type\fB[2]\fR: struct Ustr *
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works like ustr_sc_free() but instead of setting the pointer (Parameter[1]) to USTR_NULL it sets it to the Ustr string (Parameter[2]).
-.sp
-\fBNote:\fR
-
-.br
-  The passed value shouldn't be USTR_NULL, and in debugging mode the function will assert() that it isn't.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_del()
-.br
-Returns: Nothing
-.br
-Type: void 
-
-.br
-Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function is like calling ustr_del() with ustr_len() as the length, however if that fails it does a ustr_free() and then sets the pointer to USTR("").
-.sp
-\fBNote:\fR
-
-.br
-  While the benifit is that you don't have to check for memory failure errors, if there is a memory failure and you have a non-default configuration the configuration will revert back to the default.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_dupx()
-.br
-Returns: Pointer to a Ustr string
-.br
-Type: struct Ustr *
-
-.br
-Parameter\fB[1]\fR: Size of allocated storage
-.br
-Type\fB[1]\fR: size_t
-
-.br
-Parameter\fB[2]\fR: Number of bytes to use for reference count
-.br
-Type\fB[2]\fR: size_t
-
-.br
-Parameter\fB[3]\fR: Exact memory allocations
-.br
-Type\fB[3]\fR: int
-
-.br
-Parameter\fB[4]\fR: ENOMEM, memory error flag
-.br
-Type\fB[4]\fR: int
-
-.br
-Parameter\fB[5]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[5]\fR: struct Ustr **
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string is allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
-.br
-  If the configurations of the new Ustr string and the old Ustr string are not the same, this function works identically to ustr_dupx().
-.sp
-\fBNote:\fR
-
-.br
-  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
-.br
-  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dupx() will create 256 Ustr strings using this function will create 4 Ustr strings.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_dup()
-.br
-Returns: A pointer to a Ustr string
-.br
-Type: struct Ustr *
-
-.br
-Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string has been allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
-.sp
-\fBNote:\fR
-
-.br
-  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
-.br
-  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dup() will create 256 Ustr strings using this function will create 4 Ustr strings.
-
+.SH Misc shortcut helper functions for Ustrs
 .ti -2
 .br
 \fBFunction: \fR ustr_sc_ensure_owner()
@@ -5734,28 +6288,9 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
 \fBExplanation:\fR
+  This function makes sure that the Ustr string is owned when it returns (Ie.
+ ustr_owner() returns USTR_TRUE), or it fails to allocate.
 
-.br
-  This function makes sure that the Ustr string is owned when it returns (Ie. ustr_owner() returns USTR_TRUE), or it fails to allocate.
-
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_free_shared()
-.br
-Returns: Nothing
-.br
-Type: void 
-
-.br
-Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function is a simple way to "free" a Ustr string that has been shared (ustr_shared() returns USTR_TRUE), normally ustr_free() is ignored on a shared Ustr string. It just calls ustr_setf_owner() and then ustr_sc_free().
 
 .ti -2
 .br
@@ -5772,9 +6307,9 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
 \fBExplanation:\fR
+  This function reverses all the bytes in a Ustr string, so the last one
+ becomes the first and the second to last becomes the second etc.
 
-.br
-  This function reverses all the bytes in a Ustr string, so the last one becomes the first and the second to last becomes the second etc.
 
 .ti -2
 .br
@@ -5791,9 +6326,8 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
 \fBExplanation:\fR
-
-.br
   This function changes any ASCII upper case bytes into ASCII lower case bytes.
+
 
 .ti -2
 .br
@@ -5810,9 +6344,8 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
 \fBExplanation:\fR
-
-.br
   This function changes any ASCII lower case bytes into ASCII upper case bytes.
+
 
 .ti -2
 .br
@@ -5829,9 +6362,10 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
 \fBExplanation:\fR
+  This function works like calling ustr_sc_ensure_owner(), to make sure the
+ Ustr string is writable, and if that succeeds it returns ustr_wstr(). On
+ failure it returns NULL.
 
-.br
-  This function works like calling ustr_sc_ensure_owner(), to make sure the Ustr string is writable, and if that succeeds it returns ustr_wstr(). On failure it returns NULL.
 
 .SH Adding binary data to a Ustr
 .ti -2
@@ -5854,9 +6388,9 @@ Type\fB[2]\fR: uint_least16_t
 
 .br
 \fBExplanation:\fR
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
 
-.br
-  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
 .ti -2
 .br
@@ -5878,9 +6412,9 @@ Type\fB[2]\fR: uint_least32_t
 
 .br
 \fBExplanation:\fR
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
 
-.br
-  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
 .ti -2
 .br
@@ -5902,9 +6436,9 @@ Type\fB[2]\fR: uint_least64_t
 
 .br
 \fBExplanation:\fR
+  This function adds a binary representation of a value (Parameter[2]) to the
+ Ustr (Parameter[1]).
 
-.br
-  This function adds a binary representation of a value (Parameter[2]) to the Ustr (Parameter[1]).
 
 .SH Parsing binary data from a Ustr
 .ti -2
@@ -5927,9 +6461,9 @@ Type\fB[2]\fR: size_t
 
 .br
 \fBExplanation:\fR
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .ti -2
 .br
@@ -5951,9 +6485,9 @@ Type\fB[2]\fR: size_t
 
 .br
 \fBExplanation:\fR
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .ti -2
 .br
@@ -5975,9 +6509,9 @@ Type\fB[2]\fR: size_t
 
 .br
 \fBExplanation:\fR
+  This function parses a binary representation from a Ustr (Parameter[1]) 
+ starting at the offset (Parameter[2]).
 
-.br
-  This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
 
 .SH Simple Ustr pool API
 .ti -2
@@ -5995,9 +6529,8 @@ Type\fB[1]\fR: void
 
 .br
 \fBExplanation:\fR
-
-.br
   This allocates a new pool.
+
 .ti -2
 .br
 \fBFunction: \fR ustr_pool_make_subpool()
@@ -6013,9 +6546,11 @@ Type\fB[1]\fR: struct Ustr_pool *
 
 .br
 \fBExplanation:\fR
+  This allocates a new pool as a child of the passed in pool (Parameter[1]),
+ The pool can be freed and cleared independantly of the parent pool however
+ free and clear operations on the parent pool are automatically applied to all
+ child pools.
 
-.br
-  This allocates a new pool as a child of the passed in pool (Parameter[1]), The pool can be freed and cleared independantly of the parent pool however free and clear operations on the parent pool are automatically applied to all child pools.
 
 .ti -2
 .br
@@ -6032,14 +6567,12 @@ Type\fB[1]\fR: struct Ustr_pool *
 
 .br
 \fBExplanation:\fR
-
-.br
   This deallocates a pool, and all sub-pools.
+
 .sp
 \fBNote:\fR
-
-.br
   This also operates on all sub-pools.
+
 
 .ti -2
 .br
@@ -6056,13 +6589,12 @@ Type\fB[1]\fR: struct Ustr_pool *
 
 .br
 \fBExplanation:\fR
+  This allows all the data in the pool to be reused, it may also free some/all
+ of the data in the pool, from the pool API.
 
-.br
-  This allows all the data in the pool to be reused, it may also free some/all of the data in the pool, from the pool API.
 .sp
 \fBNote:\fR
-
-.br
   This also operates on all sub-pools.
+
 .SH "SEE ALSO"
 .BR ustr_const (3)
