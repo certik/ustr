@@ -1,5 +1,7 @@
 2007-07-25  James Antill  <james@and.org>
 
+	* examples/fgrep.c: Added example program.
+
 	* ustr-split-code.h (ustr_split_spn_chrs): In the default mode skip
 	extra seperators at the end too.
 	(ustr_split_buf): In the default mode skip extra seperators at the

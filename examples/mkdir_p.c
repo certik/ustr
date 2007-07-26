@@ -66,7 +66,7 @@ static int mkdir_p(const Ustr *s1, int mode)
 int main(int argc, char *argv[])
 {
   const char *prog_name = NULL;
-  unsigned int scan = 1;
+  int scan = 1;
   Ustr *s1 = USTR("");
   
   if (!argc)
@@ -116,5 +116,5 @@ int main(int argc, char *argv[])
 
   ustr_free(s1);
   
-  return 0;
+  return (EXIT_SUCCESS);
 }

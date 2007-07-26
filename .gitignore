@@ -20,4 +20,6 @@ examples/nums
 examples/nums-s
 examples/mkdir_p
 examples/mkdir_p-s
+examples/fgrep
+examples/fgrep-s
 abcd

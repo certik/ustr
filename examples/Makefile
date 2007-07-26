@@ -50,7 +50,7 @@ DEPS    =
 
 # This is a simple makefile for example programs...
 
-ALL = hello_world netstr hexdump nums mkdir_p
+ALL = hello_world netstr hexdump nums mkdir_p fgrep
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
@@ -123,6 +123,9 @@ nums: nums.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 mkdir_p: mkdir_p.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
+fgrep: fgrep.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 strip: $(ALL)
