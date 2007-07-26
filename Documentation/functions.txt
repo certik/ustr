@@ -433,6 +433,207 @@ Function: ustr_dupx()
  reference fails it works like ustr_dupx_buf() using ustr_cstr() and ustr_len().
 
 
+Function: ustr_sc_dupx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: A pointer to a pointer to a Ustr string
+ Type[5]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_dupx(), but if the reference count is
+ maxed out then and so a new Ustr string is allocated then that is stored in
+ the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+  If the configurations of the new Ustr string and the old Ustr string are not
+ the same, this function works identically to ustr_dupx().
+
+ Note:
+
+  The reason to use this is that if you have a "main" Ustr string pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using ustr_dupx() will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+Function: ustr_sc_dup()
+ Returns: A pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_dupx(), but if the reference count is
+ maxed out then and so a new Ustr string has been allocated then that is stored
+ in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+
+ Note:
+
+  The reason to use this is that if you have a "main" Ustr string pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using ustr_dup() will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+Section: Deleting a Ustr, or data within a Ustr
+Function: ustr_free()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: Pointer to a Ustr
+ Type[1]: struct Ustr *
+
+ Explanation:
+
+  This function decrements the reference count on a Ustr, if there is one, and
+ free's it if it is allocated and the reference count becomes zero.
+
+Function: ustrp_free()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: Pointer to a Ustr_pool object
+ Type[1]: struct Ustr_pool *
+
+ Parameter[2]: Pointer to a Ustrp (pool allocated Ustr)
+ Type[2]: struct Ustrp *
+
+ Explanation:
+
+  This function works like ustr_free() but calls the pool_free member function
+ of the Ustr_pool (Parameter[1]) instead of the system free.
+
+
+Function: ustr_sc_free()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function calls ustr_free() and then sets the pointer (Parameter[1]) to
+ USTR_NULL, which is a noop when passed to ustr_free(). This can be used to
+ help prevent "double free" errors.
+
+
+Function: ustr_sc_free2()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Pointer to a Ustr string
+ Type[2]: struct Ustr *
+
+ Explanation:
+
+  This function works like ustr_sc_free() but instead of setting the
+ pointer (Parameter[1]) to USTR_NULL it sets it to the Ustr
+ string (Parameter[2]).
+
+ Note:
+
+  The passed value shouldn't be USTR_NULL, and in debugging mode the function
+ will assert() that it isn't.
+
+
+Function: ustr_sc_free_shared()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function is a simple way to "free" a Ustr string that has been
+ shared (ustr_shared() returns USTR_TRUE), normally ustr_free() is ignored on a
+ shared Ustr string. It just calls ustr_setf_owner() and then ustr_sc_free().
+
+
+Function: ustr_del()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Length to delete from the Ustr
+ Type[2]: size_t
+
+ Explanation:
+
+  This function deletes data from the end of Ustr, possibly re-sizing the Ustr
+ at the same time.
+
+ Note:
+
+  The Ustr is never re-sized when the size is stored explicitly, so the pointer
+ never changes.
+
+
+Function: ustr_del_subustr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Position in the Ustr
+ Type[2]: size_t
+
+ Parameter[3]: Length to delete from the Ustr
+ Type[3]:  size_t
+
+ Explanation:
+
+  This function works like ustr_del() but can delete an arbitrary section of the
+ Ustr.
+
+
+Function: ustr_sc_del()
+ Returns: Nothing
+ Type: void 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function is like calling ustr_del() with ustr_len() as the length,
+ however if that fails it does a ustr_free() and then sets the pointer to
+ USTR("").
+
+ Note:
+
+  While the benifit is that you don't have to check for memory failure errors,
+ if there is a memory failure and you have a non-default configuration the
+ configuration will revert back to the default.
+
+
 Section: Adding data to a Ustr
 Function: ustr_add_undef()
  Returns: Success or failure
@@ -552,47 +753,6 @@ Function: ustr_add_rep_chr()
 
   This function works as if you had called ustr_add_undef() and then copied the
  byte value to each position.
-
-
-Section: Deleting data from a Ustr
-Function: ustr_del()
- Returns: Success or failure
- Type: int 
-
- Parameter[1]: Pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Parameter[2]: Length to delete from the Ustr
- Type[2]: size_t
-
- Explanation:
-
-  This function deletes data from the end of Ustr, possibly re-sizing the Ustr
- at the same time.
-
- Note:
-
-  The Ustr is never re-sized when the size is stored explicitly, so the pointer
- never changes.
-
-
-Function: ustr_del_subustr()
- Returns: Success or failure
- Type: int 
-
- Parameter[1]: Pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Parameter[2]: Position in the Ustr
- Type[2]: size_t
-
- Parameter[3]: Length to delete from the Ustr
- Type[3]:  size_t
-
- Explanation:
-
-  This function works like ustr_del() but can delete an arbitrary section of the
- Ustr.
 
 
 Section: Setting a Ustr to some data
@@ -2916,13 +3076,13 @@ Function: ustr_sc_sub()
  Type[1]: struct Ustr **
 
  Parameter[2]: Position where to start replacement
- Type[2]:  size_t
+ Type[2]: size_t
 
- Parameter[3]:  Length of replacement
- Type[3]:  size_t
+ Parameter[3]: Length of replacement
+ Type[3]: size_t
 
- Parameter[4]:  Pointer to a Ustr containing the replacement string
- Type[4]:  const struct Ustr *
+ Parameter[4]: Pointer to a Ustr containing the replacement string
+ Type[4]: const struct Ustr *
 
  Explanation:
 
@@ -3018,6 +3178,162 @@ Function: ustr_replace_rep_chr()
   since it is a vast performance improvement this way. So passing in 
   (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
   unchanged.
+
+
+Section: Splitting a Ustr
+Function: ustr_split_buf()
+ Returns: pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: buffer to use as split search pattern 
+ Type[3]: const void *
+
+ Parameter[4]: length of buffer
+ Type[4]: size_t
+
+ Parameter[5]: pointer to a Ustr where the return value will be placed
+ Type[5]: struct Ustr *
+
+ Parameter[6]: flags
+ Type[6]: unsigned int
+
+ Explanation:
+  This function works in a manner similar to strtok(). Each time the function
+ is called, the string inside of the buffer (Parameter[3]) is used as a search
+ pattern at which to split. If the pattern is not found, the entire string
+ will be returned. A USTR_NULL return value indicates there are no more
+ tokens remaining.
+
+  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
+ Passing a USTR_NULL to this parameter will cause the string to be allocated
+ and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
+ this parameter, each call to ustr_split_buf() will free what is in this
+ pointer and place the new token there (when USTR_NULL is returned, nothing
+ needs to be free'd).
+
+  For example...
+
+  Ustr *data = ...;
+  Ustr *tok = USTR_NULL;
+  const char *sep = "=";
+  size_t off;
+  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+
+  ...there are two options...
+
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
+    /* do something with tok -- but next iteration of the loop will free
+       and overwrite tok, so you must ustr_dup() if you want to keep it */
+  }
+   /* tok is now NULL again after the loop */
+
+   OR
+
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
+    /*do something with tok, and it will NOT be freed in the next iteration of
+    the loop*/
+      ustr_free(tok); /* have to free to avoid mem leaks */
+  }
+  
+  Note:
+
+  Explanation of flags --
+    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
+    example: splitting "a,b," using separator "," will return the tokens "a,"
+    and "b," whereas without this option only "a" and "b" would be returned.
+    
+    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
+    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
+
+    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
+    configuration parameters as the original string.
+
+    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
+    the above.
+
+
+Function: ustr_split()
+ Returns:  pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: pointer to a Ustr to use as the split search pattern
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: pointer to a Ustr where the return value will be placed
+ Type[4]: struct Ustr *
+
+ Parameter[5]: flags
+ Type[5]: unsigned int
+
+ Explanation:
+   Works like ustr_split_buf() but takes a Ustr as the split search pattern
+  instead.
+
+
+Function: ustr_split_cstr()
+ Returns:  pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: C string to use as split search pattern
+ Type[3]: const char *
+
+ Parameter[4]: pointer to a Ustr where the return value will be placed
+ Type[4]: struct Ustr *
+
+ Parameter[5]:
+ Type[5]: unsigned int
+
+ Explanation:
+  Works like ustr_split_buf() but takes a C string as the split search
+  pattern.
+
+Function: ustr_split_spn_chrs()
+ Returns: Pointer to a Ustr representing the next token
+ Type: struct Ustr *
+
+ Parameter[1]: Pointer to a Ustr to be split
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Pointer to an offset variable
+ Type[2]: size_t *
+
+ Parameter[3]: String representing a set of bytes to use as split chars
+ Type[3]: const char *
+
+ Parameter[4]: Length of the string of set of bytes
+ Type[4]: size_t
+
+ Parameter[5]: Pointer to a Ustr where the return value will be placed
+ Type[5]: struct Ustr *
+
+ Parameter[6]: flags
+ Type[6]: unsigned int
+
+ Explanation:
+  Works like ustr_split_buf() but uses the individual characters in the
+ separator string (Parameter[3]) as search patterns. It will split if ANY of
+ these individual characters are matched (much like strtok()). For example:
+ if splitting "thisXisYaZtest" with the separator string "XYZ" the tokens
+ returned would be {"this" "is" "a" "test"};
+
 
 Section: Dealing with UTF-8 in a Ustr
 Function: ustr_utf8_valid()
@@ -3385,125 +3701,7 @@ Function: ustr_parse_short()
  values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
 
-Section: Shortcut helper functions for Ustrs
-Function: ustr_sc_free()
- Returns: Nothing
- Type: void 
-
- Parameter[1]: A pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Explanation:
-
-  This function calls ustr_free() and then sets the pointer (Parameter[1]) to
- USTR_NULL, which is a noop when passed to ustr_free(). This can be used to
- help prevent "double free" errors.
-
-
-Function: ustr_sc_free2()
- Returns: Nothing
- Type: void 
-
- Parameter[1]: A pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Parameter[2]: Pointer to a Ustr string
- Type[2]: struct Ustr *
-
- Explanation:
-
-  This function works like ustr_sc_free() but instead of setting the
- pointer (Parameter[1]) to USTR_NULL it sets it to the Ustr
- string (Parameter[2]).
-
- Note:
-
-  The passed value shouldn't be USTR_NULL, and in debugging mode the function
- will assert() that it isn't.
-
-
-Function: ustr_sc_del()
- Returns: Nothing
- Type: void 
-
- Parameter[1]: A pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Explanation:
-
-  This function is like calling ustr_del() with ustr_len() as the length,
- however if that fails it does a ustr_free() and then sets the pointer to
- USTR("").
-
- Note:
-
-  While the benifit is that you don't have to check for memory failure errors,
- if there is a memory failure and you have a non-default configuration the
- configuration will revert back to the default.
-
-
-Function: ustr_sc_dupx()
- Returns: Pointer to a Ustr string
- Type: struct Ustr *
-
- Parameter[1]: Size of allocated storage
- Type[1]: size_t
-
- Parameter[2]: Number of bytes to use for reference count
- Type[2]: size_t
-
- Parameter[3]: Exact memory allocations
- Type[3]: int
-
- Parameter[4]: ENOMEM, memory error flag
- Type[4]: int
-
- Parameter[5]: A pointer to a pointer to a Ustr string
- Type[5]: struct Ustr **
-
- Explanation:
-
-  This function works like calling ustr_dupx(), but if the reference count is
- maxed out then and so a new Ustr string is allocated then that is stored in
- the passed argument (Parameter[1]) and the "old" Ustr string is returned.
-  If the configurations of the new Ustr string and the old Ustr string are not
- the same, this function works identically to ustr_dupx().
-
- Note:
-
-  The reason to use this is that if you have a "main" Ustr string pointer that
- a lot of things are getting references too then when the reference count maxes
- out you'll degrade into worst case behaviour which acts as though there are no
- reference counts. This function stops that problem.
-  As an example, if you have a 1 byte reference count and have 255 * 2
- references then using ustr_dupx() will create 256 Ustr strings using this
- function will create 4 Ustr strings.
-
-
-Function: ustr_sc_dup()
- Returns: A pointer to a Ustr string
- Type: struct Ustr *
-
- Parameter[1]: A pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Explanation:
-
-  This function works like calling ustr_dupx(), but if the reference count is
- maxed out then and so a new Ustr string has been allocated then that is stored
- in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
-
- Note:
-
-  The reason to use this is that if you have a "main" Ustr string pointer that
- a lot of things are getting references too then when the reference count maxes
- out you'll degrade into worst case behaviour which acts as though there are no
- reference counts. This function stops that problem.
-  As an example, if you have a 1 byte reference count and have 255 * 2
- references then using ustr_dup() will create 256 Ustr strings using this
- function will create 4 Ustr strings.
-
-
+Section: Misc shortcut helper functions for Ustrs
 Function: ustr_sc_ensure_owner()
  Returns: Success or failure
  Type: int 
@@ -3515,20 +3713,6 @@ Function: ustr_sc_ensure_owner()
 
   This function makes sure that the Ustr string is owned when it returns (Ie.
  ustr_owner() returns USTR_TRUE), or it fails to allocate.
-
-
-Function: ustr_sc_free_shared()
- Returns: Nothing
- Type: void 
-
- Parameter[1]: A pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Explanation:
-
-  This function is a simple way to "free" a Ustr string that has been
- shared (ustr_shared() returns USTR_TRUE), normally ustr_free() is ignored on a
- shared Ustr string. It just calls ustr_setf_owner() and then ustr_sc_free().
 
 
 Function: ustr_sc_reverse()
@@ -3738,154 +3922,4 @@ Function: ustr_pool_clear()
  Note:
 
   This also operates on all sub-pools.
-
-Section: Splitting a Ustr
-
-Function: ustr_split_buf()
- Returns: pointer to a Ustr representing the next token
- Type: struct Ustr *
-
- Parameter[1]: pointer to a Ustr to be split
- Type[1]: const struct Ustr *
-
- Parameter[2]: pointer to an offset variable
- Type[2]: size_t *
-
- Parameter[3]: buffer to use as split search pattern 
- Type[3]: const void *
-
- Parameter[4]: length of buffer
- Type[4]: size_t
-
- Parameter[5]: pointer to a Ustr where the return value will be placed
- Type[5]: struct Ustr *
-
- Parameter[6]: flags
- Type[6]: unsigned int
-
- Explanation:
-  This function works in a manner similar to strtok(). Each time the function
-  is called, the string inside of the buffer (Parameter[3]) is used as a search
-  pattern at which to split. If the pattern is not found, the entire string
-  will be returned. A USTR_NULL return value indicates there are no more
-  tokens remaining.
-
-  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
-  Passing a USTR_NULL to this parameter will cause the string to be allocated
-  and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
-  this parameter, each call to ustr_split_buf() will free what is in this
-  pointer and place the new token there (when USTR_NULL is returned, nothing
-  needs to be free'd).
-
-  For example: 
-  Ustr *data = ...;
-  Ustr *tok = USTR_NULL;
-  const char *sep = "=";
-  size_t off;
-  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
-
-  Now, there are two options:
-
-  while (tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags){
-    /* do something with tok -- but next iteration of the loop will free
-       and overwrite tok, so you must ustr_dup() if you want to keep it */
-   }
-   /* tok is now NULL again after the loop */
-
-   OR
-
-  while (tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags){
-    /*do something with tok, and it will NOT be freed in the next iteration of
-    the loop*/
-    ustr_sc_free(&tok); /* have to free to avoid mem leaks */
-    }
-  
-  Note:
-    Explanation of flags --
-    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
-    example: splitting "a,b," using separator "," will return the tokens "a,"
-    and "b," whereas without this option only "a" and "b" would be returned.
-    
-    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
-    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
-
-    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
-    configuration parameters as the original string.
-
-    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
-    the above.
-
-
-Function: ustr_split()
- Returns:  pointer to a Ustr representing the next token
- Type: struct Ustr *
-
- Parameter[1]: pointer to a Ustr to be split
- Type[1]: const struct Ustr *
-
- Parameter[2]: pointer to an offset variable
- Type[2]: size_t *
-
- Parameter[3]: pointer to a Ustr to use as the split search pattern
- Type[3]: const struct Ustr *
-
- Parameter[4]: pointer to a Ustr where the return value will be placed
- Type[4]: struct Ustr *
-
- Parameter[5]: flags
- Type[5]: unsigned int
-
- Explanation:
-  Works like ustr_split_buf() but takes a Ustr as the split search pattern
-  instead.
-
-
-Function: ustr_split_cstr()
- Returns:  pointer to a Ustr representing the next token
- Type: struct Ustr *
-
- Parameter[1]: pointer to a Ustr to be split
- Type[1]: const struct Ustr *
-
- Parameter[2]: pointer to an offset variable
- Type[2]: size_t *
-
- Parameter[3]: C string to use as split search pattern
- Type[3]: const char *
-
- Parameter[4]: pointer to a Ustr where the return value will be placed
- Type[4]: struct Ustr *
-
- Parameter[5]:
- Type[5]: unsigned int
-
- Explanation:
-  Works like ustr_split_buf() but takes a C string as the split search
-  pattern.
-
-Function: ustr_sc_split_chrs()
- Returns:  pointer to a Ustr representing the next token
- Type: struct Ustr *
-
- Parameter[1]: pointer to a Ustr to be split
- Type[1]: const struct Ustr *
-
- Parameter[2]: pointer to an offset variable
- Type[2]: size_t *
-
- Parameter[3]: cstring representing a set of chars to use as split chars
- Type[3]: const char *
-
- Parameter[4]:  pointer to a Ustr where the return value will be placed
- Type[4]: struct Ustr *
-
- Parameter[5]: flags
- Type[5]: int
-
- Explanation:
-  Works like ustr_split_buf() but uses the individual characters in the
-  separator string (Parameter[3]) as search patterns. It will split if ANY of
-  these individual characters are matched (much like strtok()). For example:
-  if splitting "thisXisYaZtest" with the separator string "XYZ" the tokens
-  returned would be {"this" "is" "a" "test"};
 
