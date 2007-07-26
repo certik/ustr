@@ -63,6 +63,7 @@ Requires: %{name}-debug = %{version}
 %setup -q
 
 %build
+CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ;
 make %{?_smp_mflags} all-shared
 
 %check
