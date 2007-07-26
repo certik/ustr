@@ -1,11 +1,6 @@
  FIX
  ---
- ustr_io_*() can't tell if enomem, or FILE io?
-    Well ustr_enomem() mostly helps.
-
- ustr_io_* ... unlocked IO for get/put/etc.? ... 
-    esp. getfile/putfile as they can involve multi operations.
-    needs autoconf_foo_unlocked
+ Fix the whole VA_COPY mess, probably needs: autofoo*.c
 
  Allow the shared lib. to compile without inline.
 
@@ -14,7 +9,6 @@
  DOCS!
   finish ref. documentation.
   tutorial, hello world to mkdir_p to netstr?
-  example perl -pie ... using sutr_sc_sub/ustr_replace/etc.
 
  scons build?
 
