@@ -1,5 +1,7 @@
 2007-07-25  James Antill  <james@and.org>
 
+	* Makefile (VERS_FULL): Bump version to 1.0.1 for test releases.
+
 	* examples/fgrep.c: Added example program.
 
 	* ustr-split-code.h (ustr_split_spn_chrs): In the default mode skip

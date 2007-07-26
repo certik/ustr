@@ -1,7 +1,7 @@
 Name: Ustr
 Description: String Library
 # FIXME: More C&P of VERSION
-Version: 1.0.0
+Version: 1.0.1
 
 Cflags: 
 Libs: -lustr

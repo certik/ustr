@@ -2,10 +2,10 @@
 # FIXME: Lots of C&P of VERSION ... 
 #   ustr*.pc, ustr.spec, Documentation/*.pl, ./scripts/rpms-create-james.sh
 VERS=1.0
-VERS_FULL=$(VERS).0
+VERS_FULL=$(VERS).1
 VERS_BSO =1.0
 VERS_ESONAME =1
-VERS_ESO     =$(VERS_ESONAME).0.0
+VERS_ESO     =$(VERS_ESONAME).0.1
 
 DESTDIR =
 datadir=/usr/share
