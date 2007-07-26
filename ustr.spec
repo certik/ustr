@@ -54,7 +54,7 @@ library.
 %package debug-static
 Summary: String library, very very low memory overhead, simple to import
 Group: Development/Libraries
-Requires: %{name}-debug = %{version}
+Requires: %{name}-devel = %{version}
 
 %description debug-static
  Static library for the debug build of the Ustr string library.
@@ -76,7 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 make install bindir=%{_bindir}         mandir=%{_mandir} \
              datadir=%{_datadir}       libdir=%{_libdir} \
              includedir=%{_includedir} \
-             DESTDIR=$RPM_BUILD_ROOT
+             DESTDIR=$RPM_BUILD_ROOT LDCONFIG=/bin/true
 
 %clean
 rm -rf $RPM_BUILD_ROOT

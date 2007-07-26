@@ -20,6 +20,7 @@ mandir=$(datadir)/doc/man
 CC = cc
 AR = ar
 RANLIB = ranlib
+LDCONFIG = /sbin/ldconfig
 
 CFLAGS  = -O2 -g
 
@@ -304,7 +305,7 @@ install: all-shared ustr.pc ustr-debug.pc
 		ln -s $(DBG_LIB_SHARED) $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
 		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
-		 # /sbin/ldconfig -n $(DESTDIR)$(libdir)
+		$(LDCONFIG) -n $(DESTDIR)$(libdir)
 		install -m 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)

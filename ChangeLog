@@ -1,6 +1,8 @@
 2007-07-25  James Antill  <james@and.org>
 
 	* Makefile (VERS_FULL): Bump version to 1.0.1 for test releases.
+	(LDCONFIG): Add var. so we can turn off LDCONFIG at "install"
+	time when creating rpms etc.
 
 	* examples/fgrep.c: Added example program.
 
