@@ -17,6 +17,13 @@ DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
 EXAMDIR=$(datadir)/ustr-$(VERS_FULL)/examples
 mandir=$(datadir)/doc/man
 
+###############################################################################
+#  This is here to work around the "Fedora build system requirement" that a big
+# pile of crap ends up in the build.log file even though all sane people don't
+# want that. See rhbz#248231
+###############################################################################
+HIDE=@
+
 CC = cc
 AR = ar
 RANLIB = ranlib
@@ -279,13 +286,13 @@ LIB_STATIC_OPT = \
 
 
 all: ustr-import $(LIB_STATIC)
-		@echo Done static
+		$(HIDE)echo Done static
 
 all-shared: all $(LIB_SHARED)
-		@echo Done shared
+		$(HIDE)echo Done shared
 
 install: all-shared ustr.pc ustr-debug.pc
-		@echo Making directories
+		$(HIDE)echo Making directories
 		install -d $(DESTDIR)$(libdir)
 		install -d $(DESTDIR)$(includedir)
 		install -d $(DESTDIR)$(SHRDIR)
@@ -294,7 +301,7 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -d $(DESTDIR)$(mandir)/man3
 		install -d $(DESTDIR)$(bindir)
 		install -d $(DESTDIR)$(libdir)/pkgconfig
-		@echo Installing files
+		$(HIDE)echo Installing files
 		install -m 644 -t $(DESTDIR)$(libdir) $(LIB_STATIC)
 		install -m 755 -t $(DESTDIR)$(libdir) $(LIB_SHARED)
 		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
@@ -316,13 +323,13 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
 
 clean:
-		@echo Cleanup
-		@rm -f $(LIB_SHARED) $(LIB_STATIC)
-		@rm -f $(TST_ALL)
-		@rm -f *.o
-		@rm -f perf-sizes perf-sizes32 perf-sizes64
-		@rm -f *.gcda *.gcno *.gcov
-		@rm -f tst_*.c ctst_*.c otst_*.c octst_*.c
+		$(HIDE)echo Cleanup
+		$(HIDE)rm -f $(LIB_SHARED) $(LIB_STATIC)
+		$(HIDE)rm -f $(TST_ALL)
+		$(HIDE)rm -f *.o
+		$(HIDE)rm -f perf-sizes perf-sizes32 perf-sizes64
+		$(HIDE)rm -f *.gcda *.gcno *.gcov
+		$(HIDE)rm -f tst_*.c ctst_*.c otst_*.c octst_*.c
 
 distclean: clean
 		rm -f ustr-import
@@ -332,49 +339,49 @@ distclean: clean
 
 
 ustr-import: ustr-import.in autoconf_64b autoconf_vsnprintf
-		@echo Creating $@
-		@sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
-		sed -e 's,@SHRDIR@,$(SHRDIR),g' -e 's,@VERS@,$(VERS),g'  -e 's,@VERS_FULL@,$(VERS_FULL),g' -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
-		@chmod 755 $@
+		$(HIDE)echo Creating $@
+		$(HIDE)sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
+		sed -e 's,@INCLUDEDIR@,$(includedir),g' -e 's,@SHRDIR@,$(SHRDIR),g' -e 's,@VERS@,$(VERS),g'  -e 's,@VERS_FULL@,$(VERS_FULL),g' -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
+		$(HIDE)chmod 755 $@
 
 # Use CFLAGS so that CFLAGS="... -m32" does the right thing
 autoconf_64b: autoconf_64b.c
-		@echo Compiling: auto configuration test:  64bit
-		@$(CC) $(CFLAGS) -o $@ $<
+		$(HIDE)echo Compiling: auto configuration test:  64bit
+		$(HIDE)$(CC) $(CFLAGS) -o $@ $<
 
 autoconf_vsnprintf: autoconf_vsnprintf.c
-		@echo Compiling: auto configuration test:  vsnprintf
-		@$(CC) -o $@ $<
+		$(HIDE)echo Compiling: auto configuration test:  vsnprintf
+		$(HIDE)$(CC) -o $@ $<
 
 # Use LDFLAGS for LDFLAGS="-m32"
 $(OPT_LIB_SHARED): $(LIB_SHARED_OPT)
-		@echo Linking SO OPT lib: $@
-		@$(CC) -shared $^ -Wl,-soname -Wl,$(OPT_LIB_SHARED_NAME) -Wl,-version-script -Wl,libustr.ver $(LDFLAGS) -o $@
+		$(HIDE)echo Linking SO OPT lib: $@
+		$(HIDE)$(CC) -shared $^ -Wl,-soname -Wl,$(OPT_LIB_SHARED_NAME) -Wl,-version-script -Wl,libustr.ver $(LDFLAGS) -o $@
 
 $(DBG_LIB_SHARED): $(LIB_SHARED_DBG)
-		@echo Linking SO DBG lib: $@
-		@$(CC) -shared $^ -Wl,-soname -Wl,$(DBG_LIB_SHARED_NAME) -Wl,-version-script -Wl,libustr.ver $(LDFLAGS) -o $@
+		$(HIDE)echo Linking SO DBG lib: $@
+		$(HIDE)$(CC) -shared $^ -Wl,-soname -Wl,$(DBG_LIB_SHARED_NAME) -Wl,-version-script -Wl,libustr.ver $(LDFLAGS) -o $@
 
 libustr.a: $(LIB_STATIC_OPT)
-		@echo Linking A OPT lib: $@
-		@$(AR) ru $@ $^
-		@$(RANLIB) $@
+		$(HIDE)echo Linking A OPT lib: $@
+		$(HIDE)$(AR) ru $@ $^
+		$(HIDE)$(RANLIB) $@
 libustr-debug.a: $(LIB_STATIC_DBG)
-		@echo Linking A DBG lib: $@
-		@$(AR) ru $@ $^
-		@$(RANLIB) $@
+		$(HIDE)echo Linking A DBG lib: $@
+		$(HIDE)$(AR) ru $@ $^
+		$(HIDE)$(RANLIB) $@
 
 ustr-conf.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
-		@echo Creating $@
-		@have_stdint_h=0; dbg1=0; dbg2=0; \
+		$(HIDE)echo Creating $@
+		$(HIDE)have_stdint_h=0; dbg1=0; dbg2=0; \
                 sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
                 if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
                 if test -f "$(includedir)/stdint.h"; then have_stdint_h=1; fi; \
 		sed -e "s,@HAVE_STDINT_H@,$$have_stdint_h,g" -e "s,@USE_ASSERT@,$$dbg1,g" -e "s,@USE_EOS_MARK@,$$dbg2,g" -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
 
 ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
-		@echo Creating $@
-		@have_stdint_h=0; dbg1=1; dbg2=1; \
+		$(HIDE)echo Creating $@
+		$(HIDE)have_stdint_h=0; dbg1=1; dbg2=1; \
                 sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
                 if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
                 if test -f "$(includedir)/stdint.h"; then have_stdint_h=1; fi; \
@@ -385,20 +392,20 @@ ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 # too much, and we care about speed more. Do make clean to "fix".
 #  Yes, scons fixes this.
 %-code-so-opt.o: %-opt-code.c %-code.h %.h $(DEPS_C_ALL)
-		@echo Compiling for SO OPT lib: $<
-		@$(CC) $(CFLAGS)     -fPIC $(CFLG_LIB_OPT) -o $@ -c $<
+		$(HIDE)echo Compiling for SO OPT lib: $<
+		$(HIDE)$(CC) $(CFLAGS)     -fPIC $(CFLG_LIB_OPT) -o $@ -c $<
 
 %-code-so-dbg.o: %-dbg-code.c %-code.h %.h $(DEPS_C_ALL)
-		@echo Compiling for SO DBG lib: $<
-		@$(CC) $(DBG_CFLAGS) -fPIC $(CFLG_LIB_DBG) -o $@ -c $<
+		$(HIDE)echo Compiling for SO DBG lib: $<
+		$(HIDE)$(CC) $(DBG_CFLAGS) -fPIC $(CFLG_LIB_DBG) -o $@ -c $<
 
 %-code-a-opt.o:  %-opt-code.c %-code.h %.h $(DEPS_C_ALL)
-		@echo Compiling for A OPT lib: $<
-		@$(CC) $(CFLAGS)           $(CFLG_LIB_OPT) -o $@ -c $<
+		$(HIDE)echo Compiling for A OPT lib: $<
+		$(HIDE)$(CC) $(CFLAGS)           $(CFLG_LIB_OPT) -o $@ -c $<
 
 %-code-a-dbg.o:  %-dbg-code.c %-code.h %.h $(DEPS_C_ALL)
-		@echo Compiling for A DBG lib: $<
-		@$(CC) $(DBG_CFLAGS)       $(CFLG_LIB_DBG) -o $@ -c $<
+		$(HIDE)echo Compiling for A DBG lib: $<
+		$(HIDE)$(CC) $(DBG_CFLAGS)       $(CFLG_LIB_DBG) -o $@ -c $<
 
 
 perf-sizes: perf-sizes.c $(OBJS_C_OPT_ALL)
@@ -413,43 +420,43 @@ perf-sizes64: perf-sizes.c $(OBJS_C_OPT_ALL)
 # We "generate" the test files ... because "make clean" then makes the
 # dir. readble. And it helps coverage testing.
 tst_%.c: T/tst_%.c T/ctst_%.c
-		@cat $^ > $@
+		$(HIDE)cat $^ > $@
 otst_%.c: T/tst_%.c T/ctst_%.c
-		@cat $^ > $@
+		$(HIDE)cat $^ > $@
 ctst_%.c: T/ctst_%.c
-		@cat $^ > $@
+		$(HIDE)cat $< > $@
 octst_%.c: T/ctst_%.c
-		@cat $^ > $@
+		$(HIDE)cat $< > $@
 
 # Debugging tst and "compiled" tst (links with libustr-debug)
 tst_%.o: tst_%.c tst.h $(DEPS_NONC_ALL)
-		@echo Compiling: $@
-		@$(CC) $(DBG_CFLAGS) $(CFLG_TST_C) -o $@ -c $<
+		$(HIDE)echo Compiling: $@
+		$(HIDE)$(CC) $(DBG_CFLAGS) $(CFLG_TST_C) -o $@ -c $<
 
 tst_%: tst_%.o
-		@$(CC) $(LDFLAGS)  -o $@ $<
+		$(HIDE)$(CC) $(LDFLAGS)  -o $@ $<
 
 ctst_%.o: ctst_%.c tst.h $(DEPS_C_ALL)
-		@echo Compiling: $@
-		@$(CC) $(DBG_CFLAGS) $(CFLG_TST) -o $@ -c $<
+		$(HIDE)echo Compiling: $@
+		$(HIDE)$(CC) $(DBG_CFLAGS) $(CFLG_TST) -o $@ -c $<
 
 ctst_%: ctst_%.o $(OBJS_C_DBG_ALL)
-		@$(CC) $(LDFLAGS) -o $@ $^
+		$(HIDE)$(CC) $(LDFLAGS) -o $@ $^
 
 # Optimized tst and "compiled" tst (links with libustr)
 otst_%.o: otst_%.c tst.h $(DEPS_NONC_ALL)
-		@echo Compiling: $@
-		@$(CC) $(CFLAGS) $(CFLG_TST_CO) -o $@ -c $<
+		$(HIDE)echo Compiling: $@
+		$(HIDE)$(CC) $(CFLAGS) $(CFLG_TST_CO) -o $@ -c $<
 
 otst_%: otst_%.o
-		@$(CC) $(LDFLAGS)  -o $@ $<
+		$(HIDE)$(CC) $(LDFLAGS)  -o $@ $<
 
 octst_%.o: octst_%.c tst.h $(DEPS_C_ALL)
-		@echo Compiling: $@
-		@$(CC) $(CFLAGS) $(CFLG_TST_O) -o $@ -c $<
+		$(HIDE)echo Compiling: $@
+		$(HIDE)$(CC) $(CFLAGS) $(CFLG_TST_O) -o $@ -c $<
 
 octst_%: octst_%.o $(OBJS_C_OPT_ALL)
-		@$(CC) $(LDFLAGS) -o $@ $^
+		$(HIDE)$(CC) $(LDFLAGS) -o $@ $^
 
 
 check-lcov: check ./scripts/lcov.sh
@@ -460,7 +467,7 @@ check-lcov: check ./scripts/lcov.sh
 # --------------------------------
 PACKAGE_BUGREPORT = "james@and.org"
 check: $(DBG_LIB_STATIC) $(TST_ALL)
-	@failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[        ]'; \
+	$(HIDE)failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[        ]'; \
 	list=' $(TST_ALL) '; \
         if test -n "$$list"; then \
 	  for tst in $$list; do \

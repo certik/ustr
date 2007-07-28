@@ -2,8 +2,10 @@
 
 static const char *rf = __FILE__;
 
+#include <wchar.h>
+
 #if USTR_CONF_HAVE_VA_COPY
-static Ustr *my_dup_fmt(const char *fmt, ...)
+static Ustr *my_dup_fmt(const char *, ...)
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(1, 2);
 static Ustr *my_dup_fmt(const char *fmt, ...)
 {
@@ -16,7 +18,7 @@ static Ustr *my_dup_fmt(const char *fmt, ...)
 
   return (ret);
 }
-static int my_fmt(Ustr **s1, const char *fmt, ...)
+static int my_fmt(Ustr **, const char *, ...)
     USTR__COMPILE_ATTR_NONNULL_A() USTR__COMPILE_ATTR_FMT(2, 3);
 static int my_fmt(Ustr **ps1, const char *fmt, ...)
 {
@@ -174,12 +176,12 @@ int tst(void)
   ASSERT( ustr_add(&s2, USTR("")));
 #ifdef __linux__
   /* test multi-byte conversion failure */
-  ASSERT(!ustr_add_fmt(&s2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_dup_fmt(     "%ls", (int *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_set_fmt(&s2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_ins_fmt(&s2, 1, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_sub_fmt(&s2, 1, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_sc_sub_fmt(&s2, 1, 2, "%ls", (int *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_add_fmt(&s2, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_dup_fmt(     "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_set_fmt(&s2, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_ins_fmt(&s2, 1, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_sub_fmt(&s2, 1, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_sc_sub_fmt(&s2, 1, 2, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
 #endif
 #endif
   ustr_sc_free2(&s2, ustr_dupx(1, 0, 0, 0, s2));

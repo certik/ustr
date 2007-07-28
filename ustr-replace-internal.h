@@ -9,6 +9,11 @@
 
 #ifdef USTR_SRCH_H
 USTR_CONF_e_PROTO
+size_t ustrp__replace_inline_buf(struct Ustr_pool *p, struct Ustr **ps1,
+                                 const void *optr, size_t olen,
+                                 const void *nptr, size_t nlen, size_t lim)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 5));
+USTR_CONF_e_PROTO
 size_t ustrp__replace_buf(struct Ustr_pool *, struct Ustr **,
                              const void *, size_t, const void *, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3, 5));
@@ -16,6 +21,11 @@ USTR_CONF_e_PROTO
 size_t ustrp__replace(struct Ustr_pool *, struct Ustr **,const struct Ustr *,
                          const struct Ustr *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
+USTR_CONF_e_PROTO
+size_t ustrp__replace_inline_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
+                                     char odata, size_t olen, 
+                                     char ndata, size_t nlen, size_t lim)
+    USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO
 size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
                               char, size_t, char, size_t, size_t)

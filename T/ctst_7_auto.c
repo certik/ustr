@@ -72,12 +72,42 @@ int tst(void)
   ASSERT(ustr_alloc(s3));
   ASSERT_EQ(s3, USTR(buf_s3));
   ustr_free(s3);
-  
+
   ASSERT((s4 = ustr_dup(s4)));
   ASSERT(s4 != USTR(buf_s4));
   ASSERT(ustr_alloc(s4));
   ASSERT_EQ(s4, USTR(buf_s4));
   ustr_free(s4);
+
+  strcpy(buf_s4, USTR_BEG_FIXED2 "abcd");
+  ASSERT((s3 = ustr_init_fixed(buf_s3, USTR_SIZE_FIXED(15), USTR_FALSE, 0)));
+  ASSERT((s4 = USTR_SC_INIT_AUTO(buf_s4, USTR_TRUE, 4)));
+
+  ASSERT_EQ(s3, USTR(""));
+  ASSERT_EQ(s4, USTR1(\4, "abcd"));
+
+  ASSERT(ustr_add_cstr(&s3, "abcd"));
+  ASSERT_EQ(s3, USTR1(\4, "abcd"));
+
+  ASSERT(!ustr_replace_cstr(&s4, "bc", "xxxxxxxxxxxxxxxx", 0));
+  ASSERT( ustr_replace_cstr(&s4, "bc", "xxxx", 0));
+  ASSERT_EQ(s4, USTR1(\6, "axxxxd"));
+  
+  ASSERT(!ustr_replace_rep_chr(&s4, 'x', 4, 'y', 32, 0));
+  ASSERT( ustr_replace_rep_chr(&s4, 'x', 4, 'y',  2, 0));
+  ASSERT_EQ(s4, USTR1(\4, "ayyd"));
+  ASSERT( ustr_replace_rep_chr(&s4, 'y', 2, 'z',  2, 0));
+  ASSERT_EQ(s4, USTR1(\4, "azzd"));
+  ustr_free(s4);
+  ustr_free(s4);
+  
+  ASSERT(!ustr_alloc(s3));
+  ASSERT( ustr_fixed(s3));
+  ASSERT( ustr_replace_cstr(&s3, "bc", "xxxxxxxxxxxxxxxx", 0));
+  ASSERT( ustr_alloc(s3));
+  ASSERT(!ustr_fixed(s3));
+  ASSERT_EQ(s3, USTR1(\x12, "axxxxxxxxxxxxxxxxd"));
+  ustr_free(s3);
   
   return (EXIT_SUCCESS);
 }

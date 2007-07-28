@@ -101,7 +101,7 @@ int tst(void)
   ASSERT(ustr_sub(&a,11,repl));
   PRINT_RESULT(a);
   ASSERT(ustr_cmp_cstr_eq(a,"the smart smart smart"));
-  ustr_free(repl);
+  ustr_sc_free(&repl);
   
   str = "this is a test";
   c = ustr_dup_cstr(str);
@@ -125,13 +125,13 @@ int tst(void)
   ASSERT(ustr_sc_sub(&c,1,4,same_len_str));
   PRINT_RESULT(c);
   ASSERT(ustr_cmp_cstr_eq(c,"mmmm donut"));
-  ustr_free(repl);
+  ustr_sc_free(&repl);
   /* replacement expands string */
   repl = ustr_dup_cstr("sprinkles");
   ASSERT(ustr_sc_sub(&c,6,5,repl));
   PRINT_RESULT(c);
   ASSERT(ustr_cmp_cstr_eq(c,"mmmm sprinkles"));
-  ustr_free(repl);
+  ustr_sc_free(&repl);
   d = ustr_dup_cstr("aabbccabcabc");
   repl = ustr_dup_cstr(" ");
   needle = ustr_dup_cstr("a");
@@ -140,8 +140,8 @@ int tst(void)
   PRINT_RESULT(d);
   newstr = "  bbcc bc bc";
   ASSERT(ustr_cmp_cstr_eq(d,newstr));
-  ustr_free(repl);
-  ustr_free(needle);
+  ustr_sc_free(&repl);
+  ustr_sc_free(&needle);
   /* limited number of replacements -- same len */
   repl = ustr_dup_cstr(".");
   needle = ustr_dup_cstr("c");
@@ -149,8 +149,8 @@ int tst(void)
   PRINT_RESULT(d);
   newstr = "  bb.c bc bc";
   ASSERT(ustr_cmp_cstr_eq(d,newstr));
-  ustr_free(needle);
-  ustr_free(repl);
+  ustr_sc_free(&needle);
+  ustr_sc_free(&repl);
   
   /* limited number of replacements -- different len */
   ustr_sc_free2(&d, USTR1(\x20, "123456789 x123456789 x123456789 "));
@@ -214,13 +214,13 @@ int tst(void)
     ASSERT(!ustr_replace(&s1, USTR1(\1, "-"), s1, 0));
   }
   
-  ustr_free(a);
-  ustr_free(c);
-  ustr_free(d);
-  ustr_free(needle);
-  ustr_free(same_len_str);
-  ustr_free(blank);
-  ustr_free(ro);
+  ustr_sc_free(&a);
+  ustr_sc_free(&c);
+  ustr_sc_free(&d);
+  ustr_sc_free(&needle);
+  ustr_sc_free(&same_len_str);
+  ustr_sc_free(&blank);
+  ustr_sc_free(&ro);
 
   /* rep_chr -- shrink string */
   haystack = ustr_dup_cstr("xxxBxxCxDxxx");

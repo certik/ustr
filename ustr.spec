@@ -2,15 +2,13 @@
 Name: ustr
 # FIXME: More C&P of VERSION
 Version: 1.0.1
-Release: 0%{?dist}
+Release: 1%{?dist}
 Summary: String library, very low memory overhead, simple to import
 Group: System Environment/Libraries
 License: MIT/LGPL/BSD
 URL: http://www.and.org/ustr/
 Source0: http://www.and.org/ustr/%{version}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires(post): /sbin/ldconfig
-Requires(postun): /sbin/ldconfig
 # BuildRequires: make gcc sed
 
 %description
@@ -20,10 +18,11 @@ just include a single header file into your .c and start using it.
  This package also distributes pre-built shared libraries.
 
 %package devel
-Summary: String library, very very low memory overhead, simple to import
+Summary: Development files for %{name}
 Group: Development/Libraries
-# Requires: pkgconfig >= 0.14
-Requires: %{name} = %{version}
+# This isn't required, but Fedora policy makes it so
+Requires: pkgconfig >= 0.14
+Requires: %{name} = %{version}-%{release}
 
 %description devel
  Header files for the Ustr string library, and the .so to link with.
@@ -32,19 +31,19 @@ Requires: %{name} = %{version}
 the code in your projects ... you don't have to link to the shared lib.
 
 %package static
-Summary: String library, very very low memory overhead, simple to import
+Summary: Static development files for %{name}
 Group: Development/Libraries
-Requires: %{name}-devel = %{version}
+Requires: %{name}-devel = %{version}-%{release}
 
 %description static
  Static library for the Ustr string library.
 
 %package debug
-Summary: String library, very very low memory overhead, simple to import
+Summary: Development files for %{name}, with debugging options turned on
 Group: Development/Libraries
-Requires: %{name}-static = %{version}
-Requires(post): /sbin/ldconfig
-Requires(postun): /sbin/ldconfig
+# This isn't required, but Fedora policy makes it so
+Requires: pkgconfig >= 0.14
+Requires: %{name}-devel = %{version}-%{release}
 
 %description debug
  Header files and dynamic libraries for a debug build of the Ustr string
@@ -52,9 +51,9 @@ library.
  Also includes a %{name}-debug.pc file for pkg-config usage.
 
 %package debug-static
-Summary: String library, very very low memory overhead, simple to import
+Summary: Static development files for %{name}, with debugging options turned on
 Group: Development/Libraries
-Requires: %{name}-devel = %{version}
+Requires: %{name}-debug = %{version}-%{release}
 
 %description debug-static
  Static library for the debug build of the Ustr string library.
@@ -64,19 +63,19 @@ Requires: %{name}-devel = %{version}
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ;
-make %{?_smp_mflags} all-shared
+make %{?_smp_mflags} all-shared CFLAGS="$CFLAGS" HIDE=
 
 %check
 %if %{?chk}%{!?chk:1}
-make check
+make check HIDE=
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install bindir=%{_bindir}         mandir=%{_mandir} \
-             datadir=%{_datadir}       libdir=%{_libdir} \
-             includedir=%{_includedir} \
-             DESTDIR=$RPM_BUILD_ROOT LDCONFIG=/bin/true
+make $@ install bindir=%{_bindir}         mandir=%{_mandir} \
+                datadir=%{_datadir}       libdir=%{_libdir} \
+                includedir=%{_includedir} \
+                DESTDIR=$RPM_BUILD_ROOT LDCONFIG=/bin/true HIDE=
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -96,13 +95,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,root,-)
+%{_datadir}/ustr-%{version}
 %{_datadir}/ustr-%{version}/*
 %{_datadir}/ustr-%{version}/.gdbinit
 %{_bindir}/ustr-import
-/usr/include/ustr.h
-/usr/include/ustr-*.h
+%{_includedir}/ustr.h
+%{_includedir}/ustr-*.h
 %{_libdir}/pkgconfig/ustr.pc
 %{_libdir}/libustr.so
+%{_datadir}/doc/ustr-devel-%{version}
 %{_datadir}/doc/ustr-devel-%{version}/*
 %{_mandir}/man3/*
 
@@ -113,8 +114,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_libdir}/libustr-debug-1.0.so.*
 %{_libdir}/libustr-debug.so
-/usr/include/ustr-debug.h
-/usr/include/ustr-conf-debug.h
+%{_includedir}/ustr-debug.h
+%{_includedir}/ustr-conf-debug.h
 %{_libdir}/pkgconfig/ustr-debug.pc
 
 %files debug-static
@@ -122,6 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul 27 2007 James Antill <james@and.org> - 1.0.1-0.2.fc7
+- Next test release of 1.0.1, lots of fixes from Fedora review.
+
 * Wed Jul 25 2007 James Antill <james@and.org> - 1.0.1-0
 - Test release of 1.0.1.
 

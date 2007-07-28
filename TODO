@@ -2,6 +2,12 @@
  ---
  Fix the whole VA_COPY mess, probably needs: autofoo*.c
 
+ ** in txt2html etc.
+
+ prefix= in Makefile
+
+ Have malloc_check_ptr() calls in assert_valid() somehow
+
  Allow the shared lib. to compile without inline.
 
  ADD

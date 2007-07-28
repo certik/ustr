@@ -1,3 +1,16 @@
+2007-07-27  James Antill  <james@and.org>
+
+	* ustr-import.in (INCDIR): Get includedir from Makefile.
+
+2007-07-26  James Antill  <james@and.org>
+
+	* ustr-replace-code.h (ustr_replace_buf): Fix ustr_limited() case, and
+	do the same thing for ustr_fixed() if we can.
+	(ustr_replace_rep_chr): Fix ustr_limited() case, and do the same thing
+	for ustr_fixed() if we can.
+	(ustr_replace_buf): Use ustrp__del() for !tlen code path.
+	(ustr_replace_rep_chr): Use ustrp__del() for !tlen code path.
+
 2007-07-25  James Antill  <james@and.org>
 
 	* Makefile (VERS_FULL): Bump version to 1.0.1 for test releases.

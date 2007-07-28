@@ -6,6 +6,36 @@
 
 #ifdef USTR_SRCH_H
 USTR_CONF_i_PROTO
+size_t ustrp__replace_inline_buf(struct Ustr_pool *p, struct Ustr **ps1,
+                                 const void *optr, size_t olen,
+                                 const void *nptr, size_t nlen, size_t lim)
+{ /* "fast path" ... as we can't fail after we are the owner(). In theory
+   * we can do nlen <= olen, but then we'll spend a lot of time calling
+   * memmove(). Which might be painful, so let that fall through to dupx(). */
+  size_t num  = 0;
+  size_t pos  = 0;
+  
+  if (!ustrp__sc_ensure_owner(p, ps1))
+  {
+    ustr_setf_enomem_err(*ps1);
+    return (0);
+  }
+  
+  while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
+  {
+    ustr_sc_sub_buf(ps1, pos, olen, nptr, nlen);
+    pos += nlen - 1;
+    
+    ++num;
+    if (lim && (num == lim))
+      break;
+  }
+  
+  return (num);
+}
+
+
+USTR_CONF_i_PROTO
 size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
                           const void *optr, size_t olen,
                           const void *nptr, size_t nlen, size_t lim)
@@ -21,24 +51,7 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
   if (nlen == olen)
-  { /* "fast path" ... as we can't fail after we are the owner(). In theory
-     * we can do nlen <= olen, but then we'll spend a lot of time calling
-     * memmove(). Which might be painful, so let that fall through to dupx(). */
-    if (!ustrp__sc_ensure_owner(p, ps1))
-      goto fail_alloc;
-    
-    while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
-    {
-      ustr_sub_buf(ps1, pos, nptr, nlen);
-      pos += nlen - 1;
-      
-      ++num;
-      if (lim && (num == lim))
-        break;
-    }
-    
-    return (num);
-  }
+    return (ustrp__replace_inline_buf(p, ps1, optr, olen, nptr, nlen, lim));
   
   /* pre-calc size, and do single alloc and then memcpy.
    * Using dup()/ustr_sc_sub() is much simpler but very slow
@@ -64,12 +77,20 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
 
   if (!num) /* minor speed hack */
     return (0);
+
+  if (!tlen) /* minor speed hack */
+    return (ustrp__del(p, ps1, ustr_len(*ps1)) ? num : 0);
+  
+  if (ustr_fixed(*ps1))
+  {
+    if (tlen <= ustr_size(*ps1))
+      return (ustrp__replace_inline_buf(p, ps1, optr, olen, nptr, nlen, lim));
+    if (ustr_limited(*ps1))
+      goto fail_alloc;
+  }
   
   if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1), tlen)))
     goto fail_alloc;
-
-  if (!tlen) /* minor speed hack */
-    goto done_slow_sub;
   
   rptr = ustr_cstr(*ps1);
   lpos = 1;
@@ -95,7 +116,6 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   }
   ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
   
- done_slow_sub:
   ustr_sc_free2(ps1, ret);
   
   return (num);
@@ -138,6 +158,35 @@ size_t ustrp_replace(struct Ustr_pool *p, struct Ustrp **ps1,
 { return (ustrp__replace(p, USTR__PPTR(ps1), &srch->s, &repl->s, lim)); }
 
 USTR_CONF_i_PROTO
+size_t ustrp__replace_inline_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
+                                     char odata, size_t olen, 
+                                     char ndata, size_t nlen, size_t lim)
+{ /* "fast path" ... as we can't fail after we are the owner(). In theory
+   * we can do nlen <= olen, but then we'll spend a lot of time calling
+   * memmove(). Which might be painful, so let that fall through to dupx(). */
+  size_t num  = 0;
+  size_t pos  = 0;
+
+  if (!ustrp__sc_ensure_owner(p, ps1))
+  {
+    ustr_setf_enomem_err(*ps1);
+    return (0);
+  }
+
+  while ((pos = ustr_srch_rep_chr_fwd(*ps1, pos, odata, olen)))
+  {
+    ustr_sc_sub_rep_chr(ps1, pos, olen, ndata, nlen);
+    pos += nlen - 1;
+    
+    ++num;
+    if (lim && (num == lim))
+      break;
+  }
+  
+  return (num);
+}
+
+USTR_CONF_i_PROTO
 size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
                               char odata, size_t olen, 
                               char ndata, size_t nlen, size_t lim)
@@ -153,24 +202,7 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
   if (nlen == olen)
-  { /* "fast path" ... as we can't fail after we are the owner(). In theory
-     * we can do nlen <= olen, but then we'll spend a lot of time calling
-     * memmove(). Which might be painful, so let that fall through to dupx(). */
-    if (!ustrp__sc_ensure_owner(p, ps1))
-      goto fail_alloc;
-    
-    while ((pos = ustr_srch_rep_chr_fwd(*ps1, pos, odata, olen)))
-    {
-      ustr_sub_rep_chr(ps1, pos, ndata, nlen);
-      pos += nlen - 1;
-      
-      ++num;
-      if (lim && (num == lim))
-        break;
-    }
-    
-    return (num);
-  }
+    return (ustrp__replace_inline_rep_chr(p, ps1, odata,olen, ndata,nlen, lim));
 
   /* pre-calc size, and do single alloc and then memcpy.
    * Using dup()/ustr_sc_sub() is much simpler but very slow
@@ -196,12 +228,21 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
 
   if (!num) /* minor speed hack */
     return (0);
+
+  if (!tlen) /* minor speed hack */
+    return (ustrp__del(p, ps1, ustr_len(*ps1)) ? num : 0);
+  
+  if (ustr_fixed(*ps1))
+  {
+    if (tlen <= ustr_size(*ps1))
+      return (ustrp__replace_inline_rep_chr(p, ps1, odata,olen,ndata,nlen,lim));
+    
+    if (ustr_limited(*ps1))
+      goto fail_alloc;
+  }
   
   if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1), tlen)))
     goto fail_alloc;
-
-  if (!tlen) /* minor speed hack */
-    goto done_slow_sub;
   
   rptr = ustr_cstr(*ps1);
   lpos = 1;
@@ -227,7 +268,6 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
   }
   ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
   
- done_slow_sub:
   ustr_sc_free2(ps1, ret);
   
   return (num);
