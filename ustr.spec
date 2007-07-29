@@ -96,15 +96,12 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root,-)
 %{_datadir}/ustr-%{version}
-%{_datadir}/ustr-%{version}/*
-%{_datadir}/ustr-%{version}/.gdbinit
 %{_bindir}/ustr-import
 %{_includedir}/ustr.h
 %{_includedir}/ustr-*.h
 %{_libdir}/pkgconfig/ustr.pc
 %{_libdir}/libustr.so
 %{_datadir}/doc/ustr-devel-%{version}
-%{_datadir}/doc/ustr-devel-%{version}/*
 %{_mandir}/man3/*
 
 %files static
