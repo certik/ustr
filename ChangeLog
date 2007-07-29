@@ -1,3 +1,8 @@
+2007-07-28  James Antill  <james@and.org>
+
+	* ustr-main-internal.h (USTR__PPTR): Remove macro, it's not safe from
+	aliasing as PPC dies. Also updated all users.
+
 2007-07-27  James Antill  <james@and.org>
 
 	* ustr-import.in (INCDIR): Get includedir from Makefile.

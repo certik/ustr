@@ -21,7 +21,11 @@ USTR_CONF_I_PROTO void ustr_sc_free_shared(struct Ustr **ps1)
 { ustrp__sc_free_shared(0, ps1); }
 USTR_CONF_I_PROTO
 void ustrp_sc_free_shared(struct Ustr_pool *p, struct Ustrp **ps1)
-{ ustrp__sc_free_shared(p, USTR__PPTR(ps1)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  ustrp__sc_free_shared(p, &tmp);
+  *ps1 = USTRP(tmp);
+}
 
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__sc_dupx(struct Ustr_pool *p,
@@ -52,7 +56,12 @@ struct Ustr *ustr_sc_dupx(size_t sz, size_t rbytes, int exact, int emem,
 USTR_CONF_I_PROTO
 struct Ustrp *ustrp_sc_dupx(struct Ustr_pool *p, size_t sz, size_t rbytes,
                             int exact, int emem, struct Ustrp **ps1)
-{ return (USTRP(ustrp__sc_dupx(p, sz, rbytes, exact, emem, USTR__PPTR(ps1)))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  struct Ustr *ret = ustrp__sc_dupx(p, sz, rbytes, exact, emem, &tmp);
+  *ps1 = USTRP(tmp);
+  return (USTRP(ret));
+}
 
 USTR_CONF_i_PROTO
 struct Ustr *ustrp__sc_dup(struct Ustr_pool *p, struct Ustr **ps1)
@@ -75,7 +84,12 @@ USTR_CONF_I_PROTO struct Ustr *ustr_sc_dup(struct Ustr **ps1)
 { return (ustrp__sc_dup(0, ps1)); }
 USTR_CONF_I_PROTO
 struct Ustrp *ustrp_sc_dup(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (USTRP(ustrp__sc_dup(p, USTR__PPTR(ps1)))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  struct Ustr *ret = ustrp__sc_dup(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (USTRP(ret));
+}
 
 USTR_CONF_i_PROTO
 int ustrp__sc_ensure_owner(struct Ustr_pool *p, struct Ustr **ps1)
@@ -105,7 +119,12 @@ USTR_CONF_I_PROTO int ustr_sc_ensure_owner(struct Ustr **ps1)
 { return (ustrp__sc_ensure_owner(0, ps1)); }
 USTR_CONF_I_PROTO
 int ustrp_sc_ensure_owner(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__sc_ensure_owner(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__sc_ensure_owner(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO char *ustrp__sc_wstr(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -117,7 +136,12 @@ USTR_CONF_i_PROTO char *ustrp__sc_wstr(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO char *ustr_sc_wstr(struct Ustr **ps1)
 { return (ustrp__sc_wstr(0, ps1)); }
 USTR_CONF_I_PROTO char *ustrp_sc_wstr(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__sc_wstr(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  char *ret = ustrp__sc_wstr(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO void ustr__reverse(char *ptr, size_t pos, size_t len)
 {
@@ -149,7 +173,12 @@ USTR_CONF_i_PROTO int ustrp__sc_reverse(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO int ustr_sc_reverse(struct Ustr **ps1)
 { return (ustrp__sc_reverse(0, ps1)); }
 USTR_CONF_I_PROTO int ustrp_sc_reverse(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__sc_reverse(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__sc_reverse(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__sc_tolower(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -174,7 +203,12 @@ USTR_CONF_i_PROTO int ustrp__sc_tolower(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO int ustr_sc_tolower(struct Ustr **ps1)
 { return (ustrp__sc_tolower(0, ps1)); }
 USTR_CONF_I_PROTO int ustrp_sc_tolower(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__sc_tolower(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__sc_tolower(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__sc_toupper(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -199,4 +233,9 @@ USTR_CONF_i_PROTO int ustrp__sc_toupper(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO int ustr_sc_toupper(struct Ustr **ps1)
 { return (ustrp__sc_toupper(0, ps1)); }
 USTR_CONF_I_PROTO int ustrp_sc_toupper(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__sc_toupper(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__sc_toupper(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}

@@ -36,7 +36,12 @@ int ustr_io_get(struct Ustr **ps1, FILE *fp, size_t minlen, size_t *got)
 { return (ustrp__io_get(0, ps1, fp, minlen, got)); }
 USTR_CONF_I_PROTO int ustrp_io_get(void *p, struct Ustrp **ps1, FILE *fp,
                                    size_t minlen, size_t *got)
-{ return (ustrp__io_get(p, USTR__PPTR(ps1), fp, minlen, got)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_get(p, &tmp, fp, minlen, got);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__io_getfile(void *p, struct Ustr **ps1, FILE *fp)
 {
@@ -61,7 +66,12 @@ int ustr_io_getfile(struct Ustr **ps1, FILE *fp)
 { return (ustrp__io_getfile(0, ps1, fp)); }
 USTR_CONF_I_PROTO
 int ustrp_io_getfile(void *p, struct Ustrp **ps1, FILE *fp)
-{ return (ustrp__io_getfile(p, USTR__PPTR(ps1), fp)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_getfile(p, &tmp, fp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 int ustrp__io_getfilename(void *p, struct Ustr **ps1, const char *name)
@@ -83,7 +93,12 @@ int ustr_io_getfilename(struct Ustr **ps1, const char *name)
 { return (ustrp__io_getfilename(0, ps1, name)); }
 USTR_CONF_I_PROTO
 int ustrp_io_getfilename(void *p, struct Ustrp **ps1, const char *name)
-{ return (ustrp__io_getfilename(p, USTR__PPTR(ps1), name)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_getfilename(p, &tmp, name);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 /* We bow to retarded GLibc getc_unlocked */
 #ifdef getc_unlocked
@@ -130,7 +145,12 @@ int ustr_io_getline(struct Ustr **ps1, FILE *fp)
 { return (ustrp__io_getline(0, ps1, fp)); }
 USTR_CONF_I_PROTO
 int ustrp_io_getline(void *p, struct Ustrp **ps1, FILE *fp)
-{ return (ustrp__io_getline(p, USTR__PPTR(ps1), fp)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_getline(p, &tmp, fp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
@@ -174,7 +194,12 @@ int ustr_io_put(struct Ustr **ps1, FILE *fp, size_t beglen)
 { return (ustrp__io_put(0, ps1, fp, beglen)); }
 USTR_CONF_I_PROTO
 int ustrp_io_put(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
-{ return (ustrp__io_put(p, USTR__PPTR(ps1), fp, beglen)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_put(p, &tmp, fp, beglen);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 /* We bow to retarded GLibc putc_unlocked */
 #ifdef putc_unlocked
@@ -196,7 +221,12 @@ int ustr_io_putline(struct Ustr **ps1, FILE *fp, size_t beglen)
 { return (ustrp__io_putline(0, ps1, fp, beglen)); }
 USTR_CONF_I_PROTO
 int ustrp_io_putline(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
-{ return (ustrp__io_putline(p, USTR__PPTR(ps1), fp, beglen)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_putline(p, &tmp, fp, beglen);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__io_putfilename(void *p, struct Ustr **ps1,
                                             const char *name, const char *mode)
@@ -221,4 +251,9 @@ int ustr_io_putfilename(struct Ustr **ps1, const char *name, const char *mode)
 { return (ustrp__io_putfilename(0, ps1, name, mode)); }
 USTR_CONF_I_PROTO int ustrp_io_putfilename(void *p, struct Ustrp **ps1,
                                            const char *name, const char *mode)
-{ return (ustrp__io_putfilename(p, USTR__PPTR(ps1), name, mode)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_putfilename(p, &tmp, name, mode);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}

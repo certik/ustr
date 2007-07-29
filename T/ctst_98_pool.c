@@ -272,17 +272,35 @@ int tst(void)
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT_PEQ(sp1, USTRP1(\x3, "cs2"));
   ustrp_sc_free2(pool, &sp1, ustrp_dupx(pool, 1, 1, 1, 1, USTRP("")));
+#if 0
+  #define DBG(x)                                                       \
+      printf("DBG(%s): %x:%zu:%s\n", #x ,                              \
+             *(char*)sp1, ustrp_len(sp1), ustrp_cstr(sp1));            \
+      fflush(NULL)
+#else
+  #define DBG(x) /* do nothing */
+#endif
+  DBG(0a);
   ASSERT_PEQ(sp1, USTRP(""));
+  DBG(0b);
   ASSERT(ustrp_setf_share(sp1));
+  DBG(0c);
   ASSERT(!ustrp_owner(sp1));
+  DBG(0d);
   ASSERT( ustrp_shared(sp1));
+  DBG(1);
   ASSERT( ustrp_enomem(sp1));
+  DBG(2);
   ASSERT(!ustrp_realloc(pool, &sp1, 0));
+  DBG(0e);
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
+  DBG(3);
   ASSERT( ustrp_add_subustrp(pool, &sp1, sp2, 2, 1));
   ASSERT( ustrp_owner(sp1));
   ASSERT(!ustrp_shared(sp1));
+  DBG(4);
   ASSERT( ustrp_enomem(sp1));
+  DBG(5);
   ASSERT(!ustrp_realloc(pool, &sp1, 1));
   ASSERT( ustrp_realloc(pool, &sp1, 2));
   ASSERT( ustrp_realloc(pool, &sp1, 2));

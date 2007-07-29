@@ -496,5 +496,10 @@ USTR_CONF_I_PROTO int ustr_sc_utf8_reverse(struct Ustr **ps1)
 { return (ustrp__sc_utf8_reverse(0, ps1)); }
 USTR_CONF_I_PROTO
 int ustrp_sc_utf8_reverse(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__sc_utf8_reverse(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__sc_utf8_reverse(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 #endif

@@ -759,7 +759,12 @@ USTR_CONF_I_PROTO int ustr_realloc(struct Ustr **ps1, size_t sz)
 { return (ustrp__realloc(0, ps1, sz)); }
 USTR_CONF_I_PROTO int ustrp_realloc(struct Ustr_pool *p,
                                     struct Ustrp **ps1, size_t sz)
-{ return (ustrp__realloc(p, USTR__PPTR(ps1), sz)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__realloc(p, &tmp, sz);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 /* Can we actually RW adding to this Ustr, at _this_ moment, _this_ len */
 USTR_CONF_i_PROTO
@@ -899,7 +904,12 @@ USTR_CONF_I_PROTO int ustr_del(struct Ustr **ps1, size_t len)
 { return (ustrp__del(0, ps1, len)); }
 USTR_CONF_I_PROTO
 int ustrp_del(struct Ustr_pool *p, struct Ustrp **ps1, size_t len)
-{ return (ustrp__del(p, USTR__PPTR(ps1), len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__del(p, &tmp, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 int ustrp__del_subustr(struct Ustr_pool *p,
@@ -968,7 +978,12 @@ USTR_CONF_I_PROTO int ustr_del_subustr(struct Ustr **ps1, size_t pos,size_t len)
 USTR_CONF_I_PROTO
 int ustrp_del_subustrp(struct Ustr_pool *p,
                        struct Ustrp **ps1, size_t pos, size_t len)
-{ return (ustrp__del_subustr(p, USTR__PPTR(ps1), pos, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__del_subustr(p, &tmp, pos, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 /* ---------------- dupx/dup ---------------- */
 
@@ -1220,7 +1235,12 @@ USTR_CONF_I_PROTO int ustr_add_undef(struct Ustr **ps1, size_t len)
 { return (ustrp__add_undef(0, ps1, len)); }
 USTR_CONF_I_PROTO
 int ustrp_add_undef(struct Ustr_pool *p, struct Ustrp **ps1, size_t len)
-{ return (ustrp__add_undef(p, USTR__PPTR(ps1), len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__add_undef(p, &tmp, len);
+  *ps1 = USTRP(tmp);
+  return (ret);  
+}
 
 USTR_CONF_i_PROTO int ustrp__add_buf(struct Ustr_pool *p, struct Ustr **ps1,
                                      const void *s2, size_t len)
@@ -1236,7 +1256,12 @@ USTR_CONF_I_PROTO int ustr_add_buf(struct Ustr **ps1, const void *s2,size_t len)
 { return (ustrp__add_buf(0, ps1, s2, len)); }
 USTR_CONF_I_PROTO int ustrp_add_buf(struct Ustr_pool *p, struct Ustrp **ps1,
                                     const void *s2, size_t len)
-{ return (ustrp__add_buf(p, USTR__PPTR(ps1), s2, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__add_buf(p, &tmp, s2, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 /* If we can use _dup(), otherwise just pretend it's a buf+len */
 USTR_CONF_i_PROTO
@@ -1305,7 +1330,12 @@ USTR_CONF_I_PROTO int ustr_add(struct Ustr **ps1, const struct Ustr *s2)
 { return (ustrp__add(0, ps1, s2)); }
 USTR_CONF_I_PROTO
 int ustrp_add(struct Ustr_pool *p, struct Ustrp **ps1, const struct Ustrp *s2)
-{ return (ustrp__add(p, USTR__PPTR(ps1), &s2->s)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__add(p, &tmp, &s2->s);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 int ustrp__add_subustr(struct Ustr_pool *p, struct Ustr **ps1,
@@ -1343,7 +1373,12 @@ USTR_CONF_I_PROTO int ustr_add_subustr(struct Ustr **ps1, const struct Ustr *s2,
 USTR_CONF_I_PROTO
 int ustrp_add_subustrp(struct Ustr_pool *p, struct Ustrp **ps1,
                        const struct Ustrp *s2, size_t pos, size_t len)
-{ return (ustrp__add_subustr(p, USTR__PPTR(ps1), &s2->s, pos, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__add_subustr(p, &tmp, &s2->s, pos, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__add_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
                                          char chr, size_t len)
@@ -1359,7 +1394,12 @@ USTR_CONF_I_PROTO int ustr_add_rep_chr(struct Ustr **ps1, char chr, size_t len)
 { return (ustrp__add_rep_chr(0, ps1, chr, len)); }
 USTR_CONF_I_PROTO int ustrp_add_rep_chr(struct Ustr_pool *p, struct Ustrp **ps1,
                                         char chr, size_t len)
-{ return (ustrp__add_rep_chr(p, USTR__PPTR(ps1), chr, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__add_rep_chr(p, &tmp, chr, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 /* ---------------- shortcut ---------------- */
 
@@ -1367,7 +1407,11 @@ USTR_CONF_I_PROTO void ustr_sc_free2(struct Ustr **ps1, struct Ustr *s2)
 { ustrp__sc_free2(0, ps1, s2); }
 USTR_CONF_I_PROTO void ustrp_sc_free2(struct Ustr_pool *p,
                                       struct Ustrp **ps1, struct Ustrp *s2)
-{ ustrp__sc_free2(p, USTR__PPTR(ps1), &s2->s); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  ustrp__sc_free2(p, &tmp, &s2->s);
+  *ps1 = USTRP(tmp);
+}
 
 USTR_CONF_i_PROTO void ustrp__sc_free(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -1379,7 +1423,11 @@ USTR_CONF_i_PROTO void ustrp__sc_free(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO void ustr_sc_free(struct Ustr **ps1)
 { ustrp__sc_free(0, ps1); }
 USTR_CONF_I_PROTO void ustrp_sc_free(struct Ustr_pool *p, struct Ustrp **ps1)
-{ ustrp__sc_free(p, USTR__PPTR(ps1)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  ustrp__sc_free(p, &tmp);
+  *ps1 = USTRP(tmp);
+}
 
 USTR_CONF_i_PROTO void ustrp__sc_del(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -1392,4 +1440,8 @@ USTR_CONF_i_PROTO void ustrp__sc_del(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO void ustr_sc_del(struct Ustr **ps1)
 { ustrp__sc_del(0, ps1); }
 USTR_CONF_I_PROTO void ustrp_sc_del(struct Ustr_pool *p, struct Ustrp **ps1)
-{ ustrp__sc_del(p, USTR__PPTR(ps1)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  ustrp__sc_del(p, &tmp);
+  *ps1 = USTRP(tmp);
+}

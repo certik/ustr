@@ -94,7 +94,12 @@ int ustr_add_vfmt_lim(struct Ustr **ps1, size_t lim, const char *fmt,va_list ap)
 { return (ustrp__add_vfmt_lim(0, ps1, lim, fmt, ap)); }
 USTR_CONF_I_PROTO int ustrp_add_vfmt_lim(struct Ustr_pool *p,struct Ustrp **ps1,
                                          size_t lim, const char *fmt,va_list ap)
-{ return (ustrp__add_vfmt_lim(p, USTR__PPTR(ps1), lim, fmt, ap)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__add_vfmt_lim(p, &tmp, lim, fmt, ap);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_I_PROTO
 int ustr_add_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)

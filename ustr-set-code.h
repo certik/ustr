@@ -54,7 +54,12 @@ USTR_CONF_I_PROTO int ustr_set_undef(struct Ustr **ps1, size_t nlen)
 { return (ustrp__set_undef(0, ps1, nlen)); }
 USTR_CONF_I_PROTO
 int ustrp_set_undef(struct Ustr_pool *p, struct Ustrp **ps1, size_t nlen)
-{ return (ustrp__set_undef(p, USTR__PPTR(ps1), nlen)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set_undef(p, &tmp, nlen);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__set_empty(struct Ustr_pool *p, struct Ustr **ps1)
 {
@@ -77,7 +82,12 @@ USTR_CONF_i_PROTO int ustrp__set_empty(struct Ustr_pool *p, struct Ustr **ps1)
 USTR_CONF_I_PROTO int ustr_set_empty(struct Ustr **ps1)
 { return (ustrp__set_empty(0, ps1)); }
 USTR_CONF_I_PROTO int ustrp_set_empty(struct Ustr_pool *p, struct Ustrp **ps1)
-{ return (ustrp__set_empty(p, USTR__PPTR(ps1))); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set_empty(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__set_buf(struct Ustr_pool *p, struct Ustr **ps1,
                                      const void *buf, size_t len)
@@ -97,7 +107,12 @@ int ustr_set_buf(struct Ustr **ps1, const void *buf, size_t len)
 { return (ustrp__set_buf(0, ps1, buf, len)); }
 USTR_CONF_I_PROTO int ustrp_set_buf(struct Ustr_pool *p, struct Ustrp **ps1,
                                     const void *buf, size_t len)
-{ return (ustrp__set_buf(p, USTR__PPTR(ps1), buf, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set_buf(p, &tmp, buf, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 int ustrp__set(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
@@ -125,7 +140,12 @@ USTR_CONF_I_PROTO int ustr_set(struct Ustr **ps1, const struct Ustr *s2)
 { return (ustrp__set(0, ps1, s2)); }
 USTR_CONF_I_PROTO
 int ustrp_set(struct Ustr_pool *p, struct Ustrp **ps1, const struct Ustrp *s2)
-{ return (ustrp__set(p, USTR__PPTR(ps1), &s2->s)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set(p, &tmp, &s2->s);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 int ustrp__set_subustr(struct Ustr_pool *p, struct Ustr **ps1,
@@ -157,7 +177,12 @@ USTR_CONF_I_PROTO int ustr_set_subustr(struct Ustr **ps1, const struct Ustr *s2,
 USTR_CONF_I_PROTO
 int ustrp_set_subustrp(struct Ustr_pool *p, struct Ustrp **ps1,
                        const struct Ustrp *s2, size_t pos, size_t len)
-{ return (ustrp__set_subustr(p, USTR__PPTR(ps1), &s2->s, pos, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set_subustr(p, &tmp, &s2->s, pos, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO int ustrp__set_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
                                          char chr, size_t len)
@@ -177,7 +202,12 @@ int ustr_set_rep_chr(struct Ustr **ps1, char chr, size_t len)
 { return (ustrp__set_rep_chr(0, ps1, chr, len)); }
 USTR_CONF_I_PROTO int ustrp_set_rep_chr(struct Ustr_pool *p, struct Ustrp **ps1,
                                         char chr, size_t len)
-{ return (ustrp__set_rep_chr(p, USTR__PPTR(ps1), chr, len)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set_rep_chr(p, &tmp, chr, len);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 #ifdef USTR_FMT_H
 # if USTR_CONF_HAVE_VA_COPY
@@ -220,7 +250,12 @@ USTR_CONF_I_PROTO int ustr_set_vfmt_lim(struct Ustr **ps1, size_t lim,
 USTR_CONF_I_PROTO
 int ustrp_set_vfmt_lim(struct Ustr_pool *p,struct Ustrp **ps1, size_t lim,
                        const char *fmt, va_list ap)
-{ return (ustrp__set_vfmt_lim(p, USTR__PPTR(ps1), lim, fmt, ap)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__set_vfmt_lim(p, &tmp, lim, fmt, ap);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_I_PROTO
 int ustr_set_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)

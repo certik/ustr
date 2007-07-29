@@ -6,8 +6,6 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-#define USTR__PPTR(x) ((struct Ustr **) x) /* for converting a Ustrp** ...
-                                            * safe from aliasing, I think */
 
 /* default sized to 1 ... */
 #define USTR__DUPX_DEF                                  \

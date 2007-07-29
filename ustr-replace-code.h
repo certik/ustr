@@ -133,7 +133,12 @@ USTR_CONF_I_PROTO
 size_t ustrp_replace_buf(struct Ustr_pool *p, struct Ustrp **ps1,
                          const void *optr, size_t olen,
                          const void *nptr, size_t nlen, size_t lim)
-{ return (ustrp__replace_buf(p, USTR__PPTR(ps1), optr,olen,nptr,nlen,lim)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__replace_buf(p, &tmp, optr, olen, nptr, nlen, lim);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 size_t ustrp__replace(struct Ustr_pool *p, struct Ustr **ps1,
@@ -155,7 +160,12 @@ USTR_CONF_I_PROTO
 size_t ustrp_replace(struct Ustr_pool *p, struct Ustrp **ps1,
                      const struct Ustrp *srch,
                      const struct Ustrp *repl, size_t lim)
-{ return (ustrp__replace(p, USTR__PPTR(ps1), &srch->s, &repl->s, lim)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__replace(p, &tmp, &srch->s, &repl->s, lim);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 
 USTR_CONF_i_PROTO
 size_t ustrp__replace_inline_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
@@ -284,6 +294,10 @@ USTR_CONF_I_PROTO
 size_t ustrp_replace_rep_chr(struct Ustr_pool *p, struct Ustrp **ps1,
                              char odata, size_t olen, 
                              char ndata, size_t nlen, size_t lim)
-{ return (ustrp__replace_rep_chr(p, USTR__PPTR(ps1),
-                                 odata, olen, ndata, nlen, lim)); }
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__replace_rep_chr(p, &tmp, odata, olen, ndata, nlen, lim);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
 #endif
