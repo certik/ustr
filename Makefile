@@ -8,10 +8,11 @@ VERS_ESONAME =1
 VERS_ESO     =$(VERS_ESONAME).0.1
 
 DESTDIR =
-datadir=/usr/share
-libdir=/usr/lib
-bindir=/usr/bin
-includedir=/usr/include
+prefix=/usr
+datadir=$(prefix)/share
+libdir=$(prefix)/lib
+bindir=$(prefix)/bin
+includedir=$(prefix)/include
 SHRDIR=$(datadir)/ustr-$(VERS_FULL)
 DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
 EXAMDIR=$(datadir)/ustr-$(VERS_FULL)/examples
@@ -376,6 +377,7 @@ ustr-conf.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 		$(HIDE)have_stdint_h=0; dbg1=0; dbg2=0; \
                 sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
                 if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
+                if test -f "$(prefix)/include/stdint.h"; then have_stdint_h=1; fi; \
                 if test -f "$(includedir)/stdint.h"; then have_stdint_h=1; fi; \
 		sed -e "s,@HAVE_STDINT_H@,$$have_stdint_h,g" -e "s,@USE_ASSERT@,$$dbg1,g" -e "s,@USE_EOS_MARK@,$$dbg2,g" -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
 
@@ -384,6 +386,7 @@ ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 		$(HIDE)have_stdint_h=0; dbg1=1; dbg2=1; \
                 sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
                 if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
+                if test -f "$(prefix)/include/stdint.h"; then have_stdint_h=1; fi; \
                 if test -f "$(includedir)/stdint.h"; then have_stdint_h=1; fi; \
 		sed -e "s,@HAVE_STDINT_H@,$$have_stdint_h,g" -e "s,@USE_ASSERT@,$$dbg1,g" -e "s,@USE_EOS_MARK@,$$dbg2,g" -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
 

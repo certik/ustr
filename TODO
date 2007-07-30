@@ -4,8 +4,6 @@
 
  ** in txt2html etc.
 
- prefix= in Makefile
-
  errno in ustr_io and ustr_split/ustr_replace
 
  Have malloc_check_ptr() calls in assert_valid() somehow, Ustrp is a problem
