@@ -1,7 +1,5 @@
  FIX
  ---
- Fix the whole VA_COPY mess, probably needs: autofoo*.c
-
  ** in txt2html etc.
 
  Have malloc_check_ptr() calls in assert_valid() somehow, Ustrp is a problem
