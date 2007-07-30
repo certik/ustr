@@ -20,12 +20,11 @@
 #define USTR__RETARDED_SNPRINTF_MIN (USTR__SNPRINTF_LOCAL * 2)
 #define USTR__RETARDED_SNPRINTF_MAX (1024 * 1024 * 256)
 
-#ifndef USTR_CONF_HAVE_RETARDED_VSNPRINTF /* safe side, but see above */
+#ifndef USTR_CONF_HAVE_RETARDED_VSNPRINTF /* safeish, but see above */
 #define USTR_CONF_HAVE_RETARDED_VSNPRINTF 1
 #endif
 
 #include <stdio.h>  /* vsnprintf */
-#include <errno.h>  /* ENOMEM, for fmt */
 
 #if USTR_CONF_HAVE_VA_COPY
 # if USTR_CONF_HAVE_RETARDED_VSNPRINTF

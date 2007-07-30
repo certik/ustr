@@ -78,13 +78,16 @@ int ustrp__io_getfilename(void *p, struct Ustr **ps1, const char *name)
 {
   FILE *fp = fopen(name, "rb");
   int ret = USTR_FALSE;
+  int save_errno = 0;
   
   if (!fp)
     return (USTR_FALSE);
-
+  
   ret = ustrp__io_getfile(p, ps1, fp);
   
+  save_errno = errno;
   fclose(fp);
+  errno = save_errno;
   
   return (ret);
 }
@@ -158,6 +161,7 @@ int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
   size_t ret = 0;
   size_t clen = ustr_len(*ps1);
   struct Ustr *next = NULL;
+  int save_errno = 0;
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
 
@@ -180,12 +184,14 @@ int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
   
   ret = fwrite(ustr_cstr(*ps1), 1, beglen, fp);
 
+  save_errno = errno;
   if (next && (ret == beglen))
     ustrp__sc_free2(p, ps1, next);
   else if ((ret == beglen) && (beglen == clen))
     ustrp__sc_del(p, ps1);
   else
     ustrp__del_subustr(p, ps1, 1, ret); /* don't need to check */
+  errno = save_errno;
   
   return (ret == beglen);
 }
@@ -233,16 +239,18 @@ USTR_CONF_i_PROTO int ustrp__io_putfilename(void *p, struct Ustr **ps1,
 {
   FILE *fp = fopen(name, mode);
   int ret = USTR_FALSE;
-  int fpret = USTR_FALSE;
   
   if (!fp)
     return (USTR_FALSE);
   
-  ret = ustrp__io_put(p, ps1, fp, ustr_len(*ps1));
-  fpret = fclose(fp);
-
-  if (ret) /* if everything OK, defer to the fclose() return value */
-    ret = !fpret;
+  if ((ret = ustrp__io_put(p, ps1, fp, ustr_len(*ps1))))
+    ret = !fclose(fp); /* if everything OK, defer to the fclose() return */
+  else
+  {
+    int save_errno = errno; /* otherwise ignore it */
+    fclose(fp);
+    errno = save_errno;
+  }
   
   return (ret);
 }

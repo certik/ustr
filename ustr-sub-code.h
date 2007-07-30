@@ -269,7 +269,7 @@ int ustrp__sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   char *ptr;
   char save_end;
   
-  va_copy(nap, ap);
+  USTR__VA_COPY(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
@@ -283,10 +283,7 @@ int ustrp__sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
     return (ustrp__sub_buf(p, ps1, pos, buf, rc));
   
   if (!ustrp__sub_undef(p, ps1, pos--, rc))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
     return (USTR_FALSE);
-  }
   
   ptr = ustr_wstr(*ps1);
   
@@ -382,7 +379,7 @@ int ustrp__sc_sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   char *ptr;
   char save_end;
   
-  va_copy(nap, ap);
+  USTR__VA_COPY(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
@@ -396,10 +393,7 @@ int ustrp__sc_sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
     return (ustrp__sc_sub_buf(p, ps1, pos, len, buf, rc));
   
   if (!ustrp__sc_sub_undef(p, ps1, pos--, len, rc))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
     return (USTR_FALSE);
-  }
   
   ptr = ustr_wstr(*ps1);
   

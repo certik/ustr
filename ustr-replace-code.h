@@ -23,7 +23,7 @@ size_t ustrp__replace_inline_buf(struct Ustr_pool *p, struct Ustr **ps1,
   
   while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
   {
-    ustr_sc_sub_buf(ps1, pos, olen, nptr, nlen);
+    ustrp__sc_sub_buf(p, ps1, pos, olen, nptr, nlen);
     pos += nlen - 1;
     
     ++num;
@@ -31,6 +31,8 @@ size_t ustrp__replace_inline_buf(struct Ustr_pool *p, struct Ustr **ps1,
       break;
   }
   
+  if (!num)
+    errno = 0; /* only way to tell between FAILURE and NO REPLACEMENTS */
   return (num);
 }
 
@@ -66,7 +68,10 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
     else
     {
       if (tlen > (tlen + (nlen - olen)))
+      {
+        errno = USTR__ENOMEM;
         return (0);
+      }
       tlen += (nlen - olen);
     }
 
@@ -76,20 +81,23 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   }
 
   if (!num) /* minor speed hack */
+  {
+    errno = 0; /* only way to tell between FAILURE and NO REPLACEMENTS */
     return (0);
-
+  }
+  
   if (!tlen) /* minor speed hack */
     return (ustrp__del(p, ps1, ustr_len(*ps1)) ? num : 0);
   
-  if (ustr_fixed(*ps1))
-  {
+  if (ustr_fixed(*ps1) && ((num <= 2) || ustr_limited(*ps1)))
+  { /* if we will have to memmove() a lot, double copy */
     if (tlen <= ustr_size(*ps1))
       return (ustrp__replace_inline_buf(p, ps1, optr, olen, nptr, nlen, lim));
     if (ustr_limited(*ps1))
       goto fail_alloc;
   }
   
-  if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1), tlen)))
+  if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), tlen)))
     goto fail_alloc;
   
   rptr = ustr_cstr(*ps1);
@@ -105,8 +113,8 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
     pos  += olen - 1;
     USTR_ASSERT(pos == (roff + blen + olen));
     
-    ustr_sub_buf(&ret, lpos, tptr, blen); lpos += blen;
-    ustr_sub_buf(&ret, lpos, nptr, nlen); lpos += nlen;
+    ustrp__sub_buf(p, &ret, lpos, tptr, blen); lpos += blen;
+    ustrp__sub_buf(p, &ret, lpos, nptr, nlen); lpos += nlen;
 
     roff = pos;
     
@@ -114,9 +122,15 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
     if (lim && (num == lim))
       break;
   }
-  ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
-  
-  ustr_sc_free2(ps1, ret);
+  ustrp__sub_buf(p, &ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
+
+  if (!ustr_fixed(*ps1) || (tlen > ustr_size(*ps1)))
+    ustrp__sc_free2(p, ps1, ret);
+  else
+  { /* fixed buffer, with multiple replacements ... but fits */
+    ustrp__set(p, ps1, ret);
+    ustrp__free(p, ret);
+  }
   
   return (num);
 
@@ -185,14 +199,16 @@ size_t ustrp__replace_inline_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
 
   while ((pos = ustr_srch_rep_chr_fwd(*ps1, pos, odata, olen)))
   {
-    ustr_sc_sub_rep_chr(ps1, pos, olen, ndata, nlen);
+    ustrp__sc_sub_rep_chr(p, ps1, pos, olen, ndata, nlen);
     pos += nlen - 1;
     
     ++num;
     if (lim && (num == lim))
       break;
   }
-  
+
+  if (!num)
+    errno = 0; /* only way to tell between FAILURE and NO REPLACEMENTS */
   return (num);
 }
 
@@ -227,7 +243,10 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
     else
     {
       if (tlen > (tlen + (nlen - olen)))
+      {
+        errno = USTR__ENOMEM;
         return (0);
+      }
       tlen += (nlen - olen);
     }
 
@@ -237,13 +256,16 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
   }
 
   if (!num) /* minor speed hack */
+  {
+    errno = 0; /* only way to tell between FAILURE and NO REPLACEMENTS */
     return (0);
-
+  }
+  
   if (!tlen) /* minor speed hack */
     return (ustrp__del(p, ps1, ustr_len(*ps1)) ? num : 0);
   
-  if (ustr_fixed(*ps1))
-  {
+  if (ustr_fixed(*ps1) && ((num <= 2) || ustr_limited(*ps1)))
+  { /* if we will have to memmove() a lot, double copy */
     if (tlen <= ustr_size(*ps1))
       return (ustrp__replace_inline_rep_chr(p, ps1, odata,olen,ndata,nlen,lim));
     
@@ -251,7 +273,7 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
       goto fail_alloc;
   }
   
-  if (!(ret = ustr_dupx_undef(USTR__DUPX_FROM(*ps1), tlen)))
+  if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(*ps1), tlen)))
     goto fail_alloc;
   
   rptr = ustr_cstr(*ps1);
@@ -267,8 +289,8 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
     pos  += olen - 1;
     USTR_ASSERT(pos == (roff + blen + olen));
     
-    ustr_sub_buf(&ret,     lpos, tptr,  blen); lpos += blen;
-    ustr_sub_rep_chr(&ret, lpos, ndata, nlen); lpos += nlen;
+    ustrp__sub_buf(p, &ret,     lpos, tptr,  blen); lpos += blen;
+    ustrp__sub_rep_chr(p, &ret, lpos, ndata, nlen); lpos += nlen;
 
     roff = pos;
     
@@ -276,9 +298,15 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
     if (lim && (num == lim))
       break;
   }
-  ustr_sub_buf(&ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
+  ustrp__sub_buf(p, &ret, lpos, rptr + roff, ustr_len(*ps1) - roff);
   
-  ustr_sc_free2(ps1, ret);
+  if (!ustr_fixed(*ps1) || (tlen > ustr_size(*ps1)))
+    ustrp__sc_free2(p, ps1, ret);
+  else
+  { /* fixed buffer, with multiple replacements ... but fits */
+    ustrp__set(p, ps1, ret);
+    ustrp__free(p, ret);
+  }
   
   return (num);
 

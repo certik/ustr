@@ -26,6 +26,7 @@ struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
   if (!slen || (off == len))
   {
     ustrp__free(p, ret);
+    errno = 0; /* only way to tell between FAILURE and END */
     return (USTR_NULL);
   }
   
@@ -125,6 +126,7 @@ struct Ustr *ustrp__split_spn_chrs(struct Ustr_pool *p, const struct Ustr *s1,
   if (!slen || (off == len))
   {
     ustrp__free(p, ret);
+    errno = 0; /* only way to tell between FAILURE and END */
     return (USTR_NULL);
   }
 

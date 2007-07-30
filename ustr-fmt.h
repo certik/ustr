@@ -8,13 +8,16 @@
 
 #include <stdarg.h> /* va_list for *printf like functionality */
 
-#ifndef USTR_CONF_HAVE_VA_COPY
-#if defined(__GNUC__) &&                                                \
-    (__GNUC__ > 2) || ((__GNUC__ == 2) && (__GNUC_MINOR__ >= 96))
-#define USTR_CONF_HAVE_VA_COPY 1
+/* We assume this is enough,
+ * C99 specifies that va_copy() exists and is a macro */
+#ifdef va_copy
+# define USTR_CONF_HAVE_VA_COPY 1
+# define USTR__VA_COPY(x, y)   va_copy(x, y)
+#elif __va_copy
+# define USTR_CONF_HAVE_VA_COPY 1
+# define USTR__VA_COPY(x, y) __va_copy(x, y)
 #else
-#define USTR_CONF_HAVE_VA_COPY 0
-#endif
+# define USTR_CONF_HAVE_VA_COPY 0
 #endif
 
 #if USTR_CONF_HAVE_VA_COPY
@@ -63,7 +66,6 @@ USTR_CONF_E_PROTO
 struct Ustrp *ustrp_dup_vfmt(struct Ustr_pool *, const char *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_L((2)) USTR__COMPILE_ATTR_FMT(2, 0);
-#endif
 
 /* even without va_copy, we can still do *_fmt using lots of copy and paste */
 USTR_CONF_E_PROTO int ustr_add_fmt(struct Ustr **, const char *, ...)
@@ -102,6 +104,7 @@ struct Ustrp *ustrp_dupx_fmt(struct Ustr_pool *, size_t, size_t, int, int,
 USTR_CONF_E_PROTO
 struct Ustrp *ustrp_dup_fmt(struct Ustr_pool *, const char *, ...)
     USTR__COMPILE_ATTR_NONNULL_L((2)) USTR__COMPILE_ATTR_FMT(2, 3);
+#endif
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-fmt-internal.h"

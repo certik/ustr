@@ -3,7 +3,6 @@
 
 #include <getopt.h>
 #include <unistd.h>
-#include <errno.h>
 
 static const char colour_beg[] = "\x1B[01;31m";
 static const char colour_end[] = "\x1B[00m\x1B[K";
@@ -49,10 +48,8 @@ static int fgrep(Ustr **ps1)
 
   if (ustr_cmp_eq(fgrep_srch, fgrep_repl))
     num = ustr_srch_fwd(*ps1, 0, fgrep_srch);
-  else
-    num = ustr_replace(ps1, fgrep_srch, fgrep_repl, !first_only);
-
-  if (ustr_enomem(*ps1))
+  else if (!(num = ustr_replace(ps1, fgrep_srch, fgrep_repl, !first_only)) &&
+           errno)
     die(prog_name, strerror(ENOMEM));
 
   if (!num)
@@ -80,7 +77,7 @@ static void loop(FILE *in, const char *prog_name)
     if (line != USTR(buf_line)) /* re-init */
       ustr_sc_free2(&line, USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0));
   }
-  if (ustr_enomem(line))
+  if (errno)
     die(prog_name, strerror(errno));
 }
 

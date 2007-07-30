@@ -110,7 +110,7 @@ int ustrp__sc_ensure_owner(struct Ustr_pool *p, struct Ustr **ps1)
   
   if (!ret)
     return (USTR_FALSE);
-      
+  
   ustrp__sc_free2(p, ps1, ret);
 
   return (USTR_TRUE);

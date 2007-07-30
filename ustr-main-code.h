@@ -179,7 +179,8 @@ USTR_CONF_I_PROTO int ustr_owner(const struct Ustr *s1)
 USTR_CONF_I_PROTO int ustr_setf_enomem_err(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
-  
+
+  errno = USTR__ENOMEM;
   if (!ustr_owner(s1))
     return (USTR_FALSE);
   
@@ -190,6 +191,7 @@ USTR_CONF_I_PROTO int ustr_setf_enomem_clr(struct Ustr *s1)
 {
   USTR_ASSERT(ustr_assert_valid(s1));
   
+  errno = 0;
   if (!ustr_owner(s1))
     return (USTR_FALSE);
   
@@ -439,7 +441,10 @@ USTR_CONF_I_PROTO size_t ustr_init_size(size_t sz, size_t rbytes, int exact,
     rsz = oh + len;
   
     if (rsz < len)
+    {
+      errno = USTR__EINVAL;
       return (0);
+    }
 
     USTR_ASSERT((lbytes <= ustr__nb(rsz)) ||
                 ((lbytes == 2) && sz && (ustr__nb(rsz) == 1)));
@@ -499,8 +504,8 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   if (sz)
   {
     if (sz < (1 + 2 + 2 + 1))
-      return (USTR_NULL);
-
+      goto val_inval;
+    
     if (rbytes <= 1)
       rbytes = 2;
     if (lbytes <= 1)
@@ -510,7 +515,7 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   oh = 1 + rbytes + lbytes + sbytes + eos_len;
 
   if (rsz < (oh + len))
-    return (USTR_NULL);
+    goto val_inval;
   
   if (sz)     sized  = USTR__BIT_HAS_SZ;
   if (nexact) nexact = USTR__BIT_NEXACT;
@@ -539,6 +544,10 @@ struct Ustr *ustr_init_alloc(void *data, size_t rsz, size_t sz,
   USTR_ASSERT( ustr_owner(ret));
 
   return (ret);
+
+ val_inval:
+  errno = USTR__EINVAL;
+  return (USTR_NULL);
 }
 USTR_CONF_I_PROTO
 struct Ustrp *ustrp_init_alloc(void *data, size_t rsz, size_t sz,
@@ -657,7 +666,10 @@ struct Ustr *ustrp__dupx_undef(struct Ustr_pool *p, size_t sz, size_t rbytes,
     ret = USTR_CONF_MALLOC(rsz);
   
   if (!ret)
+  {
+    errno = USTR__ENOMEM;
     return (USTR_NULL);
+  }
   
   chk = ustr_init_alloc(ret, rsz, sz ? rsz : 0, rbytes, exact, emem, len);
   USTR_ASSERT(chk);
@@ -1296,8 +1308,11 @@ int ustrp__add(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   len2 = ustr_len(s2);
 
   if (len1 > (len1 + len2))
+  {
+    errno = USTR__ENOMEM;
     return (USTR_FALSE);
-
+  }
+  
   if (!len2)
     return (USTR_TRUE);
   

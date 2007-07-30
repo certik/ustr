@@ -6,6 +6,18 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
+#include <errno.h>  /* EDOM, EILSEQ, ERANGE, hopefully ENOMEM, etc. */
+
+#ifdef ENOMEM
+# define USTR__ENOMEM ENOMEM
+#else
+# define USTR__ENOMEM EDOM   /* ENOMEM isn't in ISO 9899:1999, *sigh* */
+#endif
+#ifdef EINVAL
+# define USTR__EINVAL EINVAL
+#else
+# define USTR__EINVAL ERANGE /* EINVAL isn't in ISO 9899:1999, *sigh* */
+#endif
 
 /* default sized to 1 ... */
 #define USTR__DUPX_DEF                                  \

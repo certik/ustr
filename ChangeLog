@@ -1,3 +1,13 @@
+2007-07-29  James Antill  <james@and.org>
+
+	* ustr-replace-code.h (ustrp__replace_buf): Fix non-pool function calls
+	on pool access.
+
+	* ustr-fmt.h: Hopefully fix va_copy() snafu, dropping a bunch of code.
+
+	* ustr-main-code.h (ustr_setf_enomem_err): Set errno == ENOMEM, trickles
+	down to all error paths.
+
 2007-07-28  James Antill  <james@and.org>
 
 	* ustr-main-internal.h (USTR__PPTR): Remove macro, it's not safe from

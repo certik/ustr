@@ -219,7 +219,7 @@ int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
   int rc = -1;
   char buf[USTR__SNPRINTF_LOCAL];
   
-  va_copy(nap, ap);
+  USTR__VA_COPY(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
@@ -233,10 +233,7 @@ int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
     return (ustrp__set_buf(p, ps1, buf, rc));
   
   if (!ustrp__set_undef(p, ps1, rc))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
     return (USTR_FALSE);
-  }
   
   vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
 
@@ -315,135 +312,6 @@ USTR_CONF_I_PROTO int ustrp_set_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
   va_end(ap);
   
   return (ret);
-}
-# else
-USTR_CONF_I_PROTO
-int ustr_set_fmt_lim(struct Ustr **ps1, size_t lim, const char *fmt, ...)
-{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
-  va_list ap;
-  char buf[USTR__SNPRINTF_LOCAL];
-  int ret = -1;
-  
-  va_start(ap, fmt);
-  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
-  va_end(ap);
-  
-  if (ret == -1)
-    return (USTR_FALSE);
-
-  if (lim && ((size_t)ret > lim))
-    ret = lim;
-  
-  if ((size_t)ret < sizeof(buf)) /* everything is done */
-    return (ustr_set_buf(ps1, buf, ret));
-  
-  if (!ustr_set_undef(ps1, ret))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
-    return (USTR_FALSE);
-  }
-  
-  va_start(ap, fmt);
-  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
-  va_end(ap);
-
-  USTR_ASSERT(ustr_assert_valid(*ps1));
-  return (USTR_TRUE);
-}
-
-USTR_CONF_I_PROTO int ustrp_set_fmt_lim(struct Ustr_pool *p, struct Ustrp **ps1,
-                                        size_t lim, const char *fmt, ...)
-{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
-  va_list ap;
-  char buf[USTR__SNPRINTF_LOCAL];
-  int ret = -1;
-  
-  va_start(ap, fmt);
-  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
-  va_end(ap);
-  
-  if (ret == -1)
-    return (USTR_FALSE);
-
-  if (lim && ((size_t)ret > lim))
-    ret = lim;
-  
-  if ((size_t)ret < sizeof(buf)) /* everything is done */
-    return (ustrp_set_buf(p, ps1, buf, ret));
-  
-  if (!ustrp_set_undef(p, ps1, ret))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
-    return (USTR_FALSE);
-  }
-  
-  va_start(ap, fmt);
-  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
-  va_end(ap);
-
-  USTR_ASSERT(ustr_assert_valid(*ps1));
-  return (USTR_TRUE);
-}
-
-USTR_CONF_I_PROTO int ustr_set_fmt(struct Ustr **ps1, const char *fmt, ...)
-{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
-  va_list ap;
-  char buf[USTR__SNPRINTF_LOCAL];
-  int ret = -1;
-  
-  va_start(ap, fmt);
-  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
-  va_end(ap);
-  
-  if (ret == -1)
-    return (USTR_FALSE);
-
-  if ((size_t)ret < sizeof(buf)) /* everything is done */
-    return (ustr_set_buf(ps1, buf, ret));
-  
-  if (!ustr_set_undef(ps1, ret))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
-    return (USTR_FALSE);
-  }
-  
-  va_start(ap, fmt);
-  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
-  va_end(ap);
-
-  USTR_ASSERT(ustr_assert_valid(*ps1));
-  return (USTR_TRUE);
-}
-
-USTR_CONF_I_PROTO int ustrp_set_fmt(struct Ustr_pool *p, struct Ustrp **ps1,
-                                    const char *fmt, ...)
-{ /* This version used even if we have va_copy(), due to ustr_set_undef() */
-  va_list ap;
-  char buf[USTR__SNPRINTF_LOCAL];
-  int ret = -1;
-  
-  va_start(ap, fmt);
-  ret = vsnprintf(buf, sizeof(buf), fmt, ap);
-  va_end(ap);
-  
-  if (ret == -1)
-    return (USTR_FALSE);
-
-  if ((size_t)ret < sizeof(buf)) /* everything is done */
-    return (ustrp_set_buf(p, ps1, buf, ret));
-  
-  if (!ustrp_set_undef(p, ps1, ret))
-  {
-    errno = ENOMEM; /* for EILSEQ etc. */
-    return (USTR_FALSE);
-  }
-  
-  va_start(ap, fmt);
-  vsnprintf(ustr_wstr(*ps1), ret + 1, fmt, ap); /* assuming it works now */
-  va_end(ap);
-
-  USTR_ASSERT(ustr_assert_valid(*ps1));
-  return (USTR_TRUE);
 }
 # endif
 #endif
