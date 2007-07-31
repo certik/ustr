@@ -151,15 +151,20 @@ else
     srch=true
   fi
   if $repl; then
-    sub=true
-  fi
-  if $repl && $cfiles; then
+    set=true
     spn=true
     srch=true
+    sub=true
+  fi
+  if $io; then
+    sc=true
   fi
   if $sub; then
     sc=true
     ins=true
+  fi
+  if $spn; then
+    srch=true
   fi
   if $sub && $cfiles; then
     fmt=true
@@ -169,9 +174,6 @@ else
   fi
   if $ins && $cfiles; then
     fmt=true
-  fi
-  if $spn; then
-    srch=true
   fi
 fi
 
@@ -492,7 +494,11 @@ if $fmt; then
   echo '#include "ustr-fmt.h"'  >> $outname
 fi
 
-if $io; then
+if $sc; then
+  echo '#include "ustr-sc.h"' >> $outname
+fi
+
+if $io; then # IO deps. on SC
   echo '#include "ustr-io.h"' >> $outname
 fi
 
@@ -506,10 +512,6 @@ fi
 
 if $pool; then
   echo '#include "ustr-pool.h"'  >> $outname
-fi
-
-if $sc; then
-  echo '#include "ustr-sc.h"' >> $outname
 fi
 
 if $set; then # SET weak deps. on FMT
@@ -534,7 +536,7 @@ if $sub; then # SUB hard deps. on ins, sc, srch, weak dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
 fi
 
-if $repl; then # REPLACE hard deps. on sc, spn, srch, sub
+if $repl; then # REPLACE hard deps. on sc, set, spn, srch, sub
   echo '#include "ustr-replace.h"' >> $outname
 fi
 

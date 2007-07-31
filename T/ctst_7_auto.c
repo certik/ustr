@@ -108,6 +108,25 @@ int tst(void)
   ASSERT(!ustr_fixed(s3));
   ASSERT_EQ(s3, USTR1(\x12, "axxxxxxxxxxxxxxxxd"));
   ustr_free(s3);
+  ASSERT((s3 = ustr_init_fixed(buf_s3, USTR_SIZE_FIXED(15), USTR_FALSE, 0)));
+  ASSERT(!ustr_alloc(s3));
+  ASSERT( ustr_fixed(s3));
+  ASSERT(ustr_set_cstr(&s3, "xxxx"));
+  ASSERT(!ustr_alloc(s3));
+  ASSERT( ustr_fixed(s3));
+  ASSERT_EQ(s3, USTR1(\4, "xxxx"));
+  ASSERT( ustr_replace_cstr(&s3, "x", "yy", 0));
+  ASSERT(!ustr_alloc(s3));
+  ASSERT( ustr_fixed(s3));
+  ASSERT_EQ(s3, USTR1(\x8, "yyyyyyyy"));
+  ASSERT(ustr_set_cstr(&s3, "xxxx"));
+  ASSERT(!ustr_alloc(s3));
+  ASSERT( ustr_fixed(s3));
+  ASSERT_EQ(s3, USTR1(\4, "xxxx"));
+  ASSERT( ustr_replace_rep_chr(&s3, 'x', 1, 'y', 2, 0));
+  ASSERT(!ustr_alloc(s3));
+  ASSERT( ustr_fixed(s3));
+  ASSERT_EQ(s3, USTR1(\x8, "yyyyyyyy"));
   
   return (EXIT_SUCCESS);
 }

@@ -229,6 +229,7 @@ int tst(void)
   ustr_sc_free(&haystack);
   /* rep_chr -- expand string */
   haystack = ustr_dup_cstr("yyyyByy");
+  ASSERT(!ustr_replace_rep_chr(&haystack, 'x', 2, 'a', 2, 0));
   ASSERT(ustr_replace_rep_chr(&haystack, 'y', 2, 'a', 3, 0) == 3);
   ASSERT(ustr_cmp_cstr_eq(haystack, "aaaaaaBaaa"));
   /* rep_chr -- limited number of searches */

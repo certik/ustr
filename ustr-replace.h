@@ -7,7 +7,6 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-#ifdef USTR_SRCH_H
 USTR_CONF_E_PROTO size_t ustr_replace_buf(struct Ustr **,
                                              const void *, size_t,
                                              const void *, size_t, size_t)
@@ -39,10 +38,6 @@ USTR_CONF_E_PROTO
 size_t ustrp_replace_rep_chr(struct Ustr_pool *, struct Ustrp **,
                              char, size_t, char, size_t, size_t)
   USTR__COMPILE_ATTR_NONNULL_L((2));
-#endif
-
-#ifdef USTR_SUB_H
-#endif
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-replace-internal.h"
@@ -53,12 +48,10 @@ size_t ustrp_replace_rep_chr(struct Ustr_pool *, struct Ustrp **,
 #endif
 
 #if USTR_CONF_COMPILE_USE_INLINE
-# ifdef USTR_SRCH_H
 USTR_CONF_II_PROTO
 size_t ustrp_replace_cstr(struct Ustr_pool *p, struct Ustrp **s1,
                              const char *oc, const char *nc, size_t lim)
 { return (ustrp_replace_buf(p, s1, oc, strlen(oc), nc, strlen(nc), lim)); }
-# endif
 USTR_CONF_II_PROTO
 size_t ustr_replace_cstr(struct Ustr **s1, const char *oc, const char *nc,
                             size_t lim)

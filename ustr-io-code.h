@@ -160,8 +160,6 @@ int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
 {
   size_t ret = 0;
   size_t clen = ustr_len(*ps1);
-  struct Ustr *next = NULL;
-  int save_errno = 0;
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
 
@@ -170,28 +168,24 @@ int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
   if (!beglen)
     return (USTR_TRUE);
 
-  if (!ustr_owner(*ps1) && (beglen != clen))
-  {
-    const char *ptr = ustr_cstr(*ps1) + beglen;
-    size_t      len =      clen       - beglen;
-    
-    if (!(next = ustrp__dupx_buf(p, USTR__DUPX_FROM(*ps1), ptr, len)))
-    {
-      ustr_setf_enomem_err(*ps1);
-      return (USTR_FALSE);
-    }
-  }
+  /* Because most errors only happen when a fflush() of the stdio stream,
+   * you have to assume that any data written is indeterminate anyway.
+   * So only go to the effort of making it determinate if beglen != clen.
+   * If you need efficient IO, that you can deal with errors for, use Vstr
+   * and POSIX IO. */
+  if ((beglen != clen) && !ustrp__sc_ensure_owner(p, ps1))
+    return (USTR_FALSE);
   
-  ret = fwrite(ustr_cstr(*ps1), 1, beglen, fp);
-
-  save_errno = errno;
-  if (next && (ret == beglen))
-    ustrp__sc_free2(p, ps1, next);
-  else if ((ret == beglen) && (beglen == clen))
-    ustrp__sc_del(p, ps1);
-  else
-    ustrp__del_subustr(p, ps1, 1, ret); /* don't need to check */
-  errno = save_errno;
+  if ((ret = fwrite(ustr_cstr(*ps1), 1, beglen, fp)))
+  {
+    int save_errno = errno;
+    
+    if (beglen == clen) /* Note not ret == clen, see above */
+      ustrp__sc_del(p, ps1);
+    else
+      ustrp__del_subustr(p, ps1, 1, ret); /* if it fails, see above */
+    errno = save_errno;
+  }
   
   return (ret == beglen);
 }

@@ -3,6 +3,7 @@
 
 #include <getopt.h>
 #include <unistd.h>
+#include <errno.h>
 
 static const char colour_beg[] = "\x1B[01;31m";
 static const char colour_end[] = "\x1B[00m\x1B[K";

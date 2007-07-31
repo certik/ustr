@@ -46,6 +46,7 @@ static void tst_getline(FILE *fp)
   ASSERT(!ustr_len(s1));
 }
 
+#include <errno.h>
 int tst(void)
 {
   Ustr_pool *pool = ustr_pool_make_pool();
@@ -230,7 +231,28 @@ int tst(void)
   
   remove(ustr_cstr(s2));
 
+  ASSERT((sp1 = ustrp_dup_buf(pool, ustr_cstr(s2), ustr_len(s2))));
+  
+  ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)));
+
+  errno = 0;
   ASSERT(!ustr_io_putfilename(&s2, "doesn't exist.txt", "rb"));
+#ifdef __linux__
+  ASSERT(errno == ENOENT);
+#endif
+  errno = 0;
+  ASSERT(!ustr_io_putfilename(&s2, "./doesn't exist/foo.txt", "rb"));
+#ifdef __linux__
+  ASSERT(errno == ENOENT);
+#endif
+  ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)));
+
+#ifdef __linux__
+  ASSERT(!ustr_io_putfilename(&s2, "/dev/full", "wb"));
+  ASSERT(errno == ENOSPC);
+  ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)) ||
+         !ustr_len(s2));
+#endif
   
   ustr_pool_free(pool);
 

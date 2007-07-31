@@ -4,7 +4,6 @@
 #error " Include ustr-replace.h before this file."
 #endif
 
-#ifdef USTR_SRCH_H
 USTR_CONF_i_PROTO
 size_t ustrp__replace_inline_buf(struct Ustr_pool *p, struct Ustr **ps1,
                                  const void *optr, size_t olen,
@@ -328,4 +327,3 @@ size_t ustrp_replace_rep_chr(struct Ustr_pool *p, struct Ustrp **ps1,
   *ps1 = USTRP(tmp);
   return (ret);
 }
-#endif

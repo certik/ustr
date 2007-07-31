@@ -1,3 +1,7 @@
+2007-07-30  James Antill  <james@and.org>
+
+	* ustr-io-code.h (ustr_io_put): Fix for IO error path.
+
 2007-07-29  James Antill  <james@and.org>
 
 	* ustr-replace-code.h (ustrp__replace_buf): Fix non-pool function calls
