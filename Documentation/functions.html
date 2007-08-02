@@ -2170,7 +2170,8 @@
 </p><p>  This function will replace the characters in the Ustr starting at the
  specified position using data from the buffer.
  
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p></p><p>  The Ustr will be automatically be resized if necessary.
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The Ustr will be automatically be resized if necessary.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2221,7 +2222,7 @@
  and replaces max_replacements (Parameter[4]) matches with the
  "replacement" (Parameter[3]).
 
-Note: 
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  If max_replacements (Parameter[4]) is 0, this function will replace ALL
  occurrences.
 
@@ -2235,52 +2236,58 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: character to replace with<br>Type<strong>[4]</strong>: char
 </td></tr><tr><td>Parameter<strong>[5]</strong>: number of characters to replace with<br>Type<strong>[5]</strong>: size_t nlen
 </td></tr><tr><td>Parameter<strong>[6]</strong>: maximum number of replacements to make (use 0 for unlimited)<br>Type<strong>[6]</strong>: size_t lim
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>  This function replaces a repeating sequence of characters with another
-</p><p>  repeating sequence of characters. 
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function replaces a repeating sequence of characters with another
+ repeating sequence of characters. 
 
-</p><p>  For example:
-</p><p>  Ustr *data = ustr_dup_cstr(&quot;xxxBxxCxDxxx&quot;);
-</p><p>  ustr_replace_rep_chr(&amp;data,'x',2,'y',1, 0)
-</p><p>  would change data to be &quot;yxByCxDyx&quot;.
+  For example...
+</p><pre>
+  Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
+  ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
 
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p></p><p>  Changing the same letter the same number of times is considered a No-op
-</p><p>  since it is a vast performance improvement this way. So passing in 
-</p><p>  (&amp;data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
-</p><p>  unchanged.
+  ...would change data to be "yxByCxDyx".
+
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+  Changing the same letter the same number of times is considered a No-op
+ since it is a vast performance improvement this way. So passing in 
+ (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
+ unchanged.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Splitting%20a%20Ustr">Splitting a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_split_buf">ustr_split_buf()</a>
 <br>Returns: pointer to a Ustr representing the next token<br>Type: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: pointer to a constant Ustr to be split<br>Type<strong>[1]</strong>: const struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: pointer to an offset variable<br>Type<strong>[2]</strong>: size_t *
-</td></tr><tr><td>Parameter<strong>[3]</strong>: buffer to use as split search pattern <br>Type<strong>[3]</strong>: const void *
-</td></tr><tr><td>Parameter<strong>[4]</strong>: length of buffer<br>Type<strong>[4]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[5]</strong>: pointer to a Ustr where the return value will be placed<br>Type<strong>[5]</strong>: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[6]</strong>: flags<br>Type<strong>[6]</strong>: unsigned int
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>  This function works in a manner similar to strtok(). Each time the function
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a constant Ustr to be split<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to an offset<br>Type<strong>[2]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Buffer to use as split search pattern <br>Type<strong>[3]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of buffer<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to a Ustr to be used as the return value<br>Type<strong>[5]</strong>: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Flags with the prefix USTR_FLAG_SPLIT_<br>Type<strong>[6]</strong>: unsigned int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+  This function works in a manner similar to strtok(). Each time the function
  is called, the string inside of the buffer (Parameter[3]) is used as a search
  pattern at which to split. If the pattern is not found, the entire string
- will be returned. A <a href="constants#USTR_NULL">USTR_NULL</a> return value indicates there are no more
+ will be returned. A USTR_NULL return value indicates there are no more
  tokens remaining.
 
-</p><p>  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
- Passing a <a href="constants#USTR_NULL">USTR_NULL</a> to this parameter will cause the string to be allocated
+  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
+ Passing a USTR_NULL to this parameter will cause the string to be allocated
  and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
- this parameter, each call to <a href="functions#ustr_split_buf">ustr_split_buf()</a> will free what is in this
- pointer and place the new token there (when <a href="constants#USTR_NULL">USTR_NULL</a> is returned, nothing
+ this parameter, each call to ustr_split_buf() will free what is in this
+ pointer and place the new token there (when USTR_NULL is returned, nothing
  needs to be free'd).
 
-  For example...
+  For example, given...
 </p><pre>
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
-  const char *sep = "=";
+  const char *sep = ",";
   size_t off;
   flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
 
-  ...there are two options...
+</pre><p> ...there are two options...
 </p><pre>
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
     /* do something with tok -- but next iteration of the loop will free
@@ -2288,29 +2295,33 @@ Note:
   }
    /* tok is now NULL again after the loop */
 
-   OR
-
+</pre><p> ...or...
+</p><pre>
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
     /*do something with tok, and it will NOT be freed in the next iteration of
     the loop*/
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
-  
-  Note:
 
-  Explanation of flags --
-    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
-    example: splitting "a,b," using separator "," will return the tokens "a,"
-    and "b," whereas without this option only "a" and "b" would be returned.
-    
-    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
-    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
+</pre><p> ...the former of which being the safer option.
+</p><p>  
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  There are several flags that will alter the behaviour of this function,
+ all of which are prefixed with <a href="constants#USTR_FLAG_SPLIT_">USTR_FLAG_SPLIT_</a>.
 
-    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
-    configuration parameters as the original string.
+</p><p>  Explanation of flags --
+</p><p>    <b>USTR_FLAG_SPLIT_RET_SEP</b> -- return the separator along with the tokens. For
+</p><p>    example: splitting &quot;a,b,&quot; using separator &quot;,&quot; will return the tokens &quot;a,&quot;
+</p><p>    and &quot;b,&quot; whereas without this option only &quot;a&quot; and &quot;b&quot; would be returned.
+</p><p>    
+</p><p>    <b>USTR_FLAG_SPLIT_RET_NON</b> -- return empty tokens. For example: splitting
+</p><p>    &quot;a,,b&quot; with separator &quot;,&quot; will return the tokens {&quot;a&quot; &quot;&quot; &quot;b&quot;}.
 
-    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
-    the above.
+</p><p>    <b>USTR_FLAG_SPLIT_KEEP_CONFIG</b> -- force token Ustrs to have same
+</p><p>    configuration parameters as the original string.
+
+</p><p>    <b>USTR_FLAG_SPLIT_DEF</b> -- default flags, which is a shortcut for none of
+</p><p>    the above.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2321,8 +2332,8 @@ Note:
 </td></tr><tr><td>Parameter<strong>[3]</strong>: pointer to a Ustr to use as the split search pattern<br>Type<strong>[3]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: pointer to a Ustr where the return value will be placed<br>Type<strong>[4]</strong>: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: flags<br>Type<strong>[5]</strong>: unsigned int
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>   Works like ustr_split_buf() but takes a Ustr as the split search pattern
-  instead.
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>   Works like <a href="functions#ustr_split_buf">ustr_split_buf()</a> but takes a Ustr as the split search pattern
+</p><p>  instead.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2334,8 +2345,8 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: pointer to a Ustr where the return value will be placed<br>Type<strong>[4]</strong>: struct Ustr *
  Parameter[5]:
 <br>Type<strong>[5]</strong>: unsigned int
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>  Works like ustr_split_buf() but takes a C string as the split search
-  pattern.
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>  Works like <a href="functions#ustr_split_buf">ustr_split_buf()</a> but takes a C string as the split search
+</p><p>  pattern.
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_split_spn_chrs">ustr_split_spn_chrs()</a>
@@ -2346,7 +2357,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the string of set of bytes<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to a Ustr where the return value will be placed<br>Type<strong>[5]</strong>: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[6]</strong>: flags<br>Type<strong>[6]</strong>: unsigned int
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>  Works like ustr_split_buf() but uses the individual characters in the
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p></p><p>  Works like <a href="functions#ustr_split_buf">ustr_split_buf()</a> but uses the individual characters in the
  separator string (Parameter[3]) as search patterns. It will split if ANY of
  these individual characters are matched (much like strtok()). For example:
  if splitting "thisXisYaZtest" with the separator string "XYZ" the tokens
@@ -2359,7 +2370,7 @@ Note:
 <br>Returns: A boolean flag of either <a href="constants#USTR_TRUE">USTR_TRUE</a> or USTR_FALSE<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function tries it's best to find out if the string is a valid utf-8
+</p><p>  This function tries it's best to find out if the string is a valid utf-8
  string.
 
 
@@ -2369,10 +2380,10 @@ Note:
 <br>Returns: The number of the utf-8 characters in the Ustr<br>Type: size_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function counts the number of utf-8 characters inn the Ustr.
+</p><p>  This function counts the number of utf-8 characters inn the Ustr.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  This function gives undefined answers on strings that aren't utf-8 valid.
+</p><p>  This function gives undefined answers on strings that aren't utf-8 valid.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2380,7 +2391,7 @@ Note:
 <br>Returns: ssize_t <br>Type: ssize_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function is NOT DOCUMENTED YET!
+</p><p>  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2391,7 +2402,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function is NOT DOCUMENTED YET!
+</p><p>  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2402,7 +2413,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function is NOT DOCUMENTED YET!
+</p><p>  This function is NOT DOCUMENTED YET!
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20ASCII%20integer%20numbers%20from%20a%20Ustr">Parsing ASCII integer numbers from a Ustr</a></h2>
@@ -2418,11 +2429,11 @@ Note:
 </td></tr><tr><td>Parameter<strong>[7]</strong>: Return length of parsed number<br>Type<strong>[7]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[8]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[8]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function parses an ASCII representation of a number from a
+</p><p>  This function parses an ASCII representation of a number from a
  Ustr (Parameter[1]) starting at the offset (Parameter[2]).
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  If stdint.h isn't available this function won't be available.
+</p><p>  If stdint.h isn't available this function won't be available.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2434,11 +2445,11 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> with the minimum and maximum
  values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  If stdint.h isn't available this function won't be available.
+</p><p>  If stdint.h isn't available this function won't be available.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2450,11 +2461,11 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> with the minimum and maximum
  values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  If stdint.h isn't available this function won't be available.
+</p><p>  If stdint.h isn't available this function won't be available.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2469,7 +2480,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[7]</strong>: Return length of parsed number<br>Type<strong>[7]</strong>:  size_t *
 </td></tr><tr><td>Parameter<strong>[8]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[8]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_uintmaxx() but returns an unsigned long,
+</p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> but returns an unsigned long,
  it is always available even when stdint.h isn't.
 
 
@@ -2482,7 +2493,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_ulongx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
 
 
@@ -2495,7 +2506,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_ulongx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
 
 
@@ -2508,7 +2519,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_ulongx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as 0 and UINT_MAX, and the thousands seperator as "_".
 
 
@@ -2521,7 +2532,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_ulongx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
 
 
@@ -2534,7 +2545,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_ulongx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
 
 
@@ -2547,7 +2558,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return length of parsed number<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like ustr_parse_ulongx() with the minimum and maximum
+</p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
  values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
 
 
@@ -2557,8 +2568,8 @@ Note:
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function makes sure that the Ustr string is owned when it returns (Ie.
- ustr_owner() returns USTR_TRUE), or it fails to allocate.
+</p><p>  This function makes sure that the <a href="design">Ustr string</a> is owned when it returns (Ie.
+ <a href="functions#ustr_owner">ustr_owner()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), or it fails to allocate.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2566,7 +2577,7 @@ Note:
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function reverses all the bytes in a Ustr string, so the last one
+</p><p>  This function reverses all the bytes in a <a href="design">Ustr string</a>, so the last one
  becomes the first and the second to last becomes the second etc.
 
 
@@ -2575,7 +2586,7 @@ Note:
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function changes any ASCII upper case bytes into ASCII lower case bytes.
+</p><p>  This function changes any ASCII upper case bytes into ASCII lower case bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2583,7 +2594,7 @@ Note:
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function changes any ASCII lower case bytes into ASCII upper case bytes.
+</p><p>  This function changes any ASCII lower case bytes into ASCII upper case bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2591,8 +2602,8 @@ Note:
 <br>Returns: Writable pointer to the start of data in the Ustr, or NULL<br>Type: char *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works like calling ustr_sc_ensure_owner(), to make sure the
- Ustr string is writable, and if that succeeds it returns ustr_wstr(). On
+</p><p>  This function works like calling <a href="functions#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>, to make sure the
+ <a href="design">Ustr string</a> is writable, and if that succeeds it returns <a href="functions#ustr_wstr">ustr_wstr()</a>. On
  failure it returns NULL.
 
 
@@ -2603,7 +2614,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least16_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function adds a binary representation of a value (Parameter[2]) to the
+</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
@@ -2613,7 +2624,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least32_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function adds a binary representation of a value (Parameter[2]) to the
+</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
@@ -2623,7 +2634,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Binary value to add to the Ustr<br>Type<strong>[2]</strong>: uint_least64_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function adds a binary representation of a value (Parameter[2]) to the
+</p><p>  This function adds a binary representation of a value (Parameter[2]) to the
  Ustr (Parameter[1]).
 
 
@@ -2634,7 +2645,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function parses a binary representation from a Ustr (Parameter[1]) 
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
@@ -2644,7 +2655,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function parses a binary representation from a Ustr (Parameter[1]) 
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
@@ -2654,7 +2665,7 @@ Note:
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start parsing at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function parses a binary representation from a Ustr (Parameter[1]) 
+</p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
 
 
@@ -2664,14 +2675,14 @@ Note:
 <br>Returns: Ustr pool object<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This allocates a new pool.
+</p><p>  This allocates a new pool.
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_make_subpool">ustr_pool_make_subpool()</a>
 <br>Returns: struct Ustr_pool *<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr_pool *<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This allocates a new pool as a child of the passed in pool (Parameter[1]),
+</p><p>  This allocates a new pool as a child of the passed in pool (Parameter[1]),
  The pool can be freed and cleared independantly of the parent pool however
  free and clear operations on the parent pool are automatically applied to all
  child pools.
@@ -2682,10 +2693,10 @@ Note:
 <br>Returns: Nothing<br>Type: void
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This deallocates a pool, and all sub-pools.
+</p><p>  This deallocates a pool, and all sub-pools.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  This also operates on all sub-pools.
+</p><p>  This also operates on all sub-pools.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2693,11 +2704,11 @@ Note:
 <br>Returns: Nothing<br>Type: void
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This allows all the data in the pool to be reused, it may also free some/all
+</p><p>  This allows all the data in the pool to be reused, it may also free some/all
  of the data in the pool, from the pool API.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  This also operates on all sub-pools.
+</p><p>  This also operates on all sub-pools.
 
 
 </td></tr></table>

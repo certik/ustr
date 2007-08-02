@@ -3046,6 +3046,7 @@ Function: ustr_sub_buf()
  specified position using data from the buffer.
  
  Note:
+
   The Ustr will be automatically be resized if necessary.
 
 
@@ -3137,7 +3138,8 @@ Function: ustr_replace()
  and replaces max_replacements (Parameter[4]) matches with the
  "replacement" (Parameter[3]).
 
-Note: 
+ Note: 
+
   If max_replacements (Parameter[4]) is 0, this function will replace ALL
  occurrences.
 
@@ -3165,19 +3167,24 @@ Function: ustr_replace_rep_chr()
  Type[6]: size_t lim
 
  Explanation:
-  This function replaces a repeating sequence of characters with another
-  repeating sequence of characters. 
 
-  For example:
+  This function replaces a repeating sequence of characters with another
+ repeating sequence of characters. 
+
+  For example...
+
   Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
   ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
-  would change data to be "yxByCxDyx".
+
+  ...would change data to be "yxByCxDyx".
+
 
  Note:
+
   Changing the same letter the same number of times is considered a No-op
-  since it is a vast performance improvement this way. So passing in 
-  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
-  unchanged.
+ since it is a vast performance improvement this way. So passing in 
+ (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
+ unchanged.
 
 
 Section: Splitting a Ustr
@@ -3185,25 +3192,26 @@ Function: ustr_split_buf()
  Returns: pointer to a Ustr representing the next token
  Type: struct Ustr *
 
- Parameter[1]: pointer to a constant Ustr to be split
+ Parameter[1]: Pointer to a constant Ustr to be split
  Type[1]: const struct Ustr *
 
- Parameter[2]: pointer to an offset variable
+ Parameter[2]: Pointer to an offset
  Type[2]: size_t *
 
- Parameter[3]: buffer to use as split search pattern 
+ Parameter[3]: Buffer to use as split search pattern 
  Type[3]: const void *
 
- Parameter[4]: length of buffer
+ Parameter[4]: Length of buffer
  Type[4]: size_t
 
- Parameter[5]: pointer to a Ustr where the return value will be placed
+ Parameter[5]: Pointer to a Ustr to be used as the return value
  Type[5]: struct Ustr *
 
- Parameter[6]: flags
+ Parameter[6]: Flags with the prefix USTR_FLAG_SPLIT_
  Type[6]: unsigned int
 
  Explanation:
+
   This function works in a manner similar to strtok(). Each time the function
  is called, the string inside of the buffer (Parameter[3]) is used as a search
  pattern at which to split. If the pattern is not found, the entire string
@@ -3217,15 +3225,15 @@ Function: ustr_split_buf()
  pointer and place the new token there (when USTR_NULL is returned, nothing
  needs to be free'd).
 
-  For example...
+  For example, given...
 
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
-  const char *sep = "=";
+  const char *sep = ",";
   size_t off;
   flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
 
-  ...there are two options...
+ ...there are two options...
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
     /* do something with tok -- but next iteration of the loop will free
@@ -3233,29 +3241,20 @@ Function: ustr_split_buf()
   }
    /* tok is now NULL again after the loop */
 
-   OR
+ ...or...
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
     /*do something with tok, and it will NOT be freed in the next iteration of
     the loop*/
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
+
+ ...the former of which being the safer option.
   
-  Note:
+ Note:
 
-  Explanation of flags --
-    **USTR_FLAG_SPLIT_RET_SEP** -- return the separator along with the tokens. For
-    example: splitting "a,b," using separator "," will return the tokens "a,"
-    and "b," whereas without this option only "a" and "b" would be returned.
-    
-    **USTR_FLAG_SPLIT_RET_NON** -- return empty tokens. For example: splitting
-    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
-
-    **USTR_FLAG_SPLIT_KEEP_CONFIG** -- force token Ustrs to have same
-    configuration parameters as the original string.
-
-    **USTR_FLAG_SPLIT_DEF** -- default flags, which is a shortcut for none of
-    the above.
+  There are several flags that will alter the behaviour of this function,
+ all of which are prefixed with USTR_FLAG_SPLIT_.
 
 
 Function: ustr_split()
