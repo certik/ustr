@@ -155,6 +155,12 @@ sub synopsis
     OUT->print("\n");
   }
 
+sub conv_A_refs
+  {
+    s/\\/\\\\/g;
+    s![*]{2}([^*]+)[*]{2}!\\fB$1\\fR!g;
+  }
+
 sub convert()
   {
     my $in_pre_tag = "";
@@ -210,6 +216,8 @@ sub convert()
 		    $_ = ".br\n$1: $3\n";
 		  }
 	      }
+
+	    conv_A_refs(1);
 	  }
 	elsif (/^ \.\.\./)
 	  {
@@ -239,10 +247,12 @@ sub convert()
 		    $_ = "\n.br\n" . $_;
 		  }
 	      }
+
+	    conv_A_refs(0);
 	  }
         else
           {
-		s/\\/\\\\/g;
+	    conv_A_refs(0);
 	  }
 
 	$in_const = $next_in_const;

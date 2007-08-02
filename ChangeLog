@@ -1,3 +1,9 @@
+2007-08-01  James Antill  <james@and.org>
+
+	* Documentation/txt2html.pl (conv_A_refs): Turn **X** into X as bold.
+
+	* Documentation/txt2man.pl (conv_A_refs): Turn **X** into X as bold.
+
 2007-07-30  James Antill  <james@and.org>
 
 	* ustr-io-code.h (ustr_io_put): Fix for IO error path.

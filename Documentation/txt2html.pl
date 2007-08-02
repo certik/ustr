@@ -144,6 +144,8 @@ sub conv_A_refs
 
     s{([^#"_0-9A-Z])USTR_([_0-9A-Z]+)([^_0-9A-Z(*])}
       {$1<a href="constants#USTR_$2">USTR_$2</a>$3}g;
+
+    s![*]{2}([^*]+)[*]{2}!<b>$1</b>!g;
   }
 
 sub convert()
