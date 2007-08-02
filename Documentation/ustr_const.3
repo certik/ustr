@@ -7,19 +7,133 @@
 .sp
 .br
 .ti \w'  'u
+\fBUSTR_CONF_INCLUDE_CODEONLY_HEADERS\fR
+.br
+.ti \w'  'u
+\fBUSTR_CONF_USE_EOS_MARK\fR
+.br
+.ti \w'  'u
+\fBUSTR_CONF_USE_ASSERT\fR
+.br
+.ti \w'  'u
 \fBUSTR_CONF_COMPILE_USE_ATTRIBUTES\fR
 .br
 .ti \w'  'u
 \fBUSTR_CONF_COMPILE_TYPEDEF\fR
+.br
+.ti \w'  'u
+\fBUSTR_CONF_COMPILE_USE_INLINE\fR
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_BEG_CONST1\fR
+.br
+.ti \w'  'u
+\fBUSTR_BEG_CONST2\fR
+.br
+.ti \w'  'u
+\fBUSTR_BEG_CONST4\fR
+.br
+.ti \w'  'u
+\fBUSTR_BEG_FIXED1\fR
+.br
+.ti \w'  'u
+\fBUSTR_BEG_FIXED2\fR
+.br
+.ti \w'  'u
+\fBUSTR_BEG_FIXED4\fR
+.br
+.ti \w'  'u
+\fBUSTR_BEG_FIXED8\fR
+.br
+.ti \w'  'u
+\fBUSTR_END_ALOCDx\fR
+.br
+.ti \w'  'u
+\fBUSTR_END_CONSTx\fR
+.br
+.ti \w'  'u
+\fBUSTR_END_FIXEDx\fR
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_NULL\fR
+.br
+.ti \w'  'u
+\fBUSTR_POOL_NULL\fR
+.br
+.ti \w'  'u
+\fBUSTR_TRUE\fR
+.br
+.ti \w'  'u
+\fBUSTR_FALSE\fR
 .sp
 .br
 .ti \w'  'u
 \fBUSTR_CNTL_OPT_GET_REF_BYTES\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_SET_REF_BYTES\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_HAS_SIZE\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_SET_HAS_SIZE\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_EXACT_BYTES\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_SET_EXACT_BYTES\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_MEM\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_MEM\fR
 
 .ti
 .HY
 .SH "DESCRIPTION"
 .SH Compile switch constants
+
+.br
+\fBConstant: \fR USTR_CONF_INCLUDE_CODEONLY_HEADERS
+
+.br
+\fBExplanation:\fR
+
+.br
+  This switch controls whether all the code will be included as inline functions. Having this be non-zero means that you don't have to link against the library.
+
+.br
+\fBConstant: \fR USTR_CONF_USE_EOS_MARK
+
+.br
+\fBExplanation:\fR
+
+.br
+  This switch turns on End of String markers, so any bounds overflow will be noticed by ustr_assert_valid().
+.sp
+\fBNote:\fR
+
+.br
+  Changing this will not do anything useful unless USTR_CONF_INCLUDE_CODEONLY_HEADERS is non-zero.
+
+.br
+\fBConstant: \fR USTR_CONF_USE_ASSERT
+
+.br
+\fBExplanation:\fR
+
+.br
+  This switch turns USTR_ASSERT() calls on, so the code within them will be evaluated. Note that there are many calls to ustr_assert_valid() within USTR_ASSERT() macros and that call is relatively expensive.
+.sp
+\fBNote:\fR
+
+.br
+  Changing this will not do anything useful unless USTR_CONF_INCLUDE_CODEONLY_HEADERS is non-zero.
 
 .br
 \fBConstant: \fR USTR_CONF_COMPILE_USE_ATTRIBUTES
@@ -38,9 +152,169 @@
 
 .br
   This switch controls whether typedef will be used for the structs in the public headers for the library. If the value is 1 then they will be used, if the value is 0 they won't be used at all (and your code will have to use struct tags instead -- note all libraries using ustr should compile without this option set).
+.br
+\fBConstant: \fR USTR_CONF_COMPILE_USE_INLINE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This switch controls whether inline functions will be used in a few cases where the function bodies are very small.
+.sp
+\fBNote:\fR
+
+.br
+  In some cases this is used so that GCC can eliminate calls to strlen(), for the *_cstr() functions.
+
+.SH Constants to created fixed/read-only Ustr's
+.br
+\fBConstant: \fR USTR_BEG_CONST1
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a constant/read-only Ustr that has a length in the range 0-255.
+
+.br
+\fBConstant: \fR USTR_BEG_CONST2
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a constant/read-only Ustr that has a length in the range 0-65535.
+
+.br
+\fBConstant: \fR USTR_BEG_CONST4
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a constant/read-only Ustr that has a length in the range 0-4294967295.
+
+.br
+\fBConstant: \fR USTR_BEG_FIXED1
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-255.
+
+.br
+\fBConstant: \fR USTR_BEG_FIXED2
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-65535.
+
+.br
+\fBConstant: \fR USTR_BEG_FIXED4
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-4294967295.
+
+.br
+\fBConstant: \fR USTR_BEG_FIXED8
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-18446744073709551615.
+.sp
+\fBNote:\fR
+
+.br
+  This macro is only available if the Ustr code was compiled in a 64bit environment.
+
+.br
+\fBConstant: \fR USTR_END_ALOCDx
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the last bytes of an allocated Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
+
+.br
+\fBConstant: \fR USTR_END_CONSTx
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the last bytes of a constant/read-only Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
+
+.br
+\fBConstant: \fR USTR_END_FIXEDx
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is a constant C-style string of the last bytes of a fixed Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
+
+.SH Constants to use in normal code
+.br
+\fBConstant: \fR USTR_NULL
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is merely 0 cast to (struct Ustr *), and can be used anywhere NULL would be but "returns" the correct type.
+
+.br
+\fBConstant: \fR USTR_POOL_NULL
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is merely 0 cast to (struct Ustr_pool *), and can be used anywhere NULL would be but "returns" the correct type.
+
+.br
+\fBConstant: \fR USTR_TRUE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is 1, but shows the intent that a boolean value is expected and not a number.
+
+.br
+\fBConstant: \fR USTR_FALSE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This macro is 0, but shows the intent that a boolean value is expected and not a number.
 
 .SH Constants passed to ustr_cntl_opt()
-
 .br
 \fBConstant: \fR USTR_CNTL_OPT_GET_REF_BYTES
 
@@ -54,5 +328,122 @@ Type\fB[1]\fR: size_t *
 
 .br
   This option will get the default number of bytes used for a reference count when creating Ustr's.
-.SH "SEE ALSO"
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_SET_REF_BYTES
+
+.br
+Parameter\fB[1]\fR: Number of bytes for default reference count in Ustr
+.br
+Type\fB[1]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the default number of bytes used for a reference count when creating Ustr's.
+.sp
+\fBNote:\fR
+
+.br
+  For a single instance, the ustr_dupx_*() functions can be used.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_HAS_SIZE
+
+.br
+Parameter\fB[1]\fR: Default flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: size_t *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the default flag for whether to store an explicit size in created Ustr's.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_SET_HAS_SIZE
+
+.br
+Parameter\fB[1]\fR: Default flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the default flag for whether to store an explicit size in created Ustr's.
+.sp
+\fBNote:\fR
+
+.br
+  For a single instance, the ustr_dupx_*() functions can be used.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_EXACT_BYTES
+
+.br
+Parameter\fB[1]\fR: Default flag for whether to exactly allocate memory
+.br
+Type\fB[1]\fR: size_t *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the default flag for whether to exactly allocate memory when a Ustr needs to be resized.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_SET_EXACT_BYTES
+
+.br
+Parameter\fB[1]\fR: Default flag for whether to exactly allocate memory
+.br
+Type\fB[1]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the default flag for whether to exactly allocate memory when a Ustr needs to be resized.
+.sp
+\fBNote:\fR
+
+.br
+  For a single instance, the ustr_dupx_*() functions can be used.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_MEM
+.br
+Parameter\fB[1]\fR: Pointer to colleciton of function pointers for system allocation
+.br
+Type\fB[1]\fR: struct Ustr_cntl_mem *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the "system" allocation functions (malloc, realloc, free) for allocated Ustr's.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_MEM
+.br
+Parameter\fB[1]\fR: Pointer to colleciton of function pointers for system allocation
+.br
+Type\fB[1]\fR: const struct Ustr_cntl_mem *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the "system" allocation functions (malloc, realloc, free) for allocated Ustr's.
+.sp
+\fBNote:\fR
+
+.br
+  As you would expect the default values are: malloc, realloc, free.
+.br
+  If this option is set after a Ustr has been created, then when freeing or reallocating the existing Ustr the given functions will be used. So they must either be compatible with the default or you must ensure that nothing is allocated before they are set..SH "SEE ALSO"
 .BR ustr (3)

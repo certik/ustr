@@ -25,23 +25,88 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- constants (3)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- constants (28)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
-<li><a href="#indx-Compile_switch_constants">Compile switch constants (2)</a>
-<li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (1)</a></ul>
+<li><a href="#indx-Compile_switch_constants">Compile switch constants (6)</a>
+<li><a href="#indx-Constants_to_created_fixedreadonly_Ustrs">Constants to created fixed/read-only Ustr's (10)</a>
+<li><a href="#indx-Constants_to_use_in_normal_code">Constants to use in normal code (4)</a>
+<li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (8)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
 <li><a id="indx-Compile_switch_constants" href="#Compile_switch_constants">Compile switch constants</a>
 <ul>
+<li class="obj"><a href="#USTR_CONF_INCLUDE_CODEONLY_HEADERS">USTR_CONF_INCLUDE_CODEONLY_HEADERS</a>
+<li class="obj"><a href="#USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a>
+<li class="obj"><a href="#USTR_CONF_USE_ASSERT">USTR_CONF_USE_ASSERT</a>
 <li class="obj"><a href="#USTR_CONF_COMPILE_USE_ATTRIBUTES">USTR_CONF_COMPILE_USE_ATTRIBUTES</a>
 <li class="obj"><a href="#USTR_CONF_COMPILE_TYPEDEF">USTR_CONF_COMPILE_TYPEDEF</a>
+<li class="obj"><a href="#USTR_CONF_COMPILE_USE_INLINE">USTR_CONF_COMPILE_USE_INLINE</a>
+</ul><li><a id="indx-Constants_to_created_fixedreadonly_Ustrs" href="#Constants_to_created_fixedreadonly_Ustrs">Constants to created fixed/read-only Ustr's</a>
+<ul>
+<li class="obj"><a href="#USTR_BEG_CONST1">USTR_BEG_CONST1</a>
+<li class="obj"><a href="#USTR_BEG_CONST2">USTR_BEG_CONST2</a>
+<li class="obj"><a href="#USTR_BEG_CONST4">USTR_BEG_CONST4</a>
+<li class="obj"><a href="#USTR_BEG_FIXED1">USTR_BEG_FIXED1</a>
+<li class="obj"><a href="#USTR_BEG_FIXED2">USTR_BEG_FIXED2</a>
+<li class="obj"><a href="#USTR_BEG_FIXED4">USTR_BEG_FIXED4</a>
+<li class="obj"><a href="#USTR_BEG_FIXED8">USTR_BEG_FIXED8</a>
+<li class="obj"><a href="#USTR_END_ALOCDx">USTR_END_ALOCDx</a>
+<li class="obj"><a href="#USTR_END_CONSTx">USTR_END_CONSTx</a>
+<li class="obj"><a href="#USTR_END_FIXEDx">USTR_END_FIXEDx</a>
+</ul><li><a id="indx-Constants_to_use_in_normal_code" href="#Constants_to_use_in_normal_code">Constants to use in normal code</a>
+<ul>
+<li class="obj"><a href="#USTR_NULL">USTR_NULL</a>
+<li class="obj"><a href="#USTR_POOL_NULL">USTR_POOL_NULL</a>
+<li class="obj"><a href="#USTR_TRUE">USTR_TRUE</a>
+<li class="obj"><a href="#USTR_FALSE">USTR_FALSE</a>
 </ul><li><a id="indx-Constants_passed_to_ustr_cntl_opt" href="#Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt()</a>
 <ul>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_REF_BYTES">USTR_CNTL_OPT_GET_REF_BYTES</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_REF_BYTES">USTR_CNTL_OPT_SET_REF_BYTES</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_HAS_SIZE">USTR_CNTL_OPT_GET_HAS_SIZE</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_HAS_SIZE">USTR_CNTL_OPT_SET_HAS_SIZE</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_EXACT_BYTES">USTR_CNTL_OPT_GET_EXACT_BYTES</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_EXACT_BYTES">USTR_CNTL_OPT_SET_EXACT_BYTES</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
 </ul></ul>
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Compile%20switch%20constants">Compile switch constants</a></h2>
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CONF_INCLUDE_CODEONLY_HEADERS">USTR_CONF_INCLUDE_CODEONLY_HEADERS</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This switch controls whether all the code will be included as inline
+ functions. Having this be non-zero means that you don't have to link against
+ the library.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This switch turns on End of String markers, so any bounds overflow will be
+ noticed by <a href="functions#ustr_assert_valid">ustr_assert_valid()</a>.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Changing this will not do anything useful unless
+ <a href="constants#USTR_CONF_INCLUDE_CODEONLY_HEADERS">USTR_CONF_INCLUDE_CODEONLY_HEADERS</a> is non-zero.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CONF_USE_ASSERT">USTR_CONF_USE_ASSERT</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This switch turns <a href="functions#USTR_ASSERT">USTR_ASSERT()</a> calls on, so the code within them will be
+ evaluated. Note that there are many calls to <a href="functions#ustr_assert_valid">ustr_assert_valid()</a> within
+ <a href="functions#USTR_ASSERT">USTR_ASSERT()</a> macros and that call is relatively expensive.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Changing this will not do anything useful unless
+ <a href="constants#USTR_CONF_INCLUDE_CODEONLY_HEADERS">USTR_CONF_INCLUDE_CODEONLY_HEADERS</a> is non-zero.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_CONF_COMPILE_USE_ATTRIBUTES">USTR_CONF_COMPILE_USE_ATTRIBUTES</a>
@@ -63,12 +128,149 @@
  struct tags instead -- note all libraries using ustr should compile without
  this option set).
 
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CONF_COMPILE_USE_INLINE">USTR_CONF_COMPILE_USE_INLINE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This switch controls whether inline functions will be used in a few cases
+ where the function bodies are very small.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  In some cases this is used so that GCC can eliminate calls to strlen(), for
+ the *_cstr() functions.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20to%20created%20fixed%2fread%2donly%20Ustr%27s">Constants to created fixed/read-only Ustr's</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_CONST1">USTR_BEG_CONST1</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ constant/read-only Ustr that has a length in the range 0-255.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_CONST2">USTR_BEG_CONST2</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ constant/read-only Ustr that has a length in the range 0-65535.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_CONST4">USTR_BEG_CONST4</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ constant/read-only Ustr that has a length in the range 0-4294967295.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_FIXED1">USTR_BEG_FIXED1</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ fixed Ustr that has a length in the range 0-255.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_FIXED2">USTR_BEG_FIXED2</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ fixed Ustr that has a length in the range 0-65535.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_FIXED4">USTR_BEG_FIXED4</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ fixed Ustr that has a length in the range 0-4294967295.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_BEG_FIXED8">USTR_BEG_FIXED8</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the first byte of a
+ fixed Ustr that has a length in the range 0-18446744073709551615.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This macro is only available if the Ustr code was compiled in a 64bit
+ environment.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_END_ALOCDx">USTR_END_ALOCDx</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the last bytes of an
+ allocated Ustr.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Unless <a href="constants#USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a> is non-zero, this is just the NIL byte.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_END_CONSTx">USTR_END_CONSTx</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the last bytes of a
+ constant/read-only Ustr.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Unless <a href="constants#USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a> is non-zero, this is just the NIL byte.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_END_FIXEDx">USTR_END_FIXEDx</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is a constant C-style string of the last bytes of a
+ fixed Ustr.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Unless <a href="constants#USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a> is non-zero, this is just the NIL byte.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20to%20use%20in%20normal%20code">Constants to use in normal code</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_NULL">USTR_NULL</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is merely 0 cast to (struct Ustr *), and can be used anywhere NULL
+ would be but "returns" the correct type.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_POOL_NULL">USTR_POOL_NULL</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is merely 0 cast to (struct Ustr_pool *), and can be used anywhere
+ NULL would be but "returns" the correct type.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TRUE">USTR_TRUE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is 1, but shows the intent that a boolean value is expected and not
+ a number.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FALSE">USTR_FALSE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This macro is 0, but shows the intent that a boolean value is expected and not
+ a number.
+
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20passed%20to%20ustr_cntl_opt%28%29">Constants passed to
 			 	<a id="ustr_cntl_opt()"><a href="functions#ustr_cntl_opt">ustr_cntl_opt()</a></a>
 
 		      </a></h2>
-
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_REF_BYTES">USTR_CNTL_OPT_GET_REF_BYTES</a>
 
@@ -77,6 +279,82 @@
 </p><p>  This option will get the default number of bytes used for a reference count
  when creating Ustr's.
 
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_REF_BYTES">USTR_CNTL_OPT_SET_REF_BYTES</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Number of bytes for default reference count in Ustr<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the default number of bytes used for a reference count
+ when creating Ustr's.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  For a single instance, the ustr_dupx_*() functions can be used.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_HAS_SIZE">USTR_CNTL_OPT_GET_HAS_SIZE</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: size_t *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the default flag for whether to store an explicit size
+ in created Ustr's.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_HAS_SIZE">USTR_CNTL_OPT_SET_HAS_SIZE</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the default flag for whether to store an explicit size
+ in created Ustr's.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  For a single instance, the ustr_dupx_*() functions can be used.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_EXACT_BYTES">USTR_CNTL_OPT_GET_EXACT_BYTES</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to exactly allocate memory<br>Type<strong>[1]</strong>: size_t *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the default flag for whether to exactly allocate memory
+ when a Ustr needs to be resized.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_EXACT_BYTES">USTR_CNTL_OPT_SET_EXACT_BYTES</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to exactly allocate memory<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the default flag for whether to exactly allocate memory
+ when a Ustr needs to be resized.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  For a single instance, the ustr_dupx_*() functions can be used.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to colleciton of function pointers for system allocation<br>Type<strong>[1]</strong>: struct Ustr_cntl_mem *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the &quot;system&quot; allocation functions (malloc, realloc, free)
+ for allocated Ustr's.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to colleciton of function pointers for system allocation<br>Type<strong>[1]</strong>: const struct Ustr_cntl_mem *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the &quot;system&quot; allocation functions (malloc, realloc, free)
+ for allocated Ustr's.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  As you would expect the default values are: malloc, realloc, free.
+</p><p>  If this option is set after a Ustr has been created, then when freeing or
+ reallocating the existing Ustr the given functions will be used. So they must
+ either be compatible with the default or you must ensure that nothing is
+ allocated before they are set.
 
 </td></tr></table>
 </body></html>
