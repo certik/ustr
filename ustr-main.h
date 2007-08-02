@@ -237,9 +237,12 @@ USTR__COMPILE_ASSERT(sizeof(struct Ustrp) == sizeof(struct Ustr),
 #define USTR__BITS_LIMITED                     USTR__BIT_HAS_SZ
 
 /* constant string macros */
-#define USTR_BEG_RO1     "\x01"
-#define USTR_BEG_RO2     "\x02"
-#define USTR_BEG_RO4     "\x03"
+#define USTR_BEG_CONST1     "\x01"
+#define USTR_BEG_CONST2     "\x02"
+#define USTR_BEG_CONST4     "\x03"
+#define USTR_BEG_RO1        "\x01" /* compat. only */
+#define USTR_BEG_RO2        "\x02" /* compat. only */
+#define USTR_BEG_RO4        "\x03" /* compat. only */
 #define USTR_BEG_FIXED2  "x112233"
 #define USTR_BEG_FIXED4  "x1122223333"         /* Likely? */
 #if USTR_CONF_HAVE_64bit_SIZE_MAX
@@ -264,18 +267,18 @@ USTR__COMPILE_ASSERT((sizeof(USTR_END_CONSTx) == sizeof(USTR_END_FIXEDx)),
 #define USTRP(x) ((struct Ustrp *) x)
 
 #define USTR1(x1, y)                                                    \
-    USTR(USTR_BEG_RO1 #x1                             y USTR_END_CONSTx)
+    USTR(USTR_BEG_CONST1 #x1                             y USTR_END_CONSTx)
 #define USTR2(x1, x2, y)                                                \
-    USTR(USTR_BEG_RO2 #x2 #x1                         y USTR_END_CONSTx)
+    USTR(USTR_BEG_CONST2 #x2 #x1                         y USTR_END_CONSTx)
 #define USTR4(x1, x2, x3, x4, y)                   /* Likely? */        \
-    USTR(USTR_BEG_RO4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx)
+    USTR(USTR_BEG_CONST4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx)
 
 #define USTRP1(x1, y)                                                   \
-    USTRP(USTR_BEG_RO1 #x1                             y USTR_END_CONSTx)
+    USTRP(USTR_BEG_CONST1 #x1                             y USTR_END_CONSTx)
 #define USTRP2(x1, x2, y)                                               \
-    USTRP(USTR_BEG_RO2 #x2 #x1                         y USTR_END_CONSTx)
+    USTRP(USTR_BEG_CONST2 #x2 #x1                         y USTR_END_CONSTx)
 #define USTRP4(x1, x2, x3, x4, y)                   /* Likely? */       \
-    USTRP(USTR_BEG_RO4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx)
+    USTRP(USTR_BEG_CONST4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx)
 
 /*
  *    ================ English description of struct Ustr ================
