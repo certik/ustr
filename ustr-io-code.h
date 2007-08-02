@@ -4,8 +4,9 @@
 #error " You should have already included ustr-io.h, or just include ustr.h."
 #endif
 
-USTR_CONF_i_PROTO int ustrp__io_get(void *p, struct Ustr **ps1, FILE *fp,
-                                    size_t minlen, size_t *got)
+USTR_CONF_i_PROTO
+int ustrp__io_get(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp,
+                  size_t minlen, size_t *got)
 {
   size_t olen = ustr_len(*ps1);
   size_t ret  = 0;
@@ -34,8 +35,9 @@ USTR_CONF_i_PROTO int ustrp__io_get(void *p, struct Ustr **ps1, FILE *fp,
 USTR_CONF_I_PROTO
 int ustr_io_get(struct Ustr **ps1, FILE *fp, size_t minlen, size_t *got)
 { return (ustrp__io_get(0, ps1, fp, minlen, got)); }
-USTR_CONF_I_PROTO int ustrp_io_get(void *p, struct Ustrp **ps1, FILE *fp,
-                                   size_t minlen, size_t *got)
+USTR_CONF_I_PROTO
+int ustrp_io_get(struct Ustr_pool *p, struct Ustrp **ps1, FILE *fp,
+                 size_t minlen, size_t *got)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_get(p, &tmp, fp, minlen, got);
@@ -43,7 +45,8 @@ USTR_CONF_I_PROTO int ustrp_io_get(void *p, struct Ustrp **ps1, FILE *fp,
   return (ret);
 }
 
-USTR_CONF_i_PROTO int ustrp__io_getfile(void *p, struct Ustr **ps1, FILE *fp)
+USTR_CONF_i_PROTO
+int ustrp__io_getfile(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp)
 {
   const size_t blksz = (1024 * 8) - (1 + 8 + 8 + 8 + sizeof(USTR_END_ALOCDx));
   size_t num = blksz;
@@ -65,7 +68,7 @@ USTR_CONF_I_PROTO
 int ustr_io_getfile(struct Ustr **ps1, FILE *fp)
 { return (ustrp__io_getfile(0, ps1, fp)); }
 USTR_CONF_I_PROTO
-int ustrp_io_getfile(void *p, struct Ustrp **ps1, FILE *fp)
+int ustrp_io_getfile(struct Ustr_pool *p, struct Ustrp **ps1, FILE *fp)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_getfile(p, &tmp, fp);
@@ -74,7 +77,8 @@ int ustrp_io_getfile(void *p, struct Ustrp **ps1, FILE *fp)
 }
 
 USTR_CONF_i_PROTO
-int ustrp__io_getfilename(void *p, struct Ustr **ps1, const char *name)
+int ustrp__io_getfilename(struct Ustr_pool *p, struct Ustr **ps1,
+                          const char *name)
 {
   FILE *fp = fopen(name, "rb");
   int ret = USTR_FALSE;
@@ -95,7 +99,8 @@ USTR_CONF_I_PROTO
 int ustr_io_getfilename(struct Ustr **ps1, const char *name)
 { return (ustrp__io_getfilename(0, ps1, name)); }
 USTR_CONF_I_PROTO
-int ustrp_io_getfilename(void *p, struct Ustrp **ps1, const char *name)
+int ustrp_io_getfilename(struct Ustr_pool *p, struct Ustrp **ps1,
+                         const char *name)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_getfilename(p, &tmp, name);
@@ -110,7 +115,8 @@ int ustrp_io_getfilename(void *p, struct Ustrp **ps1, const char *name)
 # define USTR__IO_GETC(x) getc(x)
 #endif
 
-USTR_CONF_i_PROTO int ustrp__io_getline(void *p, struct Ustr **ps1, FILE *fp)
+USTR_CONF_i_PROTO
+int ustrp__io_getline(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp)
 {
   int val = EOF;
   size_t olen = 0;
@@ -147,7 +153,7 @@ USTR_CONF_I_PROTO
 int ustr_io_getline(struct Ustr **ps1, FILE *fp)
 { return (ustrp__io_getline(0, ps1, fp)); }
 USTR_CONF_I_PROTO
-int ustrp_io_getline(void *p, struct Ustrp **ps1, FILE *fp)
+int ustrp_io_getline(struct Ustr_pool *p, struct Ustrp **ps1, FILE *fp)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_getline(p, &tmp, fp);
@@ -156,7 +162,7 @@ int ustrp_io_getline(void *p, struct Ustrp **ps1, FILE *fp)
 }
 
 USTR_CONF_i_PROTO
-int ustrp__io_put(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
+int ustrp__io_put(struct Ustr_pool *p, struct Ustr **ps1,FILE *fp,size_t beglen)
 {
   size_t ret = 0;
   size_t clen = ustr_len(*ps1);
@@ -193,7 +199,7 @@ USTR_CONF_I_PROTO
 int ustr_io_put(struct Ustr **ps1, FILE *fp, size_t beglen)
 { return (ustrp__io_put(0, ps1, fp, beglen)); }
 USTR_CONF_I_PROTO
-int ustrp_io_put(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
+int ustrp_io_put(struct Ustr_pool *p, struct Ustrp **ps1,FILE *fp,size_t beglen)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_put(p, &tmp, fp, beglen);
@@ -207,8 +213,8 @@ int ustrp_io_put(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
 #else
 # define USTR__IO_PUTC(x, y) putc(x, y)
 #endif
-USTR_CONF_i_PROTO
-int ustrp__io_putline(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
+USTR_CONF_i_PROTO int ustrp__io_putline(struct Ustr_pool *p, struct Ustr **ps1,
+                                        FILE *fp, size_t beglen)
 {
   if (!ustrp__io_put(p, ps1, fp, beglen))
     return (USTR_FALSE);
@@ -219,8 +225,8 @@ int ustrp__io_putline(void *p, struct Ustr **ps1, FILE *fp, size_t beglen)
 USTR_CONF_I_PROTO
 int ustr_io_putline(struct Ustr **ps1, FILE *fp, size_t beglen)
 { return (ustrp__io_putline(0, ps1, fp, beglen)); }
-USTR_CONF_I_PROTO
-int ustrp_io_putline(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
+USTR_CONF_I_PROTO int ustrp_io_putline(struct Ustr_pool *p, struct Ustrp **ps1,
+                                       FILE *fp, size_t beglen)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_putline(p, &tmp, fp, beglen);
@@ -228,8 +234,9 @@ int ustrp_io_putline(void *p, struct Ustrp **ps1, FILE *fp, size_t beglen)
   return (ret);
 }
 
-USTR_CONF_i_PROTO int ustrp__io_putfilename(void *p, struct Ustr **ps1,
-                                            const char *name, const char *mode)
+USTR_CONF_i_PROTO
+int ustrp__io_putfilename(struct Ustr_pool *p, struct Ustr **ps1,
+                          const char *name, const char *mode)
 {
   FILE *fp = fopen(name, mode);
   int ret = USTR_FALSE;
@@ -251,8 +258,9 @@ USTR_CONF_i_PROTO int ustrp__io_putfilename(void *p, struct Ustr **ps1,
 USTR_CONF_I_PROTO
 int ustr_io_putfilename(struct Ustr **ps1, const char *name, const char *mode)
 { return (ustrp__io_putfilename(0, ps1, name, mode)); }
-USTR_CONF_I_PROTO int ustrp_io_putfilename(void *p, struct Ustrp **ps1,
-                                           const char *name, const char *mode)
+USTR_CONF_I_PROTO
+int ustrp_io_putfilename(struct Ustr_pool *p, struct Ustrp **ps1,
+                         const char *name, const char *mode)
 {
   struct Ustr *tmp = &(*ps1)->s;
   int ret = ustrp__io_putfilename(p, &tmp, name, mode);

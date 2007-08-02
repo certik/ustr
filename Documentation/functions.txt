@@ -3185,7 +3185,7 @@ Function: ustr_split_buf()
  Returns: pointer to a Ustr representing the next token
  Type: struct Ustr *
 
- Parameter[1]: pointer to a Ustr to be split
+ Parameter[1]: pointer to a constant Ustr to be split
  Type[1]: const struct Ustr *
 
  Parameter[2]: pointer to an offset variable

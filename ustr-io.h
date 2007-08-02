@@ -33,26 +33,33 @@ int ustr_io_putfilename(struct Ustr **, const char *, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO
-int ustrp_io_get(void *, struct Ustrp **, FILE *, size_t, size_t *)
+int ustrp_io_get(struct Ustr_pool *, struct Ustrp **, FILE *, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_E_PROTO int ustrp_io_getfile(void *, struct Ustrp **, FILE *)
+USTR_CONF_E_PROTO
+int ustrp_io_getfile(struct Ustr_pool *, struct Ustrp **, FILE *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_E_PROTO int ustrp_io_getfilename(void *, struct Ustrp **,const char *)
+USTR_CONF_E_PROTO
+int ustrp_io_getfilename(struct Ustr_pool *, struct Ustrp **,const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
-USTR_CONF_E_PROTO int ustrp_io_getline(void *, struct Ustrp **, FILE *)
+USTR_CONF_E_PROTO int ustrp_io_getline(struct Ustr_pool *, struct Ustrp**,FILE*)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
-USTR_CONF_E_PROTO int ustrp_io_put(void *, struct Ustrp **, FILE *, size_t)
+USTR_CONF_E_PROTO
+int ustrp_io_put(struct Ustr_pool *, struct Ustrp **, FILE *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_E_PROTO int ustrp_io_putline(void *, struct Ustrp **, FILE *, size_t)
+USTR_CONF_E_PROTO
+int ustrp_io_putline(struct Ustr_pool *, struct Ustrp **, FILE *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_EI_PROTO int ustrp_io_putfile(void *, struct Ustrp **, FILE *)
+USTR_CONF_EI_PROTO
+int ustrp_io_putfile(struct Ustr_pool *, struct Ustrp **, FILE *)
    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_EI_PROTO int ustrp_io_putfileline(void *, struct Ustrp **, FILE *)
+USTR_CONF_EI_PROTO
+int ustrp_io_putfileline(struct Ustr_pool *, struct Ustrp **, FILE *)
    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_E_PROTO
-int ustrp_io_putfilename(void *, struct Ustrp **, const char *, const char *)
+int ustrp_io_putfilename(struct Ustr_pool *, struct Ustrp **,
+                         const char *, const char *)
    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
@@ -69,9 +76,11 @@ USTR_CONF_II_PROTO int ustr_io_putfile(struct Ustr **ps1, FILE *fp)
 USTR_CONF_II_PROTO int ustr_io_putfileline(struct Ustr **ps1, FILE *fp)
 { return (ustr_io_putline(ps1, fp, ustr_len(*ps1))); }
 
-USTR_CONF_II_PROTO int ustrp_io_putfile(void *p, struct Ustrp **ps1, FILE *fp)
+USTR_CONF_II_PROTO
+int ustrp_io_putfile(struct Ustr_pool *p, struct Ustrp **ps1, FILE *fp)
 { return (ustrp_io_put(p, ps1, fp, ustrp_len(*ps1))); }
-USTR_CONF_II_PROTO int ustrp_io_putfileline(void *p,struct Ustrp **ps1,FILE *fp)
+USTR_CONF_II_PROTO
+int ustrp_io_putfileline(struct Ustr_pool *p, struct Ustrp **ps1, FILE *fp)
 { return (ustrp_io_putline(p, ps1, fp, ustrp_len(*ps1))); }
 #endif
 

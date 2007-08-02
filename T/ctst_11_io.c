@@ -252,6 +252,17 @@ int tst(void)
   ASSERT(errno == ENOSPC);
   ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)) ||
          !ustr_len(s2));
+
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(ustrp_add(pool, &sp1, sp1));
+  ASSERT(!ustrp_io_putfilename(pool, &sp1, "/dev/full", "wb"));
+  ASSERT(errno == ENOSPC);
 #endif
   
   ustr_pool_free(pool);

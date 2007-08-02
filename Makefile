@@ -34,7 +34,12 @@ CFLAGS  = -O2 -g
 
 # Debug versions...
 WARNS = -W -Wall -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Wno-format-zero-length -Wformat-nonliteral -Wformat-security # -Wfloat-equal -- no floats
-DBG_CFLAGS = $(CFLAGS) $(WARNS) -O1 -ggdb3
+#  Fedora policies/"reviewers" are completely retarded and refuse to allow
+# lowering the "Fedora build flags" even when it activley hurts their users,
+# this makes it easier for them to hurt you. Welcome to the lowest common
+# denominator collective.
+DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS=-O1
+DBG_CFLAGS = $(CFLAGS) $(WARNS) $(DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS)
 
 # Inline tst_*.c and otst_*.c files.
 CFLG_TST =

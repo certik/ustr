@@ -62,8 +62,9 @@ Requires: %{name}-debug = %{version}-%{release}
 %setup -q
 
 %build
-CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ;
-make %{?_smp_mflags} all-shared CFLAGS="$CFLAGS" HIDE=
+# Last variable name explains itself.
+make %{?_smp_mflags} all-shared CFLAGS="${CFLAGS:-%optflags}" HIDE= \
+     DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS=
 
 %check
 %if %{?chk}%{!?chk:1}
@@ -72,7 +73,8 @@ make check HIDE=
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make $@ install bindir=%{_bindir}         mandir=%{_mandir} \
+make $@ install prefix=%{_prefix} \
+                bindir=%{_bindir}         mandir=%{_mandir} \
                 datadir=%{_datadir}       libdir=%{_libdir} \
                 includedir=%{_includedir} \
                 DESTDIR=$RPM_BUILD_ROOT LDCONFIG=/bin/true HIDE=
@@ -120,6 +122,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Aug  1 2007 James Antill <james@and.org> - 1.0.1-0.8.fc7
+- Required to make DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS empty
+- due to so called "review"
+
 * Fri Jul 27 2007 James Antill <james@and.org> - 1.0.1-0.2.fc7
 - Next test release of 1.0.1, lots of fixes from Fedora review.
 
