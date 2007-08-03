@@ -125,6 +125,7 @@ my $current_function = undef;
 sub conv_A_refs
   {
     my $params = shift;
+    my $markup = shift;
 
     s{(\W|^)(Ustr string)(\W|$)}
       {$1<a href="design">$2</a>$3}g;
@@ -145,7 +146,7 @@ sub conv_A_refs
     s{([^#"_0-9A-Z])USTR_([_0-9A-Z]+)([^_0-9A-Z(*])}
       {$1<a href="constants#USTR_$2">USTR_$2</a>$3}g;
 
-    s![*]{2}([^*]+)[*]{2}!<b>$1</b>!g;
+    s![*]{2}([^*]+)[*]{2}!<b>$1</b>!g if ($markup);
   }
 
 sub convert()
@@ -165,6 +166,11 @@ EOL
 	  {
 	    $beg_replace = qw(<br>);
 	  }
+	if ($in_pre_tag)
+	  {
+	    $beg_replace = "</pre>$beg_replace";
+	  }
+
 
 	if (s!^(Constant|Function|Member): (.*)$!$beg_replace<strong>$1: </strong> $2! ||
 	    s!^ Explanation:\s*$!</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>! ||
@@ -172,6 +178,7 @@ EOL
 	    s!^Section:\s*(.*)$!</td></tr></table><table width="90%"><tr><td class="sect"><h2>$1</h2>! ||
 	    0)
 	  {
+	    $in_pre_tag = 0;
 	    if (defined ($1))
             {
               if ($1 eq "Constant")
@@ -217,7 +224,7 @@ EOL
 
                 s/<h2>/<h2><a id="$uri">/;
                 s!</h2>!</a></h2>!;
-		conv_A_refs(0);
+		conv_A_refs(0, 0);
               }
             }
 	  }
@@ -252,17 +259,19 @@ EOL
 		  }
 	      }
 
-	    conv_A_refs(1);
+	    conv_A_refs(1, 0);
 	  }
-	elsif (/^ \.\.\./)
+	elsif ( $in_pre_tag && /^ \.\.\./)
 	  {
 	    if (/\.\.\.$/)
 	      {
+		conv_A_refs(1, 1);
 		$_ = "</pre><p>$_</p><pre>";
 		$in_pre_tag = 1;
 	      }
 	    else
 	      {
+		conv_A_refs(1, 1);
 		$_ = "</pre><p>$_";
 		$in_pre_tag = 0;
 	      }
@@ -270,19 +279,20 @@ EOL
 	elsif (/\.\.\.$/)
 	  {
             $_ = conv_html($_);
+	    conv_A_refs(1, 1);
 	    $_ = "$_</p><pre>";
 	    $in_pre_tag = 1;
 	  }
 	elsif (!$in_pre_tag && /^  /)
 	  {
             $_ = conv_html($_);
+	    conv_A_refs(1, 1);
 	    $_ = "</p><p>$_";
 
-	    conv_A_refs(0);
 	  }
 	elsif (!$in_pre_tag)
 	  {
-	    conv_A_refs(0);
+	    conv_A_refs(1, 1);
 	  }
 
 	$in_const = $next_in_const;

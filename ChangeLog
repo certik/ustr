@@ -1,5 +1,8 @@
 2007-08-02  James Antill  <james@and.org>
 
+	* Documentation/txt2html.pl (convert): Fixup pre parsing to be more
+	resilient.
+
 	* ustr-io-code.h (ustr_io_getdelim): Added new function.
 
 2007-08-01  James Antill  <james@and.org>
