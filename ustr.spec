@@ -100,7 +100,24 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ustr-%{version}
 %{_bindir}/ustr-import
 %{_includedir}/ustr.h
-%{_includedir}/ustr-*.h
+# We need to make sure we don't pickup:
+#  ustr-debug.h and ustr-conf-debug.h
+%{_includedir}/ustr-[bfimpsu]*.h
+#{_includedir}/ustr-b.h
+%{_includedir}/ustr-cmp.h
+%{_includedir}/ustr-cntl.h
+%{_includedir}/ustr-compiler.h
+%{_includedir}/ustr-conf.h
+#{_includedir}/ustr-fmt.h
+#{_includedir}/ustr-io.h
+#{_includedir}/ustr-main.h
+#{_includedir}/ustr-parse.h
+#{_includedir}/ustr-pool.h
+#{_includedir}/ustr-sc.h
+#{_includedir}/ustr-set.h
+#{_includedir}/ustr-spn.h
+#{_includedir}/ustr-srch.h
+#{_includedir}/ustr-utf8.h
 %{_libdir}/pkgconfig/ustr.pc
 %{_libdir}/libustr.so
 %{_datadir}/doc/ustr-devel-%{version}
@@ -122,6 +139,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Aug  2 2007 James Antill <james@and.org> - 1.0.1-0.9.fc7
+- Fix dups in -devel and -debug file lists.
+
 * Wed Aug  1 2007 James Antill <james@and.org> - 1.0.1-0.8.fc7
 - Required to make DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS empty
 - due to so called "review"
