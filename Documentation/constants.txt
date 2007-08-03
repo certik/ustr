@@ -167,12 +167,153 @@ Constant: USTR_END_FIXEDx
   Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
 
 
+Section: Constants to use with parsing numbers: ustr_parse_uintmaxx, etc.
+Constant: USTR_FLAG_PARSE_NUM_DEF
+
+ Explanation:
+
+  Default flags, this is merely 0 but can be used as live documentation.
+
+
+Constant: USTR_FLAG_PARSE_NUM_SEP
+
+ Explanation:
+
+  This flag allows the parsing (and ignoring) of the seperator character, at
+ arbitrary pointers in the number, so "1234" and "1_234" would both parse the
+ same (assuming "_" is the seperator).
+
+
+Constant: USTR_FLAG_PARSE_NUM_OVERFLOW
+
+ Explanation:
+
+  This flag turns on the overflow checking, in other words without it
+ USTR_TYPE_PARSE_NUM_ERR_OVERFLOW will never be returned as an error
+ code.
+
+
+Constant: USTR_FLAG_PARSE_NUM_SPACE
+
+ Explanation:
+
+  This flag allows one or more ' ' (Space) characters before the number
+ or number prefix (Plus Sign, Hyphen).
+
+ Note:
+
+  Other forms of whitespace don't count, this just affects ' '.
+
+
+Constant: USTR_FLAG_PARSE_NUM_NO_BEG_ZERO
+
+ Explanation:
+
+  This flag disallows one or more '0' (Digit Zero) characters before
+ the number.
+
+
+Constant: USTR_FLAG_PARSE_NUM_NO_BEG_PM
+
+ Explanation:
+
+  This flag disallows a plus or a minus character before the number.
+
+
+Constant: USTR_FLAG_PARSE_NUM_NO_NEGATIVE
+
+ Explanation:
+
+  This flag disallows negative values.
+
+
+Constant: USTR_FLAG_PARSE_NUM_EXACT
+
+ Explanation:
+
+  This flag makes the parsing functions return an error if the entire string
+ doesn't contain the number being parsed.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_NONE
+
+ Explanation:
+
+  This error code has the value 0, and means that no error occurred
+ parsing the number.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_ONLY_S
+
+ Explanation:
+
+  This error code means that the Ustr string consisted only of spaces.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM
+
+ Explanation:
+
+  This error code means that the Ustr string consisted only spaces, and
+ a plus or minus sign.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX
+
+ Explanation:
+
+  This error code means that the Ustr string consisted of only spaces, a
+ plus or minus sign and a "0x" base 16 prefix.
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_OOB
+
+ Explanation:
+
+  This error code means that the Ustr string had characters in it that
+ where out of bounds from the working base.
+
+ Note:
+
+  Without the USTR_FLAG_PARSE_NUM_EXACT, this error is ignored as soon as any
+ number is parsed.
+  This out of bounds includes the Ustr string "++" as well as "4A",
+ when parsing in a base less than 11.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_OVERFLOW
+
+ Explanation:
+
+  This error code means that the number parsed from the Ustr string
+ would overflow the type it is being parsed into, this is only returned
+ when the USTR_FLAG_PARSE_NUM_OVERFLOW flag was passed to the parse
+ function.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_NEGATIVE
+
+ Explanation:
+
+  This error code means that the number parsed from the Vstr string
+ starts with a '-' (Hyphen) character when it is supposed to be an
+ unsigned number.
+
+
+Constant: USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO
+
+ Explanation:
+
+  This error code means that the number parsed from the Vstr string
+ starts with a '0' (Digit Zero) character, when the
+ USTR_FLAG_PARSE_NUM_NO_BEG_ZERO flag was passed to the parse function.
+
+
 Section: Constants to pass to ustr_split*
 Constant: USTR_FLAG_SPLIT_DEF
 
  Explanation:
 
-  Default flags, this is merely 0 but can be used a program documentation.
+  Default flags, this is merely 0 but can be used as live documentation.
 
 
 Constant: USTR_FLAG_SPLIT_RET_SEP

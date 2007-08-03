@@ -2617,11 +2617,12 @@ Function: ustr_utf8_spn_chrs_rev()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_chrs_rev() but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_spn_chrs_rev() but given "xy" as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -2641,11 +2642,12 @@ Function: ustr_utf8_spn_fwd()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_fwd() but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_spn_fwd() but given "xy" as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -2665,11 +2667,12 @@ Function: ustr_utf8_spn_rev()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_rev() but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_spn_rev() but given "xy" as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -2689,11 +2692,12 @@ Function: ustr_utf8_spn_cstr_fwd()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_cstr_fwd() but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_spn_cstr_fwd() but given "xy" as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -2713,11 +2717,12 @@ Function: ustr_utf8_spn_cstr_rev()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_cstr_rev() but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -2740,11 +2745,12 @@ Function: ustr_utf8_cspn_chrs_fwd()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_chrs_fwd() but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_cspn_chrs_fwd() but given "xy" as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2767,11 +2773,12 @@ Function: ustr_utf8_cspn_chrs_rev()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_chrs_rev() but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_cspn_chrs_rev() but given "xy" as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2791,11 +2798,12 @@ Function: ustr_utf8_cspn_fwd()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_fwd() but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_cspn_fwd() but given "xy" as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2815,11 +2823,12 @@ Function: ustr_utf8_cspn_rev()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_rev() but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_cspn_rev() but given "xy" as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2839,11 +2848,12 @@ Function: ustr_utf8_cspn_cstr_fwd()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_cstr_fwd() but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_cspn_cstr_fwd() but given "xy" as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2863,11 +2873,12 @@ Function: ustr_utf8_cspn_cstr_rev()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_cstr_rev() but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
  Note:
 
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte
+  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2880,18 +2891,20 @@ Function: ustr_io_get()
  Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]: 
+ Parameter[2]: A pointer to a C file object
  Type[2]: FILE *
 
- Parameter[3]: 
+ Parameter[3]: Number of bytes to read
  Type[3]: size_t
 
- Parameter[4]: 
+ Parameter[4]: Returned number of bytes read
  Type[4]: size_t *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function tries to read a minimum number of bytes from the file object,
+ into the Ustr string. The exact number read is returned, unless (Parameter[4])
+ is NULL.
 
 
 Function: ustr_io_getfile()
@@ -2901,12 +2914,17 @@ Function: ustr_io_getfile()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function calls ustr_io_get() rpeatedly until EOF is encountered.
+
+ Note:
+
+  The errno value when this function ends could either be from fopen(),
+ fread(), or if both of the those succeeded from fclose().
 
 
 Function: ustr_io_getfilename()
@@ -2916,12 +2934,37 @@ Function: ustr_io_getfilename()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const char *
- Type[2]:  const char *
+ Parameter[2]: A C-style string of a filename
+ Type[2]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function opens a specified file, and then calls ustr_io_getfile().
+ Finally closing the FILE * object.
+
+
+Function: ustr_io_getdelim()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
+
+ Parameter[3]: A delimiter byte to stop reading at
+ Type[3]: char
+
+ Explanation:
+
+  This function reads bytes from the file until it hits the delimiter byte.
+
+ Note:
+
+  The delimiter is included, use ustr_del to remove 1 byte from the end if you
+ don't want it.
+  This function assumes a delimiter will happen every 80 bytes or so.
 
 
 Function: ustr_io_getline()
@@ -2931,30 +2974,37 @@ Function: ustr_io_getline()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_getdelim() with '\n' as the
+ delimiter.
 
 
 Function: ustr_io_put()
- Returns: int 
- Type: int 
+ Returns: Success or failure
+ Type: int
 
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Number of bytes to write
+ Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function is the opposite of ustr_io_get(), taking bytes from the
+ beginning of the Ustr and writting them to the file.
+
+ Note:
+
+  Deleting bytes from the begining of a Ustr string is the most inefficient
+ thing to do, so it is recommended to use ustr_io_putfile().
 
 
 Function: ustr_io_putline()
@@ -2964,15 +3014,22 @@ Function: ustr_io_putline()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Number of bytes to write
+ Type[3]: size_t
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_put(), and then writting a '\n' to
+ the file.
+
+ Note:
+
+  This doesn't write a line from the Ustr to the file, if you want that call
+ ustr_io_put() directly, using the return from ustr_srch_chr_fwd() (with a '\n')
+ as the number of bytes argument.
 
 
 Function: ustr_io_putfile()
@@ -2982,12 +3039,13 @@ Function: ustr_io_putfile()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_put() with ustr_len() as the number
+ of bytes.
 
 
 Function: ustr_io_putfileline()
@@ -2997,12 +3055,13 @@ Function: ustr_io_putfileline()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  FILE *
- Type[2]:  FILE *
+ Parameter[2]: A pointer to a C file object
+ Type[2]: FILE *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_putline() with ustr_len() as the
+ number of bytes.
 
 
 Function: ustr_io_putfilename()
@@ -3012,15 +3071,21 @@ Function: ustr_io_putfilename()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const char *
- Type[2]:  const char *
+ Parameter[2]: A C-style string of a filename
+ Type[2]: const char *
 
- Parameter[3]:  const char *
- Type[3]:  const char *
+ Parameter[3]: A C-style string of a filemode (the second argument to fopen)
+ Type[3]: const char *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function opens a specified file, and then calls ustr_io_putfile().
+ Finally closing the FILE * object.
+
+ Note:
+
+  The errno value when this function ends could either be from fopen(),
+ fwrite(), or if both of the those succeeded from fclose().
 
 
 Section: String substitution/replacement
@@ -3230,22 +3295,24 @@ Function: ustr_split_buf()
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
   const char *sep = ",";
-  size_t off;
-  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+  size_t off = 0;
+  unsigned int flags = USTR_FLAGS_SPLIT_DEF;
 
  ...there are two options...
 
-  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
-    /* do something with tok -- but next iteration of the loop will free
-       and overwrite tok, so you must ustr_dup() if you want to keep it */
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), tok, flags)))
+  {
+    /* Do something with tok -- but next iteration of the loop will free
+     * and overwrite tok, so you must ustr_dup() if you want to keep it */
   }
-   /* tok is now NULL again after the loop */
+  /* tok is now NULL again after the loop */
 
  ...or...
 
-  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
-    /*do something with tok, and it will NOT be freed in the next iteration of
-    the loop*/
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), USTR_NULL, flags)))
+  {
+    /* Do something with tok, and it will NOT be freed in the next iteration of
+     * the loop */
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
 
@@ -3254,7 +3321,7 @@ Function: ustr_split_buf()
  Note:
 
   There are several flags that will alter the behaviour of this function,
- all of which are prefixed with USTR_FLAG_SPLIT_.
+ all of which have a common with the default being USTR_FLAG_SPLIT_DEF.
 
 
 Function: ustr_split()
@@ -3348,7 +3415,6 @@ Function: ustr_utf8_valid()
  string.
 
 
-
 Function: ustr_utf8_len()
  Returns: The number of the utf-8 characters in the Ustr
  Type: size_t 
@@ -3374,49 +3440,70 @@ Function: ustr_utf8_width()
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function returns the visible width of the string, assuming it is a valid
+ utf-8 string. This is like converting to wide characters and using wcwidth().
 
 
 Function: ustr_utf8_chars2bytes()
- Returns: size_t 
+ Returns: Length of span in bytes 
  Type: size_t 
 
  Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Position of a span in utf-8 characters
+ Type[2]: size_t
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Length of a span in utf-8 characters
+ Type[3]: size_t
 
- Parameter[4]:  size_t *
- Type[4]:  size_t *
+ Parameter[4]: Returns the position of the span in bytes
+ Type[4]: size_t *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function converts a span, in utf-8 characters, to the same span in bytes.
 
 
 Function: ustr_utf8_bytes2chars()
- Returns: size_t 
+ Returns: Returns the position of a span in utf-8 characters
  Type: size_t 
 
  Parameter[1]: A pointer to a constant Ustr string
  Type[1]: const struct Ustr *
 
- Parameter[2]:  size_t
- Type[2]:  size_t
+ Parameter[2]: Position of a span in bytes
+ Type[2]: size_t
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Length of a span in bytes
+ Type[3]: size_t
 
- Parameter[4]:  size_t *
- Type[4]:  size_t *
+ Parameter[4]: Returns length of a span in utf-8 characters
+ Type[4]: size_t *
 
  Explanation:
 
-  This function is NOT DOCUMENTED YET!
+  This function converts a span, in bytes, to the same span in utf-8 characters.
+
+ Note:
+
+  Because a byte span can start or end within a utf-8 character, converting the
+ return values back into bytes via. ustr_utf8_chars2bytes() may make the span
+ be slightly bigger (position slightly earlier, and the length slightly longer).
+
+
+Function: ustr_sc_utf8_reverse()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function reverses the utf-8 characters in the Ustr string, assuming it
+ is a valid utf-8 string, so the last one becomes the first and the second to
+ last becomes the second etc.
 
 
 Section: Parsing ASCII integer numbers from a Ustr
@@ -3723,7 +3810,7 @@ Function: ustr_sc_reverse()
 
  Explanation:
 
-  This function reverses all the bytes in a Ustr string, so the last one
+  This function reverses all the bytes in the Ustr string, so the last one
  becomes the first and the second to last becomes the second etc.
 
 
