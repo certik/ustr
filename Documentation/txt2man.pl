@@ -157,8 +157,11 @@ sub synopsis
 
 sub conv_A_refs
   {
+    my $ignore = shift;
+    my $markup = shift;
+
     s/\\/\\\\/g;
-    s![*]{2}([^*]+)[*]{2}!\\fB$1\\fR!g;
+    s![*]{2}([^*]+)[*]{2}!\\fB$1\\fR!g if ($markup);
   }
 
 sub convert()
@@ -170,11 +173,11 @@ sub convert()
       {
 	my $next_in_const = 0;
 
-	my $beg_replace = ".br\n";
+	my $beg_replace = "$in_pre_tag.br\n";
 
 	if ($in_const)
 	  {
-	    $beg_replace = "\n";
+	    $beg_replace = "$in_pre_tag\n";
 	  }
 
 	if (s!^(Constant|Function|Member): (.*)$!$beg_replace\\fB$1: \\fR $2! ||
@@ -217,23 +220,26 @@ sub convert()
 		  }
 	      }
 
-	    conv_A_refs(1);
+	    conv_A_refs(0, 0);
 	  }
 	elsif (/^ \.\.\./)
 	  {
 	    if (/\.\.\.$/)
 	      {
+		conv_A_refs(1, 1);
 		$_ = ".Ve\n$_.Vb 4\n";
 		$in_pre_tag = "\n.Ve";
 	      }
 	    else
 	      {
+		conv_A_refs(1, 1);
 		$_ = ".Ve\n$_";
 		$in_pre_tag = "";
 	      }
 	  }
 	elsif (/\.\.\.$/)
 	  {
+	    conv_A_refs(1, 1);
 	    $_ = "$_\n.Vb 4";
 	    $in_pre_tag = "\n.Ve";
 	  }
@@ -247,12 +253,11 @@ sub convert()
 		    $_ = "\n.br\n" . $_;
 		  }
 	      }
-
-	    conv_A_refs(0);
+	    conv_A_refs(1, 1);
 	  }
         else
           {
-	    conv_A_refs(0);
+	    conv_A_refs(1, 1);
 	  }
 
 	$in_const = $next_in_const;

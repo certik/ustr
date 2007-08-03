@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (192)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (194)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -42,10 +42,10 @@
 <li><a href="#indx-Comparing_data_in_a_Ustr">Comparing data in a Ustr (32)</a>
 <li><a href="#indx-Searching_for_data_in_a_Ustr">Searching for data in a Ustr (10)</a>
 <li><a href="#indx-Span_lengths_of_data_in_a_Ustr">Span lengths of data in a Ustr (28)</a>
-<li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (9)</a>
+<li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (10)</a>
 <li><a href="#indx-String_substitutionreplacement">String substitution/replacement (6)</a>
 <li><a href="#indx-Splitting_a_Ustr">Splitting a Ustr (4)</a>
-<li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (5)</a>
+<li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (6)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
 <li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (5)</a>
 <li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
@@ -227,6 +227,7 @@
 <li class="obj"><a href="#ustr_io_get">ustr_io_get()</a>
 <li class="obj"><a href="#ustr_io_getfile">ustr_io_getfile()</a>
 <li class="obj"><a href="#ustr_io_getfilename">ustr_io_getfilename()</a>
+<li class="obj"><a href="#ustr_io_getdelim">ustr_io_getdelim()</a>
 <li class="obj"><a href="#ustr_io_getline">ustr_io_getline()</a>
 <li class="obj"><a href="#ustr_io_put">ustr_io_put()</a>
 <li class="obj"><a href="#ustr_io_putline">ustr_io_putline()</a>
@@ -254,6 +255,7 @@
 <li class="obj"><a href="#ustr_utf8_width">ustr_utf8_width()</a>
 <li class="obj"><a href="#ustr_utf8_chars2bytes">ustr_utf8_chars2bytes()</a>
 <li class="obj"><a href="#ustr_utf8_bytes2chars">ustr_utf8_bytes2chars()</a>
+<li class="obj"><a href="#ustr_sc_utf8_reverse">ustr_sc_utf8_reverse()</a>
 </ul><li><a id="indx-Parsing_ASCII_integer_numbers_from_a_Ustr" href="#Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a>
@@ -330,9 +332,9 @@
 </p><pre>
   USTR1(\x3, "abcd")
 
-</pre><p> ...here ustr_assert_valid() will fail, which is called before most functions do
+</pre><p> ...here <a href="functions#ustr_assert_valid">ustr_assert_valid()</a> will fail, which is called before most functions do
  anything in debugging mode. Note also that extra debugging
- (USTR_CONF_USE_EOS_MARK) will still catch cases like...
+ (<a href="constants#USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a>) will still catch cases like...
 </p><pre>
   USTR1(\x3, "abc\0d")
 
@@ -415,7 +417,7 @@
 
 </p><p>  char buf[USTR_SIZE_FIXED(4)];
 
-</pre><p> ...to give you exactly 4 bytes as a maximum, this is esp. useful if you want
+ ...to give you exactly 4 bytes as a maximum, this is esp. useful if you want
  a limited (<a href="functions#ustr_limited">ustr_limited()</a> == <a href="constants#USTR_TRUE">USTR_TRUE</a>) <a href="design">Ustr string</a>.
 
 
@@ -1911,10 +1913,11 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: <br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_spn_chrs_rev">ustr_spn_chrs_rev()</a> but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_rev">ustr_spn_chrs_rev()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -1926,10 +1929,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[3]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_spn_fwd">ustr_spn_fwd()</a> but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_spn_fwd">ustr_spn_fwd()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -1941,10 +1945,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant Ustr UTF-8 string<br>Type<strong>[3]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_spn_rev">ustr_spn_rev()</a> but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_spn_rev">ustr_spn_rev()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -1956,10 +1961,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_spn_cstr_fwd">ustr_spn_cstr_fwd()</a> but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_spn_cstr_fwd">ustr_spn_cstr_fwd()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -1971,10 +1977,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_spn_cstr_rev">ustr_spn_cstr_rev()</a> but the return value, offset, and
+ length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_spn_cstr_rev">ustr_spn_cstr_rev()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character
  and not 3 bytes.
 
@@ -1987,10 +1994,11 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the C-style UTF-8 string<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_cspn_chrs_fwd">ustr_cspn_chrs_fwd()</a> but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_cspn_chrs_fwd">ustr_cspn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2003,10 +2011,11 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style UTF-8 string<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of the C-style UTF-8 string<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_cspn_chrs_rev">ustr_cspn_chrs_rev()</a> but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_cspn_chrs_rev">ustr_cspn_chrs_rev()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2018,10 +2027,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant Ustr UTF-8 string, containing spanning data<br>Type<strong>[3]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_cspn_fwd">ustr_cspn_fwd()</a> but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_cspn_fwd">ustr_cspn_fwd()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2033,10 +2043,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to constant Ustr UTF-8 string data, containing spanning data<br>Type<strong>[3]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_cspn_rev">ustr_cspn_rev()</a> but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_cspn_rev">ustr_cspn_rev()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2048,10 +2059,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to constant C-style UTF-8 string data, containing spanning data<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_cspn_cstr_fwd">ustr_cspn_cstr_fwd()</a> but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_cspn_cstr_fwd">ustr_cspn_cstr_fwd()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2063,10 +2075,11 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, in UTF-8 characters, to start compliment spanning from<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to C-style UTF-8 string data, containing spanning data<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like <a href="functions#ustr_cspn_cstr_rev">ustr_cspn_cstr_rev()</a> but the return value, offset,
+ and length all use UTF-8 characters and not bytes.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  This is much slower than <a href="functions#ustr_spn_chrs_fwd">ustr_spn_chrs_fwd()</a> but given &quot;xy&quot; as a multi-byte
+</p><p>  This is much slower than <a href="functions#ustr_spn_cstr_rev">ustr_spn_cstr_rev()</a> but given &quot;xy&quot; as a multi-byte
  UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8
  character and not 0 bytes.
 
@@ -2076,86 +2089,127 @@
 <strong>Function: </strong> <a id="ustr_io_get">ustr_io_get()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: <br>Type<strong>[2]</strong>: FILE *
-</td></tr><tr><td>Parameter<strong>[3]</strong>: <br>Type<strong>[3]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>: <br>Type<strong>[4]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Number of bytes to read<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Returned number of bytes read<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function tries to read a minimum number of bytes from the file object,
+ into the <a href="design">Ustr string</a>. The exact number read is returned, unless (Parameter[4])
+ is NULL.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_getfile">ustr_io_getfile()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function calls <a href="functions#ustr_io_get">ustr_io_get()</a> rpeatedly until EOF is encountered.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The errno value when this function ends could either be from fopen(),
+ fread(), or if both of the those succeeded from fclose().
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_getfilename">ustr_io_getfilename()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A C-style string of a filename<br>Type<strong>[2]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function opens a specified file, and then calls <a href="functions#ustr_io_getfile">ustr_io_getfile()</a>.
+ Finally closing the FILE * object.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_io_getdelim">ustr_io_getdelim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A delimiter byte to stop reading at<br>Type<strong>[3]</strong>: char
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function reads bytes from the file until it hits the delimiter byte.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The delimiter is included, use ustr_del to remove 1 byte from the end if you
+ don't want it.
+</p><p>  This function assumes a delimiter will happen every 80 bytes or so.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_getline">ustr_io_getline()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling <a href="functions#ustr_io_getdelim">ustr_io_getdelim()</a> with '\n' as the
+ delimiter.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_put">ustr_io_put()</a>
-<br>Returns: int <br>Type: int 
+<br>Returns: Success or failure<br>Type: int
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Number of bytes to write<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function is the opposite of <a href="functions#ustr_io_get">ustr_io_get()</a>, taking bytes from the
+ beginning of the Ustr and writting them to the file.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Deleting bytes from the begining of a <a href="design">Ustr string</a> is the most inefficient
+ thing to do, so it is recommended to use <a href="functions#ustr_io_putfile">ustr_io_putfile()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_putline">ustr_io_putline()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Number of bytes to write<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling <a href="functions#ustr_io_put">ustr_io_put()</a>, and then writting a '\n' to
+ the file.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This doesn't write a line from the Ustr to the file, if you want that call
+ <a href="functions#ustr_io_put">ustr_io_put()</a> directly, using the return from <a href="functions#ustr_srch_chr_fwd">ustr_srch_chr_fwd()</a> (with a '\n')
+ as the number of bytes argument.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_putfile">ustr_io_putfile()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling <a href="functions#ustr_io_put">ustr_io_put()</a> with <a href="functions#ustr_len">ustr_len()</a> as the number
+ of bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_putfileline">ustr_io_putfileline()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  FILE *<br>Type<strong>[2]</strong>:  FILE *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a C file object<br>Type<strong>[2]</strong>: FILE *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function works like calling <a href="functions#ustr_io_putline">ustr_io_putline()</a> with <a href="functions#ustr_len">ustr_len()</a> as the
+ number of bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_io_putfilename">ustr_io_putfilename()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  const char *<br>Type<strong>[3]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A C-style string of a filename<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A C-style string of a filemode (the second argument to fopen)<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function opens a specified file, and then calls <a href="functions#ustr_io_putfile">ustr_io_putfile()</a>.
+ Finally closing the FILE * object.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The errno value when this function ends could either be from fopen(),
+ fwrite(), or if both of the those succeeded from fclose().
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="String%20substitution%2freplacement">String substitution/replacement</a></h2>
@@ -2245,11 +2299,11 @@
   Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
   ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
 
-  ...would change data to be "yxByCxDyx".
+</pre><p> ...would change data to be "yxByCxDyx".
 
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-  Changing the same letter the same number of times is considered a No-op
+</p><p>  Changing the same letter the same number of times is considered a No-op
  since it is a vast performance improvement this way. So passing in 
  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
  unchanged.
@@ -2266,40 +2320,40 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to a Ustr to be used as the return value<br>Type<strong>[5]</strong>: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[6]</strong>: Flags with the prefix USTR_FLAG_SPLIT_<br>Type<strong>[6]</strong>: unsigned int
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-  This function works in a manner similar to strtok(). Each time the function
+</p><p>  This function works in a manner similar to strtok(). Each time the function
  is called, the string inside of the buffer (Parameter[3]) is used as a search
  pattern at which to split. If the pattern is not found, the entire string
- will be returned. A USTR_NULL return value indicates there are no more
+ will be returned. A <a href="constants#USTR_NULL">USTR_NULL</a> return value indicates there are no more
  tokens remaining.
-
-  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
- Passing a USTR_NULL to this parameter will cause the string to be allocated
- and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
- this parameter, each call to ustr_split_buf() will free what is in this
- pointer and place the new token there (when USTR_NULL is returned, nothing
+</p><p>  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
+ Passing a <a href="constants#USTR_NULL">USTR_NULL</a> to this parameter will cause the string to be allocated
+ and <b>MUST</b> be freed <b>manually</b>. If, however, you pass in a non-null Ustr to
+ this parameter, each call to <a href="functions#ustr_split_buf">ustr_split_buf()</a> will free what is in this
+ pointer and place the new token there (when <a href="constants#USTR_NULL">USTR_NULL</a> is returned, nothing
  needs to be free'd).
-
   For example, given...
 </p><pre>
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
   const char *sep = ",";
-  size_t off;
-  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+  size_t off = 0;
+  unsigned int flags = USTR_FLAGS_SPLIT_DEF;
 
 </pre><p> ...there are two options...
 </p><pre>
-  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **tok**, flags))) {
-    /* do something with tok -- but next iteration of the loop will free
-       and overwrite tok, so you must ustr_dup() if you want to keep it */
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), tok, flags)))
+  {
+    /* Do something with tok -- but next iteration of the loop will free
+     * and overwrite tok, so you must ustr_dup() if you want to keep it */
   }
-   /* tok is now NULL again after the loop */
+  /* tok is now NULL again after the loop */
 
 </pre><p> ...or...
 </p><pre>
-  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), **USTR_NULL**, flags))) {
-    /*do something with tok, and it will NOT be freed in the next iteration of
-    the loop*/
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), USTR_NULL, flags)))
+  {
+    /* Do something with tok, and it will NOT be freed in the next iteration of
+     * the loop */
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
 
@@ -2307,21 +2361,7 @@
 </p><p>  
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  There are several flags that will alter the behaviour of this function,
- all of which are prefixed with <a href="constants#USTR_FLAG_SPLIT_">USTR_FLAG_SPLIT_</a>.
-
-</p><p>  Explanation of flags --
-</p><p>    <b>USTR_FLAG_SPLIT_RET_SEP</b> -- return the separator along with the tokens. For
-</p><p>    example: splitting &quot;a,b,&quot; using separator &quot;,&quot; will return the tokens &quot;a,&quot;
-</p><p>    and &quot;b,&quot; whereas without this option only &quot;a&quot; and &quot;b&quot; would be returned.
-</p><p>    
-</p><p>    <b>USTR_FLAG_SPLIT_RET_NON</b> -- return empty tokens. For example: splitting
-</p><p>    &quot;a,,b&quot; with separator &quot;,&quot; will return the tokens {&quot;a&quot; &quot;&quot; &quot;b&quot;}.
-
-</p><p>    <b>USTR_FLAG_SPLIT_KEEP_CONFIG</b> -- force token Ustrs to have same
-</p><p>    configuration parameters as the original string.
-
-</p><p>    <b>USTR_FLAG_SPLIT_DEF</b> -- default flags, which is a shortcut for none of
-</p><p>    the above.
+ all of which have a common with the default being <a href="constants#USTR_FLAG_SPLIT_DEF">USTR_FLAG_SPLIT_DEF</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2374,7 +2414,6 @@
  string.
 
 
-
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_utf8_len">ustr_utf8_len()</a>
 <br>Returns: The number of the utf-8 characters in the Ustr<br>Type: size_t 
@@ -2391,29 +2430,45 @@
 <br>Returns: ssize_t <br>Type: ssize_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function returns the visible width of the string, assuming it is a valid
+ utf-8 string. This is like converting to wide characters and using wcwidth().
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_utf8_chars2bytes">ustr_utf8_chars2bytes()</a>
-<br>Returns: size_t <br>Type: size_t 
+<br>Returns: Length of span in bytes <br>Type: size_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position of a span in utf-8 characters<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of a span in utf-8 characters<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Returns the position of the span in bytes<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function converts a span, in utf-8 characters, to the same span in bytes.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_utf8_bytes2chars">ustr_utf8_bytes2chars()</a>
-<br>Returns: size_t <br>Type: size_t 
+<br>Returns: Returns the position of a span in utf-8 characters<br>Type: size_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  size_t<br>Type<strong>[2]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  size_t *<br>Type<strong>[4]</strong>:  size_t *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position of a span in bytes<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of a span in bytes<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Returns length of a span in utf-8 characters<br>Type<strong>[4]</strong>: size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is NOT DOCUMENTED YET!
+</p><p>  This function converts a span, in bytes, to the same span in utf-8 characters.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Because a byte span can start or end within a utf-8 character, converting the
+ return values back into bytes via. <a href="functions#ustr_utf8_chars2bytes">ustr_utf8_chars2bytes()</a> may make the span
+ be slightly bigger (position slightly earlier, and the length slightly longer).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_utf8_reverse">ustr_sc_utf8_reverse()</a>
+<br>Returns: Success or failure<br>Type: int
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function reverses the utf-8 characters in the <a href="design">Ustr string</a>, assuming it
+ is a valid utf-8 string, so the last one becomes the first and the second to
+ last becomes the second etc.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Parsing%20ASCII%20integer%20numbers%20from%20a%20Ustr">Parsing ASCII integer numbers from a Ustr</a></h2>
@@ -2577,7 +2632,7 @@
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function reverses all the bytes in a <a href="design">Ustr string</a>, so the last one
+</p><p>  This function reverses all the bytes in the <a href="design">Ustr string</a>, so the last one
  becomes the first and the second to last becomes the second etc.
 
 

@@ -1,4 +1,4 @@
-.TH ustr 3 "02-Aug-2007" "Ustr 1.0.1" "Ustr String Library"
+.TH ustr 3 "03-Aug-2007" "Ustr 1.0.1" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -597,35 +597,39 @@ int  \fBustr_io_get\fR(struct Ustr **, FILE *, size_t, size_t *);
 .br
 .in \w'  int  \fBustr_io_getfile\fR('u
 .ti \w'  'u
-int  \fBustr_io_getfile\fR(struct Ustr **,  FILE *);
+int  \fBustr_io_getfile\fR(struct Ustr **, FILE *);
 .br
 .in \w'  int  \fBustr_io_getfilename\fR('u
 .ti \w'  'u
-int  \fBustr_io_getfilename\fR(struct Ustr **,  const char *);
+int  \fBustr_io_getfilename\fR(struct Ustr **, const char *);
+.br
+.in \w'  int  \fBustr_io_getdelim\fR('u
+.ti \w'  'u
+int  \fBustr_io_getdelim\fR(struct Ustr **, FILE *, char);
 .br
 .in \w'  int  \fBustr_io_getline\fR('u
 .ti \w'  'u
-int  \fBustr_io_getline\fR(struct Ustr **,  FILE *);
+int  \fBustr_io_getline\fR(struct Ustr **, FILE *);
 .br
-.in \w'  int  \fBustr_io_put\fR('u
+.in \w'  int \fBustr_io_put\fR('u
 .ti \w'  'u
-int  \fBustr_io_put\fR(struct Ustr **,  FILE *,  size_t);
+int \fBustr_io_put\fR(struct Ustr **, FILE *, size_t);
 .br
 .in \w'  int  \fBustr_io_putline\fR('u
 .ti \w'  'u
-int  \fBustr_io_putline\fR(struct Ustr **,  FILE *,  size_t);
+int  \fBustr_io_putline\fR(struct Ustr **, FILE *, size_t);
 .br
 .in \w'  int  \fBustr_io_putfile\fR('u
 .ti \w'  'u
-int  \fBustr_io_putfile\fR(struct Ustr **,  FILE *);
+int  \fBustr_io_putfile\fR(struct Ustr **, FILE *);
 .br
 .in \w'  int  \fBustr_io_putfileline\fR('u
 .ti \w'  'u
-int  \fBustr_io_putfileline\fR(struct Ustr **,  FILE *);
+int  \fBustr_io_putfileline\fR(struct Ustr **, FILE *);
 .br
 .in \w'  int  \fBustr_io_putfilename\fR('u
 .ti \w'  'u
-int  \fBustr_io_putfilename\fR(struct Ustr **,  const char *,  const char *);
+int  \fBustr_io_putfilename\fR(struct Ustr **, const char *, const char *);
 .sp
 .br
 .in \w'  int  \fBustr_sub_buf\fR('u
@@ -684,11 +688,15 @@ ssize_t  \fBustr_utf8_width\fR(const struct Ustr *);
 .br
 .in \w'  size_t  \fBustr_utf8_chars2bytes\fR('u
 .ti \w'  'u
-size_t  \fBustr_utf8_chars2bytes\fR(const struct Ustr *,  size_t,  size_t,  size_t *);
+size_t  \fBustr_utf8_chars2bytes\fR(const struct Ustr *, size_t, size_t, size_t *);
 .br
 .in \w'  size_t  \fBustr_utf8_bytes2chars\fR('u
 .ti \w'  'u
-size_t  \fBustr_utf8_bytes2chars\fR(const struct Ustr *,  size_t,  size_t,  size_t *);
+size_t  \fBustr_utf8_bytes2chars\fR(const struct Ustr *, size_t, size_t, size_t *);
+.br
+.in \w'  int \fBustr_sc_utf8_reverse\fR('u
+.ti \w'  'u
+int \fBustr_sc_utf8_reverse\fR(struct Ustr **);
 .sp
 .br
 .in \w'  uintmax_t  \fBustr_parse_uintmaxx\fR('u
@@ -4663,12 +4671,12 @@ Type\\fB[4]\\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_chrs_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_chrs_rev() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -4697,12 +4705,12 @@ Type\\fB[3]\\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -4731,12 +4739,12 @@ Type\\fB[3]\\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_rev() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -4765,12 +4773,12 @@ Type\\fB[3]\\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_cstr_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_cstr_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -4799,12 +4807,12 @@ Type\\fB[3]\\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_spn_cstr_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -4838,12 +4846,12 @@ Type\\fB[4]\\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_chrs_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -4877,12 +4885,12 @@ Type\\fB[4]\\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_chrs_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_chrs_rev() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -4911,12 +4919,12 @@ Type\\fB[3]\\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -4945,12 +4953,12 @@ Type\\fB[3]\\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_rev() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -4979,12 +4987,12 @@ Type\\fB[3]\\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_cstr_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_cstr_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -5013,12 +5021,12 @@ Type\\fB[3]\\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like ustr_cspn_cstr_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
 
 .SH Doing IO from or to a Ustr
 .ti -2
@@ -5035,17 +5043,17 @@ Parameter\\fB[1]\\fR: A pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR: 
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
 Type\\fB[2]\\fR: FILE *
 
 .br
-Parameter\\fB[3]\\fR: 
+Parameter\\fB[3]\\fR: Number of bytes to read
 .br
 Type\\fB[3]\\fR: size_t
 
 .br
-Parameter\\fB[4]\\fR: 
+Parameter\\fB[4]\\fR: Returned number of bytes read
 .br
 Type\\fB[4]\\fR: size_t *
 
@@ -5053,7 +5061,7 @@ Type\\fB[4]\\fR: size_t *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function tries to read a minimum number of bytes from the file object, into the Ustr string. The exact number read is returned, unless (Parameter[4]) is NULL.
 
 .ti -2
 .br
@@ -5069,15 +5077,20 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  FILE *
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
-Type\\fB[2]\\fR:  FILE *
+Type\\fB[2]\\fR: FILE *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function calls ustr_io_get() rpeatedly until EOF is encountered.
+.sp
+\fBNote:\fR
+
+.br
+  The errno value when this function ends could either be from fopen(), fread(), or if both of the those succeeded from fclose().
 
 .ti -2
 .br
@@ -5093,15 +5106,51 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  const char *
+Parameter\\fB[2]\\fR: A C-style string of a filename
 .br
-Type\\fB[2]\\fR:  const char *
+Type\\fB[2]\\fR: const char *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function opens a specified file, and then calls ustr_io_getfile(). Finally closing the FILE * object.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_io_getdelim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
+.br
+Type\\fB[1]\\fR: struct Ustr **
+
+.br
+Parameter\\fB[2]\\fR: A pointer to a C file object
+.br
+Type\\fB[2]\\fR: FILE *
+
+.br
+Parameter\\fB[3]\\fR: A delimiter byte to stop reading at
+.br
+Type\\fB[3]\\fR: char
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function reads bytes from the file until it hits the delimiter byte.
+.sp
+\fBNote:\fR
+
+.br
+  The delimiter is included, use ustr_del to remove 1 byte from the end if you don't want it.
+.br
+  This function assumes a delimiter will happen every 80 bytes or so.
 
 .ti -2
 .br
@@ -5117,23 +5166,23 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  FILE *
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
-Type\\fB[2]\\fR:  FILE *
+Type\\fB[2]\\fR: FILE *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_getdelim() with '\\n' as the delimiter.
 
 .ti -2
 .br
 \fBFunction: \fR ustr_io_put()
 .br
-Returns: int 
+Returns: Success or failure
 .br
-Type: int 
+Type: int
 
 .br
 Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
@@ -5141,20 +5190,25 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  FILE *
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
-Type\\fB[2]\\fR:  FILE *
+Type\\fB[2]\\fR: FILE *
 
 .br
-Parameter\\fB[3]\\fR:  size_t
+Parameter\\fB[3]\\fR: Number of bytes to write
 .br
-Type\\fB[3]\\fR:  size_t
+Type\\fB[3]\\fR: size_t
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function is the opposite of ustr_io_get(), taking bytes from the beginning of the Ustr and writting them to the file.
+.sp
+\fBNote:\fR
+
+.br
+  Deleting bytes from the begining of a Ustr string is the most inefficient thing to do, so it is recommended to use ustr_io_putfile().
 
 .ti -2
 .br
@@ -5170,20 +5224,25 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  FILE *
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
-Type\\fB[2]\\fR:  FILE *
+Type\\fB[2]\\fR: FILE *
 
 .br
-Parameter\\fB[3]\\fR:  size_t
+Parameter\\fB[3]\\fR: Number of bytes to write
 .br
-Type\\fB[3]\\fR:  size_t
+Type\\fB[3]\\fR: size_t
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_put(), and then writting a '\\n' to the file.
+.sp
+\fBNote:\fR
+
+.br
+  This doesn't write a line from the Ustr to the file, if you want that call ustr_io_put() directly, using the return from ustr_srch_chr_fwd() (with a '\\n') as the number of bytes argument.
 
 .ti -2
 .br
@@ -5199,15 +5258,15 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  FILE *
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
-Type\\fB[2]\\fR:  FILE *
+Type\\fB[2]\\fR: FILE *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_put() with ustr_len() as the number of bytes.
 
 .ti -2
 .br
@@ -5223,15 +5282,15 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  FILE *
+Parameter\\fB[2]\\fR: A pointer to a C file object
 .br
-Type\\fB[2]\\fR:  FILE *
+Type\\fB[2]\\fR: FILE *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function works like calling ustr_io_putline() with ustr_len() as the number of bytes.
 
 .ti -2
 .br
@@ -5247,20 +5306,25 @@ Parameter\\fB[1]\\fR: Pointer to a pointer to a Ustr string
 Type\\fB[1]\\fR: struct Ustr **
 
 .br
-Parameter\\fB[2]\\fR:  const char *
+Parameter\\fB[2]\\fR: A C-style string of a filename
 .br
-Type\\fB[2]\\fR:  const char *
+Type\\fB[2]\\fR: const char *
 
 .br
-Parameter\\fB[3]\\fR:  const char *
+Parameter\\fB[3]\\fR: A C-style string of a filemode (the second argument to fopen)
 .br
-Type\\fB[3]\\fR:  const char *
+Type\\fB[3]\\fR: const char *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function opens a specified file, and then calls ustr_io_putfile(). Finally closing the FILE * object.
+.sp
+\fBNote:\fR
+
+.br
+  The errno value when this function ends could either be from fopen(), fwrite(), or if both of the those succeeded from fclose().
 
 .SH String substitution/replacement
 .ti -2
@@ -5491,16 +5555,15 @@ Type\\fB[6]\\fR: size_t lim
   Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
   ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
 
-  ...would change data to be "yxByCxDyx".
+.Ve
+ ...would change data to be "yxByCxDyx".
 
 
 .sp
 \fBNote:\fR
-  Changing the same letter the same number of times is considered a No-op
- since it is a vast performance improvement this way. So passing in 
- (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be
- unchanged.
 
+.br
+  Changing the same letter the same number of times is considered a No-op since it is a vast performance improvement this way. So passing in  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be unchanged.
 
 .SH Splitting a Ustr
 .ti -2
@@ -5543,45 +5606,38 @@ Type\\fB[6]\\fR: unsigned int
 
 .br
 \fBExplanation:\fR
-  This function works in a manner similar to strtok(). Each time the function
- is called, the string inside of the buffer (Parameter[3]) is used as a search
- pattern at which to split. If the pattern is not found, the entire string
- will be returned. A USTR_NULL return value indicates there are no more
- tokens remaining.
 
-  Parameter[5] is a a pointer to a Ustr where the return value will be placed.
- Passing a USTR_NULL to this parameter will cause the string to be allocated
- and \fBMUST BE FREED manually\fR. If, however, you pass in a non-null Ustr to
- this parameter, each call to ustr_split_buf() will free what is in this
- pointer and place the new token there (when USTR_NULL is returned, nothing
- needs to be free'd).
-
-  For example, given...
+.br
+  This function works in a manner similar to strtok(). Each time the function is called, the string inside of the buffer (Parameter[3]) is used as a search pattern at which to split. If the pattern is not found, the entire string will be returned. A USTR_NULL return value indicates there are no more tokens remaining.
+.br
+  Parameter[5] is a a pointer to a Ustr where the return value will be placed. Passing a USTR_NULL to this parameter will cause the string to be allocated and \fBMUST\fR be freed \fBmanually\fR. If, however, you pass in a non-null Ustr to this parameter, each call to ustr_split_buf() will free what is in this pointer and place the new token there (when USTR_NULL is returned, nothing needs to be free'd).  For example, given...
 
 .Vb 4
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
   const char *sep = ",";
-  size_t off;
-  flags = (USTR_FLAGS_SPLIT_RET_SEP|USTR_FLAGS_SPLIT_RET_NON);
+  size_t off = 0;
+  unsigned int flags = USTR_FLAGS_SPLIT_DEF;
 
 .Ve
  ...there are two options...
 .Vb 4
 
-  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), \fBtok\fR, flags))) {
-    /* do something with tok -- but next iteration of the loop will free
-       and overwrite tok, so you must ustr_dup() if you want to keep it */
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), tok, flags)))
+  {
+    /* Do something with tok -- but next iteration of the loop will free
+     * and overwrite tok, so you must ustr_dup() if you want to keep it */
   }
-   /* tok is now NULL again after the loop */
+  /* tok is now NULL again after the loop */
 
 .Ve
  ...or...
 .Vb 4
 
-  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), \fBUSTR_NULL\fR, flags))) {
-    /*do something with tok, and it will NOT be freed in the next iteration of
-    the loop*/
+  while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), USTR_NULL, flags)))
+  {
+    /* Do something with tok, and it will NOT be freed in the next iteration of
+     * the loop */
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
 
@@ -5593,32 +5649,7 @@ Type\\fB[6]\\fR: unsigned int
 \fBNote:\fR
 
 .br
-  There are several flags that will alter the behaviour of this function, all of which are prefixed with USTR_FLAG_SPLIT_.
-
-.br
-  Explanation of flags --
-.br
-    \fBUSTR_FLAG_SPLIT_RET_SEP\fR -- return the separator along with the tokens. For
-.br
-    example: splitting "a,b," using separator "," will return the tokens "a,"
-.br
-    and "b," whereas without this option only "a" and "b" would be returned.
-.br
-    
-.br
-    \fBUSTR_FLAG_SPLIT_RET_NON\fR -- return empty tokens. For example: splitting
-.br
-    "a,,b" with separator "," will return the tokens {"a" "" "b"}.
-
-.br
-    \fBUSTR_FLAG_SPLIT_KEEP_CONFIG\fR -- force token Ustrs to have same
-.br
-    configuration parameters as the original string.
-
-.br
-    \fBUSTR_FLAG_SPLIT_DEF\fR -- default flags, which is a shortcut for none of
-.br
-    the above.
+  There are several flags that will alter the behaviour of this function, all of which have a common with the default being USTR_FLAG_SPLIT_DEF.
 
 .ti -2
 .br
@@ -5760,7 +5791,6 @@ Type\\fB[1]\\fR: const struct Ustr *
 .br
   This function tries it's best to find out if the string is a valid utf-8 string.
 
-
 .ti -2
 .br
 \fBFunction: \fR ustr_utf8_len()
@@ -5802,13 +5832,13 @@ Type\\fB[1]\\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function returns the visible width of the string, assuming it is a valid utf-8 string. This is like converting to wide characters and using wcwidth().
 
 .ti -2
 .br
 \fBFunction: \fR ustr_utf8_chars2bytes()
 .br
-Returns: size_t 
+Returns: Length of span in bytes 
 .br
 Type: size_t 
 
@@ -5818,31 +5848,31 @@ Parameter\\fB[1]\\fR: A pointer to a constant Ustr string
 Type\\fB[1]\\fR: const struct Ustr *
 
 .br
-Parameter\\fB[2]\\fR:  size_t
+Parameter\\fB[2]\\fR: Position of a span in utf-8 characters
 .br
-Type\\fB[2]\\fR:  size_t
+Type\\fB[2]\\fR: size_t
 
 .br
-Parameter\\fB[3]\\fR:  size_t
+Parameter\\fB[3]\\fR: Length of a span in utf-8 characters
 .br
-Type\\fB[3]\\fR:  size_t
+Type\\fB[3]\\fR: size_t
 
 .br
-Parameter\\fB[4]\\fR:  size_t *
+Parameter\\fB[4]\\fR: Returns the position of the span in bytes
 .br
-Type\\fB[4]\\fR:  size_t *
+Type\\fB[4]\\fR: size_t *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function converts a span, in utf-8 characters, to the same span in bytes.
 
 .ti -2
 .br
 \fBFunction: \fR ustr_utf8_bytes2chars()
 .br
-Returns: size_t 
+Returns: Returns the position of a span in utf-8 characters
 .br
 Type: size_t 
 
@@ -5852,25 +5882,49 @@ Parameter\\fB[1]\\fR: A pointer to a constant Ustr string
 Type\\fB[1]\\fR: const struct Ustr *
 
 .br
-Parameter\\fB[2]\\fR:  size_t
+Parameter\\fB[2]\\fR: Position of a span in bytes
 .br
-Type\\fB[2]\\fR:  size_t
+Type\\fB[2]\\fR: size_t
 
 .br
-Parameter\\fB[3]\\fR:  size_t
+Parameter\\fB[3]\\fR: Length of a span in bytes
 .br
-Type\\fB[3]\\fR:  size_t
+Type\\fB[3]\\fR: size_t
 
 .br
-Parameter\\fB[4]\\fR:  size_t *
+Parameter\\fB[4]\\fR: Returns length of a span in utf-8 characters
 .br
-Type\\fB[4]\\fR:  size_t *
+Type\\fB[4]\\fR: size_t *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function is NOT DOCUMENTED YET!
+  This function converts a span, in bytes, to the same span in utf-8 characters.
+.sp
+\fBNote:\fR
+
+.br
+  Because a byte span can start or end within a utf-8 character, converting the return values back into bytes via. ustr_utf8_chars2bytes() may make the span be slightly bigger (position slightly earlier, and the length slightly longer).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_utf8_reverse()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\\fB[1]\\fR: A pointer to a pointer to a Ustr string
+.br
+Type\\fB[1]\\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function reverses the utf-8 characters in the Ustr string, assuming it is a valid utf-8 string, so the last one becomes the first and the second to last becomes the second etc.
 
 .SH Parsing ASCII integer numbers from a Ustr
 .ti -2
@@ -6345,7 +6399,7 @@ Type\\fB[1]\\fR: struct Ustr **
 \fBExplanation:\fR
 
 .br
-  This function reverses all the bytes in a Ustr string, so the last one becomes the first and the second to last becomes the second etc.
+  This function reverses all the bytes in the Ustr string, so the last one becomes the first and the second to last becomes the second etc.
 
 .ti -2
 .br

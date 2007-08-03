@@ -1,4 +1,4 @@
-.TH ustr_const 3 "02-Aug-2007" "Ustr 1.0.1" "Ustr String Library"
+.TH ustr_const 3 "03-Aug-2007" "Ustr 1.0.1" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -54,6 +54,68 @@
 .br
 .ti \w'  'u
 \fBUSTR_END_FIXEDx\fR
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_DEF\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_SEP\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_OVERFLOW\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_SPACE\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_NO_BEG_ZERO\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_NO_BEG_PM\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_NO_NEGATIVE\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_PARSE_NUM_EXACT\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_NONE\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_ONLY_S\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_ONLY_SPM\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_OOB\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_OVERFLOW\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_NEGATIVE\fR
+.br
+.ti \w'  'u
+\fBUSTR_TYPE_PARSE_NUM_ERR_BEG_ZERO\fR
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_SPLIT_DEF\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_SPLIT_RET_SEP\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_SPLIT_RET_NON\fR
+.br
+.ti \w'  'u
+\fBUSTR_FLAG_SPLIT_KEEP_CONFIG\fR
 .sp
 .br
 .ti \w'  'u
@@ -277,7 +339,199 @@
 .br
   Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
 
-.SH Constants to use in normal code
+.SH Constants to use with parsing numbers: ustr_parse_uintmaxx, etc.
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_DEF
+
+.br
+\fBExplanation:\fR
+
+.br
+  Default flags, this is merely 0 but can be used as live documentation.
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_SEP
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag allows the parsing (and ignoring) of the seperator character, at arbitrary pointers in the number, so "1234" and "1_234" would both parse the same (assuming "_" is the seperator).
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_OVERFLOW
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag turns on the overflow checking, in other words without it USTR_TYPE_PARSE_NUM_ERR_OVERFLOW will never be returned as an error code.
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_SPACE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag allows one or more ' ' (Space) characters before the number or number prefix (Plus Sign, Hyphen).
+.sp
+\fBNote:\fR
+
+.br
+  Other forms of whitespace don't count, this just affects ' '.
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_NO_BEG_ZERO
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag disallows one or more '0' (Digit Zero) characters before the number.
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_NO_BEG_PM
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag disallows a plus or a minus character before the number.
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_NO_NEGATIVE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag disallows negative values.
+
+.br
+\fBConstant: \fR USTR_FLAG_PARSE_NUM_EXACT
+
+.br
+\fBExplanation:\fR
+
+.br
+  This flag makes the parsing functions return an error if the entire string doesn't contain the number being parsed.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_NONE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code has the value 0, and means that no error occurred parsing the number.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_ONLY_S
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the Ustr string consisted only of spaces.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the Ustr string consisted only spaces, and a plus or minus sign.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the Ustr string consisted of only spaces, a plus or minus sign and a "0x" base 16 prefix.
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_OOB
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the Ustr string had characters in it that where out of bounds from the working base.
+.sp
+\fBNote:\fR
+
+.br
+  Without the USTR_FLAG_PARSE_NUM_EXACT, this error is ignored as soon as any number is parsed.
+.br
+  This out of bounds includes the Ustr string "++" as well as "4A", when parsing in a base less than 11.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_OVERFLOW
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the number parsed from the Ustr string would overflow the type it is being parsed into, this is only returned when the USTR_FLAG_PARSE_NUM_OVERFLOW flag was passed to the parse function.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_NEGATIVE
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the number parsed from the Vstr string starts with a '-' (Hyphen) character when it is supposed to be an unsigned number.
+
+.br
+\fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO
+
+.br
+\fBExplanation:\fR
+
+.br
+  This error code means that the number parsed from the Vstr string starts with a '0' (Digit Zero) character, when the USTR_FLAG_PARSE_NUM_NO_BEG_ZERO flag was passed to the parse function.
+
+.SH Constants to pass to ustr_split*
+.br
+\fBConstant: \fR USTR_FLAG_SPLIT_DEF
+
+.br
+\fBExplanation:\fR
+
+.br
+  Default flags, this is merely 0 but can be used as live documentation.
+
+.br
+\fBConstant: \fR USTR_FLAG_SPLIT_RET_SEP
+
+.br
+\fBExplanation:\fR
+
+.br
+  Return the separator along with the tokens. For example splitting "a,b," using separator "," will return the tokens "a," and "b," whereas without this flag only "a" and "b" would be returned.
+.br
+    .br
+\fBConstant: \fR USTR_FLAG_SPLIT_RET_NON
+
+.br
+\fBExplanation:\fR
+
+.br
+  Return empty tokens. For example: splitting "a,,b" with separator "," will return the tokens {"a" "" "b"}.
+.br
+\fBConstant: \fR USTR_FLAG_SPLIT_KEEP_CONFIG
+
+.br
+\fBExplanation:\fR
+
+.br
+  Force the returned Ustr's to have same configuration parameters as the Ustr string that is being split.
+
+.SH Misc constants to use in code
 .br
 \fBConstant: \fR USTR_NULL
 

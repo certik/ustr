@@ -25,13 +25,15 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- constants (28)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- constants (48)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
 <li><a href="#indx-Compile_switch_constants">Compile switch constants (6)</a>
 <li><a href="#indx-Constants_to_created_fixedreadonly_Ustrs">Constants to created fixed/read-only Ustr's (10)</a>
-<li><a href="#indx-Constants_to_use_in_normal_code">Constants to use in normal code (4)</a>
+<li><a href="#indx-Constants_to_use_with_parsing_numbers:_ustr_parse_uintmaxx_etc">Constants to use with parsing numbers: ustr_parse_uintmaxx, etc. (16)</a>
+<li><a href="#indx-Constants_to_pass_to_ustr_split">Constants to pass to ustr_split* (4)</a>
+<li><a href="#indx-Misc_constants_to_use_in_code">Misc constants to use in code (4)</a>
 <li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (8)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
@@ -55,7 +57,31 @@
 <li class="obj"><a href="#USTR_END_ALOCDx">USTR_END_ALOCDx</a>
 <li class="obj"><a href="#USTR_END_CONSTx">USTR_END_CONSTx</a>
 <li class="obj"><a href="#USTR_END_FIXEDx">USTR_END_FIXEDx</a>
-</ul><li><a id="indx-Constants_to_use_in_normal_code" href="#Constants_to_use_in_normal_code">Constants to use in normal code</a>
+</ul><li><a id="indx-Constants_to_use_with_parsing_numbers:_ustr_parse_uintmaxx_etc" href="#Constants_to_use_with_parsing_numbers:_ustr_parse_uintmaxx_etc">Constants to use with parsing numbers: ustr_parse_uintmaxx, etc.</a>
+<ul>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_DEF">USTR_FLAG_PARSE_NUM_DEF</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_SEP">USTR_FLAG_PARSE_NUM_SEP</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_OVERFLOW">USTR_FLAG_PARSE_NUM_OVERFLOW</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_SPACE">USTR_FLAG_PARSE_NUM_SPACE</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_NO_BEG_ZERO">USTR_FLAG_PARSE_NUM_NO_BEG_ZERO</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_NO_BEG_PM">USTR_FLAG_PARSE_NUM_NO_BEG_PM</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_NO_NEGATIVE">USTR_FLAG_PARSE_NUM_NO_NEGATIVE</a>
+<li class="obj"><a href="#USTR_FLAG_PARSE_NUM_EXACT">USTR_FLAG_PARSE_NUM_EXACT</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_NONE">USTR_TYPE_PARSE_NUM_ERR_NONE</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_ONLY_S">USTR_TYPE_PARSE_NUM_ERR_ONLY_S</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM">USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX">USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_OOB">USTR_TYPE_PARSE_NUM_ERR_OOB</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_OVERFLOW">USTR_TYPE_PARSE_NUM_ERR_OVERFLOW</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_NEGATIVE">USTR_TYPE_PARSE_NUM_ERR_NEGATIVE</a>
+<li class="obj"><a href="#USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO">USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO</a>
+</ul><li><a id="indx-Constants_to_pass_to_ustr_split" href="#Constants_to_pass_to_ustr_split">Constants to pass to ustr_split*</a>
+<ul>
+<li class="obj"><a href="#USTR_FLAG_SPLIT_DEF">USTR_FLAG_SPLIT_DEF</a>
+<li class="obj"><a href="#USTR_FLAG_SPLIT_RET_SEP">USTR_FLAG_SPLIT_RET_SEP</a>
+<li class="obj"><a href="#USTR_FLAG_SPLIT_RET_NON">USTR_FLAG_SPLIT_RET_NON</a>
+<li class="obj"><a href="#USTR_FLAG_SPLIT_KEEP_CONFIG">USTR_FLAG_SPLIT_KEEP_CONFIG</a>
+</ul><li><a id="indx-Misc_constants_to_use_in_code" href="#Misc_constants_to_use_in_code">Misc constants to use in code</a>
 <ul>
 <li class="obj"><a href="#USTR_NULL">USTR_NULL</a>
 <li class="obj"><a href="#USTR_POOL_NULL">USTR_POOL_NULL</a>
@@ -234,7 +260,177 @@
 </p><p>  Unless <a href="constants#USTR_CONF_USE_EOS_MARK">USTR_CONF_USE_EOS_MARK</a> is non-zero, this is just the NIL byte.
 
 
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20to%20use%20in%20normal%20code">Constants to use in normal code</a></h2>
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20to%20use%20with%20parsing%20numbers:%20ustr_parse_uintmaxx%2c%20etc%2e">Constants to use with parsing numbers: ustr_parse_uintmaxx, etc.</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_DEF">USTR_FLAG_PARSE_NUM_DEF</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  Default flags, this is merely 0 but can be used as live documentation.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_SEP">USTR_FLAG_PARSE_NUM_SEP</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag allows the parsing (and ignoring) of the seperator character, at
+ arbitrary pointers in the number, so "1234" and "1_234" would both parse the
+ same (assuming "_" is the seperator).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_OVERFLOW">USTR_FLAG_PARSE_NUM_OVERFLOW</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag turns on the overflow checking, in other words without it
+ <a href="constants#USTR_TYPE_PARSE_NUM_ERR_OVERFLOW">USTR_TYPE_PARSE_NUM_ERR_OVERFLOW</a> will never be returned as an error
+ code.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_SPACE">USTR_FLAG_PARSE_NUM_SPACE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag allows one or more ' ' (Space) characters before the number
+ or number prefix (Plus Sign, Hyphen).
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Other forms of whitespace don't count, this just affects ' '.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_NO_BEG_ZERO">USTR_FLAG_PARSE_NUM_NO_BEG_ZERO</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag disallows one or more '0' (Digit Zero) characters before
+ the number.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_NO_BEG_PM">USTR_FLAG_PARSE_NUM_NO_BEG_PM</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag disallows a plus or a minus character before the number.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_NO_NEGATIVE">USTR_FLAG_PARSE_NUM_NO_NEGATIVE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag disallows negative values.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_PARSE_NUM_EXACT">USTR_FLAG_PARSE_NUM_EXACT</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This flag makes the parsing functions return an error if the entire string
+ doesn't contain the number being parsed.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_NONE">USTR_TYPE_PARSE_NUM_ERR_NONE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code has the value 0, and means that no error occurred
+ parsing the number.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_ONLY_S">USTR_TYPE_PARSE_NUM_ERR_ONLY_S</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the <a href="design">Ustr string</a> consisted only of spaces.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM">USTR_TYPE_PARSE_NUM_ERR_ONLY_SPM</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the <a href="design">Ustr string</a> consisted only spaces, and
+ a plus or minus sign.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX">USTR_TYPE_PARSE_NUM_ERR_ONLY_SPMX</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the <a href="design">Ustr string</a> consisted of only spaces, a
+ plus or minus sign and a "0x" base 16 prefix.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_OOB">USTR_TYPE_PARSE_NUM_ERR_OOB</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the <a href="design">Ustr string</a> had characters in it that
+ where out of bounds from the working base.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Without the <a href="constants#USTR_FLAG_PARSE_NUM_EXACT">USTR_FLAG_PARSE_NUM_EXACT</a>, this error is ignored as soon as any
+ number is parsed.
+</p><p>  This out of bounds includes the <a href="design">Ustr string</a> &quot;++&quot; as well as &quot;4A&quot;,
+ when parsing in a base less than 11.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_OVERFLOW">USTR_TYPE_PARSE_NUM_ERR_OVERFLOW</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the number parsed from the <a href="design">Ustr string</a>
+ would overflow the type it is being parsed into, this is only returned
+ when the <a href="constants#USTR_FLAG_PARSE_NUM_OVERFLOW">USTR_FLAG_PARSE_NUM_OVERFLOW</a> flag was passed to the parse
+ function.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_NEGATIVE">USTR_TYPE_PARSE_NUM_ERR_NEGATIVE</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the number parsed from the Vstr string
+ starts with a '-' (Hyphen) character when it is supposed to be an
+ unsigned number.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO">USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This error code means that the number parsed from the Vstr string
+ starts with a '0' (Digit Zero) character, when the
+ <a href="constants#USTR_FLAG_PARSE_NUM_NO_BEG_ZERO">USTR_FLAG_PARSE_NUM_NO_BEG_ZERO</a> flag was passed to the parse function.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20to%20pass%20to%20ustr_split%2a">Constants to pass to ustr_split*</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_SPLIT_DEF">USTR_FLAG_SPLIT_DEF</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  Default flags, this is merely 0 but can be used as live documentation.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_SPLIT_RET_SEP">USTR_FLAG_SPLIT_RET_SEP</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  Return the separator along with the tokens. For example splitting &quot;a,b,&quot;
+ using separator "," will return the tokens "a," and "b," whereas without this
+ flag only "a" and "b" would be returned.
+</p><p>    
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_SPLIT_RET_NON">USTR_FLAG_SPLIT_RET_NON</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  Return empty tokens. For example: splitting &quot;a,,b&quot; with separator &quot;,&quot; will
+ return the tokens {"a" "" "b"}.
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_FLAG_SPLIT_KEEP_CONFIG">USTR_FLAG_SPLIT_KEEP_CONFIG</a>
+
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  Force the returned Ustr's to have same configuration parameters as the
+ <a href="design">Ustr string</a> that is being split.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Misc%20constants%20to%20use%20in%20code">Misc constants to use in code</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_NULL">USTR_NULL</a>
 
