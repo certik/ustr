@@ -345,6 +345,7 @@
   ustrp_parse_b_uint64;
 
   ustr_io_get;
+  ustr_io_getdelim;
   ustr_io_getfile;
   ustr_io_getfilename;
   ustr_io_getline;
@@ -355,6 +356,7 @@
   ustr_io_putline;
 
   ustrp_io_get;
+  ustrp_io_getdelim;
   ustrp_io_getfile;
   ustrp_io_getfilename;
   ustrp_io_getline;

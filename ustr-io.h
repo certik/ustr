@@ -17,6 +17,8 @@ USTR_CONF_E_PROTO int ustr_io_getfile(struct Ustr **, FILE *)
 USTR_CONF_E_PROTO int ustr_io_getfilename(struct Ustr **, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
+USTR_CONF_E_PROTO int ustr_io_getdelim(struct Ustr **, FILE *, char)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO int ustr_io_getline(struct Ustr **, FILE *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -42,6 +44,9 @@ USTR_CONF_E_PROTO
 int ustrp_io_getfilename(struct Ustr_pool *, struct Ustrp **,const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
+USTR_CONF_E_PROTO
+int ustrp_io_getdelim(struct Ustr_pool *, struct Ustrp **, FILE *, char)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_E_PROTO int ustrp_io_getline(struct Ustr_pool *, struct Ustrp**,FILE*)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 

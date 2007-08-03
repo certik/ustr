@@ -15,11 +15,20 @@ static const Ustr *line999 = USTR1(\xa0, /* 160 */
 "123456789 " "123456789 " "123456789 " "123456789 " "123456789 "
 "123456789 ");
 
-static void tst_getline(FILE *fp)
+static void tst_getline(FILE *fp, int use_delim)
 {
   ustr_sc_del(&s1);
   ASSERT(!ustr_len(s1));
-  ASSERT(ustr_io_getline(&s1, fp));
+  if (!use_delim)
+    ASSERT(ustr_io_getline(&s1, fp));
+  else
+  {
+    ASSERT(ustr_io_getdelim(&s1, fp, '"'));
+    ASSERT(ustr_cmp_cstr_eq(s1, "#include \""));
+    ASSERT(ustr_io_getdelim(&s1, fp, '"'));
+    ASSERT(ustr_cmp_cstr_eq(s1, "#include \"tst.h\""));
+    ASSERT(ustr_io_getdelim(&s1, fp, '\n'));
+  }
   ASSERT_EQ(s1, line1);
 
   ustr_sc_del(&s1);
@@ -29,7 +38,24 @@ static void tst_getline(FILE *fp)
 
   ustr_sc_del(&s1);
   ASSERT(!ustr_len(s1));
-  ASSERT(ustr_io_getline(&s1, fp));
+  if (!use_delim)
+    ASSERT(ustr_io_getline(&s1, fp));
+  else
+  {
+    ASSERT(ustr_io_getdelim(&s1, fp, ' '));
+    ASSERT(ustr_cmp_cstr_eq(s1, "static "));
+    ASSERT(ustr_io_getdelim(&s1, fp, ' '));
+    ASSERT(ustr_cmp_cstr_eq(s1, "static const "));
+    ASSERT(ustr_io_getdelim(&s1, fp, ' '));
+    ASSERT(ustr_cmp_cstr_eq(s1, "static const char "));
+    ASSERT(ustr_io_getdelim(&s1, fp, '='));
+    ASSERT(ustr_cmp_cstr_eq(s1, "static const char *rf ="));
+    ASSERT(ustr_io_getdelim(&s1, fp, ' '));
+    ASSERT(ustr_cmp_cstr_eq(s1, "static const char *rf = "));
+    ASSERT(ustr_io_getdelim(&s1, fp, ';'));
+    ASSERT(ustr_cmp_cstr_eq(s1, "static const char *rf = __FILE__;"));
+    ASSERT(ustr_io_getdelim(&s1, fp, '\n'));
+  }
   ASSERT_EQ(s1, line3);
 
   ustr_sc_del(&s1);
@@ -39,7 +65,16 @@ static void tst_getline(FILE *fp)
 
   ustr_sc_del(&s1);
   ASSERT(!ustr_len(s1));
-  ASSERT(ustr_io_getline(&s1, fp));
+  if (!use_delim)
+    ASSERT(ustr_io_getline(&s1, fp));
+  else
+  {
+    ASSERT(ustr_io_getdelim(&s1, fp, '/'));
+    ASSERT(ustr_cmp_cstr_eq(s1, "/"));
+    ASSERT(ustr_io_getdelim(&s1, fp, '/'));
+    ASSERT(ustr_cmp_cstr_eq(s1, "/* 1234567 */"));
+    ASSERT(ustr_io_getdelim(&s1, fp, '\n'));
+  }
   ASSERT_EQ(s1, line5);
 
   ustr_sc_del(&s1);
@@ -108,9 +143,8 @@ int tst(void)
   ASSERT(ustr_cmp_subustr_eq(line5, s1, 1, ustr_len(line5)));
   ASSERT(ustr_del_subustr(&s1, 1, ustr_len(line5)));
   
-  rewind(fp);
-
-  tst_getline(fp);
+  rewind(fp); tst_getline(fp, USTR_FALSE);
+  rewind(fp); tst_getline(fp, USTR_TRUE);
   ASSERT(ustr_io_getfile(&s1, fp));
   ASSERT( ustr_len(s1));
   ustr_sc_del(&s1);
@@ -148,9 +182,9 @@ int tst(void)
   ASSERT(!ustrp_len(sp1));
   ASSERT(ustrp_io_putfile(pool, &sp1, fp));
   
-  rewind(fp);
+  rewind(fp); tst_getline(fp, USTR_FALSE);
+  rewind(fp); tst_getline(fp, USTR_TRUE);
 
-  tst_getline(fp);
   ASSERT(ustr_io_getline(&s1, fp));
   ASSERT(ustr_del(&s1, 1)); /* remove \n */
   ASSERT_EQ(s1, line999);
@@ -171,7 +205,9 @@ int tst(void)
 
   ASSERT(ustr_io_putfilename(&s1, ustr_cstr(s2), "wb"));
   
-  tst_getline(fp);
+  rewind(fp); tst_getline(fp, USTR_FALSE);
+  rewind(fp); tst_getline(fp, USTR_TRUE);
+
   ASSERT(ustr_io_getline(&s1, fp));
   ASSERT(ustr_del(&s1, 1)); /* remove \n */
   ASSERT_EQ(s1, line999);
@@ -187,7 +223,7 @@ int tst(void)
   ASSERT(ustrp_io_getline(pool, &sp1, fp));
   ASSERT_EQ(&sp1->s, line1);
   ustrp_sc_del(pool, &sp1);
-  ASSERT(ustrp_io_getline(pool, &sp1, fp));
+  ASSERT(ustrp_io_getdelim(pool, &sp1, fp, '\n'));
   ASSERT_EQ(&sp1->s, line2);
   ustrp_sc_del(pool, &sp1);
   ASSERT(ustrp_io_getline(pool, &sp1, fp));

@@ -115,8 +115,8 @@ int ustrp_io_getfilename(struct Ustr_pool *p, struct Ustrp **ps1,
 # define USTR__IO_GETC(x) getc(x)
 #endif
 
-USTR_CONF_i_PROTO
-int ustrp__io_getline(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp)
+USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
+                                         FILE *fp, char delim)
 {
   int val = EOF;
   size_t olen = 0;
@@ -133,7 +133,7 @@ int ustrp__io_getline(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp)
     while (num && ((val = USTR__IO_GETC(fp)) != EOF))
     {
       --num;
-      if ((*wstr++ = val) == '\n')
+      if ((*wstr++ = val) == delim)
         break;
     }
     
@@ -146,17 +146,29 @@ int ustrp__io_getline(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp)
     olen += linesz;
   }
 
-  return (val == '\n');
+  return (val == delim);
 }
 #undef USTR__IO_GETC
 USTR_CONF_I_PROTO
+int ustr_io_getdelim(struct Ustr **ps1, FILE *fp, char delim)
+{ return (ustrp__io_getdelim(0, ps1, fp, delim)); }
+USTR_CONF_I_PROTO int ustrp_io_getdelim(struct Ustr_pool *p, struct Ustrp **ps1,
+                                        FILE *fp, char delim)
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__io_getdelim(p, &tmp, fp, delim);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
+
+USTR_CONF_I_PROTO
 int ustr_io_getline(struct Ustr **ps1, FILE *fp)
-{ return (ustrp__io_getline(0, ps1, fp)); }
+{ return (ustrp__io_getdelim(0, ps1, fp, '\n')); }
 USTR_CONF_I_PROTO
 int ustrp_io_getline(struct Ustr_pool *p, struct Ustrp **ps1, FILE *fp)
 {
   struct Ustr *tmp = &(*ps1)->s;
-  int ret = ustrp__io_getline(p, &tmp, fp);
+  int ret = ustrp__io_getdelim(p, &tmp, fp, '\n');
   *ps1 = USTRP(tmp);
   return (ret);
 }
