@@ -3241,7 +3241,7 @@ Function: ustr_replace_rep_chr()
   Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
   ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
 
-  ...would change data to be "yxByCxDyx".
+ ...would change data to be "yxByCxDyx".
 
 
  Note:
@@ -3282,14 +3282,12 @@ Function: ustr_split_buf()
  pattern at which to split. If the pattern is not found, the entire string
  will be returned. A USTR_NULL return value indicates there are no more
  tokens remaining.
-
   Parameter[5] is a a pointer to a Ustr where the return value will be placed.
  Passing a USTR_NULL to this parameter will cause the string to be allocated
- and **MUST BE FREED manually**. If, however, you pass in a non-null Ustr to
+ and **MUST** be freed **manually**. If, however, you pass in a non-null Ustr to
  this parameter, each call to ustr_split_buf() will free what is in this
  pointer and place the new token there (when USTR_NULL is returned, nothing
  needs to be free'd).
-
   For example, given...
 
   Ustr *data = ...;
