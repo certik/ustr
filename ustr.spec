@@ -5,7 +5,7 @@ Version: 1.0.1
 Release: 1%{?dist}
 Summary: String library, very low memory overhead, simple to import
 Group: System Environment/Libraries
-License: MIT/LGPL/BSD
+License: MIT or LGPLv2+ or BSD
 URL: http://www.and.org/ustr/
 Source0: http://www.and.org/ustr/%{version}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -100,27 +100,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ustr-%{version}
 %{_bindir}/ustr-import
 %{_includedir}/ustr.h
-# We need to make sure we don't pickup:
-#  ustr-debug.h and ustr-conf-debug.h
-%{_includedir}/ustr-[bfimpsu]*.h
-#{_includedir}/ustr-b.h
-%{_includedir}/ustr-cmp.h
-%{_includedir}/ustr-cntl.h
-%{_includedir}/ustr-compiler.h
-%{_includedir}/ustr-conf.h
-#{_includedir}/ustr-fmt.h
-#{_includedir}/ustr-io.h
-#{_includedir}/ustr-main.h
-#{_includedir}/ustr-parse.h
-#{_includedir}/ustr-pool.h
-#{_includedir}/ustr-sc.h
-#{_includedir}/ustr-set.h
-#{_includedir}/ustr-spn.h
-#{_includedir}/ustr-srch.h
-#{_includedir}/ustr-utf8.h
+%{_includedir}/ustr-*.h
+%exclude %{_includedir}/ustr*debug.h
 %{_libdir}/pkgconfig/ustr.pc
 %{_libdir}/libustr.so
 %{_datadir}/doc/ustr-devel-%{version}
+%{_mandir}/man1/*
 %{_mandir}/man3/*
 
 %files static
@@ -139,6 +124,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Aug  3 2007 James Antill <james@and.org> - 1.0.1-0.10.fc7
+- Re-fix dups in -devel and -debug file lists.
+- Change license to new format
+
 * Thu Aug  2 2007 James Antill <james@and.org> - 1.0.1-0.9.fc7
 - Fix dups in -devel and -debug file lists.
 

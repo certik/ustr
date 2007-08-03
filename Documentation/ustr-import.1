@@ -1,0 +1,138 @@
+.TH ustr 1 "03-Aug-2007" "ustr-import 1.0.1" "Ustr String Library, tools"
+.SH "SYNOPSIS"
+.ad l
+.hy 0
+.HP 5
+\fBustr-import\fR [-d] [-d] [-c] [-b] [-e] [-s] < "all" | section | ... >
+.sp
+.ti
+.HY
+.SH "DESCRIPTION"
+ This tool lets you use the Ustr string library without incuring dependancies on the library itself, so API/ABI compatability is 100% (nothing changes unless you do it) and installing your application doesn't require the library to be pre-installed\&.
+.SH "OPTIONS"
+
+.TP
+\-d
+Turn debugging on, USTR_ASSERT() now runs code etc\&.
+
+.TP
+\-d
+Turn extra debugging on, including End of String (EOS) markers that takeup space
+
+.TP
+\-c
+Use C files, this requires that you alter the build system to compile the C files and link them into your application\&. The default is to just provide headers that you can just include\&.
+
+.TP
+\-b
+Specify the default reference count byte size: 0, 1, 2 or 4 (or 8 on 64 bit platforms)\&. Note that 2 bytes is the minimum if you have explicit size storage\&.
+
+.TP
+\-e
+Specify the default exact sized allocations flag, without this flag allocations are rounded up to the neared half power of two\&.
+
+.TP
+\-s
+Specify the default explicit size storage flag, without this flag allocations have an implicit size based on their length with it a size value is stored with the string (thus taking significantly larger space for small strings, but this doesn't require reallocating the string when growing and shrinking the string)\&. Note that turning this on also increases the minimum sizes for length and reference count storage\&.
+
+.SH "SECTIONS"
+.TP
+all
+All of the following sections are included\&.
+
+.TP
+b
+Working with binary numbers in NBO format\&.
+
+.TP
+cmp
+Comparing, strcmp() for Ustr's, although the Ustr versions are safer and much faster\&.
+
+.TP
+cntl
+Control options dynamically\&.
+
+.TP
+fmt
+Formatted output, sprintf() for Ustr's\&.
+
+.TP
+gdb
+Copy just the \&.gdbinit file to the local dir\&.
+
+.TP
+io
+Input Output\&.
+
+.TP
+ins
+Inserting data\&.
+
+.TP
+main
+The core functions, including strcat(), strdup() and delete for Ustr's. Always safer and often much faster\&.
+
+.TP
+parse
+Parsing integers, Ie. Nice versions of strtol()\&.
+
+.TP
+pool
+A bundled memory pool API, to use with the ustrp functions\&.
+
+.TP
+replace
+Replacing all occurances of data\&.
+
+.TP
+sc
+Shortcut functions for Ustr's\&.
+
+.TP
+set
+Setting data, strcpy() for Ustr's\&.
+
+.TP
+split
+Slit the data, strtok() / strsep() for Ustr's\&.
+
+.TP
+spn
+Spanning, strspn() / strcspn() for Ustr's\&.
+
+.TP
+srch
+Searching, strchr() / strrchr() / strstr() for Ustr's, although the Ustr versions are safer and much faster\&.
+
+.TP
+sub
+Substituting data\&.
+
+.TP
+utf8
+Working with UTF8\&.
+
+.SH "FILES"
+
+.TP
+\fI/ustr/include/ustr*\&.h\fR
+The default "extern" header files\&.
+
+.TP
+\fI/usr/share/ustr-*/ustr-*-internal\&.h\fR
+Internal functions, used the implement the public interfaces\&.
+
+.TP
+\fI/usr/share/ustr-*/ustr-*-code\&.h\fR
+The code behind the public interfaces\&.
+
+.TP
+\fI/usr/share/ustr-*/ustr-*-code\&.c\fR
+The C files, which use the code header files to create objects\&.
+
+.TP
+\fI/usr/share/ustr-*/\&.gdbinit\fR
+The GDB init file containing macros to help inspect Ustr's in the debugger\&.
+
+.SH "SEE ALSO"
+.BR ustr (3), ustr_const (3)

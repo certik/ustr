@@ -1,3 +1,7 @@
+2007-08-03  James Antill  <james@and.org>
+
+	* Documentation/ustr-import.1: Add man page for ustr-import.
+
 2007-08-02  James Antill  <james@and.org>
 
 	* Documentation/txt2html.pl (convert): Fixup pre parsing to be more

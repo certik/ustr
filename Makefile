@@ -64,7 +64,10 @@ DOCS = README-DEVELOPERS TODO \
        Documentation/constants.html \
        Documentation/design.html
 
-MAN_PAGES = \
+MAN_PAGES_1 = \
+       Documentation/ustr-import.1
+
+MAN_PAGES_3 = \
        Documentation/ustr.3 \
        Documentation/ustr_const.3
 
@@ -304,6 +307,7 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -d $(DESTDIR)$(SHRDIR)
 		install -d $(DESTDIR)$(DOCSHRDIR)
 		install -d $(DESTDIR)$(EXAMDIR)
+		install -d $(DESTDIR)$(mandir)/man1
 		install -d $(DESTDIR)$(mandir)/man3
 		install -d $(DESTDIR)$(bindir)
 		install -d $(DESTDIR)$(libdir)/pkgconfig
@@ -324,7 +328,8 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
 		install -m 644 -t $(DESTDIR)$(DOCSHRDIR) $(DOCS)
 		install -m 644 -t $(DESTDIR)$(EXAMDIR) $(EXAMPLES)
-		install -m 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES)
+		install -m 644 -t $(DESTDIR)$(mandir)/man1 $(MAN_PAGES_1)
+		install -m 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES_3)
 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
 		install -m 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
 

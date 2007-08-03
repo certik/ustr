@@ -21,11 +21,12 @@ function usage
   echo "         -d    = Turn debugging on, assert() trigger etc." 1>&2
   echo "         -d    = Turn extra debugging on" 1>&2
   echo "         -c    = Import/use .c files, instead of headers only" 1>&2
-  echo "         -b    = Specify default ref. bytes size: 0, 1, 2 or 4" 1>&2
+  echo "         -b    = Specify default ref. bytes size: 0, 1, 2, 4 or 8" 1>&2
   echo "         -e    = Exact allocations used by default" 1>&2
   echo "         -s    = Sized value included by default" 1>&2
   echo "     List of sections:" 1>&2
-  echo "         b     = strcat() binary numbers in NBO format" 1>&2
+  echo "         all   = All of the following" 1>&2
+  echo "         b     = Working with binary numbers in NBO format" 1>&2
   echo "         cmp   = Comparing, strcmp() for Ustr's" 1>&2
   echo "         cntl  = Control options dynamically" 1>&2
   echo "         fmt   = Formatted output, sprintf() for Ustr's" 1>&2
@@ -34,15 +35,15 @@ function usage
   echo "         ins   = Inserting data" 1>&2
   echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
   echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
-  echo "         pool  = A simplish bundled memory pool API" 1>&2
+  echo "         pool  = A bundled memory pool API" 1>&2
   echo "         replace = Replacing all occurances of data" 1>&2
   echo "         sc    = Shortcut functions for Ustr's" 1>&2
-  echo "         set   = Setting to data" 1>&2
+  echo "         set   = Setting data, strcpy() for Ustr's" 1>&2
   echo "         split = Slit the data, strtok() / strsep() for Ustr's" 1>&2
   echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
-  echo "         srch  = Searching, strchr() / strrchr() for Ustr's" 1>&2
+  echo "         srch  = Searching, strchr() / strstr() for Ustr's" 1>&2
   echo "         sub   = Substituting data" 1>&2
-  echo "         utf8  = UTF8" 1>&2
+  echo "         utf8  = Working with UTF8" 1>&2
   echo "" 1>&2
   echo "     Ustr Version: $VERS_FULL" 1>&2
   exit 1
@@ -128,6 +129,7 @@ if $all; then
   cmp=true
   cntl=true
   fmt=true
+  gdb=true
   io=true
   ins=true
   main=true
