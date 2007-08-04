@@ -538,7 +538,7 @@ if $sub; then # SUB hard deps. on ins, sc, srch, weak dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
 fi
 
-if $repl; then # REPLACE hard deps. on sc, set, spn, srch, sub
+if $repl; then # REPLACE hard deps. on set, spn, srch, sub
   echo '#include "ustr-replace.h"' >> $outname
 fi
 

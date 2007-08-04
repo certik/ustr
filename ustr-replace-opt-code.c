@@ -9,7 +9,6 @@
 #define USTR_CONF_EI_PROTO extern
 #define USTR_CONF_II_PROTO extern inline
 #include "ustr-main.h"
-#include "ustr-sc.h"
 #include "ustr-set.h"
 #include "ustr-srch.h"
 #include "ustr-sub.h"

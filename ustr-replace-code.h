@@ -8,20 +8,19 @@ USTR_CONF_i_PROTO
 size_t ustrp__replace_inline_buf(struct Ustr_pool *p, struct Ustr **ps1,
                                  const void *optr, size_t olen,
                                  const void *nptr, size_t nlen, size_t lim)
-{ /* "fast path" ... as we can't fail after we are the owner(). In theory
-   * we can do nlen <= olen, but then we'll spend a lot of time calling
-   * memmove(). Which might be painful, so let that fall through to dupx(). */
+{ /* "fast path" ... we can't fail, so ignore the return values */
   size_t num  = 0;
   size_t pos  = 0;
   
-  if (!ustrp__sc_ensure_owner(p, ps1))
-  {
-    ustr_setf_enomem_err(*ps1);
-    return (0);
-  }
-  
+  USTR_ASSERT(ustr_owner(*ps1));
+  USTR_ASSERT((nlen == olen) || !ustr_alloc(*ps1));
+
   while ((pos = ustr_srch_buf_fwd(*ps1, pos, optr, olen)))
   {
+    USTR_ASSERT((nlen == olen) ||
+                (ustr_fixed(*ps1) &&
+                 (ustr_size(*ps1) >= (ustr_len(*ps1) + (nlen - olen)))));
+    
     ustrp__sc_sub_buf(p, ps1, pos, olen, nptr, nlen);
     pos += nlen - 1;
     
@@ -51,7 +50,7 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
-  if (nlen == olen)
+  if ((nlen == olen) && ustr_owner(*ps1))
     return (ustrp__replace_inline_buf(p, ps1, optr, olen, nptr, nlen, lim));
   
   /* pre-calc size, and do single alloc and then memcpy.
@@ -109,7 +108,7 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
     const char *tptr = rptr + roff;
     size_t blen = pos - (roff + 1);
     
-    pos  += olen - 1;
+    pos += olen - 1;
     USTR_ASSERT(pos == (roff + blen + olen));
     
     ustrp__sub_buf(p, &ret, lpos, tptr, blen); lpos += blen;
@@ -190,14 +189,15 @@ size_t ustrp__replace_inline_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
   size_t num  = 0;
   size_t pos  = 0;
 
-  if (!ustrp__sc_ensure_owner(p, ps1))
-  {
-    ustr_setf_enomem_err(*ps1);
-    return (0);
-  }
+  USTR_ASSERT(ustr_owner(*ps1));
+  USTR_ASSERT((nlen == olen) || !ustr_alloc(*ps1));
 
   while ((pos = ustr_srch_rep_chr_fwd(*ps1, pos, odata, olen)))
   {
+    USTR_ASSERT((nlen == olen) ||
+                (ustr_fixed(*ps1) &&
+                 (ustr_size(*ps1) >= (ustr_len(*ps1) + (nlen - olen)))));
+    
     ustrp__sc_sub_rep_chr(p, ps1, pos, olen, ndata, nlen);
     pos += nlen - 1;
     
@@ -226,7 +226,7 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
 
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   
-  if (nlen == olen)
+  if ((nlen == olen) && ustr_owner(*ps1))
     return (ustrp__replace_inline_rep_chr(p, ps1, odata,olen, ndata,nlen, lim));
 
   /* pre-calc size, and do single alloc and then memcpy.
@@ -285,7 +285,7 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
     const char *tptr = rptr + roff;
     size_t blen = pos - (roff + 1);
     
-    pos  += olen - 1;
+    pos += olen - 1;
     USTR_ASSERT(pos == (roff + blen + olen));
     
     ustrp__sub_buf(p, &ret,     lpos, tptr,  blen); lpos += blen;
