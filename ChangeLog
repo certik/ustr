@@ -1,3 +1,14 @@
+2007-08-04  James Antill  <james@and.org>
+
+	* NEWS: Release 1.0.1
+
+2007-08-04  James Antill  <james@and.org>
+
+	* ustr-replace-code.h (ustr_replace_rep_chr): Minor speedup, for
+	non-owned replacements when olen == nlen.
+	(ustr_replace_buf): Minor speedup, for non-owned replacements when
+	olen == nlen.
+
 2007-08-03  James Antill  <james@and.org>
 
 	* Documentation/ustr-import.1: Add man page for ustr-import.

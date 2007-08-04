@@ -1,3 +1,11 @@
+1.0.1 - 2007-08-04
+ Documentation improvements.
+ Add a lot of new functions: insert, replace, split, substitute, io_getdelim
+ and more.
+ Build fixes for win32.
+ Fedora review for rpms.
+
+
 1.0.0 - 2007-07-13
  Lots of API and implementation fixes.
  Lots of documentation.
