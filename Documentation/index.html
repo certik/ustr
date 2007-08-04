@@ -39,9 +39,9 @@
   <body>
     <h1>Micro String API - for C</h1>
 
-<h2> Download </h2>
+<h2> Download - Version 1.0.1 </h2>
 
-<p> You can get the stable release of <A href="1.0.0">1.0.x here</A>, it still
+<p> You can get the stable release of <A href="1.0.1">1.0.x here</A>, it still
  doesn't have 100% documentation but it's pretty close. You can get the current
  <a href="http://git.or.cz/">git</a> tree
  <a title="Use: git clone http://www.and.org/ustr/ustr.git ustr" href="http://www.and.org/ustr/ustr.git">here</a>.</p>
@@ -693,8 +693,8 @@ if (ustr_shared(s2)) <span class="comment">/* This is FALSE, it's a non-shared s
 
 ustr_free(s2); <span class="comment">/* free'd one reference to the data pointed to by both s2 and s3 */</span>
 
-ustr_set_share(s2);  <span class="comment">/* Make s2/s3 "shared" data,
-                        so it always has infinite references */</span>
+ustr_setf_share(s2);  <span class="comment">/* Make s2/s3 "shared" data,
+                         so it always has infinite references */</span>
 
 if (ustr_shared(s2)) <span class="comment">/* This is  TRUE */</span>
   <span class="comment">/* whatever */</span> ;
@@ -718,8 +718,8 @@ if (ustr_enomem(s3)) <span class="comment">/* check for errors on the last 2 ust
                         hence the explicit first check */</span>
   <span class="comment">/* error */</span> ;
 
-ustr_set_owner(s2); <span class="comment">/* Make s2 be "non-shared" and have a single owner */</span>
-ustr_set_owner(s1); <span class="comment">/* This fails, as you can't make a read-only string be "non-shared" */</span>
+ustr_setf_owner(s2); <span class="comment">/* Make s2 be "non-shared" and have a single owner */</span>
+ustr_setf_owner(s1); <span class="comment">/* This fails, as you can't make a read-only string be "non-shared" */</span>
 
 ustr_sc_del(&amp;s2); <span class="comment">/* free'd s2 and set s2 = USTR("") */</span>
 
@@ -742,7 +742,7 @@ if (ustr_ro(s2))     <span class="comment">/* This is  TRUE */</span>
     <address><a href="mailto:james-web@and.org">James Antill</a></address>
 <!-- Created: Thu May 10 02:10:59 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Fri Jul 13 02:30:37 EDT 2007
+Last modified: Sat Aug  4 01:43:27 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>

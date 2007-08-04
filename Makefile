@@ -76,7 +76,9 @@ EXAMPLES = examples/Makefile \
        examples/hexdump.c \
        examples/mkdir_p.c \
        examples/netstr.c \
-       examples/nums.c
+       examples/nums.c \
+       examples/mkdir_p.c \
+       examples/fgrep.c
 
 TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_0_sizes otst_0_manual octst_0_cntl \
