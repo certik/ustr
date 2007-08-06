@@ -72,13 +72,12 @@ MAN_PAGES_3 = \
        Documentation/ustr_const.3
 
 EXAMPLES = examples/Makefile \
+       examples/fgrep.c \
        examples/hello_world.c \
        examples/hexdump.c \
        examples/mkdir_p.c \
        examples/netstr.c \
-       examples/nums.c \
-       examples/mkdir_p.c \
-       examples/fgrep.c
+       examples/nums.c
 
 TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_0_sizes otst_0_manual octst_0_cntl \
