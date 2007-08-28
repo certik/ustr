@@ -189,7 +189,7 @@ struct Ustr
   * 
   *    w         = allocated
   *     x        = has size
-  *      y       = round up allocations
+  *      y       = round up allocations (off == exact allocations)
   *       z      = memory error
   *         nn   = refn
   *           oo = lenn
@@ -307,7 +307,7 @@ USTR__COMPILE_ASSERT((sizeof(USTR_END_CONSTx) == sizeof(USTR_END_FIXEDx)),
  * _either_ with or without reference counts (so that ustr_dup() doesn't copy)
  * and with or without a stored size (so growing/shrinking a lot doesn't
  * cause lots of malloc/realloc usage). Note that for lengths of strings, or
- * reference counts that need >= 8 bytes of storage the Ustr _much_ contain
+ * reference counts that need >= 8 bytes of storage the Ustr _MUST_ contain
  * a stored size.
  * 
  *  It can also track memory allocation errors over multiple function calls.
@@ -332,7 +332,7 @@ USTR__COMPILE_ASSERT((sizeof(USTR_END_CONSTx) == sizeof(USTR_END_FIXEDx)),
  *  Also NOTE if the 1st and 2nd flags are set, this means that the Ustr is in
  * fixed storge (like an auto array). Also if the 1st, 2nd and 3rd flags are
  * set, this means that the Ustr is limited, Ie. it's in fixed storge and
- * _cannot_ grow (all allocation attempts will fail).
+ * _CANNOT_ grow (all allocation attempts will fail).
  *
  *  == If there is any more data after the above declared one they have
  *     been allocated via. the "struct hack" method (search for more info). ==

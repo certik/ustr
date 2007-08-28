@@ -74,7 +74,20 @@ struct Ustr
   *         nn   = refn
   *           oo = lenn
   *
-  * 0b_0000_0000 = "", const, no alloc fail, no mem err, refn=0, lenn=0 */</span>
+  * Eg.
+  *
+  * 0b_0000_0000 ==
+  *           "" ==
+  * not allocated, [no size], [no round up allocs], no mem err, refn=0, lenn=0
+  *
+  * 0b1000_0001 ==
+  *        0xA5 ==
+  * allocated, no size, no round up allocs,         no mem err, refn=0, lenn=1
+  *
+  * 0b1010_0101 ==
+  *        0xA5 ==
+  * allocated, no size,    round up allocs,         no mem err, refn=1, lenn=1
+  */</span>
 };
 
 struct Ustrp
@@ -90,12 +103,12 @@ struct Ustrp
 <pre class="c2html">
 <span class="comment">/* Unused bit patterns for data[0]:
  *
- * 0bxxxx_x100 == lenn = 0
- * 0bxxxx_1x00
- * 0bxxx1_xx00
- * 0bxx1x_xx00
+ * 0bx0xx_x100 == lenn = 0
+ * 0bx0xx_1x00
+ * 0bx0x1_xx00
+ * 0bx01x_xx00
  *              0bx1xx_xx00 =&gt; is used in sized
- * 0b1xxx_xx00
+ * 0b10xx_xx00
  *
  * 0bx1xx_xx11 == 128bit size_t, yeh!
  * 0bx1xx_11xx
@@ -111,83 +124,101 @@ struct Ustrp
 
 <h2 id="english">English description of struct Ustr </h2>
 
+<p>
+  This strucure is very magic, as an optimization "" is a valid "structure"
+ for an empty string, ustr_len("") == 0, ustr_size("") == 0,
+ ustr_cstr("") == "".
+</p><p>
+  This also works for other "static data strings" if they start with the first
+ four bits as 0 ... although for C const strings using this, the length has
+ to be manually defined correctly at compile time.
+</p><p>
+  However it is also a "space efficient" String ADT, with a managed length,
+ _either_ with or without reference counts (so that ustr_dup() doesn't copy)
+ and with or without a stored size (so growing/shrinking a lot doesn't
+ cause lots of malloc/realloc usage). Note that for lengths of strings, or
+ reference counts that need &gt;= 8 bytes of storage the Ustr <b>must</b>
+ contain a stored size.
+</p><p>
+  It can also track memory allocation errors over multiple function calls.
+</p><br><p>
+  If the first byte == 0, then it's "" as above.
+</p><p>
+  Otherwise the first byte contains four flags, and 2 numbers (2 bits each).
+</p><p>
+  The 1st flag says if the string is allocated. The 2nd flag says if it has a
+ stored size. The 3rd flag says if it isn't using "exact allocations", if it
+ is ustr_len() + ustr_overhead() == ustr_size_alloc(), otherwise there might
+ be room to grow without doing a memory allocation call[1]. The 4th flag says
+ if this Ustr has had a memory allocation error.
+ The two numbers are the mappings for the length of the reference count, and
+ the length of the length. Note that this mapping changes if the 2nd flag is
+ set.
+</p><p>
+ [1] There is an implied "size" of the string, based an how big it is. This
+ is a concession for speed efficiency, although it only grows at 1.5x
+ not 2x which is the norm. (again, to reduce memory waste). Again if this is
+ too much overhead, just use exact sized allocations.
+</p><p>
+
+  Also <b>NOTE</b> if the 1st and 2nd flags are set, this means that the Ustr
+ is in fixed storge (like an auto array). Also if the 1st, 2nd and 3rd flags are
+ set, this means that the Ustr is limited, Ie. it's in fixed storge and
+ <b>cannot</b> grow (all allocation attempts will fail).
+</p>
+
+<h3>
+   If there is any more data after the above declared one they have
+     been allocated via. the "struct hack" method (search for more info).
+</h3>
+
+<p>
+  Next, possibly, comes the reference count (of the given length[2]).
+</p><p>
+  Next, if not "", comes the length of the data (of the given length[2]).
+</p><p>
+  Next, if non-zero length, comes the data, which can include NIL bytes.
+</p><p>
+  And finally, if not "", a NIL byte, to make sure it's always a valid C-Style
+ string (although obviously any embeded NIL bytes will make it look shorter
+ if something else just uses strlen(ustr_cstr())).
+</p><p>
+
+ [2] The sizes can currently be 1, 2, 4 or 8 bytes. Depending on the mapping
+ of the value in the first byte (length changes dynamically, as you add data).
+</p>
+<h3>
+ Examples
+</h3>
+
+<p>
+  The allocated string "a", using exact allocations and no reference
+ counting, is the 4 bytes:
+</p>
+
 <pre class="c2html">
-<span class="comment">/*
- *    ================ English description of struct Ustr ================
- *
- *  This strucure is very magic, as an optimization "" is a valid "structure"
- * for an empty string, ustr_len("") == 0, ustr_size("") == 0,
- * ustr_cstr("") == "".
- *  This also works for other "static data strings" if they start with the first
- * four bits as 0 ... although for C const strings using this, the length has
- * to be manually defined correctly at compile time.
- *
- *  However it is also a "space efficient" String ADT, with a managed length,
- * _either_ with or without reference counts (so that ustr_dup() doesn't copy)
- * and with or without a stored size (so growing/shrinking a lot doesn't
- * cause lots of malloc/realloc usage). Note that for lengths of strings, or
- * reference counts that need &gt;= 8 bytes of storage the Ustr _much_ contain
- * a stored size.
- * 
- *  It can also track memory allocation errors over multiple function calls.
- *
- *  If the first byte == 0, then it's "" as above.
- *  Otherwise the first byte contains four flags, and 2 numbers (2 bits each).
- *
- *  The 1st flag says if the string is allocated. The 2nd flag says if it has a
- * stored size. The 3rd flag says if it isn't using "exact allocations", if it
- * is ustr_len() + ustr_overhead() == ustr_size_alloc(), otherwise there might
- * be room to grow without doing a memory allocation call[1]. The 4th flag says
- * if this Ustr has had a memory allocation error.
- * The two numbers are the mappings for the length of the reference count, and
- * the length of the length. Note that this mapping changes if the 2nd flag is
- * set.
- *
- * [1] There is an implied "size" of the string, based an how big it is. This
- * is a concession for speed efficiency, although it only grows at 1.5x
- * not 2x which is the norm. (again, to reduce memory waste). Again if this is
- * too much overhead, just use exact sized allocations.
- *
- *  Also NOTE if the 1st and 2nd flags are set, this means that the Ustr is in
- * fixed storge (like an auto array). Also if the 1st, 2nd and 3rd flags are
- * set, this means that the Ustr is limited, Ie. it's in fixed storge and
- * _cannot_ grow (all allocation attempts will fail).
- *
- *
- *  Next, possibly, comes the reference count (of the given length[2]).
- *  Next, if not "", comes the length of the data (of the given length[2]).
- *  Next, if non-zero length, comes the data, which can include NIL bytes.
- *  And finally, if not "", a NIL byte, to make sure it's always a valid C-Style
- * string (although obviously any embeded NIL bytes will make it look shorter
- * if something else just uses strlen(ustr_cstr())).
- *
- * [2] The sizes can currently be 1, 2, 4 or 8 bytes. Depending on the mapping
- * of the value in the first byte (length changes dynamically, as you add data).
- *
- *  Examples:
- *
- *  The allocated string "a", using exact allocations and no reference
- * counting, is the 4 bytes:
- *
- *     {0x81, 0x01, 'a', 0x00}
- *
- *
- *  The allocated string "ab", using non-exact allocations and 1 byte reference
- * counting (shared by 13 users), is the 6 bytes (there is no waste due to
- * non-exact allocations):
- *
- *     {0xA5, 0x0D, 0x02, 'a', 'b', 0x00}
- *
- *
- *  The allocated string "abcdefghijklmnop" (16 bytes, and a NIL), with
- * non-exact allocations 2 byte reference counting (shared by 1,003 users), is
- * the 24 bytes (with 3 bytes of "unused" space at the end):
- *
- *     {0xA9, 0x03, 0xEB, 0x10, 'a', 'b', [...], 'o', 'p', 0x00, &lt;x&gt;, &lt;x&gt;, &lt;x&gt;}
- */</span>
+     {0x81, 0x01, 'a', 0x00}
 </pre>
-<!-- C to html convertion of stdin -->
-<!--   done on Wed May 23 19:14:40 2007 -->
+
+<p>
+  The allocated string "ab", using non-exact allocations and 1 byte reference
+ counting (shared by 13 users), is the 6 bytes (there is no waste due to
+ non-exact allocations):
+</p>
+
+<pre class="c2html">
+     {0xA5, 0x0D, 0x02, 'a', 'b', 0x00}
+</pre>
+
+<p>
+  The allocated string "abcdefghijklmnop" (16 bytes, and a NIL), with
+ non-exact allocations 2 byte reference counting (shared by 1,003 users), is
+ the 24 bytes (with 3 bytes of "unused" space at the end):
+</p>
+
+<pre class="c2html">
+     {0xA9, 0x03, 0xEB, 0x10, 'a', 'b', [...], 'o', 'p', 0x00, &lt;x&gt;, &lt;x&gt;, &lt;x&gt;}
+</pre>
 
 <h2 id="possibilities"> Number of options for strings </h2>
 
@@ -204,7 +235,6 @@ Ustr *s2 = USTR1(\x4, <span class="str">"abcd"</span>);
 <!-- C to html convertion of stdin -->
 <!--   done on Wed May 23 19:18:26 2007 -->
 </li>
-<hr> <!-- not sure this is allowed, but seems to work -->
 <li> <b>Fixed/auto sized strings.</b>: These can seamlessly convert into
 allocated strings, if you add too much data. Ie. 
 <pre class="c2html">
@@ -226,8 +256,6 @@ allocated strings, if you add too much data. Ie.
 <!-- C to html convertion of stdin -->
 <!--   done on Wed May 23 19:19:30 2007 -->
 </li>
-<hr>
-<hr>
 <li> <b>Allocated, no reference counts</b>: This is the lowest overhead,
  meaning that ustr_dup() etc. will always have to create a new string and do a
  copy. <i>For this loss of functionality you gain a single byte</i>. Although
@@ -288,7 +316,7 @@ allocated strings, if you add too much data. Ie.
     <address><a href="mailto:james-web@and.org">James Antill</a></address>
 <!-- Created: Wed May 23 19:10:32 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Sat Jun 23 11:30:14 EDT 2007
+Last modified: Tue Aug 28 01:06:50 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
