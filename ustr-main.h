@@ -194,7 +194,20 @@ struct Ustr
   *         nn   = refn
   *           oo = lenn
   *
-  * 0b_0000_0000 = "", const, no alloc fail, no mem err, refn=0, lenn=0 */
+  * Eg.
+  *
+  * 0b_0000_0000 ==
+  *           "" ==
+  * not allocated, [no size], [no round up allocs], no mem err, refn=0, lenn=0
+  *
+  * 0b1000_0001 ==
+  *        0xA5 ==
+  * allocated, no size, no round up allocs,         no mem err, refn=0, lenn=1
+  *
+  * 0b1010_0101 ==
+  *        0xA5 ==
+  * allocated, no size,    round up allocs,         no mem err, refn=1, lenn=1
+  */
 };
 struct Ustrp
 { /* This is a type for the "pool" allocated Ustr it is a seperate type as a
@@ -208,12 +221,12 @@ USTR__COMPILE_ASSERT(sizeof(struct Ustrp) == sizeof(struct Ustr),
                      bad_sizeof_ustrp);
 /* Unused bit patterns for data[0]:
  *
- * 0bxxxx_x100 == lenn = 0
- * 0bxxxx_1x00
- * 0bxxx1_xx00
- * 0bxx1x_xx00
+ * 0bx0xx_x100 == lenn = 0
+ * 0bx0xx_1x00
+ * 0bx0x1_xx00
+ * 0bx01x_xx00
  *              0bx1xx_xx00 => is used in sized
- * 0b1xxx_xx00
+ * 0b10xx_xx00
  *
  * 0bx1xx_xx11 == 128bit size_t, yeh!
  * 0bx1xx_11xx
@@ -321,6 +334,8 @@ USTR__COMPILE_ASSERT((sizeof(USTR_END_CONSTx) == sizeof(USTR_END_FIXEDx)),
  * set, this means that the Ustr is limited, Ie. it's in fixed storge and
  * _cannot_ grow (all allocation attempts will fail).
  *
+ *  == If there is any more data after the above declared one they have
+ *     been allocated via. the "struct hack" method (search for more info). ==
  *
  *  Next, possibly, comes the reference count (of the given length[2]).
  *  Next, if not "", comes the length of the data (of the given length[2]).

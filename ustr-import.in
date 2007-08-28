@@ -255,7 +255,7 @@ if $pool; then
 fi
 
 if $repl; then
-  copy repl
+  copy replace
 fi
 
 if $sc; then

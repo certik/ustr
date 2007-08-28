@@ -1,3 +1,11 @@
+2007-08-28  James Antill  <james@and.org>
+
+	* ustr-main.h: Fixup struct Ustr comment.
+
+2007-08-08  James Antill  <james@and.org>
+
+	* ustr-import.in: Fix name of replace file.
+
 2007-08-04  James Antill  <james@and.org>
 
 	* NEWS: Release 1.0.1
