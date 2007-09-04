@@ -1,3 +1,7 @@
+2007-09-03  James Antill  <james@and.org>
+
+	* ustr-cntl-code.h: Move stdarg.h include into code file.
+
 2007-08-28  James Antill  <james@and.org>
 
 	* ustr-main.h: Fixup struct Ustr comment.

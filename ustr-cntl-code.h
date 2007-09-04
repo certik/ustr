@@ -12,6 +12,8 @@
 # define USTR__COMPILE_ATTR_H()
 #endif
 
+#include <stdarg.h> /* va_list for va_arg() like functionality */
+
 /* second set of defaults... *sigh* */
 struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
  {2, /* ref bytes */
