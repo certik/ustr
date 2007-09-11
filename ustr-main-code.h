@@ -1462,33 +1462,39 @@ USTR_CONF_I_PROTO void ustrp_sc_del(struct Ustr_pool *p, struct Ustrp **ps1)
 }
 
 USTR_CONF_I_PROTO
-void ustr_conf(const struct Ustr *s1, size_t *esz, size_t *ref,
-               int *exact, int *emem, size_t *refn, size_t *lenn)
+void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
+               int *ret_exact, size_t *ret_refn,size_t *ret_lenn)
 {
+  size_t esz = 0;
+  size_t ref = 0;
+  int exact = 0;
+  
   USTR_ASSERT(ustr_assert_valid(s1));
 
   if (!ustr_alloc(s1))
   {
-    *esz   = USTR_CONF_HAS_SIZE;
-    *ref   = USTR_CONF_REF_BYTES;
-    *exact = USTR_CONF_EXACT_BYTES;
+    esz   = USTR_CONF_HAS_SIZE;
+    ref   = USTR_CONF_REF_BYTES;
+    exact = USTR_CONF_EXACT_BYTES;
   }
   else
   {
-    if (ustr_sized(x))
-      *esz = ustr__sz_get(x);
+    if (ustr_sized(s1))
+      esz = ustr__sz_get(s1);
     else
-      *esz = 0;
+      esz = 0;
     
-    *ref   = USTR__REF_LEN(x);
-    *exact = ustr_exact(x);
+    ref   = USTR__REF_LEN(s1);
+    exact = ustr_exact(s1);
   }
   
-  *emem = ustr_enomem(s1);
-
   USTR_ASSERT(ustr__dupx_cmp_eq(USTR__DUPX_FROM(s1),
-                                *esz, *ref, *exact, *emem));
+                                esz, ref, exact, ustr_enomem(s1)));
 
-  if (refn) *refn = USTR__REF_LEN(s1);
-  if (lenn) *lenn = USTR__LEN_LEN(s1);
+  if (ret_esz)   *ret_esz   = esz;
+  if (ret_ref)   *ret_ref   = ref;
+  if (ret_exact) *ret_exact = exact;
+
+  if (ret_refn)  *ret_refn  = USTR__REF_LEN(s1);
+  if (ret_lenn)  *ret_lenn  = USTR__LEN_LEN(s1);
 }

@@ -98,6 +98,21 @@ int tst(void)
 
   {
     struct Ustr *s4 = ustr_dup_cstr("x");
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t refn;
+    size_t lenn;
+
+    ustr_conf(s4, NULL,NULL,NULL, NULL,NULL);
+    ustr_conf(s4, &esz,&ref,&exact, &refn,&lenn);
+
+    ASSERT(!esz);
+    ASSERT(ref == 1);
+    ASSERT(!exact);
+    
+    ASSERT(refn == 1);
+    ASSERT(lenn == 1);
     
     ASSERT(ustr_len(s4)  ==  1);
     ASSERT(ustr_size(s4) ==  2);

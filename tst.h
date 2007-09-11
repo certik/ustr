@@ -97,6 +97,19 @@ int main(void)
   ASSERT(s2);
   ASSERT(!ustr_ro(s2));
   
+  {
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t refn;
+    size_t lenn;
+
+    ustr_conf(s1, NULL,NULL,NULL, NULL,NULL);
+    ustr_conf(s1, &esz,&ref,&exact, &refn,&lenn);
+    ustr_conf(s2, NULL,NULL,NULL, NULL,NULL);
+    ustr_conf(s2, &esz,&ref,&exact, &refn,&lenn);
+  }
+  
   if ((ret = tst()) && (ret != EXIT_FAILED_OK))
     fprintf(stderr, "Error(%s) value = %x\n", rf, ret);
   else
