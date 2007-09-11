@@ -26,6 +26,7 @@
   ustrp_wstr;
 
   ustr_alloc;
+  ustr_conf;
   ustr_enomem;
   ustr_exact;
   ustr_fixed;
@@ -39,6 +40,7 @@
   ustr_sized;
 
   ustrp_alloc;
+  ustrp_conf;
   ustrp_enomem;
   ustrp_exact;
   ustrp_fixed;

@@ -1460,3 +1460,35 @@ USTR_CONF_I_PROTO void ustrp_sc_del(struct Ustr_pool *p, struct Ustrp **ps1)
   ustrp__sc_del(p, &tmp);
   *ps1 = USTRP(tmp);
 }
+
+USTR_CONF_I_PROTO
+void ustr_conf(const struct Ustr *s1, size_t *esz, size_t *ref,
+               int *exact, int *emem, size_t *refn, size_t *lenn)
+{
+  USTR_ASSERT(ustr_assert_valid(s1));
+
+  if (!ustr_alloc(s1))
+  {
+    *esz   = USTR_CONF_HAS_SIZE;
+    *ref   = USTR_CONF_REF_BYTES;
+    *exact = USTR_CONF_EXACT_BYTES;
+  }
+  else
+  {
+    if (ustr_sized(x))
+      *esz = ustr__sz_get(x);
+    else
+      *esz = 0;
+    
+    *ref   = USTR__REF_LEN(x);
+    *exact = ustr_exact(x);
+  }
+  
+  *emem = ustr_enomem(s1);
+
+  USTR_ASSERT(ustr__dupx_cmp_eq(USTR__DUPX_FROM(s1),
+                                *esz, *ref, *exact, *emem));
+
+  if (refn) *refn = USTR__REF_LEN(s1);
+  if (lenn) *lenn = USTR__LEN_LEN(s1);
+}

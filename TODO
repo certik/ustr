@@ -14,8 +14,6 @@
 
  scons build?
 
- ustr-import man page.
-
  ustr_pool_subpool_take() => move a pointer from a pool to a subpool
 
  ustr_poolsi_setf_realloc() => toggle calling of realloc on/off
@@ -25,16 +23,11 @@
  ustr_cmp_prefix*_subustr()
  ustr_cmp_suffix*_subustr()
 
- ustr_sc_reconfig()
-   Change sized?
-   Change rbytes
-   Change exact?
-
  ustr_srch_case()
 
  ustr_parse_netstr() / ustr_parse_netstr2()
 
- ustr_fmttime == strftime()
+ ustr_fmttime == strftime() -- retarded return value
 
  chomp/strip
 
@@ -45,4 +38,4 @@
 
  ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
    Ie. the aotl() of strtol()
-   This allos attribute pure to be used, so it'll be hoisted from loops etc.
+   This allows attribute pure to be used, so it'll be hoisted from loops etc.

@@ -1,3 +1,7 @@
+2007-09-10  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr_conf): Added function.
+
 2007-09-03  James Antill  <james@and.org>
 
 	* ustr-cntl-code.h: Move stdarg.h include into code file.
