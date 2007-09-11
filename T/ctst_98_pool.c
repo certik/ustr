@@ -94,6 +94,22 @@ int tst(void)
   ASSERT(ustrp_set_subustrp(pool, &spa, USTRP1(\x4, "abcd"), 1, 4));
 
   ASSERT((spa = ustrp_dupx_empty(pool, 0, 1, 0, 0)));
+  {
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t refn;
+    size_t lenn;
+
+    ustrp_conf(spa, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(spa, &esz,&ref,&exact, &refn,&lenn);
+    ASSERT(!esz);
+    ASSERT(ref == 1);
+    ASSERT(!exact);
+    ASSERT(refn == 1);
+    ASSERT(lenn == 1);
+  }
+  
   ASSERT(ustrp_dup(pool, spa));
   ASSERT(ustrp_set(pool, &spa, USTRP1(\x4, "abcd")));
   
@@ -132,8 +148,38 @@ int tst(void)
   
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 0, 0, 0, 0, sp2, 1, 0)));
   ASSERT(ustrp_len(sp1) == 0);
+  {
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t refn;
+    size_t lenn;
+
+    ustrp_conf(sp1, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(sp1, &esz,&ref,&exact, &refn,&lenn);
+    ASSERT(!esz);
+    ASSERT(!ref);
+    ASSERT(!exact);
+    ASSERT(refn == 0);
+    ASSERT(lenn == 1);
+  }
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 1, 0)));
   ASSERT(ustrp_len(sp1) == 0);
+  {
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t refn;
+    size_t lenn;
+
+    ustrp_conf(sp1, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(sp1, &esz,&ref,&exact, &refn,&lenn);
+    ASSERT(esz == ustrp_size_alloc(sp1));
+    ASSERT(ref == 2);
+    ASSERT(exact);
+    ASSERT(refn == 2);
+    ASSERT(lenn == 2);
+  }
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 0, 0, 0, 0, sp2, 1, 2)));
   ASSERT(ustrp_len(sp1) == 2);
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 1, 2)));

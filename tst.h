@@ -104,10 +104,37 @@ int main(void)
     size_t refn;
     size_t lenn;
 
+#if USTR_CONF_USE_DYNAMIC_CONF
+    int conf_esz;
+    size_t conf_ref;
+    int conf_exact;
+    ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_HAS_SIZE,    &conf_esz));
+    ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_REF_BYTES,   &conf_ref));
+    ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_EXACT_BYTES, &conf_exact));
+#endif
+
     ustr_conf(s1, NULL,NULL,NULL, NULL,NULL);
     ustr_conf(s1, &esz,&ref,&exact, &refn,&lenn);
+#if USTR_CONF_USE_DYNAMIC_CONF
+    ASSERT(!conf_esz   == !esz);
+    ASSERT( conf_ref   ==  ref);
+    ASSERT( conf_exact ==  exact);
+#else
+    ASSERT(!USTR_CONF_HAS_SIZE    == !esz);
+    ASSERT( USTR_CONF_REF_BYTES   ==  ref);
+    ASSERT( USTR_CONF_EXACT_BYTES ==  exact);
+#endif
     ustr_conf(s2, NULL,NULL,NULL, NULL,NULL);
     ustr_conf(s2, &esz,&ref,&exact, &refn,&lenn);
+#if USTR_CONF_USE_DYNAMIC_CONF
+    ASSERT(!conf_esz   == !esz);
+    ASSERT( conf_ref   ==  ref);
+    ASSERT( conf_exact ==  exact);
+#else
+    ASSERT(!USTR_CONF_HAS_SIZE    == !esz);
+    ASSERT( USTR_CONF_REF_BYTES   ==  ref);
+    ASSERT( USTR_CONF_EXACT_BYTES ==  exact);
+#endif
   }
   
   if ((ret = tst()) && (ret != EXIT_FAILED_OK))
