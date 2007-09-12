@@ -20,9 +20,6 @@
  ustr_poolsi_setf_free_num() => Number of ptr's to compare on free
   These two allow a zero free policy, except on clear/free.
 
- ustr_cmp_prefix*_subustr()
- ustr_cmp_suffix*_subustr()
-
  ustr_srch_case()
 
  ustr_parse_netstr() / ustr_parse_netstr2()

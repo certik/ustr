@@ -39,10 +39,20 @@ int tst(void)
   ASSERT(ustrp_cmp_suffix_eq(sp3, sp3));
 
   ASSERT(!ustrp_cmp_prefix_cstr_eq(sp3, "z"));
+  ASSERT(!ustrp_cmp_prefix_subustrp_eq(sp3, sp3, 4, 1));
+  ASSERT(!ustrp_cmp_prefix_subustrp_eq(sp3, sp1, 4, 1));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "a"));
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, sp1, 1, 1));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "ab"));
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, sp1, 1, 2));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "abc"));
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, sp1, 1, 3));
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, USTRP1(\7, "--abc--"), 3, 3));
+  ASSERT(ustrp_cmp_case_prefix_subustrp_eq(sp3, USTRP1(\7, "--aBc--"), 3, 3));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "abcd"));
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, sp1, 1, 4));
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, USTRP1(\x8, "--abcd--"), 3, 4));
+  ASSERT(ustrp_cmp_case_prefix_subustrp_eq(sp3, USTRP1(\x8, "--AbCD--"), 3, 4));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "abcd."));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "abcd.x"));
   ASSERT(ustrp_cmp_prefix_cstr_eq(sp3, "abcd.xy"));
@@ -54,10 +64,21 @@ int tst(void)
   ASSERT(ustrp_cmp_suffix_cstr_eq(sp3, "cd.xyz"));
   ASSERT(ustrp_cmp_suffix_cstr_eq(sp3, "d.xyz"));
   ASSERT(ustrp_cmp_suffix_cstr_eq(sp3, ".xyz"));
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, sp3, 5, 4));
   ASSERT(ustrp_cmp_suffix_cstr_eq(sp3, "xyz"));
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, sp2, 2, 3));
+  ASSERT(ustrp_cmp_case_suffix_subustrp_eq(sp3, USTRP1(\7, "--xYz--"), 3, 3));
   ASSERT(ustrp_cmp_suffix_cstr_eq(sp3, "yz"));
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, sp2, 3, 2));
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, USTRP1(\6, "--yz--"), 3, 2));
+  ASSERT(ustrp_cmp_case_suffix_subustrp_eq(sp3, USTRP1(\6, "--Yz--"), 3, 2));
   ASSERT(ustrp_cmp_suffix_cstr_eq(sp3, "z"));
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, sp2, 4, 1));
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, USTRP1(\6, "---z--"), 4, 1));
+  ASSERT(ustrp_cmp_case_suffix_subustrp_eq(sp3, USTRP1(\6, "---Z--"), 4, 1));
   ASSERT(!ustrp_cmp_suffix_cstr_eq(sp3, "a"));
+  ASSERT(!ustrp_cmp_suffix_subustrp_eq(sp3, sp1, 1, 1));
+  ASSERT(!ustrp_cmp_suffix_subustrp_eq(sp3, sp1, 4, 1));
 
   ASSERT(!ustr_cmp_prefix_cstr_eq(s1, "a"));
   ASSERT( ustr_cmp_prefix_cstr_eq(s1, ""));
@@ -87,6 +108,10 @@ int tst(void)
   ASSERT(ustrp_cmp_subustrp(sp3, sp1, 1, 8) ==  1);
   if (!USTR_DEBUG)
   ASSERT(ustrp_cmp_fast_subustrp(sp3, sp1, 1, 8) ==  1);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_cmp_prefix_subustrp_eq(sp3, sp1, 1, 8) ==  1);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_cmp_suffix_subustrp_eq(sp3, sp1, 1, 8) ==  1);
   ASSERT(ustrp_cmp_subustrp_eq(sp1, sp3, 1, 4));
 
   /* caseless comparison */
@@ -202,6 +227,10 @@ int tst(void)
 
   if (!USTR_DEBUG)
   ASSERT(ustrp_cmp_case_subustrp(sp3, sp1, 1, 8) ==  1);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_cmp_case_prefix_subustrp_eq(sp3, sp1, 1, 8) ==  1);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_cmp_case_suffix_subustrp_eq(sp3, sp1, 1, 8) ==  1);
   ASSERT(ustrp_cmp_case_subustrp_eq(sp1, sp3, 1, 4));
 
   

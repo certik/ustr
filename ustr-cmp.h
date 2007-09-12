@@ -96,6 +96,11 @@ USTR_CONF_EI_PROTO int ustr_cmp_prefix_buf_eq(const struct Ustr *,
 USTR_CONF_EI_PROTO int ustr_cmp_prefix_cstr_eq(const struct Ustr *,const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+int ustr_cmp_prefix_subustr_eq(const struct Ustr *,
+                               const struct Ustr *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_EI_PROTO
 int ustr_cmp_case_prefix_eq(const struct Ustr *, const struct Ustr *)
@@ -107,6 +112,11 @@ USTR_CONF_E_PROTO int ustr_cmp_case_prefix_buf_eq(const struct Ustr *,
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 int ustr_cmp_case_prefix_cstr_eq(const struct Ustr *, const char *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+int ustr_cmp_case_prefix_subustr_eq(const struct Ustr *,
+                                    const struct Ustr *, size_t, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -121,6 +131,11 @@ USTR_CONF_EI_PROTO int ustr_cmp_suffix_buf_eq(const struct Ustr *,
 USTR_CONF_EI_PROTO int ustr_cmp_suffix_cstr_eq(const struct Ustr *,const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+int ustr_cmp_suffix_subustr_eq(const struct Ustr *,
+                               const struct Ustr *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_EI_PROTO
 int ustr_cmp_case_suffix_eq(const struct Ustr *, const struct Ustr *)
@@ -132,6 +147,11 @@ USTR_CONF_EI_PROTO int ustr_cmp_case_suffix_buf_eq(const struct Ustr *,
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 int ustr_cmp_case_suffix_cstr_eq(const struct Ustr *, const char *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO
+int ustr_cmp_case_suffix_subustr_eq(const struct Ustr *,
+                                    const struct Ustr *, size_t, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -150,6 +170,32 @@ int ustr_cmp_fast_buf(const struct Ustr *s1, const void *buf, size_t len2)
     return (1);
   else
     return (-1);
+}
+USTR_CONF_II_PROTO int ustr_cmp_prefix_buf_eq(const struct Ustr *s1,
+                                              const void *buf, size_t len2)
+{
+  size_t len1 = 0;
+  
+  USTR_ASSERT(ustr_assert_valid(s1) && buf);
+  
+  len1 = ustr_len(s1);
+  if (len1 < len2)
+    return (USTR_FALSE);
+  
+  return (!memcmp(ustr_cstr(s1), buf, len2));
+}
+USTR_CONF_II_PROTO int ustr_cmp_suffix_buf_eq(const struct Ustr *s1,
+                                              const void *buf, size_t len2)
+{
+  size_t len1 = 0;
+  
+  USTR_ASSERT(ustr_assert_valid(s1) && buf);
+  
+  len1 = ustr_len(s1);
+  if (len1 < len2)
+    return (USTR_FALSE);
+  
+  return (!memcmp(ustr_cstr(s1) + (len1 - len2), buf, len2));
 }
 #endif
 
@@ -240,20 +286,6 @@ int ustr_cmp_case_cstr_eq(const struct Ustr *s1, const char *cstr)
   return ((ustr_len(s1) == len) && !ustr_cmp_case_buf(s1, cstr, len));
 }
 
-
-USTR_CONF_II_PROTO int ustr_cmp_prefix_buf_eq(const struct Ustr *s1,
-                                              const void *buf, size_t len2)
-{
-  size_t len1 = 0;
-  
-  USTR_ASSERT(ustr_assert_valid(s1) && buf);
-  
-  len1 = ustr_len(s1);
-  if (len1 < len2)
-    return (USTR_FALSE);
-  
-  return (!memcmp(ustr_cstr(s1), buf, len2));
-}
 USTR_CONF_II_PROTO int ustr_cmp_prefix_eq(const struct Ustr *s1,
                                           const struct Ustr *s2)
 {
@@ -282,19 +314,6 @@ USTR_CONF_II_PROTO int ustr_cmp_case_prefix_cstr_eq(const struct Ustr *s1,
                                                     const char *cstr)
 { return (ustr_cmp_case_prefix_buf_eq(s1, cstr, strlen(cstr))); }
 
-USTR_CONF_II_PROTO int ustr_cmp_suffix_buf_eq(const struct Ustr *s1,
-                                              const void *buf, size_t len2)
-{
-  size_t len1 = 0;
-  
-  USTR_ASSERT(ustr_assert_valid(s1) && buf);
-  
-  len1 = ustr_len(s1);
-  if (len1 < len2)
-    return (USTR_FALSE);
-  
-  return (!memcmp(ustr_cstr(s1) + (len1 - len2), buf, len2));
-}
 USTR_CONF_II_PROTO int ustr_cmp_suffix_eq(const struct Ustr *s1,
                                           const struct Ustr *s2)
 {
@@ -419,6 +438,11 @@ USTR_CONF_EI_PROTO
 int ustrp_cmp_prefix_cstr_eq(const struct Ustrp *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+int ustrp_cmp_prefix_subustrp_eq(const struct Ustrp *,
+                                 const struct Ustrp *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_EI_PROTO
 int ustrp_cmp_case_prefix_eq(const struct Ustrp *, const struct Ustrp *)
@@ -430,6 +454,11 @@ USTR_CONF_EI_PROTO int ustrp_cmp_case_prefix_buf_eq(const struct Ustrp *,
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 int ustrp_cmp_case_prefix_cstr_eq(const struct Ustrp *, const char *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+int ustrp_cmp_case_prefix_subustrp_eq(const struct Ustrp *,
+                                      const struct Ustrp *, size_t, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -445,6 +474,11 @@ USTR_CONF_EI_PROTO
 int ustrp_cmp_suffix_cstr_eq(const struct Ustrp *, const char *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+int ustrp_cmp_suffix_subustrp_eq(const struct Ustrp *,
+                                 const struct Ustrp *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_EI_PROTO
 int ustrp_cmp_case_suffix_eq(const struct Ustrp *, const struct Ustrp *)
@@ -456,6 +490,11 @@ USTR_CONF_EI_PROTO int ustrp_cmp_case_suffix_buf_eq(const struct Ustrp *,
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
 int ustrp_cmp_case_suffix_cstr_eq(const struct Ustrp *, const char *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_EI_PROTO
+int ustrp_cmp_case_suffix_subustrp_eq(const struct Ustrp *,
+                                      const struct Ustrp *, size_t, size_t)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 
@@ -534,6 +573,10 @@ USTR_CONF_II_PROTO
 int ustrp_cmp_prefix_buf_eq(const struct Ustrp *s1, const void *buf, size_t len)
 { return (ustr_cmp_prefix_buf_eq(&s1->s, buf, len)); }
 USTR_CONF_II_PROTO
+int ustrp_cmp_prefix_subustrp_eq(const struct Ustrp *s1,
+                                 const struct Ustrp *s2, size_t p,size_t l)
+{ return (ustr_cmp_prefix_subustr_eq(&s1->s, &s2->s, p, l)); }
+USTR_CONF_II_PROTO
 int ustrp_cmp_prefix_cstr_eq(const struct Ustrp *s1, const char *cstr)
 { return (ustrp_cmp_prefix_buf_eq(s1, cstr, strlen(cstr))); }
 
@@ -543,6 +586,10 @@ int ustrp_cmp_case_prefix_eq(const struct Ustrp *s1, const struct Ustrp *s2)
 USTR_CONF_II_PROTO int ustrp_cmp_case_prefix_buf_eq(const struct Ustrp *s1,
                                                     const void *buf, size_t len)
 { return (ustr_cmp_case_prefix_buf_eq(&s1->s, buf, len)); }
+USTR_CONF_II_PROTO
+int ustrp_cmp_case_prefix_subustrp_eq(const struct Ustrp *s1,
+                                      const struct Ustrp *s2, size_t p,size_t l)
+{ return (ustr_cmp_case_prefix_subustr_eq(&s1->s, &s2->s, p, l)); }
 USTR_CONF_II_PROTO
 int ustrp_cmp_case_prefix_cstr_eq(const struct Ustrp *s1, const char *cstr)
 { return (ustrp_cmp_case_prefix_buf_eq(s1, cstr, strlen(cstr))); }
@@ -554,6 +601,10 @@ USTR_CONF_II_PROTO
 int ustrp_cmp_suffix_buf_eq(const struct Ustrp *s1, const void *buf, size_t len)
 { return (ustr_cmp_suffix_buf_eq(&s1->s, buf, len)); }
 USTR_CONF_II_PROTO
+int ustrp_cmp_suffix_subustrp_eq(const struct Ustrp *s1,
+                                 const struct Ustrp *s2, size_t p,size_t l)
+{ return (ustr_cmp_suffix_subustr_eq(&s1->s, &s2->s, p, l)); }
+USTR_CONF_II_PROTO
 int ustrp_cmp_suffix_cstr_eq(const struct Ustrp *s1, const char *cstr)
 { return (ustrp_cmp_suffix_buf_eq(s1, cstr, strlen(cstr))); }
 
@@ -563,6 +614,10 @@ int ustrp_cmp_case_suffix_eq(const struct Ustrp *s1, const struct Ustrp *s2)
 USTR_CONF_II_PROTO int ustrp_cmp_case_suffix_buf_eq(const struct Ustrp *s1,
                                                     const void *buf, size_t len)
 { return (ustr_cmp_case_suffix_buf_eq(&s1->s, buf, len)); }
+USTR_CONF_II_PROTO
+int ustrp_cmp_case_suffix_subustrp_eq(const struct Ustrp *s1,
+                                      const struct Ustrp *s2, size_t p,size_t l)
+{ return (ustr_cmp_case_suffix_subustr_eq(&s1->s, &s2->s, p, l)); }
 USTR_CONF_II_PROTO
 int ustrp_cmp_case_suffix_cstr_eq(const struct Ustrp *s1, const char *cstr)
 { return (ustrp_cmp_case_suffix_buf_eq(s1, cstr, strlen(cstr))); }

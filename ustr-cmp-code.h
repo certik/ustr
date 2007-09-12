@@ -160,3 +160,51 @@ int ustr_cmp_fast_subustr(const struct Ustr *s1,
   return (ustr_cmp_fast_buf(s1, ustr_cstr(s2) + --pos, len));
 }
 
+USTR_CONF_I_PROTO
+int ustr_cmp_prefix_subustr_eq(const struct Ustr *s1,
+                               const struct Ustr *s2, size_t pos, size_t len)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+
+  if (!ustr_assert_valid_subustr(s2, pos, len))
+    return (ustr_cmp_prefix_buf_eq(s1, "", 0));
+
+  return (ustr_cmp_prefix_buf_eq(s1, ustr_cstr(s2) + --pos, len));
+}
+
+USTR_CONF_I_PROTO
+int ustr_cmp_suffix_subustr_eq(const struct Ustr *s1,
+                               const struct Ustr *s2, size_t pos, size_t len)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+
+  if (!ustr_assert_valid_subustr(s2, pos, len))
+    return (ustr_cmp_suffix_buf_eq(s1, "", 0));
+
+  return (ustr_cmp_suffix_buf_eq(s1, ustr_cstr(s2) + --pos, len));
+}
+
+USTR_CONF_I_PROTO
+int ustr_cmp_case_prefix_subustr_eq(const struct Ustr *s1,
+                                    const struct Ustr *s2,size_t pos,size_t len)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+
+  if (!ustr_assert_valid_subustr(s2, pos, len))
+    return (ustr_cmp_case_prefix_buf_eq(s1, "", 0));
+
+  return (ustr_cmp_case_prefix_buf_eq(s1, ustr_cstr(s2) + --pos, len));
+}
+
+USTR_CONF_I_PROTO
+int ustr_cmp_case_suffix_subustr_eq(const struct Ustr *s1,
+                                    const struct Ustr *s2,size_t pos,size_t len)
+{
+  USTR_ASSERT(ustr_assert_valid(s1) && ustr_assert_valid(s2));
+
+  if (!ustr_assert_valid_subustr(s2, pos, len))
+    return (ustr_cmp_case_suffix_buf_eq(s1, "", 0));
+
+  return (ustr_cmp_case_suffix_buf_eq(s1, ustr_cstr(s2) + --pos, len));
+}
+

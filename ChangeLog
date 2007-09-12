@@ -1,3 +1,10 @@
+2007-09-11  James Antill  <james@and.org>
+
+	* ustr-cmp-code.h (ustr_cmp_prefix_subustr_eq): Added function.
+	(ustr_cmp_suffix_subustr_eq): Added function.
+	(ustr_cmp_case_prefix_subustr_eq): Added function.
+	(ustr_cmp_case_suffix_subustr_eq): Added function.
+
 2007-09-10  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr_conf): Added function.
