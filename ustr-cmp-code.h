@@ -47,9 +47,6 @@ int ustr_cmp_subustr(const struct Ustr *s1,
   return (ustr_cmp_buf(s1, ustr_cstr(s2) + --pos, len));
 }
 
-USTR_CONF_e_PROTO int ustr__memcasecmp(const void *, const void *, size_t)
-    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
-    USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_i_PROTO
 int ustr__memcasecmp(const void *passed_s1, const void *passed_s2, size_t len)
 {

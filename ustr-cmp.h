@@ -199,6 +199,10 @@ USTR_CONF_II_PROTO int ustr_cmp_suffix_buf_eq(const struct Ustr *s1,
 }
 #endif
 
+#if USTR_CONF_INCLUDE_INTERNAL_HEADERS
+# include "ustr-cmp-internal.h"
+#endif
+
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 # include "ustr-cmp-code.h"
 #endif

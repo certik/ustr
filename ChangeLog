@@ -1,3 +1,29 @@
+2007-09-15  James Antill  <james@and.org>
+
+	* examples/fgrep.c (fgrep): Add some more GNU options, and give it a
+	minor speed boost.
+
+	* ustr-io-code.h (ustr_io_getdelim): Fix hanging errno problem.
+
+	* libustr.ver: Add missing symbol versions from the 1.0.1 release.
+
+	* scripts/list_functions_src.pl: Add missing filenames.
+
+	* ustr-srch-code.h (ustr_srch_case_chr_fwd): Added function.
+	(ustr_srch_case_chr_rev): Added function.
+	(ustr_srch_case_buf_fwd): Added function.
+	(ustr_srch_case_buf_rev): Added function.
+	(ustr_srch_case_subustr_fwd): Added function.
+	(ustr_srch_case_subustr_rev): Added function.
+	(ustr_srch_case_rep_chr_fwd): Added function.
+	(ustr_srch_case_rep_chr_rev): Added function.
+
+	* ustr-cmp-internal.h (ustr__memcasecmp): Made memcasecmp available
+	outside cmp.
+
+	* ustr-srch-code.h (ustr__memrepchr): Rename internal functions, as
+	there is no existing function with this name.
+
 2007-09-12  James Antill  <james@and.org>
 
 	* libustr.ver: Add missing symbol versions from the 1.0.1 release.

@@ -282,6 +282,18 @@
 
   ustr_srch_buf_fwd;
   ustr_srch_buf_rev;
+  ustr_srch_case_buf_fwd;
+  ustr_srch_case_buf_rev;
+  ustr_srch_case_chr_fwd;
+  ustr_srch_case_chr_rev;
+  ustr_srch_case_cstr_fwd;
+  ustr_srch_case_cstr_rev;
+  ustr_srch_case_fwd;
+  ustr_srch_case_rep_chr_fwd;
+  ustr_srch_case_rep_chr_rev;
+  ustr_srch_case_rev;
+  ustr_srch_case_subustr_fwd;
+  ustr_srch_case_subustr_rev;
   ustr_srch_chr_fwd;
   ustr_srch_chr_rev;
   ustr_srch_cstr_fwd;
@@ -295,6 +307,18 @@
 
   ustrp_srch_buf_fwd;
   ustrp_srch_buf_rev;
+  ustrp_srch_case_buf_fwd;
+  ustrp_srch_case_buf_rev;
+  ustrp_srch_case_chr_fwd;
+  ustrp_srch_case_chr_rev;
+  ustrp_srch_case_cstr_fwd;
+  ustrp_srch_case_cstr_rev;
+  ustrp_srch_case_fwd;
+  ustrp_srch_case_rep_chr_fwd;
+  ustrp_srch_case_rep_chr_rev;
+  ustrp_srch_case_rev;
+  ustrp_srch_case_subustrp_fwd;
+  ustrp_srch_case_subustrp_rev;
   ustrp_srch_chr_fwd;
   ustrp_srch_chr_rev;
   ustrp_srch_cstr_fwd;
@@ -420,6 +444,8 @@
   ustrp_utf8_cspn_fwd;
   ustrp_utf8_cspn_rev;
 
+  ustr_cntl_opt;
+
   ustr_parse_int;
   ustr_parse_intmax;
   ustr_parse_long;
@@ -441,6 +467,28 @@
   ustrp_parse_ulong;
   ustrp_parse_ulongx;
   ustrp_parse_ushort;
+
+  ustr_ins;
+  ustr_ins_buf;
+  ustr_ins_cstr;
+  ustr_ins_fmt;
+  ustr_ins_fmt_lim;
+  ustr_ins_rep_chr;
+  ustr_ins_subustr;
+  ustr_ins_undef;
+  ustr_ins_vfmt;
+  ustr_ins_vfmt_lim;
+
+  ustrp_ins;
+  ustrp_ins_buf;
+  ustrp_ins_cstr;
+  ustrp_ins_fmt;
+  ustrp_ins_fmt_lim;
+  ustrp_ins_rep_chr;
+  ustrp_ins_subustrp;
+  ustrp_ins_undef;
+  ustrp_ins_vfmt;
+  ustrp_ins_vfmt_lim;
 
   ustr_sub;
   ustr_sub_buf;

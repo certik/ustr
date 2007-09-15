@@ -22,8 +22,17 @@ USTR_CONF_e_PROTO void *ustr__sys_memmem(const void*, size_t,const void*,size_t)
 # define USTR__SYS_MEMMEM ustr__sys_memmem
 #endif
 
-USTR_CONF_e_PROTO void *ustr__sys_memrepchr(const void *hs, size_t hslen,
-                                            char nd, size_t ndlen)
+USTR_CONF_e_PROTO void *ustr__memrepchr(const void *, size_t, char, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+
+USTR_CONF_e_PROTO void *ustr__memcasechr(const void *, size_t, const char)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_e_PROTO
+void *ustr__memcasemem(const void *, size_t, const void *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+
+USTR_CONF_e_PROTO
+void *ustr__memcaserepchr(const void *, size_t, char, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 #endif

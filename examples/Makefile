@@ -27,8 +27,8 @@ DEPS    =
 #LDFLAGS =
 
 ## Compile "static" using parent dir.
-#PCFLAGS = $(CFLAGS) -I..
-#LDFLAGS = ../libustr.a
+PCFLAGS = $(CFLAGS) -I..
+LDFLAGS = ../libustr.a
 
 ## Compile "inline" using ustr-import output
 # - do nothing

@@ -18,9 +18,9 @@ USTR_CONF_E_PROTO size_t ustr_replace(struct Ustr **, const struct Ustr *,
                                       const struct Ustr *, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO
-size_t ustr_replace_rep_chr(struct Ustr **, char, size_t, char, size_t,
-                            size_t lim)
+size_t ustr_replace_rep_chr(struct Ustr **, char, size_t, char, size_t, size_t)
   USTR__COMPILE_ATTR_NONNULL_L((1));
+
 
 USTR_CONF_E_PROTO
 size_t ustrp_replace_buf(struct Ustr_pool *, struct Ustrp **,
@@ -31,8 +31,8 @@ size_t ustrp_replace_cstr(struct Ustr_pool *, struct Ustrp **,
                           const char *, const char *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
 USTR_CONF_E_PROTO
-size_t ustrp_replace(struct Ustr_pool *,struct Ustrp **,const struct Ustrp *,
-                     const struct Ustrp *, size_t)
+size_t ustrp_replace(struct Ustr_pool *, struct Ustrp **,
+                     const struct Ustrp *, const struct Ustrp *, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4));
 USTR_CONF_E_PROTO
 size_t ustrp_replace_rep_chr(struct Ustr_pool *, struct Ustrp **,

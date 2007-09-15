@@ -142,6 +142,7 @@ SRC_HDRS = ustr.h      ustr-debug.h \
 
 SRC_SRCS_H = ustr-b-code.h \
              ustr-cmp-code.h \
+             ustr-cmp-internal.h \
              ustr-cntl-code.h \
              ustr-fmt-code.h \
              ustr-fmt-internal.h \

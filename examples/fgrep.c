@@ -5,13 +5,18 @@
 #include <unistd.h>
 #include <errno.h>
 
-static const char colour_beg[] = "\x1B[01;31m";
-static const char colour_end[] = "\x1B[00m\x1B[K";
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <dirent.h> /* -r */
+
+static const Ustr *colour_beg = USTR1(\x8, "\x1B[01;31m");
+static const Ustr *colour_end = USTR1(\x8, "\x1B[00m\x1B[K");
 
 static Ustr *fgrep_srch = USTR_NULL;
 static Ustr *fgrep_repl = USTR_NULL;
 
-static Ustr *fname = USTR("");
+static Ustr *printable_fname = USTR("");
 
 static enum {
  COLOUR_AUTO,
@@ -21,6 +26,16 @@ static enum {
 } colour_when = COLOUR_AUTO;
 
 static int first_only = USTR_FALSE;
+
+static int ignore_case = USTR_FALSE;
+
+static enum {
+ PRNT_FNAME_AUTO,
+ PRNT_FNAME_ON,
+ PRNT_FNAME_OFF
+} prnt_fname = PRNT_FNAME_AUTO;
+
+static int recurse = USTR_FALSE;
 
 static const char *prog_name = NULL;
 
@@ -43,23 +58,50 @@ static void usage(int xcode)
   exit (xcode);
 }
 
+static int grep_srch_only = USTR_FALSE;
 static int fgrep(Ustr **ps1)
 {
   size_t num = 0;
 
-  if (ustr_cmp_eq(fgrep_srch, fgrep_repl))
-    num = ustr_srch_fwd(*ps1, 0, fgrep_srch);
-  else if (!(num = ustr_replace(ps1, fgrep_srch, fgrep_repl, !first_only)) &&
-           errno)
-    die(prog_name, strerror(ENOMEM));
+  if (!ignore_case)
+  {
+    if (grep_srch_only)
+      num = ustr_srch_fwd(*ps1, 0, fgrep_srch);
+    else if (!(num = ustr_replace(ps1, fgrep_srch, fgrep_repl,
+                                  !first_only)) && errno)
+      die(prog_name, strerror(ENOMEM));
+  }
+  else
+  {
+    if (grep_srch_only)
+      num = ustr_srch_case_fwd(*ps1, 0, fgrep_srch);
+    else
+    { /* so the output is in the correct case, we need to do it "each" hit
+         separately, so we can't have a ustr_replace function */
+      size_t pos = 0;
 
+      while ((pos = ustr_srch_case_fwd(*ps1, pos, fgrep_srch)))
+      {
+        ++num;
+
+        if (!ustr_ins(ps1, pos - 1 + ustr_len(fgrep_srch), colour_end) ||
+            !ustr_ins(ps1, pos - 1,                        colour_beg))
+          die(prog_name, strerror(ENOMEM));
+
+        pos += ustr_len(fgrep_srch) - 1;
+        pos += ustr_len(colour_beg);
+        pos += ustr_len(colour_end);
+      }
+    }
+  }
+  
   if (!num)
     ustr_sc_del(ps1);
 
   return (!!num);
 }
 
-static void loop(FILE *in, const char *prog_name)
+static void fp_loop(FILE *in, const char *prog_name)
 {
   char buf_line[128]; /* can grow */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
@@ -68,9 +110,13 @@ static void loop(FILE *in, const char *prog_name)
   {
     if (fgrep(&line))
     {
-      Ustr *tmp = ustr_dup(fname);
-      if (!ustr_io_putfile(&tmp, stdout))
-        die(prog_name, strerror(errno));
+      if (prnt_fname == PRNT_FNAME_ON)
+      {
+        Ustr *tmp = ustr_dup(printable_fname);
+        if (!ustr_io_putfile(&tmp, stdout))
+          die(prog_name, strerror(errno));
+      }
+      
       if (!ustr_io_putfile(&line, stdout))
         die(prog_name, strerror(errno));
     }
@@ -82,16 +128,98 @@ static void loop(FILE *in, const char *prog_name)
     die(prog_name, strerror(errno));
 }
 
+static void file_loop(Ustr *fname, const char *prog_name, int sure_file)
+{
+  FILE *fp = NULL;
+  char buf[32 * 1024];
+  struct stat st[1];
+  
+  if (!sure_file &&
+      ((stat(ustr_cstr(fname), st) == -1) || !S_ISREG(st->st_mode)))
+    return;
+  
+  if (!(fp = fopen(ustr_cstr(fname), "rb")))
+    die(prog_name, strerror(errno));
+  
+  setbuffer(fp, buf, sizeof(buf));
+  
+  if (!ustr_add_cstr(&fname, ":"))
+    die(prog_name, strerror(ENOMEM));
+  
+  printable_fname = fname;
+  fp_loop(fp, prog_name);
+  
+  if (fclose(fp) == EOF)
+    die(prog_name, strerror(errno));
+}
+
+static void loop(Ustr *, const char *);
+static void dir_loop(const Ustr *fname, DIR *dir, const char *prog_name)
+{
+  struct dirent *ent = NULL;
+  
+  while ((ent = readdir(dir)))
+  {
+    Ustr *dname = NULL;
+    size_t len = _D_EXACT_NAMLEN(ent);
+    
+    if (ustr_cmp_buf_eq(USTR1(\1, "."),  ent->d_name, len) ||
+        ustr_cmp_buf_eq(USTR1(\2, ".."), ent->d_name, len))
+      continue;
+    
+    if (!(dname = ustr_dup(fname)) ||
+        !ustr_add_cstr(&dname, "/") ||
+        !ustr_add_buf(&dname, ent->d_name, len))
+      die(prog_name, strerror(ENOMEM));
+
+#ifndef _DIRENT_HAVE_D_TYPE
+    loop(dname, prog_name);
+#else
+    switch (ent->d_type)
+    {
+      case DT_UNKNOWN: /* FALL THROUGH */
+      case DT_LNK:     /* FALL THROUGH */
+      case DT_DIR:     loop(dname, prog_name);                 break;
+      case DT_REG:     file_loop(dname, prog_name, USTR_TRUE); break;
+        
+      default:
+        continue;
+    }
+#endif
+  }
+
+  if (closedir(dir) == -1)
+    die(prog_name, strerror(errno));
+}
+
+static void loop(Ustr *fname, const char *prog_name)
+{ /* NOTE: takes the reference to fname */
+  DIR *dir = NULL;
+  
+  if ((dir = opendir(ustr_cstr(fname))))
+    dir_loop(fname, dir, prog_name);
+  else
+    file_loop(fname, prog_name, USTR_FALSE);
+
+  ustr_free(fname);
+}
+
+
 int main(int argc, char *argv[])
 {
   struct option long_options[] =
   {
+   {"with-filename",  no_argument, NULL, 'H'},
+   {"no-filename",  no_argument, NULL, 'h'},
+   {"without-filename",  no_argument, NULL, 'h'},
+   {"recursive",  no_argument, NULL, 'r'},
    {"replace",    required_argument, NULL, 'R'},
    {"colour",     optional_argument, NULL, 'C'},
    {"color",      optional_argument, NULL, 'C'},
    {"first-only", no_argument,       NULL, 'F'},
+   {"ignore-case", no_argument,      NULL, 'i'},
    
-   {"help", no_argument, NULL, 'h'},
+   {"help", no_argument, NULL, 1},
    {"version", no_argument, NULL, 'V'},
    
    {NULL, 0, NULL, 0}
@@ -107,11 +235,12 @@ int main(int argc, char *argv[])
   else
     prog_name = argv[0];
   
-  while ((optchar = getopt_long(argc, argv, "hCFRV", long_options, NULL)) != -1)
+  while ((optchar = getopt_long(argc, argv,
+                                "hirCFHRV", long_options, NULL)) != -1)
     switch (optchar)
     {
       case '?': usage(EXIT_FAILURE);
-      case 'h': usage(EXIT_SUCCESS);
+      case   1: usage(EXIT_SUCCESS);
       case 'V':
         printf("%s version %s\n", prog_name, "1.0.0");
         exit (EXIT_SUCCESS);
@@ -154,7 +283,12 @@ int main(int argc, char *argv[])
             ustr_cmp_case_cstr_eq(USTR1(\xb, "replace-tty"),    optarg))
           colour_when = COLOUR_SUB_AUTO;
         break;
-      case 'F': first_only = !first_only; break;
+      case 'F': first_only  = USTR_TRUE; break;
+      case 'r': recurse     = USTR_TRUE; break;
+      case 'i': ignore_case = USTR_TRUE; break;
+        
+      case 'H': prnt_fname  = PRNT_FNAME_ON;  break;
+      case 'h': prnt_fname  = PRNT_FNAME_OFF; break;
     }
   
   argc -= optind;
@@ -176,39 +310,39 @@ int main(int argc, char *argv[])
     /* do nothing */ ;
   else if ((colour_when == COLOUR_AUTO) && !isatty(STDOUT_FILENO))
     /* do nothing */ ;
-  else if (!ustr_ins_cstr(&fgrep_repl, 0, colour_beg) ||
-           !ustr_add_cstr(&fgrep_repl,    colour_end))
+  else if (!ustr_ins(&fgrep_repl, 0, colour_beg) ||
+           !ustr_add(&fgrep_repl,    colour_end))
     die(prog_name, strerror(ENOMEM));
+
+  grep_srch_only = ustr_cmp_eq(fgrep_srch, fgrep_repl);
   
   argc -= 1;
   argv += 1;
   
   if (!argc)
-    loop(stdin, prog_name);
+  {
+    if (prnt_fname == PRNT_FNAME_AUTO)
+      prnt_fname = PRNT_FNAME_OFF;
+    fp_loop(stdin, prog_name);
+  }
+  
+  if (recurse || (argc > 1))
+    if (prnt_fname == PRNT_FNAME_AUTO)
+      prnt_fname = PRNT_FNAME_ON;
   
   scan = 0;
   while (scan < argc)
   {
     if (ustr_cmp_cstr_eq(USTR1(\1, "-"), argv[scan]))
-      loop(stdin, prog_name);
+      fp_loop(stdin, prog_name);
     else
     {
-      FILE *fp = fopen(argv[scan], "rb");
+      Ustr *arg = USTR_NULL;
       
-      if (!fp)
-        die(prog_name, strerror(errno));
-
-      if (!(fname = ustr_dup_fmt("%s:", argv[scan])))
+      if (!(arg = ustr_dup_cstr(argv[scan])))
         die(prog_name, strerror(ENOMEM));
-      
-      loop(fp, prog_name);
 
-      ustr_sc_free2(&fname, USTR(""));
-      
-      if (ferror(fp))
-        die(prog_name, strerror(errno));
-      
-      fclose(fp);
+      loop(arg, prog_name);
     }
     
     ++scan;
