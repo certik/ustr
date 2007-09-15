@@ -287,6 +287,8 @@
   ustr_srch_cstr_fwd;
   ustr_srch_cstr_rev;
   ustr_srch_fwd;
+  ustr_srch_rep_chr_fwd;
+  ustr_srch_rep_chr_rev;
   ustr_srch_rev;
   ustr_srch_subustr_fwd;
   ustr_srch_subustr_rev;
@@ -298,6 +300,8 @@
   ustrp_srch_cstr_fwd;
   ustrp_srch_cstr_rev;
   ustrp_srch_fwd;
+  ustrp_srch_rep_chr_fwd;
+  ustrp_srch_rep_chr_rev;
   ustrp_srch_rev;
   ustrp_srch_subustrp_fwd;
   ustrp_srch_subustrp_rev;
@@ -463,10 +467,12 @@
   ustr_replace;
   ustr_replace_buf;
   ustr_replace_cstr;
+  ustr_replace_rep_chr;
 
   ustrp_replace;
   ustrp_replace_buf;
   ustrp_replace_cstr;
+  ustrp_replace_rep_chr;
 
   ustr_sc_sub;
   ustr_sc_sub_buf;
@@ -493,10 +499,16 @@
   ustr_split;
   ustr_split_buf;
   ustr_split_cstr;
+  ustr_split_spn;
+  ustr_split_spn_chrs;
+  ustr_split_spn_cstr;
 
   ustrp_split;
   ustrp_split_buf;
   ustrp_split_cstr;
+  ustrp_split_spn;
+  ustrp_split_spn_chrs;
+  ustrp_split_spn_cstr;
 
     local:
   ustr__*;

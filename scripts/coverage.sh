@@ -11,4 +11,5 @@ fi
 
 make clean
 make  CFLAGS="-g -fprofile-arcs -ftest-coverage -O0" \
-     LDFLAGS="-g -fprofile-arcs -ftest-coverage -O0" check-lcov -j 2
+     LDFLAGS="-g -fprofile-arcs -ftest-coverage -O0" check-lcov \
+     -j $(getconf _NPROCESSORS_ONLN)

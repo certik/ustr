@@ -1,3 +1,7 @@
+2007-09-12  James Antill  <james@and.org>
+
+	* libustr.ver: Add missing symbol versions from the 1.0.1 release.
+
 2007-09-11  James Antill  <james@and.org>
 
 	* ustr-cmp-code.h (ustr_cmp_prefix_subustr_eq): Added function.
