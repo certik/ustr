@@ -5,10 +5,19 @@
 #include "ustr-main.h"
 #include "ustr-set.h"
 #include "ustr-fmt.h"
-#include "ustr-srch.h"
 #include "ustr-cmp.h"
+#include "ustr-srch.h"
+#include "ustr-sc.h"
 #include "ustr-b.h"
 #include "ustr-spn.h"
+#include "ustr-io.h"
+#include "ustr-ins.h"
+#include "ustr-parse.h"
+#include "ustr-pool.h"
+#include "ustr-utf8.h"
+#include "ustr-sub.h"
+#include "ustr-replace.h"
+#include "ustr-split.h"
 
 int main(void)
 {

@@ -139,6 +139,10 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
     
     if (num)
     {
+      if (!ferror(fp)) /* only way we can easily test,
+                          as it might be hanging from previously */
+        errno = 0;
+      
       ustrp__del(p, ps1, num);
       break;
     }

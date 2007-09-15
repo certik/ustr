@@ -21,7 +21,7 @@ my $all = 0;
 
 $all = 1 if (@ARGV);
 
-my @files = qw(main set cmp srch spn fmt b io utf8 parse sc pool sub replace split);
+my @files = qw(main set cmp srch spn fmt b io utf8 parse cntl sc pool ins sub replace split);
 
 for my $name (@files) {
 if (!open(IN, "< $inc/ustr-$name.h"))
