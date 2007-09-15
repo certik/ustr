@@ -1,5 +1,7 @@
 2007-09-15  James Antill  <james@and.org>
 
+	* ustr-main-code.h (ustr__ref_del): Speed improvment for ustr_free().
+
 	* examples/fgrep.c (fgrep): Add some more GNU options, and give it a
 	minor speed boost.
 

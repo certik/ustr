@@ -343,6 +343,10 @@ USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
       
       if (ref == 0)
         return (-1);
+      if (ref == 1) /* Special case this so it doesn't "go shared"
+                     * plus this is a common case and doing this is
+                     * marginally faster */
+        return (0);
       
       ustr__ref_set(s1, ref - 1);
       return (ref - 1);
