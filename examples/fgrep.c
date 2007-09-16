@@ -10,6 +10,10 @@
 
 #include <dirent.h> /* -r */
 
+#ifndef _D_EXACT_NAMLEN
+# define _D_EXACT_NAMLEN(d) strlen((d)->d_name)
+#endif
+
 static const Ustr *colour_beg = USTR1(\x8, "\x1B[01;31m");
 static const Ustr *colour_end = USTR1(\x8, "\x1B[00m\x1B[K");
 
@@ -34,6 +38,8 @@ static enum {
  PRNT_FNAME_ON,
  PRNT_FNAME_OFF
 } prnt_fname = PRNT_FNAME_AUTO;
+
+static int prnt_line_num = USTR_FALSE;
 
 static int recurse = USTR_FALSE;
 
@@ -101,13 +107,145 @@ static int fgrep(Ustr **ps1)
   return (!!num);
 }
 
+/* "Simple" Boyer-Moore-Horspool
+ * http://en.wikipedia.org/wiki/Boyer-Moore-Horspool_algorithm
+ */
+static unsigned char fast__off_bad[256];
+static void fast_analyze(void)
+{
+  const unsigned char *ptr = (unsigned char *)ustr_cstr(fgrep_srch);
+  size_t olen = ustr_len(fgrep_srch);
+  size_t scan = 0;
+  
+  if (olen > 255) /* it'll be fast "enough", probably */
+  {
+    ptr += (olen - 255);
+    olen = 255;
+  }
+
+  /* init. "bad" offset table to max offset */
+  memset(fast__off_bad, olen, sizeof(fast__off_bad));
+
+  /* init. "bad" offset table from data */
+  --olen;
+  while (scan < olen)
+  {
+    USTR_ASSERT(*ptr <= 255);
+
+    fast__off_bad[ptr[scan]] = olen - scan;
+
+    if (ignore_case &&
+        (((ptr[scan] >= 0x41) && (ptr[scan] <= 0x5A)) ||
+         ((ptr[scan] >= 0x61) && (ptr[scan] <= 0x7A))))
+      fast__off_bad[ptr[scan] ^ 0x20] = olen - scan;
+
+    ++scan;
+  }
+}
+
+static void *fast_memcasemem(const void *passed_hsptr, size_t hslen)
+{
+  const unsigned char *hsptr = passed_hsptr;
+  const unsigned char *ndptr = (unsigned char *)ustr_cstr(fgrep_srch);
+  size_t ndlen = ustr_len(fgrep_srch);
+  
+  while (hslen >= ndlen)
+  {
+    size_t last = ndlen - 1;
+    size_t scan = last;
+    size_t used = 0;
+    size_t off  = 0;
+
+    while (USTR_TRUE)
+    {
+      unsigned char c1 = hsptr[scan];
+      unsigned char c2 = ndptr[scan];
+      
+      if ((c1 >= 0x61) && (c1 <= 0x7a))
+        c1 ^= 0x20;
+      if ((c2 >= 0x61) && (c2 <= 0x7a))
+        c2 ^= 0x20;
+
+      if (c1 != c2)
+        break;
+      
+      if (!scan--)
+        return ((void *)hsptr);
+    }
+
+    used = last - scan;
+    off  = fast__off_bad[hsptr[scan]];
+    if (off <= used)
+      off = 1; /* make sure we move at least 1 byte :) */
+    else
+      off -= used;
+
+    hsptr += off;
+    hslen -= off;
+  }
+
+  return (NULL);
+}
+
+static int fast_check(int fd, const char *prog_name)
+{
+  char tbuf[32 * 1024];
+  size_t off = 0;
+  ssize_t len = 0;
+  
+  while ((len = read(fd, tbuf + off, sizeof(tbuf) - off)) > 0)
+  {
+    char *ptr = NULL;
+    
+    len += off;
+
+    if (fast_memcasemem(tbuf, len))
+      return (USTR_TRUE);
+
+    if (!(ptr = memrchr(tbuf, '\n', len)))
+    {
+      if (len < (ssize_t)sizeof(tbuf))
+        continue;
+      
+      die(prog_name, strerror(ENOMEM));
+    }
+      
+    off = (ptr - tbuf) + 1;
+    memmove(tbuf, tbuf + off, len - off);
+    off = len - off;
+  }
+
+  if (len == -1)
+    return (USTR_TRUE);
+  
+  return (USTR_FALSE);
+}
+
 static void fp_loop(FILE *in, const char *prog_name)
 {
   char buf_line[128]; /* can grow */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
+  size_t line_num = 0;
+  
+  if (USTR_TRUE)
+  {
+    int fd = fileno(in);
+    off_t off = 0;
 
+    if ((off = lseek(fd, 0, SEEK_CUR)) != -1)
+    {
+      if (!fast_check(fd, prog_name))
+        return;
+
+      if (lseek(fileno(in), off, SEEK_SET) == -1)
+        die(prog_name, strerror(errno));
+    }
+  }
+  
   while (ustr_io_getline(&line, in))
   {
+    ++line_num;
+    
     if (fgrep(&line))
     {
       if (prnt_fname == PRNT_FNAME_ON)
@@ -116,6 +254,10 @@ static void fp_loop(FILE *in, const char *prog_name)
         if (!ustr_io_putfile(&tmp, stdout))
           die(prog_name, strerror(errno));
       }
+
+      if (prnt_line_num)
+        if (fprintf(stdout, "%ju:", line_num) == -1)
+          die(prog_name, strerror(errno));
       
       if (!ustr_io_putfile(&line, stdout))
         die(prog_name, strerror(errno));
@@ -218,6 +360,7 @@ int main(int argc, char *argv[])
    {"color",      optional_argument, NULL, 'C'},
    {"first-only", no_argument,       NULL, 'F'},
    {"ignore-case", no_argument,      NULL, 'i'},
+   {"line-number", no_argument,      NULL, 'n'},
    
    {"help", no_argument, NULL, 1},
    {"version", no_argument, NULL, 'V'},
@@ -283,9 +426,10 @@ int main(int argc, char *argv[])
             ustr_cmp_case_cstr_eq(USTR1(\xb, "replace-tty"),    optarg))
           colour_when = COLOUR_SUB_AUTO;
         break;
-      case 'F': first_only  = USTR_TRUE; break;
-      case 'r': recurse     = USTR_TRUE; break;
-      case 'i': ignore_case = USTR_TRUE; break;
+      case 'F': first_only    = USTR_TRUE; break;
+      case 'r': recurse       = USTR_TRUE; break;
+      case 'i': ignore_case   = USTR_TRUE; break;
+      case 'n': prnt_line_num = USTR_TRUE; break;
         
       case 'H': prnt_fname  = PRNT_FNAME_ON;  break;
       case 'h': prnt_fname  = PRNT_FNAME_OFF; break;
@@ -299,6 +443,9 @@ int main(int argc, char *argv[])
 
   if (!(fgrep_srch = ustr_dupx_cstr(0, 1, USTR_TRUE, USTR_FALSE, argv[0])))
     die(prog_name, strerror(ENOMEM));
+
+  fast_analyze();
+  
   if (!fgrep_repl)
     fgrep_repl = ustr_dup(fgrep_srch);
   else if (colour_when == COLOUR_AUTO)
