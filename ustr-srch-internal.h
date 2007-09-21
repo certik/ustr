@@ -25,7 +25,7 @@ USTR_CONF_e_PROTO void *ustr__sys_memmem(const void*, size_t,const void*,size_t)
 USTR_CONF_e_PROTO void *ustr__memrepchr(const void *, size_t, char, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
-USTR_CONF_e_PROTO void *ustr__memcasechr(const void *, size_t, const char)
+USTR_CONF_e_PROTO void *ustr__memcasechr(const void *, const char, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO
 void *ustr__memcasemem(const void *, size_t, const void *, size_t)

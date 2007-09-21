@@ -94,6 +94,15 @@ int tst(void)
   ASSERT(ustr_srch_cstr_fwd(s1, 16, " ") == 21);
   ASSERT(ustr_srch_cstr_fwd(s1, 20, " ") == 21);
   ASSERT(ustr_srch_cstr_fwd(s1, 21, " ") == 22);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 21, ' ', 1) == 22);
+  ASSERT(ustr_srch_cstr_fwd(s1, 21, "  ") == 22);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 21, ' ', 2) == 22);
+  ASSERT(ustr_srch_cstr_fwd(s1, 21, "   ") == 22);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 21, ' ', 3) == 22);
+  ASSERT(ustr_srch_cstr_fwd(s1, 21, "    ") == 22);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 21, ' ', 4) == 22);
+  ASSERT(ustr_srch_cstr_fwd(s1, 21, "     ") == 22);
+  ASSERT(ustr_srch_rep_chr_fwd(s1, 21, ' ', 5) == 22);
   
   ASSERT(ustr_srch_cstr_fwd(s1,  0, "a") ==  7);
   ASSERT(ustr_srch_cstr_fwd(s1,  6, "a") ==  7);
@@ -107,6 +116,46 @@ int tst(void)
   ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) -  7, "a") ==  7);
   ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) -  6, "a") ==  0);
   ASSERT(ustr_srch_cstr_rev(s1, ustr_len(s1) -  1, "a") ==  0);
+
+  /* srch_case */
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  0, " ") == 16);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 10, " ") == 16);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 16, " ") == 21);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 20, " ") == 21);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 21, " ") == 22);
+  ASSERT(ustr_srch_case_rep_chr_fwd(s1, 21, ' ', 1) == 22);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 21, "  ") == 22);
+  ASSERT(ustr_srch_case_rep_chr_fwd(s1, 21, ' ', 2) == 22);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 21, "   ") == 22);
+  ASSERT(ustr_srch_case_rep_chr_fwd(s1, 21, ' ', 3) == 22);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 21, "    ") == 22);
+  ASSERT(ustr_srch_case_rep_chr_fwd(s1, 21, ' ', 4) == 22);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 21, "     ") == 22);
+  ASSERT(ustr_srch_case_rep_chr_fwd(s1, 21, ' ', 5) == 22);
+  
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  0, "a") ==  7);
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  6, "a") ==  7);
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  7, "a") == 17);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 16, "a") == 17);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 17, "a") ==  0);
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  0, "A") ==  7);
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  6, "A") ==  7);
+  ASSERT(ustr_srch_case_cstr_fwd(s1,  7, "A") == 17);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 16, "A") == 17);
+  ASSERT(ustr_srch_case_cstr_fwd(s1, 17, "A") ==  0);
+  
+  ASSERT(ustr_srch_case_cstr_rev(s1, 0, "a") == 17);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) - 17, "a") == 17);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) - 16, "a") ==  7);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) -  7, "a") ==  7);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) -  6, "a") ==  0);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) -  1, "a") ==  0);
+  ASSERT(ustr_srch_case_cstr_rev(s1, 0, "A") == 17);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) - 17, "A") == 17);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) - 16, "A") ==  7);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) -  7, "A") ==  7);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) -  6, "A") ==  0);
+  ASSERT(ustr_srch_case_cstr_rev(s1, ustr_len(s1) -  1, "A") ==  0);
 
   if (!USTR_DEBUG)
   ASSERT(ustr_srch_cstr_fwd(s1, ustr_len(s1), "a") ==  0);

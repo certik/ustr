@@ -110,7 +110,7 @@ extern Malloc_check_store MALLOC_CHECK__ATTR_H() MALLOC_CHECK_STORE;
 # define MALLOC_CHECK_DEC()                                             \
     (MALLOC_CHECK_STORE.mem_fail_num && !--MALLOC_CHECK_STORE.mem_fail_num)
 # define MALLOC_CHECK_FAIL_IN(x) MALLOC_CHECK_STORE.mem_fail_num = (x)
-# define malloc_check_scrub_ptr(x, y)  memset(x, 0xa5, y)
+# define MALLOC_CHECK_SCRUB_PTR(x, y)  memset(x, 0xa5, y)
 
 #ifndef MALLOC_CHECK_PRINT
 #define MALLOC_CHECK_PRINT 1
@@ -214,7 +214,7 @@ static void *malloc_check_malloc(size_t sz, const char *file, unsigned int line)
   if (MALLOC_CHECK_TRACE)
     fprintf(stderr, "mc_make(%zu, %s, %u) = %p\n", sz, file, line, ret);
   
-  malloc_check_scrub_ptr(ret, sz);
+  MALLOC_CHECK_SCRUB_PTR(ret, sz);
 
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].ptr  = ret;
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].sz   = sz;
@@ -264,7 +264,7 @@ static void malloc_check_free(void *ptr, const char *file, unsigned int line)
       SWAP_TYPE(val1->line, val2->line, unsigned int);
     }
     MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num].ptr = NULL;
-    malloc_check_scrub_ptr(ptr, sz);
+    MALLOC_CHECK_SCRUB_PTR(ptr, sz);
     free(ptr);
   }
 }

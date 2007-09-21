@@ -1,3 +1,8 @@
+2007-09-20  James Antill  <james@and.org>
+
+	* ustr-srch-code.h (ustr__memcasechr): Have the args. the same way 
+	around as memchr()
+
 2007-09-15  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustr__ref_del): Speed improvment for ustr_free().

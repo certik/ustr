@@ -274,7 +274,7 @@ USTR_CONF_I_PROTO size_t ustr_srch_rep_chr_rev(const struct Ustr *s1,size_t off,
 
 /* ignore case */
 USTR_CONF_i_PROTO
-void *ustr__memcasechr(const void *hs, size_t len, const char nd)
+void *ustr__memcasechr(const void *hs, const char nd, size_t len)
 {
   const unsigned char *s1 = hs;
   unsigned char c2 = nd;
