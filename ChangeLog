@@ -1,3 +1,14 @@
+2007-09-21  James Antill  <james@and.org>
+
+	* ustr-srch-code.h (ustr_srch_buf_fwd): Change search for buf=0 to
+	return zero when the string is empty.
+	(ustr_srch_buf_rev): Change search for buf=0 to	return zero when the
+	string is empty.
+	(ustr_srch_rep_chr_fwd): Change search for buf=0 to return zero when the
+	string is empty.
+	(ustr_srch_rep_chr_rev): Change search for buf=0 to return zero when the
+	string is empty.
+
 2007-09-20  James Antill  <james@and.org>
 
 	* ustr-srch-code.h (ustr__memcasechr): Have the args. the same way 

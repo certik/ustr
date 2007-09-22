@@ -2,8 +2,6 @@
  ---
  Have malloc_check_ptr() calls in assert_valid() somehow
 
- Allow the shared lib. to compile without inline.
-
  ADD
  ---
  DOCS!

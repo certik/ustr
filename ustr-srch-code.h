@@ -114,6 +114,9 @@ USTR_CONF_I_PROTO size_t ustr_srch_buf_fwd(const struct Ustr *s1, size_t off,
     return (ustr_srch_chr_fwd(s1, off, ((const char *)val)[0]));
 
   USTR_ASSERT_RET(off <= len, 0);
+  if (vlen == 0)
+    return (len ? (off + 1) : 0);
+  
   ptr  = beg + off;
   len -= off;
 
@@ -134,14 +137,15 @@ USTR_CONF_I_PROTO size_t ustr_srch_buf_rev(const struct Ustr *s1, size_t off,
 
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (vlen == 0)
-    return (len ? len : 1);
   if (vlen == 1)
     return (ustr_srch_chr_rev(s1, off, ((const char *)val)[0]));
 
   USTR_ASSERT_RET(off <= len, 0);
   len -= off;
 
+  if (vlen == 0)
+    return (len);
+  
   tmp = ptr;
   while (((len - (tmp - ptr)) >= vlen) &&
          (tmp = USTR__SYS_MEMMEM(tmp, len - (tmp - ptr), val, vlen)))
@@ -185,8 +189,7 @@ void *ustr__memrepchr(const void *hs, size_t hslen, char nd, size_t ndlen)
 {
   const char *ptr = hs;
 
-  if (ndlen == 0)
-    return ((void *)hs);
+  USTR_ASSERT(ndlen); /* dealt with by callers */
 
   while (hslen >= ndlen)
   {
@@ -230,6 +233,9 @@ USTR_CONF_I_PROTO size_t ustr_srch_rep_chr_fwd(const struct Ustr *s1,size_t off,
     return (ustr_srch_chr_fwd(s1, off, val));
 
   USTR_ASSERT_RET(off <= len, 0);
+  if (vlen == 0)
+    return (len ? (off + 1) : 0);
+
   ptr  = beg + off;
   len -= off;
 
@@ -250,14 +256,15 @@ USTR_CONF_I_PROTO size_t ustr_srch_rep_chr_rev(const struct Ustr *s1,size_t off,
 
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (vlen == 0)
-    return (len ? len : 1);
   if (vlen == 1)
     return (ustr_srch_chr_rev(s1, off, val));
 
   USTR_ASSERT_RET(off <= len, 0);
   len -= off;
 
+  if (vlen == 0)
+    return (len);
+  
   tmp = ptr;
   while (((len - (tmp - ptr)) >= vlen) &&
          (tmp = ustr__memrepchr(tmp, len - (tmp - ptr), val, vlen)))
@@ -304,8 +311,7 @@ void *ustr__memcasemem(const void *hs,size_t hslen, const void *nd,size_t ndlen)
 {
   const char *ptr = hs;
 
-  if (ndlen == 0)
-    return ((void *)hs);
+  USTR_ASSERT(ndlen); /* dealt with by callers */
 
   while (hslen >= ndlen)
   {
@@ -325,8 +331,7 @@ void *ustr__memcaserepchr(const void *hs, size_t hslen, char nd, size_t ndlen)
   const unsigned char *s1 = hs;
   unsigned char c2 = nd;
 
-  if (ndlen == 0)
-    return ((void *)hs);
+  USTR_ASSERT(ndlen); /* dealt with by callers */
 
   if ((c2 >= 0x61) && (c2 <= 0x7a))
     c2 ^= 0x20;
@@ -426,6 +431,9 @@ size_t ustr_srch_case_buf_fwd(const struct Ustr *s1, size_t off,
     return (ustr_srch_case_chr_fwd(s1, off, ((const char *)val)[0]));
 
   USTR_ASSERT_RET(off <= len, 0);
+  if (vlen == 0)
+    return (len ? (off + 1) : 0);
+  
   ptr  = beg + off;
   len -= off;
 
@@ -447,13 +455,14 @@ size_t ustr_srch_case_buf_rev(const struct Ustr *s1, size_t off,
 
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (vlen == 0)
-    return (len ? len : 1);
   if (vlen == 1)
     return (ustr_srch_case_chr_rev(s1, off, ((const char *)val)[0]));
 
   USTR_ASSERT_RET(off <= len, 0);
   len -= off;
+
+  if (vlen == 0)
+    return (len);
 
   tmp = ptr;
   while (((len - (tmp - ptr)) >= vlen) &&
@@ -508,6 +517,9 @@ size_t ustr_srch_case_rep_chr_fwd(const struct Ustr *s1, size_t off,
     return (ustr_srch_case_chr_fwd(s1, off, val));
 
   USTR_ASSERT_RET(off <= len, 0);
+  if (vlen == 0)
+    return (len ? (off + 1) : 0);
+  
   ptr  = beg + off;
   len -= off;
 
@@ -529,13 +541,14 @@ size_t ustr_srch_case_rep_chr_rev(const struct Ustr *s1, size_t off,
 
   USTR_ASSERT(ustr_assert_valid(s1));
   
-  if (vlen == 0)
-    return (len ? len : 1);
   if (vlen == 1)
     return (ustr_srch_case_chr_rev(s1, off, val));
 
   USTR_ASSERT_RET(off <= len, 0);
   len -= off;
+  
+  if (vlen == 0)
+    return (len);
 
   tmp = ptr;
   while (((len - (tmp - ptr)) >= vlen) &&

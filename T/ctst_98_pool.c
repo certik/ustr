@@ -223,6 +223,8 @@ int tst(void)
   ASSERT( ustrp_add_rep_chr(pool, &sp1, 'y', 13));
   ASSERT_PEQ(sp1, USTRP1(\x12, "22xxxyyyyyyyyyyyyy"));
 
+  /* copy and paste between here and tst_2_small.c */
+  
   /* test some of the data ... */
 
   /* spn */
@@ -323,11 +325,94 @@ int tst(void)
   ASSERT(ustrp_srch_case_subustrp_rev(sp1, 0, USTRP1(\x2, "xY"), 1, 1) ==  5);
   ASSERT(ustrp_srch_case_subustrp_fwd(sp1, 0, USTRP1(\x2, "XY"), 2, 1) ==  6);
   ASSERT(ustrp_srch_case_subustrp_rev(sp1, 0, USTRP1(\x2, "XY"), 2, 1) == 18);
+
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_srch_case_subustrp_fwd(sp1, 2, USTRP1(\4, "1248"), 4, 2) ==  3);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_srch_case_subustrp_rev(sp1, 2, USTRP1(\4, "yyyy"), 4, 2) == 16);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_srch_case_subustrp_fwd(sp1, 0, USTRP1(\4, "1248"), 5, 1) ==  1);
+  if (!USTR_DEBUG)
+  ASSERT(ustrp_srch_case_subustrp_rev(sp1, 0, USTRP1(\4, "YYYY"), 5, 1) == 18);
+  
+  ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'x') ==  3);
+  ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'x') ==  5);
+  ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'y') ==  6);
+  ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'y') == 18);
   ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'X') ==  3);
   ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'X') ==  5);
   ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'Y') ==  6);
   ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'Y') == 18);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x', 1) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x', 1) ==  5);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y', 1) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y', 1) == 18);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X', 1) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X', 1) ==  5);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y', 1) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y', 1) == 18);
 
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'z', 2) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'z', 2) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Z', 2) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Z', 2) ==  0);
+
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Z', 0) ==  1);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Z', 0) == 18);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 1, 'Z', 0) ==  2);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 1, 'Z', 0) == 17);
+
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x',  2) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x',  2) ==  4);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x',  4) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x',  4) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X',  2) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X',  2) ==  4);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X',  4) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X',  4) ==  0);
+
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "xx")   ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "xx")   ==  4);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "xxx")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "xxx")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "xxxx") ==  0);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "xxxx") ==  0);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "XX")   ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "XX")   ==  4);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "XXX")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "XXX")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "XXXX") ==  0);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "XXXX") ==  0);
+
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y',  2) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y',  2) == 17);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y',  3) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y',  3) == 16);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y',  4) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y',  4) == 15);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y', 14) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y', 14) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y',  2) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y',  2) == 17);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y',  3) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y',  3) == 16);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y',  4) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y',  4) == 15);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y', 14) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y', 14) ==  0);
+  
   /* try srch_case with other case */
   ustrp_sc_free2(pool, &sp1, USTRP1(\x12, "22XXXYYYYYYYYYYYYY"));
   ASSERT_PEQ(sp1, USTRP1(\x12, "22XXXYYYYYYYYYYYYY"));
@@ -341,11 +426,85 @@ int tst(void)
   ASSERT(ustrp_srch_case_subustrp_rev(sp1, 0, USTRP1(\x2, "xY"), 1, 1) ==  5);
   ASSERT(ustrp_srch_case_subustrp_fwd(sp1, 0, USTRP1(\x2, "XY"), 2, 1) ==  6);
   ASSERT(ustrp_srch_case_subustrp_rev(sp1, 0, USTRP1(\x2, "XY"), 2, 1) == 18);
+
   ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'x') ==  3);
   ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'x') ==  5);
   ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'y') ==  6);
   ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'y') == 18);
+  ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'X') ==  3);
+  ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'X') ==  5);
+  ASSERT(ustrp_srch_case_chr_fwd(sp1, 0, 'Y') ==  6);
+  ASSERT(ustrp_srch_case_chr_rev(sp1, 0, 'Y') == 18);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x', 1) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x', 1) ==  5);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y', 1) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y', 1) == 18);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X', 1) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X', 1) ==  5);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y', 1) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y', 1) == 18);
 
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Z', 1) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'z', 2) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'z', 2) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Z', 2) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Z', 2) ==  0);
+
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Z', 0) ==  1);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Z', 0) == 18);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 1, 'Z', 0) ==  2);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 1, 'Z', 0) == 17);
+
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x',  2) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x',  2) ==  4);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'x',  4) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'x',  4) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X',  2) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X',  2) ==  4);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X',  3) ==  3);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'X',  4) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'X',  4) ==  0);
+  
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "xx")   ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "xx")   ==  4);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "xxx")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "xxx")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "xxxx") ==  0);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "xxxx") ==  0);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "XX")   ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "XX")   ==  4);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "XXX")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "XXX")  ==  3);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "XXXX") ==  0);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "XXXX") ==  0);
+
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y',  2) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y',  2) == 17);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y',  3) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y',  3) == 16);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y',  4) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y',  4) == 15);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'y', 14) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'y', 14) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y',  2) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y',  2) == 17);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y',  3) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y',  3) == 16);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y',  4) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y',  4) == 15);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y', 13) ==  6);
+  ASSERT(ustrp_srch_case_rep_chr_fwd(sp1, 0, 'Y', 14) ==  0);
+  ASSERT(ustrp_srch_case_rep_chr_rev(sp1, 0, 'Y', 14) ==  0);
+  
   /* show srch still works this way */
   ASSERT(ustrp_srch_cstr_fwd(sp1, 0, "XY") == 5);
   ASSERT(ustrp_srch_cstr_rev(sp1, 0, "XY") == 5);
@@ -362,6 +521,16 @@ int tst(void)
   ASSERT(ustrp_srch_chr_fwd(sp1, 0, 'Y') ==  6);
   ASSERT(ustrp_srch_chr_rev(sp1, 0, 'Y') == 18);
 
+  ASSERT(ustrp_srch_cstr_fwd(sp1, 0, "") == 1);
+  ASSERT(ustrp_srch_cstr_rev(sp1, 0, "") == ustrp_len(sp1));
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 0, "") == 1);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 0, "") == ustrp_len(sp1));
+  
+  ASSERT(ustrp_srch_cstr_fwd(sp1, 2, "") == 3);
+  ASSERT(ustrp_srch_cstr_rev(sp1, 2, "") == ustrp_len(sp1) - 2);
+  ASSERT(ustrp_srch_case_cstr_fwd(sp1, 2, "") == 3);
+  ASSERT(ustrp_srch_case_cstr_rev(sp1, 2, "") == ustrp_len(sp1) - 2);
+  
   /* do some more stuff... */
   ustrp_free(pool, sp1);
   sp1 = USTRP1(\x1, "c");
