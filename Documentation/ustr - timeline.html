@@ -1,0 +1,63 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>ustr a rough timeline, notes on the last 10%</title>
+  </head>
+
+  <body>
+    <h1>ustr a rough timeline, notes on the last 10%</h1>
+
+ <p>
+ Common wisdom says, at least when creating applications, "the last 10%" is often a significant time consumer, if not 50% or even 90% of the work. So when I recently created ustr, I thought I had a pretty good candidate to get some real numbers. For a start, in my favour, I'd already created Vstr and so knew most of the interfaces I'd want and roughly how to write them.
+ </p>
+
+ <h2>the idea</h2>
+ <p>
+ I'd had an idea bouncing around in my head that you could enhanced pascal strings (single byte followed by 0 to 255 bytes) to give you a C string type that was both NIL terminated and had a managed length. The initial idea was that the problem with pascal strings is that they are fine &gt; 50% of the time but on those few occasions when you needed more than they could hold, they were worthless. So the solution seemed kind of obvious, have some kind of encoding (like UTF-8) for the length of the string.</p>
+<p> Looking at UTF-8 the obvious choice for the encoding would be to use the top bit of the first byte to say, get more length bits from the next byte and then keep going. So you'd get 7bits of length from every length byte thus for a 32bit size_t, you'd need 5 bytes (only using 4 bits from the last one), and a 64bit size_t you'd need 10 bytes (using 1 from the last byte).</p>
+<p> Of course then you also want a size (bytes allocated, as against used), and maybe a reference count etc. However with a "simple string API" like this you want the function which gives you the pointer to the data as close to constant time as possible, and the above design _might_ be a problem, as you'd need to "walk" the encoded numbers to get to the data. There were also a couple of other obvious problems, for instance one of the reasons for creating a "simple" format like this is so you could easily create strings in the C source code, and while it wasn't obvious how I'd do that it was obvious that having to convert the length into a 7bit encoded number would be painful.</p>
+<p> I'd also already spent about 2 years of my spare time writing Vstr, which worked even though it wasn't a perfect fit for all the uses I put it to, so I wasn't jumping at an opportunity to go write another string API. Which is to say, it stayed an idea for more than a few months.</p>
+ 
+<h2> the first "90%" </h2>
+
+<p> Then in early 2007 I'd failed to get Vstr usage into yet another project, even though it was the perfect fit, which might not have been so bad but the available alternatives amounted to "just use string.h, and code perfectly". Also a friend was looking for a string API to use, in C, but even with my comparison page basically found nothing available to use for a shared library in Fedora (that cared about malloc failures) and so was forced to write his own. So I decided to give my idea a try, and see what happened.</p>
+<p> I opened a text editor on Monday the 7th of May and wrote the main parts of the first version of ustr (at the time called Simple String lib. with the namespace ss_*) that evening and Wednesday the 9th. Doing a few tweaks on Thursday the 10th I sent a first version out, to see if it would fit my friends needs.</p>
+<p> The initial implementation from the Monday night was roughly 500 lines, mainly dup; dup_buf; dup_cstr and the low allocation code. I knew my friend needed reference counting, so I split the first byte in half and used 4 bits for the number of bytes (0, 1, 2, 4, 8) of the reference count and 4 bits for the same for the length. From the begining USTR("") was a valid Ustr of length zero, as I'd wanted a way to have a "valid" string as an iniitalizer.</p>
+<p> By the time the first other person saw it on Thursday I'd moved to using only 3 bits for the number of bytes (none zero being a power of two, so 3==4 and 4==8) and it had the "exact sized allocations" flag and the "memory error occured flag". As a special case a reference count number of bytes of 2**7 meant the string was a constant string, so you could do USTR1(\4, "abcd"). I'd also done the obvious simple and fast comparing (cmp), per. string configuration (dupx), formatting (fmt), setting (set), searching (srch), spanning (spn). It also had non-trivial unit tests, but the actual "library" itself was all inside one header which was roughly 1,000 wc -l lines. By that weekend I'd split it up into multiple files and done some performance tests.</p>
+<p> On the 24th of May (two weeks later) I sent it out to about 10 people, and by this time it had very close to it's current core feature set as I'd dropped the storage for number of bytes down to 2 bits and added a "was allocated" flag, a "has size stored" flag and a "is in automatic storage" virtual flag (so it could be const, allocated or auto). This had also included moving the bits around to their current position. It also added the Ustrp type, for allocating from a pool, GDB init functions for debugging the build split for opt/dbg builds, functions for working with binary numbers and a bunch of extra "core" functions and unit tests to go with it. I'd made sure it ran on Solaris, including using my custom auto* foo. The documentation had expanded considerably. Oh, and I'd renamespaced everything so it was actually ustr now and not ss.</p>
+<p> That was ustr-0.99.1, written in roughly 9 evenings and 1 Sunday (17 "real time days", 7th =&gt; 24th). Stats. were:</p>
+
+<pre>
+   ustr*.[ch] =&gt; wc -l == 5,434 sloccount == 4,249
+   tst*.[ch]  =&gt; wc -l == 1,304 sloccount == 1,046
+</pre>
+<p> At the time I knew it wasn't "complete", but I think my main concerns were lack of documentation and wanting 100% code coverage on the unit tests. I might well have said it was "90%" complete, if I didn't think about it too long. Even if I'd have thought about it I'd have likely said it was over 50% complete for 1.0.</p>
+
+<h2>the last "10%"</h2>
+ 
+<p> The initial GIT import happened a few days after 0.99.1 was released (Wednesday, 1st of June) so there is a pretty precise record of what happened between 0.99.1 and 1.0.0, and when it happened.</p>
+<p> On Friday 13th of July I released ustr-1.0.0, that was 7 weeks after 0.99.1. That's meant that roughly 75% of the "real time days" for 1.0.0 were after the "90%" mark, so even if I worked twice as hard before 0.99.1 as I did after I was only at 40%. Also 1.0.0 had a couple of errors, although mostly in building, install and ustr-import. I also knew when I released ustr-1.0.0 that ustr-1.0.1 was going to have quite a few new interfaces due to an external contributor. So it's probably fair to say 1.0.0 was "rushed" out to some extent just to have a stable release. Stats. were:</p>
+ 
+<pre>
+   ustr*.[ch] =&gt; wc -l == 8,962 sloccount == 7,079
+   tst*.[ch]  =&gt; wc -l == 3,855 sloccount == 3,198
+</pre>
+
+</p>...and five example files (none were in 0.99.1), and a significant amount of the functions documented. The main changes, apart from tests, documentation and example files was the addition of io helper functions, utf-8 functions, parse functions for getting numbers from Ustr's and re-working a lot of APIs to add an offset parameter. The lack of the offset from the start was proably an overreaction from Vstr where all functions take a position and a length, my assumption with ustr was that pretty much 100% of the time you'd be operating on an entire ustr as one unit but this had some very bad properties for things like parsing a path or a csv, unless you wanted to revert to using strchr() etc.</p>
+<p>  On Saturday August 4th I released ustr-1.0.1, the big additions here were insert (ins), split, substitution (sub) and replacement. While this was "only" an extra three weeks or so, that was by two people one of whom was doing it for their job (although that wasn't me :). Stats. were:</p>
+
+<pre>
+   ustr*.[ch] =&gt; wc -l == 10,954 sloccount == 8,820
+   tst*.[ch]  =&gt; wc -l ==  4,991 sloccount == 4,214
+</pre>
+
+<p>...with an extra example program.</p>
+
+    <hr>
+    <address><a href="mailto:james-web@and.org">James Antill</a></address>
+<!-- hhmts start -->
+Last modified: Mon Oct  1 01:58:10 EDT 2007
+<!-- hhmts end -->
+  </body>
+</html>
