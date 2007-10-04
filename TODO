@@ -4,6 +4,9 @@
 
  ADD
  ---
+
+ ustr_export_*()
+
  DOCS!
   finish ref. documentation.
   tutorial, hello world to mkdir_p to netstr?
