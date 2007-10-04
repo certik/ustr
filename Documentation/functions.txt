@@ -3109,7 +3109,7 @@ Function: ustr_sub_buf()
 
   This function will replace the characters in the Ustr starting at the
  specified position using data from the buffer.
- 
+
  Note:
 
   The Ustr will be automatically be resized if necessary.
@@ -3315,7 +3315,7 @@ Function: ustr_split_buf()
   }
 
  ...the former of which being the safer option.
-  
+
  Note:
 
   There are several flags that will alter the behaviour of this function,
@@ -3368,6 +3368,7 @@ Function: ustr_split_cstr()
  Explanation:
   Works like ustr_split_buf() but takes a C string as the split search
   pattern.
+
 
 Function: ustr_split_spn_chrs()
  Returns: Pointer to a Ustr representing the next token
