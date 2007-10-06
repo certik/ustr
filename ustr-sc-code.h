@@ -239,3 +239,33 @@ USTR_CONF_I_PROTO int ustrp_sc_toupper(struct Ustr_pool *p, struct Ustrp **ps1)
   *ps1 = USTRP(tmp);
   return (ret);
 }
+
+USTR_CONF_i_PROTO char *ustrp__sc_export(struct Ustr_pool *p,
+                                         struct Ustr *s1, size_t pos,size_t len)
+{
+  char *ret = 0;
+
+  if (!ustr_assert_valid_subustr(s1, pos, len))
+    return (ret);
+  --pos;
+
+  if (p)
+    ret = p->pool_sys_malloc(p, len + 1);
+  else
+    ret = malloc(len + 1); /* don't use USTR_CONF_MALLOC() because there's no
+                            * obvious way to free it. */
+  
+  if (!ret)
+    return (ret);
+  
+  memcpy(ret, ustr_cstr(s1) + pos, len);
+  ret[len] = 0;
+
+  return (ret);
+}
+
+USTR_CONF_I_PROTO char *ustr_sc_export(struct Ustr *s1, size_t pos, size_t len)
+{ return (ustrp__sc_export(0, s1, pos, len)); }
+USTR_CONF_I_PROTO char *ustrp_sc_export(struct Ustr_pool *p,
+                                        struct Ustrp *s1, size_t pos,size_t len)
+{ return (ustrp__sc_export(p, &s1->s, pos, len)); }

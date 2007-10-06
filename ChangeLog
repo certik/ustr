@@ -1,3 +1,7 @@
+2007-10-05  James Antill  <james@and.org>
+
+	* ustr-sc-code.h (ustr_sc_export): Added function.
+
 2007-09-21  James Antill  <james@and.org>
 
 	* ustr-srch-code.h (ustr_srch_buf_fwd): Change search for len=0 to
