@@ -120,7 +120,7 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
 {
   int val = EOF;
   size_t olen = 0;
-  const unsigned int linesz = 81; /* assume a line is roughly 80 chars */
+  const size_t linesz = 81; /* assume a line is roughly 80 chars */
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
 
