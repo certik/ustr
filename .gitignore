@@ -22,4 +22,6 @@ examples/mkdir_p
 examples/mkdir_p-s
 examples/fgrep
 examples/fgrep-s
+examples/txt2html
+examples/txt2html-s
 abcd
