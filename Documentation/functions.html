@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (194)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (198)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -47,7 +47,7 @@
 <li><a href="#indx-Splitting_a_Ustr">Splitting a Ustr (4)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (6)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
-<li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (5)</a>
+<li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (9)</a>
 <li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
 <li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Simple_Ustr_pool_API">Simple Ustr pool API (4)</a></ul>
@@ -271,6 +271,10 @@
 </ul><li><a id="indx-Misc_shortcut_helper_functions_for_Ustrs" href="#Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs</a>
 <ul>
 <li class="obj"><a href="#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>
+<li class="obj"><a href="#ustr_sc_export_subustr">ustr_sc_export_subustr()</a>
+<li class="obj"><a href="#ustr_sc_export">ustr_sc_export()</a>
+<li class="obj"><a href="#ustrp_sc_export_subustrp">ustrp_sc_export_subustrp()</a>
+<li class="obj"><a href="#ustrp_sc_export">ustrp_sc_export()</a>
 <li class="obj"><a href="#ustr_sc_reverse">ustr_sc_reverse()</a>
 <li class="obj"><a href="#ustr_sc_tolower">ustr_sc_tolower()</a>
 <li class="obj"><a href="#ustr_sc_toupper">ustr_sc_toupper()</a>
@@ -2626,6 +2630,55 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function makes sure that the <a href="design">Ustr string</a> is owned when it returns (Ie.
  <a href="functions#ustr_owner">ustr_owner()</a> returns <a href="constants#USTR_TRUE">USTR_TRUE</a>), or it fails to allocate.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_export_subustr">ustr_sc_export_subustr()</a>
+<br>Returns: A pointer to newly allocated block of memory<br>Type: char *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position in the Ustr<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length to export from the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Allocation function (like malloc)<br>Type<strong>[4]</strong>: void *(*)(size_t)
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function allocates a block of memory of size Length (Parameter[3]) + 1 
+ using the provided allocation function (Parameter[4]) and copies the data
+ starting from Position (Parameter[2]) within the ustr.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_export">ustr_sc_export()</a>
+<br>Returns: A pointer to newly allocated block of memory<br>Type: char *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Allocation function (like malloc)<br>Type<strong>[2]</strong>: void *(*)(size_t)
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_sc_export_subustr">ustr_sc_export_subustr()</a> with a position of
+ 1 and a length of <a href="functions#ustr_len">ustr_len()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustrp_sc_export_subustrp">ustrp_sc_export_subustrp()</a>
+<br>Returns: A pointer to newly allocated block of memory<br>Type: char *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr_pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length to export from the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Allocation function (like malloc), or NULL<br>Type<strong>[5]</strong>: void *(*)(size_t)
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function allocates a block of memory of size Length (Parameter[4]) + 1 
+ using either the provided allocation function (Parameter[5]), or from the pool
+ object if the allocation function is NUL, and copies the data starting from
+ Position (Parameter[3]) within the ustr.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustrp_sc_export">ustrp_sc_export()</a>
+<br>Returns: A pointer to newly allocated block of memory<br>Type: char *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr_pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Allocation function (like malloc)<br>Type<strong>[3]</strong>: void *(*)(size_t)
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling ustrp_sc_export_subustrp() with a position of
+ 1 and a length of ustrp_len().
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">

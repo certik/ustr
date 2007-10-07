@@ -1,4 +1,4 @@
-.TH ustr 3 "04-Oct-2007" "Ustr 1.0.1" "Ustr String Library"
+.TH ustr 3 "06-Oct-2007" "Ustr 1.0.1" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -743,6 +743,22 @@ short  \fBustr_parse_short\fR(const struct Ustr *, size_t, unsigned int, size_t 
 .in \w'  int  \fBustr_sc_ensure_owner\fR('u
 .ti \w'  'u
 int  \fBustr_sc_ensure_owner\fR(struct Ustr **);
+.br
+.in \w'  char *\fBustr_sc_export_subustr\fR('u
+.ti \w'  'u
+char *\fBustr_sc_export_subustr\fR(const struct Ustr *, size_t, size_t, void *(*)(size_t));
+.br
+.in \w'  char *\fBustr_sc_export\fR('u
+.ti \w'  'u
+char *\fBustr_sc_export\fR(const struct Ustr *, void *(*)(size_t));
+.br
+.in \w'  char *\fBustrp_sc_export_subustrp\fR('u
+.ti \w'  'u
+char *\fBustrp_sc_export_subustrp\fR(struct Ustr_pool *, const struct Ustr *, size_t, size_t, void *(*)(size_t));
+.br
+.in \w'  char *\fBustrp_sc_export\fR('u
+.ti \w'  'u
+char *\fBustrp_sc_export\fR(struct Ustr_pool *, const struct Ustr *, void *(*)(size_t));
 .br
 .in \w'  int  \fBustr_sc_reverse\fR('u
 .ti \w'  'u
@@ -6382,6 +6398,132 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
   This function makes sure that the Ustr string is owned when it returns (Ie. ustr_owner() returns USTR_TRUE), or it fails to allocate.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_export_subustr()
+.br
+Returns: A pointer to newly allocated block of memory
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Position in the Ustr
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length to export from the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Allocation function (like malloc)
+.br
+Type\fB[4]\fR: void *(*)(size_t)
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function allocates a block of memory of size Length (Parameter[3]) + 1  using the provided allocation function (Parameter[4]) and copies the data starting from Position (Parameter[2]) within the ustr.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_export()
+.br
+Returns: A pointer to newly allocated block of memory
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Allocation function (like malloc)
+.br
+Type\fB[2]\fR: void *(*)(size_t)
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_sc_export_subustr() with a position of 1 and a length of ustr_len().
+
+.ti -2
+.br
+\fBFunction: \fR ustrp_sc_export_subustrp()
+.br
+Returns: A pointer to newly allocated block of memory
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: Pointer to a Ustr_pool object
+.br
+Type\fB[1]\fR: struct Ustr_pool *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Position in the Ustr
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length to export from the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: Allocation function (like malloc), or NULL
+.br
+Type\fB[5]\fR: void *(*)(size_t)
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function allocates a block of memory of size Length (Parameter[4]) + 1  using either the provided allocation function (Parameter[5]), or from the pool object if the allocation function is NUL, and copies the data starting from Position (Parameter[3]) within the ustr.
+
+.ti -2
+.br
+\fBFunction: \fR ustrp_sc_export()
+.br
+Returns: A pointer to newly allocated block of memory
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: Pointer to a Ustr_pool object
+.br
+Type\fB[1]\fR: struct Ustr_pool *
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: Allocation function (like malloc)
+.br
+Type\fB[3]\fR: void *(*)(size_t)
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustrp_sc_export_subustrp() with a position of 1 and a length of ustrp_len().
 
 .ti -2
 .br
