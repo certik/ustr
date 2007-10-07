@@ -2,6 +2,12 @@
 
 static const char *rf = __FILE__;
 
+static void *fail_malloc(size_t len)
+{
+  (void)len;
+  return NULL;
+}
+
 int tst(void)
 {
   Ustr_pool *pool = ustr_pool_make_pool();
@@ -896,8 +902,97 @@ int tst(void)
   ASSERT_PEQ(ustrp_split_spn(pool, sp1, &off, USTRP1(\2, "xx"), NULL, 0),
              USTRP1(\3, "456"));
   
+  sp1 = USTRP1(\x14, "123456789912345xxxxx");
+  {
+    size_t scan = 0x15;
+    char *cstr = ustrp_sc_export(pool, sp1, malloc);
+    
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == ustrp_len(sp1));
+    ASSERT(ustrp_cmp_cstr_eq(sp1, cstr));
+    free(cstr);
+
+    while (scan--)
+    {
+      cstr = ustrp_sc_export_subustrp(pool, sp1, 1, scan, malloc);
+      ASSERT(cstr);
+      ASSERT(strlen(cstr) == scan);
+      ASSERT(ustrp_cmp_prefix_cstr_eq(sp1, cstr));
+      free(cstr);
+    }
+    scan = 0x14;
+    while (scan--)
+    {
+      cstr = ustrp_sc_export_subustrp(pool, sp1, scan + 1, ustrp_len(sp1) -scan,
+                                      malloc);
+      ASSERT(cstr);
+      ASSERT(strlen(cstr) == ustrp_len(sp1) - scan);
+      ASSERT(ustrp_cmp_suffix_cstr_eq(sp1, cstr));
+      free(cstr);
+    }
+
+    cstr = ustrp_sc_export_subustrp(pool, sp1, 4, 3, malloc);
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == 3);
+    ASSERT(ustrp_cmp_cstr_eq(USTRP1(\3, "456"), cstr));
+    free(cstr);
+
+    cstr = ustrp_sc_export_subustrp(pool, sp1, 4, 0, malloc);
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == 0);
+    free(cstr);
+
+    if (!USTR_DEBUG)
+    ASSERT(!ustrp_sc_export_subustrp(pool, sp1, 1, 0x15, malloc));
+    if (!USTR_DEBUG)
+    ASSERT(!ustrp_sc_export_subustrp(pool, sp1, 2, 0x14, malloc));
+  }
+  
+  {
+    size_t scan = 0x15;
+    char *cstr = ustrp_sc_export(pool, sp1, NULL);
+    
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == ustrp_len(sp1));
+    ASSERT(ustrp_cmp_cstr_eq(sp1, cstr));
+
+    while (scan--)
+    {
+      cstr = ustrp_sc_export_subustrp(pool, sp1, 1, scan, NULL);
+      ASSERT(cstr);
+      ASSERT(strlen(cstr) == scan);
+      ASSERT(ustrp_cmp_prefix_cstr_eq(sp1, cstr));
+    }
+    scan = 0x14;
+    while (scan--)
+    {
+      cstr = ustrp_sc_export_subustrp(pool, sp1, scan + 1, ustrp_len(sp1) -scan,
+                                      NULL);
+      ASSERT(cstr);
+      ASSERT(strlen(cstr) == ustrp_len(sp1) - scan);
+      ASSERT(ustrp_cmp_suffix_cstr_eq(sp1, cstr));
+    }
+
+    cstr = ustrp_sc_export_subustrp(pool, sp1, 4, 3, NULL);
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == 3);
+    ASSERT(ustrp_cmp_cstr_eq(USTRP1(\3, "456"), cstr));
+
+    cstr = ustrp_sc_export_subustrp(pool, sp1, 4, 0, NULL);
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == 0);
+    
+    if (!USTR_DEBUG)
+    ASSERT(!ustrp_sc_export_subustrp(pool, sp1, 1, 0x15, NULL));
+    if (!USTR_DEBUG)
+    ASSERT(!ustrp_sc_export_subustrp(pool, sp1, 2, 0x14, NULL));
+  }
+
+  ASSERT(!ustrp_sc_export(pool, sp1, fail_malloc));
+  ASSERT(!ustrp_sc_export_subustrp(pool, sp1, 1, 4, fail_malloc));
+  
   ustr_pool_free(pool);
   ustr_pool_free(NULL);
-  
+
   return (EXIT_SUCCESS);
 }

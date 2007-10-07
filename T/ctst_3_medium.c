@@ -33,6 +33,12 @@ static int my_fmt(Ustr **ps1, const char *fmt, ...)
 }
 #endif
 
+static void *fail_malloc(size_t len)
+{
+  (void)len;
+  return NULL;
+}
+
 int tst(void)
 {
   unsigned int num = 65534;
@@ -391,6 +397,53 @@ int tst(void)
   ASSERT(ustr_srch_rep_chr_rev(s1, 0, '5', 1) == 15);
   ASSERT(ustr_srch_rep_chr_fwd(s1, 0, '5', 0) ==  1);
   ASSERT(ustr_srch_rep_chr_rev(s1, 0, '5', 0) == 20);
+  
+  {
+    size_t scan = 0x15;
+    char *cstr = ustr_sc_export(s1, malloc);
+    
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == ustr_len(s1));
+    ASSERT(ustr_cmp_cstr_eq(s1, cstr));
+    free(cstr);
+
+    while (scan--)
+    {
+      cstr = ustr_sc_export_subustr(s1, 1, scan, malloc);
+      ASSERT(cstr);
+      ASSERT(strlen(cstr) == scan);
+      ASSERT(ustr_cmp_prefix_cstr_eq(s1, cstr));
+      free(cstr);
+    }
+    scan = 0x14;
+    while (scan--)
+    {
+      cstr = ustr_sc_export_subustr(s1, scan + 1, ustr_len(s1) - scan, malloc);
+      ASSERT(cstr);
+      ASSERT(strlen(cstr) == ustr_len(s1) - scan);
+      ASSERT(ustr_cmp_suffix_cstr_eq(s1, cstr));
+      free(cstr);
+    }
+
+    cstr = ustr_sc_export_subustr(s1, 4, 3, malloc);
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == 3);
+    ASSERT(ustr_cmp_cstr_eq(USTR1(\3, "456"), cstr));
+    free(cstr);
+
+    cstr = ustr_sc_export_subustr(s1, 4, 0, malloc);
+    ASSERT(cstr);
+    ASSERT(strlen(cstr) == 0);
+    free(cstr);
+
+    if (!USTR_DEBUG)
+    ASSERT(!ustr_sc_export_subustr(s1, 1, 0x15, malloc));
+    if (!USTR_DEBUG)
+    ASSERT(!ustr_sc_export_subustr(s1, 2, 0x14, malloc));
+  }
+
+  ASSERT(!ustr_sc_export(s1, fail_malloc));
+  ASSERT(!ustr_sc_export_subustr(s1, 1, 4, fail_malloc));
   
   return (EXIT_SUCCESS);
 }
