@@ -242,7 +242,7 @@ USTR_CONF_I_PROTO int ustrp_sc_toupper(struct Ustr_pool *p, struct Ustrp **ps1)
 
 USTR_CONF_i_PROTO
 char *ustrp__sc_export_subustr(struct Ustr_pool *p,
-                               struct Ustr *s1, size_t pos,size_t len,
+                               const struct Ustr *s1, size_t pos,size_t len,
                                void *(*my_alloc)(size_t))
 {
   char *ret = 0;
@@ -250,7 +250,10 @@ char *ustrp__sc_export_subustr(struct Ustr_pool *p,
   USTR_ASSERT(my_alloc || p);
   
   if (!ustr_assert_valid_subustr(s1, pos, len))
+  {
+    errno = USTR__EINVAL;
     return (ret);
+  }
   --pos;
 
   if (my_alloc) /* Alloc ustrp_*() to use normal export too */
@@ -271,7 +274,7 @@ char *ustrp__sc_export_subustr(struct Ustr_pool *p,
 }
 
 USTR_CONF_I_PROTO
-char *ustr_sc_export_subustr(struct Ustr *s1, size_t pos, size_t len,
+char *ustr_sc_export_subustr(const struct Ustr *s1, size_t pos, size_t len,
                              void *(*my_alloc)(size_t))
 {
   USTR_ASSERT(my_alloc);
@@ -279,6 +282,6 @@ char *ustr_sc_export_subustr(struct Ustr *s1, size_t pos, size_t len,
 }
 USTR_CONF_I_PROTO
 char *ustrp_sc_export_subustrp(struct Ustr_pool *p,
-                               struct Ustrp *s1, size_t pos,size_t len,
+                               const struct Ustrp *s1, size_t pos,size_t len,
                                void *(*my_alloc)(size_t))
 { return (ustrp__sc_export_subustr(p, &s1->s, pos, len, my_alloc)); }

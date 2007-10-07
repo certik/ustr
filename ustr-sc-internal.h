@@ -27,9 +27,9 @@ USTR_CONF_e_PROTO int ustrp__sc_toupper(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO char *ustrp__sc_wstr(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_E_PROTO char *ustrp__sc_export_subustr(struct Ustr_pool *,
-                                                 struct Ustr *, size_t, size_t,
-                                                 void *(*)(size_t))
+USTR_CONF_e_PROTO
+char *ustrp__sc_export_subustr(struct Ustr_pool *, const struct Ustr *,
+                               size_t, size_t, void *(*)(size_t))
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
     
 #endif
