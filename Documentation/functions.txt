@@ -3800,6 +3800,91 @@ Function: ustr_sc_ensure_owner()
  ustr_owner() returns USTR_TRUE), or it fails to allocate.
 
 
+Function: ustr_sc_export_subustr()
+ Returns: A pointer to newly allocated block of memory
+ Type: char *
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Position in the Ustr
+ Type[2]: size_t
+
+ Parameter[3]: Length to export from the Ustr
+ Type[3]: size_t
+
+ Parameter[4]: Allocation function (like malloc)
+ Type[4]: void *(*)(size_t)
+
+ Explanation:
+
+  This function allocates a block of memory of size Length (Parameter[3]) + 1 
+ using the provided allocation function (Parameter[4]) and copies the data
+ starting from Position (Parameter[2]) within the ustr.
+
+
+Function: ustr_sc_export()
+ Returns: A pointer to newly allocated block of memory
+ Type: char *
+
+ Parameter[1]: A pointer to a constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Allocation function (like malloc)
+ Type[2]: void *(*)(size_t)
+
+ Explanation:
+
+  This function works like calling ustr_sc_export_subustr() with a position of
+ 1 and a length of ustr_len().
+
+
+Function: ustrp_sc_export_subustrp()
+ Returns: A pointer to newly allocated block of memory
+ Type: char *
+
+ Parameter[1]: Pointer to a Ustr_pool object
+ Type[1]: struct Ustr_pool *
+
+ Parameter[2]: A pointer to a constant Ustr string
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: Position in the Ustr
+ Type[3]: size_t
+
+ Parameter[4]: Length to export from the Ustr
+ Type[4]: size_t
+
+ Parameter[5]: Allocation function (like malloc), or NULL
+ Type[5]: void *(*)(size_t)
+
+ Explanation:
+
+  This function allocates a block of memory of size Length (Parameter[4]) + 1 
+ using either the provided allocation function (Parameter[5]), or from the pool
+ object if the allocation function is NUL, and copies the data starting from
+ Position (Parameter[3]) within the ustr.
+
+
+Function: ustrp_sc_export()
+ Returns: A pointer to newly allocated block of memory
+ Type: char *
+
+ Parameter[1]: Pointer to a Ustr_pool object
+ Type[1]: struct Ustr_pool *
+
+ Parameter[2]: A pointer to a constant Ustr string
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: Allocation function (like malloc)
+ Type[3]: void *(*)(size_t)
+
+ Explanation:
+
+  This function works like calling ustrp_sc_export_subustrp() with a position of
+ 1 and a length of ustrp_len().
+
+
 Function: ustr_sc_reverse()
  Returns: Success or failure
  Type: int 
