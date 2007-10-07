@@ -240,23 +240,29 @@ USTR_CONF_I_PROTO int ustrp_sc_toupper(struct Ustr_pool *p, struct Ustrp **ps1)
   return (ret);
 }
 
-USTR_CONF_i_PROTO char *ustrp__sc_export(struct Ustr_pool *p,
-                                         struct Ustr *s1, size_t pos,size_t len)
+USTR_CONF_i_PROTO
+char *ustrp__sc_export_subustr(struct Ustr_pool *p,
+                               struct Ustr *s1, size_t pos,size_t len,
+                               void *(*my_alloc)(size_t))
 {
   char *ret = 0;
 
+  USTR_ASSERT(my_alloc || p);
+  
   if (!ustr_assert_valid_subustr(s1, pos, len))
     return (ret);
   --pos;
 
-  if (p)
-    ret = p->pool_sys_malloc(p, len + 1);
+  if (my_alloc) /* Alloc ustrp_*() to use normal export too */
+    ret = (*my_alloc)(len + 1);
   else
-    ret = malloc(len + 1); /* don't use USTR_CONF_MALLOC() because there's no
-                            * obvious way to free it. */
+    ret = p->pool_sys_malloc(p, len + 1);
   
   if (!ret)
+  {
+    errno = ENOMEM;
     return (ret);
+  }
   
   memcpy(ret, ustr_cstr(s1) + pos, len);
   ret[len] = 0;
@@ -264,8 +270,15 @@ USTR_CONF_i_PROTO char *ustrp__sc_export(struct Ustr_pool *p,
   return (ret);
 }
 
-USTR_CONF_I_PROTO char *ustr_sc_export(struct Ustr *s1, size_t pos, size_t len)
-{ return (ustrp__sc_export(0, s1, pos, len)); }
-USTR_CONF_I_PROTO char *ustrp_sc_export(struct Ustr_pool *p,
-                                        struct Ustrp *s1, size_t pos,size_t len)
-{ return (ustrp__sc_export(p, &s1->s, pos, len)); }
+USTR_CONF_I_PROTO
+char *ustr_sc_export_subustr(struct Ustr *s1, size_t pos, size_t len,
+                             void *(*my_alloc)(size_t))
+{
+  USTR_ASSERT(my_alloc);
+  return (ustrp__sc_export_subustr(0, s1, pos, len, my_alloc));
+}
+USTR_CONF_I_PROTO
+char *ustrp_sc_export_subustrp(struct Ustr_pool *p,
+                               struct Ustrp *s1, size_t pos,size_t len,
+                               void *(*my_alloc)(size_t))
+{ return (ustrp__sc_export_subustr(p, &s1->s, pos, len, my_alloc)); }

@@ -1,5 +1,8 @@
 2007-10-06  James Antill  <james@and.org>
 
+	* ustr-sc-code.h (ustrp_sc_export): Added function, redefined 
+	ustr_sc_export() to do entire ustr.
+
 	* examples/txt2html.c (main): Added another example program.
 
 2007-10-05  James Antill  <james@and.org>
