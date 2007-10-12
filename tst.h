@@ -20,11 +20,6 @@
 #define ASSERT_PEQ(x, y) ASSERT(ustrp_cmp_eq(x, y))
 #define assert_peq(x, y) ASSERT(ustrp_cmp_eq(x, y))
 
-/* doesn't work on ctst_*.c cotst_*.c -- as they alloc. from the lib. */
-#define USTR_CONF_MALLOC(x)     malloc_check_malloc(x,     __FILE__, __LINE__)
-#define USTR_CONF_REALLOC(x, y) malloc_check_realloc(x, y, __FILE__, __LINE__)
-#define USTR_CONF_FREE(x)       malloc_check_free(x, __FILE__, __LINE__)
-
 #if !defined(USTR_DEBUG) || USTR_DEBUG
 # define ustr_assert(x)        assert(x)
 # define USTR_ASSERT(x)        assert(x)
@@ -39,6 +34,18 @@
 
 #define _GNU_SOURCE 1
 
+#define MALLOC_CHECK__ATTR_H() /* do nothing */
+
+#define USE_MALLOC_CHECK 1
+
+#include "malloc-check.h"
+
+/* doesn't work on ctst_*.c cotst_*.c -- as they alloc. from the lib. */
+#define USTR_CONF_MALLOC(x)     malloc_check_malloc(x,     __FILE__, __LINE__)
+#define USTR_CONF_REALLOC(x, y) malloc_check_realloc(x, y, __FILE__, __LINE__)
+#define USTR_CONF_FREE(x)       malloc_check_free(x, __FILE__, __LINE__)
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,13 +53,6 @@
 #define FALSE 0
 #define TRUE  1
 
-#define MALLOC_CHECK__ATTR_H() /* do nothing */
-
-#define USE_MALLOC_CHECK 1
-
-#include "malloc-check.h"
-
-MALLOC_CHECK_DECL();
 
 #include "ustr-debug.h"
 
@@ -65,13 +65,23 @@ static struct Ustr *s2 = USTR1(\x02, "s2");
 
 static const char *rf;
 
+MALLOC_CHECK_DECL();
+
 #if USTR_CONF_USE_DYNAMIC_CONF
 static void *mc_malloc(size_t x)
-{ return (malloc_check_malloc(x, "mc_malloc", 1)); }
+{ (void)x; return (NULL); }
 static void *mc_realloc(void *p, size_t x)
-{ return (malloc_check_realloc(p, x, "mc_realloc", 1)); }
+{ (void)p; (void)x; return (NULL); }
 static void mc_free(void *x)
-{ malloc_check_free(x, "mc_malloc", 1); }
+{ (void) x; }
+
+static unsigned long mc_mem_fail_num = 0;
+#define TST_MC_SET_NUM(x) assert(ustr_cntl_opt(666, 0xF0F0, x))
+#define TST_MC_GET_NUM() (ustr_cntl_opt(666, 0xF0F1, &mc_mem_fail_num) ? mc_mem_fail_num : 0xFFFFFFFFU)
+#else
+
+#define TST_MC_SET_NUM(x) MALLOC_CHECK_STORE.mem_fail_num = (x)
+#define TST_MC_GET_NUM()  MALLOC_CHECK_STORE.mem_fail_num
 #endif
 
 int main(void)
@@ -81,9 +91,15 @@ int main(void)
 #if USTR_CONF_USE_DYNAMIC_CONF
   {
     static const struct Ustr_cntl_mem mc_mem = {mc_malloc, mc_realloc, mc_free};
-    
+
     ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_SET_MEM, &mc_mem));
+    
+    assert(USTR_CNTL_MALLOC_CHECK_ENABLE());
+
+    assert(!TST_MC_GET_NUM());
   }
+#else
+  assert(!USTR_CNTL_MALLOC_CHECK_ENABLE());
 #endif
   
   ASSERT(ustr_size(s1) == 0);
@@ -95,6 +111,8 @@ int main(void)
   
   ASSERT(ustr_sc_ensure_owner(&s2));
   ASSERT(s2);
+  ASSERT(USTR_CNTL_MALLOC_CHECK_MEM(s2));
+  ASSERT(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
   ASSERT(!ustr_ro(s2));
   
   {
@@ -144,6 +162,7 @@ int main(void)
     ustr_free(s1);
     ustr_free(s2);
     MALLOC_CHECK_EMPTY();
+    assert(USTR_CNTL_MALLOC_CHECK_EMPTY());
   }
   
   switch (ret)

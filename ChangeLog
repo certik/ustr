@@ -1,3 +1,10 @@
+2007-10-10  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_ENABLE): Add function.
+	(USTR_CNTL_MALLOC_CHECK_MEM): Add function.
+	(USTR_CNTL_MALLOC_CHECK_SZ_MEM): Add function.
+	(USTR_CNTL_MALLOC_CHECK_EMPTY): Add function.
+
 2007-10-06  James Antill  <james@and.org>
 
 	* ustr-sc-code.h (ustrp_sc_export): Added function, redefined 

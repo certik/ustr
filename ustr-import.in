@@ -191,7 +191,10 @@ else
   cp "$SHRDIR/.gdbinit" .
 fi
 
-
+if $cntl && ! $cfiles; then
+ cntl=false
+ echo "Warn: Can't do dynamic configuration without cfiles." 1>&2
+fi
 
 # ---------------------------------------------
 # Copy all the files locally...
@@ -227,6 +230,7 @@ fi
 
 if $cntl; then
   copy cntl
+  cp "$SHRDIR/malloc-check.h" .
 fi
 
 # conf is generated from scratch

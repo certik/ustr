@@ -6,10 +6,6 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-#ifndef USTR_CONF_USE_MALLOC_CHECK
-#define USTR_CONF_USE_MALLOC_CHECK 0
-#endif
-
 #define USTR_CNTL_OPT_GET_REF_BYTES   (1)
 #define USTR_CNTL_OPT_SET_REF_BYTES   (2)
 #define USTR_CNTL_OPT_GET_HAS_SIZE    (3)

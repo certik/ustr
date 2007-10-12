@@ -360,10 +360,46 @@ USTR_CONF_i_PROTO size_t ustr__ref_del(struct Ustr *s1)
   return (0);
 }
 
+USTR_CONF_I_PROTO size_t ustr_size_overhead(const struct Ustr *s1)
+{
+  size_t lenn = 0;
+  
+  USTR_ASSERT(ustr_assert_valid(s1));
+
+  if (!s1->data[0])
+    return (1);
+
+  lenn = USTR__LEN_LEN(s1);
+  if (ustr_sized(s1))
+    lenn *= 2;
+  
+  return (1 + USTR__REF_LEN(s1) + lenn + sizeof(USTR_END_ALOCDx));
+}
+
+USTR_CONF_I_PROTO size_t ustr_size_alloc(const struct Ustr *s1)
+{ /* copy and paste so that ustr_ro() does the right thing */
+  size_t oh = 0;
+
+  USTR_ASSERT(ustr_assert_valid(s1));
+  
+  if (ustr_sized(s1))
+    return (ustr__sz_get(s1));
+
+  oh = ustr_size_overhead(s1);
+  USTR_ASSERT((oh + ustr_len(s1)) >= oh);
+  
+  if (ustr_exact(s1))
+    return (ustr_len(s1) + oh);
+
+  return (ustr__ns(ustr_len(s1) + oh));
+}
+
 USTR_CONF_i_PROTO void ustrp__free(struct Ustr_pool *p, struct Ustr *s1)
 {
   if (!s1) return;
-  
+
+  ustr_assert(USTR__ASSERT_MALLOC_CHECK_MEM(p, s1));
+    
   if (!ustr__ref_del(s1))
   {
     if (p)
@@ -593,22 +629,6 @@ USTR_CONF_I_PROTO
 struct Ustrp *ustrp_init_fixed(void *data, size_t sz, int exact, size_t len)
 { return (USTRP(ustr_init_fixed(data, sz, exact, len))); }
 
-USTR_CONF_I_PROTO size_t ustr_size_overhead(const struct Ustr *s1)
-{
-  size_t lenn = 0;
-  
-  USTR_ASSERT(ustr_assert_valid(s1));
-
-  if (!s1->data[0])
-    return (1);
-
-  lenn = USTR__LEN_LEN(s1);
-  if (ustr_sized(s1))
-    lenn *= 2;
-  
-  return (1 + USTR__REF_LEN(s1) + lenn + sizeof(USTR_END_ALOCDx));
-}
-
 USTR_CONF_I_PROTO size_t ustr_size(const struct Ustr *s1)
 { /* size of available space in the string */
   size_t oh = 0;
@@ -622,24 +642,6 @@ USTR_CONF_I_PROTO size_t ustr_size(const struct Ustr *s1)
 
   oh = ustr_size_overhead(s1);
   return (ustr__ns(ustr_len(s1) + oh) - oh);
-}
-
-USTR_CONF_I_PROTO size_t ustr_size_alloc(const struct Ustr *s1)
-{ /* copy and paste so that ustr_ro() does the right thing */
-  size_t oh = 0;
-
-  USTR_ASSERT(ustr_assert_valid(s1));
-  
-  if (ustr_sized(s1))
-    return (ustr__sz_get(s1));
-
-  oh = ustr_size_overhead(s1);
-  USTR_ASSERT((oh + ustr_len(s1)) >= oh);
-  
-  if (ustr_exact(s1))
-    return (ustr_len(s1) + oh);
-
-  return (ustr__ns(ustr_len(s1) + oh));
 }
 
 /* ---------------- allocations ---------------- */
@@ -867,6 +869,7 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
   int alloc = USTR_FALSE;
 
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  ustr_assert(USTR__ASSERT_MALLOC_CHECK_MEM(p, *ps1));
   
   if (!len)
     return (USTR_TRUE);
@@ -1206,6 +1209,7 @@ int ustrp__add_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
   int alloc = USTR_FALSE;
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  ustr_assert(USTR__ASSERT_MALLOC_CHECK_MEM(p, *ps1));
   
   if (!len)
     return (USTR_TRUE);
@@ -1307,6 +1311,7 @@ int ustrp__add(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
   USTR_ASSERT(ustr_assert_valid(s2));
+  ustr_assert(USTR__ASSERT_MALLOC_CHECK_MEM(p, *ps1));
 
   len1 = ustr_len(*ps1);
   len2 = ustr_len(s2);

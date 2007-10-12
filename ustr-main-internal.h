@@ -29,6 +29,10 @@
     (ustr_alloc(x) ? USTR__REF_LEN(x) : USTR_CONF_REF_BYTES),           \
     (ustr_alloc(x) ? ustr_exact(x) : USTR_CONF_EXACT_BYTES), ustr_enomem(x)
 
+
+#define USTR__ASSERT_MALLOC_CHECK_MEM(p, s1) ((p) || !ustr_alloc(s1) || \
+    USTR_CNTL_MALLOC_CHECK_SZ_MEM(s1, ustr_size_alloc(s1)))
+
  /* #include <stdio.h>
     printf("sz=%zu rbytes=%zu exact=%s len=%zu --> rsz=%zu\n", sz, rbytes, exact ? "TRUE" : "FALSE", len, rsz); */
 

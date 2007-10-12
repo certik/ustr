@@ -21,6 +21,22 @@ struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
   USTR_FALSE,   /* has_size */
   USTR_FALSE}}; /* exact_bytes */
 
+/* not namespaced because this must be in a C-file. */
+#ifndef USE_MALLOC_CHECK
+#define USE_MALLOC_CHECK 1
+#endif
+#define MALLOC_CHECK_SCOPE_EXTERN 0
+#include "malloc-check.h"
+
+MALLOC_CHECK_DECL();
+
+static void *ustr_cntl__mc_malloc(size_t x)
+{ return (malloc_check_malloc(x, "ustr_cntl__mc_malloc", 1)); }
+static void *ustr_cntl__mc_realloc(void *p, size_t x)
+{ return (malloc_check_realloc(p, x, "ustr_cntl__mc_realloc", 1)); }
+static void ustr_cntl__mc_free(void *x)
+{ malloc_check_free(x, "ustr_cntl__mc_malloc", 1); }
+
 USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
 {
   int ret = USTR_FALSE;
@@ -125,20 +141,68 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
     }
     break;
 
-#if USTR_CONF_USE_MALLOC_CHECK
     case 666:
     {
       unsigned long valT = va_arg(ap, unsigned long);
-      unsigned long valV = va_arg(ap, unsigned long);
+      static int enabled = USTR_FALSE;
+      
+      switch (valT)
+      {
+        case 0xF0F0:
+        case 0xF0F1:
+        case 0x0FF0:
+        case 0x0FF1:
+        case 0x0FF2:
+        case 0x0FF3:
+        case 0x0FFF:
+          ret = USTR_TRUE;
+      }
 
-      ASSERT(valT == 0xF0F0);
+      if (!enabled && (valT != 0x0FF0))
+        break;
       
       if (0) {}
-      else if (USTR_CONF_USE_MALLOC_CHECK   && (valT == 0xF0F0))
-      { MALLOC_CHECK_FAIL_IN(valV); ret = TRUE; }
+      else if (valT == 0xF0F0)
+      {
+        unsigned long valV = va_arg(ap, unsigned long);
+        MALLOC_CHECK_FAIL_IN(valV);
+      }
+      else if (valT == 0xF0F1)
+      {
+        unsigned long *valV = va_arg(ap, unsigned long *);
+        *valV = MALLOC_CHECK_STORE.mem_fail_num;
+      }
+      else if (valT == 0x0FF0)
+      {
+        enabled = USTR_TRUE;
+        ustr__opts->ustr.sys_malloc  = ustr_cntl__mc_malloc;
+        ustr__opts->ustr.sys_realloc = ustr_cntl__mc_realloc;
+        ustr__opts->ustr.sys_free    = ustr_cntl__mc_free;
+      }
+      else if (valT == 0x0FF1)
+      {
+        void *valP = va_arg(ap, void *);
+        MALLOC_CHECK_MEM(valP);
+      }
+      else if (valT == 0x0FF2)
+      {
+        void *valP  = va_arg(ap, void *);
+        size_t valV = va_arg(ap, size_t);
+        MALLOC_CHECK_SZ_MEM(valP, valV);
+      }
+      else if (valT == 0x0FF3)
+        MALLOC_CHECK_EMPTY();
+      else if (valT == 0x0FFF)
+      {
+        enabled = USTR_FALSE;
+        ustr__opts->ustr.sys_malloc  = malloc;
+        ustr__opts->ustr.sys_realloc = realloc;
+        ustr__opts->ustr.sys_free    = free;
+      }
+
+      USTR_ASSERT(ret);
     }
-    break;    
-#endif
+    break;
 
     default:
       USTR_ASSERT(!" Bad cntl option.");

@@ -1,22 +1,6 @@
 #ifndef MALLOC_CHECK_H
 #define MALLOC_CHECK_H 1
 
-typedef struct Malloc_check_vals
-{
- void *ptr;
- size_t sz;
- const char *file;
- unsigned int line;
-} Malloc_check_vals;
-
-typedef struct Malloc_check_store
-{
- unsigned long      mem_sz;
- unsigned long      mem_num;
- unsigned long      mem_fail_num;
- Malloc_check_vals *mem_vals;
-} Malloc_check_store;
-
 #ifndef  MALLOC_CHECK__ATTR_USED
 #if defined(__GNUC__) && (__GNUC__ > 3) /* not sure */
 # define MALLOC_CHECK__ATTR_USED() __attribute__((__used__))
@@ -84,8 +68,34 @@ typedef struct Malloc_check_store
 #else
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+typedef struct Malloc_check_vals
+{
+ void *ptr;
+ size_t sz;
+ const char *file;
+ unsigned int line;
+} Malloc_check_vals;
+
+typedef struct Malloc_check_store
+{
+ unsigned long      mem_sz;
+ unsigned long      mem_num;
+ unsigned long      mem_fail_num;
+ Malloc_check_vals *mem_vals;
+} Malloc_check_store;
+
+#ifndef MALLOC_CHECK_SCOPE_EXTERN
+#define MALLOC_CHECK_SCOPE_EXTERN 1
+#endif
+
+#if MALLOC_CHECK_SCOPE_EXTERN
 extern Malloc_check_store MALLOC_CHECK__ATTR_H() MALLOC_CHECK_STORE;
+#else
+static Malloc_check_store                        MALLOC_CHECK_STORE;
+#endif
 
 /* custom assert's so that we get the file/line numbers right */
 #define malloc_check_assert(x) do {                                     \
@@ -93,16 +103,21 @@ extern Malloc_check_store MALLOC_CHECK__ATTR_H() MALLOC_CHECK_STORE;
         fprintf(stderr, " -=> mc_assert (%s) failed, caller=%s:%d.\n",  \
                 #x , file, line);                                       \
         abort(); }                                                      \
-    } while (FALSE)
+    } while (0)
 #define MALLOC_CHECK_ASSERT(x) do {                                     \
       if (x) {} else {                                                  \
         fprintf(stderr, " -=> MC_ASSERT (%s) failed, caller=%s:%d.\n",  \
                 #x , file, line);                                       \
         abort(); }                                                      \
-    } while (FALSE)
+    } while (0)
 
+#if MALLOC_CHECK_SCOPE_EXTERN
 #define MALLOC_CHECK_DECL()                                     \
     Malloc_check_store MALLOC_CHECK_STORE = {0, 0, 0, NULL}
+#else
+#define MALLOC_CHECK_DECL()                                     \
+ static Malloc_check_store MALLOC_CHECK_STORE = {0, 0, 0, NULL}
+#endif
 
 # define MALLOC_CHECK_MEM(x)  malloc_check_mem(x, __FILE__, __LINE__)
 # define MALLOC_CHECK_SZ_MEM(x, y) malloc_check_sz_mem(x, y, __FILE__, __LINE__)
@@ -120,12 +135,12 @@ extern Malloc_check_store MALLOC_CHECK__ATTR_H() MALLOC_CHECK_STORE;
 #define MALLOC_CHECK_TRACE 0
 #endif
 
-#ifndef SWAP_TYPE
-#define SWAP_TYPE(x, y, type) do {              \
+#ifndef MALLOC_CHECK_SWAP_TYPE
+#define MALLOC_CHECK_SWAP_TYPE(x, y, type) do {              \
       type internal_local_tmp = (x);            \
       (x) = (y);                                \
       (y) = internal_local_tmp;                 \
-    } while (FALSE)
+    } while (0)
 #endif
 
 static void malloc_check_alloc(const char *, unsigned int)
@@ -258,10 +273,10 @@ static void malloc_check_free(void *ptr, const char *file, unsigned int line)
       Malloc_check_vals *val1 = &MALLOC_CHECK_STORE.mem_vals[scan];
       Malloc_check_vals *val2 = &MALLOC_CHECK_STORE.mem_vals[num];
       
-      SWAP_TYPE(val1->ptr,  val2->ptr,  void *);
-      SWAP_TYPE(val1->sz,   val2->sz,   size_t);
-      SWAP_TYPE(val1->file, val2->file, const char *);
-      SWAP_TYPE(val1->line, val2->line, unsigned int);
+      MALLOC_CHECK_SWAP_TYPE(val1->ptr,  val2->ptr,  void *);
+      MALLOC_CHECK_SWAP_TYPE(val1->sz,   val2->sz,   size_t);
+      MALLOC_CHECK_SWAP_TYPE(val1->file, val2->file, const char *);
+      MALLOC_CHECK_SWAP_TYPE(val1->line, val2->line, unsigned int);
     }
     MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num].ptr = NULL;
     MALLOC_CHECK_SCRUB_PTR(ptr, sz);
