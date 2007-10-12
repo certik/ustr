@@ -114,11 +114,13 @@
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)       ustr_cntl_opt(666, 0x0FF1, x)
 # define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y) ustr_cntl_opt(666, 0x0FF2, x, y)
 # define USTR_CNTL_MALLOC_CHECK_EMPTY()      ustr_cntl_opt(666, 0x0FF3)
+# define USTR_CNTL_MALLOC_CHECK_DISABLE()    ustr_cntl_opt(666, 0x0FFF)
 #else
 # define USTR_CNTL_MALLOC_CHECK_ENABLE()     (USTR_FALSE)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)       (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y) (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_EMPTY()      (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_DISABLE()    (USTR_TRUE) /* pretend */
 #endif
 
 /* ---- BEG: static/dynamic config. ---- */

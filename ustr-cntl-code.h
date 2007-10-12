@@ -157,50 +157,60 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         case 0x0FFF:
           ret = USTR_TRUE;
       }
+      USTR_ASSERT(ret);
 
       if (!enabled && (valT != 0x0FF0))
         break;
       
-      if (0) {}
-      else if (valT == 0xF0F0)
+      switch (valT)
       {
-        unsigned long valV = va_arg(ap, unsigned long);
-        MALLOC_CHECK_FAIL_IN(valV);
-      }
-      else if (valT == 0xF0F1)
-      {
-        unsigned long *valV = va_arg(ap, unsigned long *);
-        *valV = MALLOC_CHECK_STORE.mem_fail_num;
-      }
-      else if (valT == 0x0FF0)
-      {
-        enabled = USTR_TRUE;
-        ustr__opts->ustr.sys_malloc  = ustr_cntl__mc_malloc;
-        ustr__opts->ustr.sys_realloc = ustr_cntl__mc_realloc;
-        ustr__opts->ustr.sys_free    = ustr_cntl__mc_free;
-      }
-      else if (valT == 0x0FF1)
-      {
-        void *valP = va_arg(ap, void *);
-        MALLOC_CHECK_MEM(valP);
-      }
-      else if (valT == 0x0FF2)
-      {
-        void *valP  = va_arg(ap, void *);
-        size_t valV = va_arg(ap, size_t);
-        MALLOC_CHECK_SZ_MEM(valP, valV);
-      }
-      else if (valT == 0x0FF3)
-        MALLOC_CHECK_EMPTY();
-      else if (valT == 0x0FFF)
-      {
-        enabled = USTR_FALSE;
-        ustr__opts->ustr.sys_malloc  = malloc;
-        ustr__opts->ustr.sys_realloc = realloc;
-        ustr__opts->ustr.sys_free    = free;
-      }
+        case 0xF0F0:
+        {
+          unsigned long valV = va_arg(ap, unsigned long);
+          MALLOC_CHECK_FAIL_IN(valV);
+        }
+        break;
 
-      USTR_ASSERT(ret);
+        case 0xF0F1:
+        {
+          unsigned long *valV = va_arg(ap, unsigned long *);
+          *valV = MALLOC_CHECK_STORE.mem_fail_num;
+        }
+        break;
+        
+        case 0x0FF0:
+          enabled = USTR_TRUE;
+          ustr__opts->ustr.sys_malloc  = ustr_cntl__mc_malloc;
+          ustr__opts->ustr.sys_realloc = ustr_cntl__mc_realloc;
+          ustr__opts->ustr.sys_free    = ustr_cntl__mc_free;
+        break;
+
+        case 0x0FF1:
+        {
+          void *valP = va_arg(ap, void *);
+          MALLOC_CHECK_MEM(valP);
+        }
+        break;
+
+        case 0x0FF2:
+        {
+          void *valP  = va_arg(ap, void *);
+          size_t valV = va_arg(ap, size_t);
+          MALLOC_CHECK_SZ_MEM(valP, valV);
+        }
+        break;
+
+        case 0x0FF3:
+          MALLOC_CHECK_EMPTY();
+          break;
+
+        case 0x0FFF:
+          enabled = USTR_FALSE;
+          ustr__opts->ustr.sys_malloc  = malloc;
+          ustr__opts->ustr.sys_realloc = realloc;
+          ustr__opts->ustr.sys_free    = free;
+        break;
+      }      
     }
     break;
 

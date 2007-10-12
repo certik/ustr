@@ -88,6 +88,8 @@ int main(void)
 {
   int ret = -1;
 
+  assert(USTR_CNTL_MALLOC_CHECK_MEM("")); /* not enabled yet */
+  
 #if USTR_CONF_USE_DYNAMIC_CONF
   {
     static const struct Ustr_cntl_mem mc_mem = {mc_malloc, mc_realloc, mc_free};
@@ -111,8 +113,8 @@ int main(void)
   
   ASSERT(ustr_sc_ensure_owner(&s2));
   ASSERT(s2);
-  ASSERT(USTR_CNTL_MALLOC_CHECK_MEM(s2));
-  ASSERT(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM(s2));
+  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
   ASSERT(!ustr_ro(s2));
   
   {
@@ -163,6 +165,7 @@ int main(void)
     ustr_free(s2);
     MALLOC_CHECK_EMPTY();
     assert(USTR_CNTL_MALLOC_CHECK_EMPTY());
+    assert(USTR_CNTL_MALLOC_CHECK_DISABLE());
   }
   
   switch (ret)

@@ -1,3 +1,7 @@
+2007-10-11  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_DISABLE): Add function.
+
 2007-10-10  James Antill  <james@and.org>
 
 	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_ENABLE): Add function.
