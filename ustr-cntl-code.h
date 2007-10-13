@@ -12,7 +12,7 @@
 # define USTR__COMPILE_ATTR_H()
 #endif
 
-#include <stdarg.h> /* va_list for va_arg() like functionality */
+#include <stdarg.h> /* va_list for va_arg() functionality */
 
 /* second set of defaults... *sigh* */
 struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
@@ -30,12 +30,12 @@ struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
 
 MALLOC_CHECK_DECL();
 
-static void *ustr_cntl__mc_malloc(size_t x)
-{ return (malloc_check_malloc(x, "ustr_cntl__mc_malloc", 1)); }
-static void *ustr_cntl__mc_realloc(void *p, size_t x)
-{ return (malloc_check_realloc(p, x, "ustr_cntl__mc_realloc", 1)); }
-static void ustr_cntl__mc_free(void *x)
-{ malloc_check_free(x, "ustr_cntl__mc_malloc", 1); }
+USTR_CONF_i_PROTO void *ustr__cntl_mc_malloc(size_t x)
+{ return (malloc_check_malloc(x, "ustr__cntl_mc_malloc", 1)); }
+USTR_CONF_i_PROTO void *ustr__cntl_mc_realloc(void *p, size_t x)
+{ return (malloc_check_realloc(p, x, "ustr__cntl_mc_realloc", 1)); }
+USTR_CONF_i_PROTO void ustr__cntl_mc_free(void *x)
+{ malloc_check_free(x, "ustr__cntl_mc_malloc", 1); }
 
 USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
 {
@@ -180,9 +180,9 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         
         case 0x0FF0:
           enabled = USTR_TRUE;
-          ustr__opts->ustr.sys_malloc  = ustr_cntl__mc_malloc;
-          ustr__opts->ustr.sys_realloc = ustr_cntl__mc_realloc;
-          ustr__opts->ustr.sys_free    = ustr_cntl__mc_free;
+          ustr__opts->ustr.sys_malloc  = ustr__cntl_mc_malloc;
+          ustr__opts->ustr.sys_realloc = ustr__cntl_mc_realloc;
+          ustr__opts->ustr.sys_free    = ustr__cntl_mc_free;
         break;
 
         case 0x0FF1:
@@ -210,15 +210,13 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           ustr__opts->ustr.sys_realloc = realloc;
           ustr__opts->ustr.sys_free    = free;
         break;
-      }      
+      }
     }
     break;
-
-    default:
-      USTR_ASSERT(!" Bad cntl option.");
-      break;
   }
 
+  USTR_ASSERT(ret);
+  
   va_end(ap);
 
   return (ret);
