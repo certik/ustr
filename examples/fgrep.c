@@ -369,7 +369,8 @@ int main(int argc, char *argv[])
   };
   int scan = 0;
   int optchar = -1;
-  
+
+  USTR_CNTL_MALLOC_CHECK_BEG();
   if (!argc)
     exit (EXIT_FAILURE);
   
@@ -497,6 +498,8 @@ int main(int argc, char *argv[])
 
   ustr_free(fgrep_srch);
   ustr_free(fgrep_repl);
+  
+  USTR_CNTL_MALLOC_CHECK_END();
   
   return (EXIT_SUCCESS);
 }

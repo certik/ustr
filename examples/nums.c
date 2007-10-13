@@ -84,6 +84,8 @@ int main(int argc, char *argv[])
                         USTR_FLAG_PARSE_NUM_SPACE | USTR_FLAG_PARSE_NUM_EXACT);
   unsigned int ern = 0;
   
+  USTR_CNTL_MALLOC_CHECK_BEG();
+  
   if (!argc)
     usage(NULL, EXIT_FAILURE);
   
@@ -198,6 +200,8 @@ int main(int argc, char *argv[])
   ustr_free(s1);
   ustr_free(out);
   ustr_free(tout);
+  
+  USTR_CNTL_MALLOC_CHECK_END();
   
   exit (EXIT_SUCCESS);
 }

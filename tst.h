@@ -96,12 +96,12 @@ int main(void)
 
     ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_SET_MEM, &mc_mem));
     
-    assert(USTR_CNTL_MALLOC_CHECK_ENABLE());
+    assert(USTR_CNTL_MALLOC_CHECK_BEG());
 
     assert(!TST_MC_GET_NUM());
   }
 #else
-  assert(!USTR_CNTL_MALLOC_CHECK_ENABLE());
+  assert(!USTR_CNTL_MALLOC_CHECK_BEG());
 #endif
   
   ASSERT(ustr_size(s1) == 0);
@@ -165,7 +165,7 @@ int main(void)
     ustr_free(s2);
     MALLOC_CHECK_EMPTY();
     assert(USTR_CNTL_MALLOC_CHECK_EMPTY());
-    assert(USTR_CNTL_MALLOC_CHECK_DISABLE());
+    assert(USTR_CNTL_MALLOC_CHECK_END());
   }
   
   switch (ret)

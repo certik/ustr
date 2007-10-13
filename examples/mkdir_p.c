@@ -69,6 +69,8 @@ int main(int argc, char *argv[])
   int scan = 1;
   Ustr *s1 = USTR("");
   
+  USTR_CNTL_MALLOC_CHECK_BEG();
+  
   if (!argc)
     exit (EXIT_FAILURE);
   
@@ -115,6 +117,8 @@ int main(int argc, char *argv[])
   }
 
   ustr_free(s1);
+  
+  USTR_CNTL_MALLOC_CHECK_END();
   
   return (EXIT_SUCCESS);
 }

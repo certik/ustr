@@ -110,17 +110,19 @@
 
 #if USTR_CONF_USE_DYNAMIC_CONF
 # include "ustr-cntl.h"
-# define USTR_CNTL_MALLOC_CHECK_ENABLE()     ustr_cntl_opt(666, 0x0FF0)
+# define USTR_CNTL_MALLOC_CHECK_BEG()        ustr_cntl_opt(666, 0x0FF0)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)       ustr_cntl_opt(666, 0x0FF1, x)
 # define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y) ustr_cntl_opt(666, 0x0FF2, x, y)
 # define USTR_CNTL_MALLOC_CHECK_EMPTY()      ustr_cntl_opt(666, 0x0FF3)
-# define USTR_CNTL_MALLOC_CHECK_DISABLE()    ustr_cntl_opt(666, 0x0FFF)
+# define USTR_CNTL_MALLOC_CHECK_END()        ustr_cntl_opt(666, 0x0FFF)
 #else
-# define USTR_CNTL_MALLOC_CHECK_ENABLE()     (USTR_FALSE)
+# define USTR_CNTL_MALLOC_CHECK_BEG()        (USTR_FALSE)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)       (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y) (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_EMPTY()      (USTR_TRUE) /* pretend */
-# define USTR_CNTL_MALLOC_CHECK_DISABLE()    (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_END()        (USTR_TRUE) /* pretend */
+
+# define USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(x, y) (USTR_TRUE) /* pretend */
 #endif
 
 /* ---- BEG: static/dynamic config. ---- */
@@ -501,6 +503,7 @@ USTR_CONF_EI_PROTO int ustr_limited(const struct Ustr *)
 USTR_CONF_E_PROTO  int ustr_owner(const struct Ustr *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
+
 USTR_CONF_E_PROTO
 void ustr_conf(const struct Ustr *, size_t *,size_t *,int *, size_t *,size_t *)
     USTR__COMPILE_ATTR_NONNULL_L((1));

@@ -76,10 +76,14 @@ static void hello_world_four(void)
 
 int main(void)
 {
+  USTR_CNTL_MALLOC_CHECK_BEG();
+  
   hello_world_one();
   hello_world_two();
   hello_world_three();
   hello_world_four();
+  
+  USTR_CNTL_MALLOC_CHECK_END();
   
   return (EXIT_SUCCESS);
 }

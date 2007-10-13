@@ -181,6 +181,8 @@ int main(int argc, char *argv[])
   int scan = 0;
   int optchar = -1;
   
+  USTR_CNTL_MALLOC_CHECK_BEG();
+  
   if (!argc)
     exit (EXIT_FAILURE);
   
@@ -223,5 +225,7 @@ int main(int argc, char *argv[])
     ++scan;
   }
 
+  USTR_CNTL_MALLOC_CHECK_END();
+  
   return (EXIT_SUCCESS);
 }

@@ -154,6 +154,7 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         case 0x0FF1:
         case 0x0FF2:
         case 0x0FF3:
+        case 0x0FF4:
         case 0x0FFF:
           ret = USTR_TRUE;
       }
@@ -204,12 +205,27 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           MALLOC_CHECK_EMPTY();
           break;
 
+        case 0x0FF4:
+        { /* needed for pool API */
+          void *ptr = va_arg(ap, void *);
+          size_t nsz = va_arg(ap, size_t);
+          unsigned int scan = MALLOC_CHECK_MEM(ptr);
+
+          MALLOC_CHECK_STORE.mem_vals[scan].sz = nsz;
+        }
+        break;
+
         case 0x0FFF:
+          MALLOC_CHECK_EMPTY(); /* it's bad otherwise */
+          
           enabled = USTR_FALSE;
           ustr__opts->ustr.sys_malloc  = malloc;
           ustr__opts->ustr.sys_realloc = realloc;
           ustr__opts->ustr.sys_free    = free;
-        break;
+
+          MALLOC_CHECK_STORE.mem_num      = 0;
+          MALLOC_CHECK_STORE.mem_fail_num = 0;
+          break;
       }
     }
     break;

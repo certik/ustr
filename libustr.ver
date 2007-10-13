@@ -7,9 +7,12 @@
 
   ustr_pool_clear;
   ustr_pool_free;
+  ustr_pool_make_subpool;
 
   ustr_pool_make_pool;
-  ustr_pool_make_subpool;
+  ustr_pool_ll_make;
+  ustr_pool_ll_cntl_free_srch;
+  ustr_pool_ll_cntl_realloc;
 
   ustr_assert_valid;
   ustr_assert_valid_subustr;

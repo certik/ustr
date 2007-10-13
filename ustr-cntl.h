@@ -49,6 +49,15 @@ struct Ustr_opts
 
 /* this is for use within the shared library only... */
 extern struct Ustr_opts ustr__opts[1];
+
+USTR_CONF_e_PROTO void *ustr__cntl_mc_malloc(size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
+USTR_CONF_e_PROTO void *ustr__cntl_mc_realloc(void *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
+USTR_CONF_e_PROTO void ustr__cntl_mc_free(void *);
+
+# define USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(x, y)    \
+    ustr_cntl_opt(666, 0x0FF4, x, y)
 #else
 struct Ustr_opts; /* declare opaque struct */
 #endif

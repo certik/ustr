@@ -1,34 +1,19 @@
  FIX
  ---
- Have malloc_check_ptr() calls in assert_valid() somehow
+
 
  ADD
  ---
-
- ustr_export_*()
 
  DOCS!
   finish ref. documentation.
   tutorial, hello world to mkdir_p to netstr?
 
- ustr_pool_subpool_take() => move a pointer from a pool to a subpool
-
- ustr_poolsi_setf_realloc() => toggle calling of realloc on/off
- ustr_poolsi_setf_free_num() => Number of ptr's to compare on free
-  These two allow a zero free policy, except on clear/free.
-
  ustr_parse_netstr() / ustr_parse_netstr2()
 
  scons build?
 
- ustr_fmttime == strftime() -- retarded return value
-
  chomp/strip/ltrim/rtrim?
-
- ljust
- rjust
- center
- zfill?
 
  ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
    Ie. the aotl() of strtol()

@@ -4,7 +4,7 @@ static const char *rf = __FILE__;
 
 int tst(void)
 {
-  Ustr_pool *pool = ustr_pool_make_pool();
+  Ustr_pool *pool = ustr_pool_ll_make();
   Ustrp *sp1 = USTRP("");
   unsigned int u16[9] = { 0, 1, 2, 3, 0x00FF, 0x0F0F, 0xF0F0, 0xFF00, 0xFFFF};
   unsigned int u32[9] = { 0x12345678U, 0x87654321U, 0x01234567U, 0x76543210U,

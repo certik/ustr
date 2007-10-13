@@ -4,7 +4,7 @@ static const char *rf = __FILE__;
 
 int tst(void)
 {
-  Ustr_pool *pool = ustr_pool_make_pool();
+  Ustr_pool *pool = ustr_pool_ll_make();
   Ustrp *sp1 = USTRP("");
   Ustr  *s3  = ustr_dupx_empty(0, 1, 0, 0);
   Ustr  *s4  = USTR("");

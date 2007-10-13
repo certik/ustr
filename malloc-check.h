@@ -97,7 +97,7 @@ extern Malloc_check_store MALLOC_CHECK__ATTR_H() MALLOC_CHECK_STORE;
 static Malloc_check_store                        MALLOC_CHECK_STORE;
 #endif
 
-/* custom assert's so that we get the file/line numbers right */
+/* custom assert's so that we get the file/line numbers right, always ON */
 #define malloc_check_assert(x) do {                                     \
       if (x) {} else {                                                  \
         fprintf(stderr, " -=> mc_assert (%s) failed, caller=%s:%d.\n",  \

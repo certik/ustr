@@ -18,9 +18,9 @@ int tst(void)
   while (scan++ < lim)
   {
     TST_MC_SET_NUM(scan);
-    ASSERT(!(pool = ustr_pool_make_pool()));
+    ASSERT(!(pool = ustr_pool_ll_make()));
   }
-  ASSERT((pool = ustr_pool_make_pool()));
+  ASSERT((pool = ustr_pool_ll_make()));
 
   lim  = 1;
   scan = 0;

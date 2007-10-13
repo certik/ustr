@@ -62,6 +62,14 @@
 #endif
 #endif
 
+#ifndef USTR_CONF_HAVE_ATTR_DEPRECATED
+#if defined(__GNUC__) && (__GNUC__ > 3) /* not sure */
+#define USTR_CONF_HAVE_ATTR_DEPRECATED 1
+#else
+#define USTR_CONF_HAVE_ATTR_DEPRECATED 0
+#endif
+#endif
+
 #if USTR_CONF_COMPILE_USE_INLINE
 #define USTR__INLINE inline
 #else
@@ -162,5 +170,12 @@
 # define USTR__COMPILE_ATTR_UNUSED(x) ustr__UNUSED_ ## x __attribute__((unused))
 #else
 # define USTR__COMPILE_ATTR_UNUSED(x) ustr__UNUSED_ ## x
+#endif
+
+#if defined(__GNUC__) && !defined(__STRICT_ANSI__) && \
+    USTR_CONF_HAVE_ATTR_DEPRECATED && USTR_CONF_COMPILE_USE_ATTRIBUTES
+# define USTR__COMPILE_ATTR_DEPRECATED() __attribute__ ((__deprecated__))
+#else
+# define USTR__COMPILE_ATTR_DEPRECATED() /* nothing */
 #endif
 
