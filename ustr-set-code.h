@@ -25,20 +25,15 @@ int ustrp__set_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t nlen)
     if (ustr_owner(s1))
       return (USTR_TRUE);
   }
-  else
+  else if (ustr__rw_mod(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
   {
     if (nlen > clen)
-    {
-      if (ustr__rw_add(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
-        return (ustrp__add_undef(p, ps1, (nlen - clen)));
-    }
+      return (ustrp__add_undef(p, ps1, (nlen - clen)));
     else
-      if (ustr__rw_del(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
-        return (ustrp__del(p, ps1, (clen - nlen)));
-  
-    if (ustr_limited(s1))
-      goto fail_enomem;
+      return (ustrp__del(p, ps1, (clen - nlen)));
   }
+  else if (ustr_limited(s1))
+    goto fail_enomem;
   
   if (!(ret = ustrp__dupx_undef(p, USTR__DUPX_FROM(s1), nlen)))
     goto fail_enomem;

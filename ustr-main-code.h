@@ -691,8 +691,10 @@ int ustrp__rw_realloc(struct Ustr_pool *p, struct Ustr **ps1,
   struct Ustr *ret = USTR_NULL;
   
   USTR_ASSERT(ustr_alloc(*ps1));
+  USTR_ASSERT(osz == ustr_size_alloc(*ps1));
   USTR_ASSERT(sized == !!sized);
   USTR_ASSERT(sized == ustr_sized(*ps1));
+  ustr_assert(USTR__ASSERT_MALLOC_CHECK_MEM(p, *ps1));
 
   /*  printf("1. p=%p, osz=%zu, nsz=%zu\n", p, osz, nsz); */
   if (p)
@@ -784,14 +786,14 @@ USTR_CONF_I_PROTO int ustrp_realloc(struct Ustr_pool *p,
   return (ret);
 }
 
-/* Can we actually RW adding to this Ustr, at _this_ moment, _this_ len */
+/* Can we actually RW to this Ustr, at _this_ moment, _this_ len */
 USTR_CONF_i_PROTO
-int ustr__rw_add(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
+int ustr__rw_mod(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
                  size_t *osz, size_t *nsz, int *alloc)
 {
   size_t lbytes = 0;
   size_t sbytes = 0;
-  
+
   if (!ustr_owner(s1))
     return (USTR_FALSE);
 
@@ -826,30 +828,17 @@ int ustr__rw_add(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
   
   *osz = ustr_size_alloc(s1);
   
+  if (!*sz && (*nsz == *osz))
+    return (USTR_TRUE);
+  
+  *alloc = ustr_alloc(s1); /* _do_   need to deallocate */
   if (!*sz && (*nsz <= *osz))
     return (USTR_TRUE);
-  *alloc = USTR_TRUE; /* _do_   need to allocate/deallocate */
   
-  if (!ustr_alloc(s1))
+  if (!*alloc)
     return (USTR_FALSE);
 
   return (USTR_TRUE);
-}
-
-/* Can we actually RW this Ustr, at _this_ moment, to _this_ len */
-USTR_CONF_i_PROTO int
-ustr__rw_del(struct Ustr *s1, size_t nlen, size_t *sz, size_t *oh,
-             size_t *osz, size_t *nsz, int *alloc)
-{
-  int ret = ustr__rw_add(s1, nlen, sz, oh, osz, nsz, alloc);
-
-  if (ret && !*alloc && !*sz && ustr_alloc(s1))
-  {
-    if (*nsz != *sz)
-      *alloc = USTR_TRUE;
-  }
-
-  return (ret);
 }
 
 /* NOTE: This is the main "deallocation" function (apart from plain free) --
@@ -886,7 +875,7 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
   if (nlen > clen) /* underflow */
     return (USTR_FALSE);
 
-  if (ustr__rw_del(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
+  if (ustr__rw_mod(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
   {
     size_t eos_len = sizeof(USTR_END_ALOCDx);
     
@@ -960,7 +949,7 @@ int ustrp__del_subustr(struct Ustr_pool *p,
   nlen = clen - len;
   USTR_ASSERT(nlen < clen);
   
-  if (ustr__rw_del(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
+  if (ustr__rw_mod(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
   { /* Move everything to the begining and call ustr_del() */
     char *ptr = ustr_wstr(s1);
     
@@ -1219,7 +1208,7 @@ int ustrp__add_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
   if ((nlen = clen + len) < clen) /* overflow */
     goto fail_enomem;
 
-  if (ustr__rw_add(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
+  if (ustr__rw_mod(s1, nlen, &sz, &oh, &osz, &nsz, &alloc))
   {
     size_t eos_len = sizeof(USTR_END_ALOCDx);
 

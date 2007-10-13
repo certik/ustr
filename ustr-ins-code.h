@@ -33,7 +33,7 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
   if ((nlen = clen + len) < clen) /* overflow */
     goto fail_enomem;
 
-  if (ustr__rw_add(*ps1, nlen, &sz, &oh, &osz, &nsz, &alloc))
+  if (ustr__rw_mod(*ps1, nlen, &sz, &oh, &osz, &nsz, &alloc))
   {
     char *ptr;
     

@@ -1,3 +1,19 @@
+2007-10-13  James Antill  <james@and.org>
+
+	* ustr-main-code.h (ustr__rw_add): Fixup alloc return value.
+	(ustr__rw_mod): Remove ustr__rw_add() and ustr__rw_del(), use this
+	instead.
+
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_BEG): Rename function from
+	USTR_CNTL_MALLOC_CHECK_ENABLE.
+	(USTR_CNTL_MALLOC_CHECK_END): Rename function from
+	USTR_CNTL_MALLOC_CHECK_DISABLE.
+
+	* ustr-pool-code.h (ustr_pool_ll_make): Choose better name for linked
+	list pool API.
+	(ustr_pool_ll_make): Add malloc check asserts for most of pool API.
+	(ustr_pool_ll_cntl): Add function.
+
 2007-10-11  James Antill  <james@and.org>
 
 	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_DISABLE): Add function.
