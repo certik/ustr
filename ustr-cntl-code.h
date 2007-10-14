@@ -155,6 +155,7 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         case 0x0FF2:
         case 0x0FF3:
         case 0x0FF4:
+        case 0x0FFE:
         case 0x0FFF:
           ret = USTR_TRUE;
       }
@@ -202,11 +203,15 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         break;
 
         case 0x0FF3:
-          MALLOC_CHECK_EMPTY();
-          break;
+        {
+          void *valP  = va_arg(ap, void *);
+          size_t valV = va_arg(ap, size_t);
+          MALLOC_CHECK_MINSZ_MEM(valP, valV);
+        }
+        break;
 
         case 0x0FF4:
-        { /* needed for pool API */
+        { /* needed for realloc() down doesn't fail */
           void *ptr = va_arg(ap, void *);
           size_t nsz = va_arg(ap, size_t);
           unsigned int scan = MALLOC_CHECK_MEM(ptr);
@@ -214,6 +219,10 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           MALLOC_CHECK_STORE.mem_vals[scan].sz = nsz;
         }
         break;
+
+        case 0x0FFE:
+          MALLOC_CHECK_EMPTY();
+          break;
 
         case 0x0FFF:
           MALLOC_CHECK_EMPTY(); /* it's bad otherwise */

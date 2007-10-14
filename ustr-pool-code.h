@@ -81,7 +81,8 @@ void *ustr__pool_ll_sys_realloc(struct Ustr_pool *p, void *old,
   ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(p,
                                             sizeof(struct Ustr__pool_ll_base)));
   USTR_ASSERT((old && sip->beg && sip->beg->ptr) || !olen);
-  ustr_assert(!old || USTR_CNTL_MALLOC_CHECK_SZ_MEM(old, olen));
+  ustr_assert(olen ? USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(old, olen) :
+              (!old || USTR_CNTL_MALLOC_CHECK_MEM(old)));
 
   if (!nlen)
     ++nlen;

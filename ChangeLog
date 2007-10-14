@@ -1,5 +1,17 @@
 2007-10-13  James Antill  <james@and.org>
 
+	* ustr-main-code.h (ustrp__del): Change recorded size in malloc-check
+	for realloc() downgrade that failed.
+
+	* ustr-pool-code.h (ustr__pool_ll_sys_realloc): Change the interface
+	contract to say that the "oldsz" is a minimum.
+	(ustr__pool_ll_sys_realloc): Change recorded size in malloc-check for
+	realloc() downgrade.
+
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_MINSZ_MEM): Add function.
+
+	* ustr-cntl-code.h (ustr_cntl_opt): Remove warn_unused_ret.
+
 	* ustr-main-code.h (ustr__rw_add): Fixup alloc return value.
 	(ustr__rw_mod): Remove ustr__rw_add() and ustr__rw_del(), use this
 	instead.

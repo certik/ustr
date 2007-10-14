@@ -883,8 +883,21 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
     { /* ignore errors? -- can they happen on truncate? */
       int emem = ustr_enomem(*ps1);
 
-      if (!ustrp__rw_realloc(p, ps1, !!sz, osz, nsz) && !emem)
-        ustr_setf_enomem_clr(*ps1);
+      USTR_ASSERT(nsz < osz);
+      USTR_ASSERT(!sz);
+      
+      if (!ustrp__rw_realloc(p, ps1, USTR_FALSE, osz, nsz))
+      {
+        if (!p)
+        {
+          ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(*ps1, osz));
+          USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(*ps1, nsz);
+          ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(*ps1, nsz));
+        }
+        
+        if (!emem)
+          ustr_setf_enomem_clr(*ps1);
+      }
     }
       
     ustr__terminate((*ps1)->data, ustr_alloc(*ps1), (oh - eos_len) + nlen);
