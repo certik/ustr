@@ -249,13 +249,75 @@ ustr (although, as with the constant ustr, it does no harm).</p>
 </pre>
 
 <a class="anchor" id="mkdir">
-<h2> mkdir </h2>
+<h2> mkdir -p function</h2>
 </a>
 
-<p> This example .</p>
+<p> This example shows how a single function can take both an allocated (and
+ modifiable) ustr and a constant string ustr, to efficiently modify data.</p>
 
 <pre class="c2html">
+<span class="static">static</span> <span class="int">int</span> fu__mkdir_p(<span class="const">const</span> Ustr *s1, <span class="int">int</span> mode, <span class="int">int</span> ret)
+{
+  <span class="sizet">size_t</span> pos = <span class="num0">0</span>;
+  Ustr *tmp = USTR_NULL;
+  <span class="char">char</span> *ptr = <span class="null">NULL</span>;
+  
+  <span class="if">if</span> (mkdir(ustr_cstr(s1), mode) != <span class="numm1">-1</span>)
+    <span class="return">return</span> (ret + 1);
+
+  <span class="switch">switch</span> (<span class="errno">errno</span>)
+  {
+    <span class="case">case</span> EEXIST: <span class="return">return</span> (ret);
+      
+    <span class="case">case</span> ENOENT: <span class="break">break</span>;
+    
+    <span class="default">default</span>:
+      <span class="return">return</span> (<span class="numm1">-1</span>);
+  }
+  <span class="if">if</span> (!ustr_owner(s1))
+  { <span class="comment">/* do it this way, so we can pass constant Ustr's to this function */</span>
+    tmp = ustr_dup_buf(ustr_cstr(s1), ustr_len(s1));
+    <span class="if">if</span> (!tmp)
+    {
+      <span class="errno">errno</span> = ENOMEM;
+      <span class="return">return</span> (<span class="numm1">-1</span>);
+    }
+    
+    s1 = tmp;
+  }
+  
+  <span class="if">if</span> (!(pos = ustr_srch_chr_rev(s1, <span class="num0">0</span>, <span class="chr">'/'</span>)))
+  {
+    <span class="errno">errno</span> = EINVAL;
+    <span class="return">return</span> (<span class="numm1">-1</span>);
+  }
+  
+  ptr = ustr_wstr((Ustr *)s1);
+  ptr[pos - 1] = <span class="num0">0</span>;
+  <span class="if">if</span> ((ret = fu__mkdir_p(s1, mode, ret + 1)) != <span class="numm1">-1</span>)
+  {
+    ptr[pos - 1] = <span class="chr">'/'</span>;
+    mkdir(ustr_cstr(s1), mode);
+  }
+  ustr_free(tmp);
+
+  <span class="return">return</span> (ret);
+}
+
+<span class="static">static</span> <span class="int">int</span> mkdir_p(<span class="const">const</span> Ustr *s1, <span class="int">int</span> mode)
+{
+  <span class="return">return</span> (fu__mkdir_p(s1, mode, <span class="num0">0</span>));
+}
 </pre>
+
+<p> In other words:</p>
+
+<pre class="c2html">
+ mkdir_p(USTR1(\x9, <span class="str">"12/45/789"</span>), 0700)
+</pre>
+
+<p>...will create/free a single ustr for all 3 of the seperate paths
+ required.</p>
 
 <a class="anchor" id="txt2html">
 <h2> text into similar looking html converter</h2>
@@ -270,7 +332,7 @@ ustr (although, as with the constant ustr, it does no harm).</p>
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Sat Oct 13 17:28:19 EDT 2007
+Last modified: Sun Oct 14 02:36:07 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
