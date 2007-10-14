@@ -24,8 +24,6 @@ static void hello_world_two(void)
 
   if (!out || !ustr_io_putfileline(&out, stdout))
     die("hello_world", strerror(errno));
-
-  ustr_free(out);
 }
 
 static void hello_world_three(void)
@@ -35,7 +33,7 @@ static void hello_world_three(void)
   Ustr *hello = USTR1(\5, "Hello");
   Ustr *sp    = USTR1(\1, " ");
   Ustr *world = USTR1(\6, "world!");
-  Ustr *out   = ustr_dup_empty();
+  Ustr *out   = ustr_dupx_empty(1, 4, USTR_FALSE, USTR_FALSE);
 
   if (!out)
     die("hello_world", strerror(ENOMEM));
