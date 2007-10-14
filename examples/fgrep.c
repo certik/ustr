@@ -130,8 +130,6 @@ static void fast_analyze(void)
   --olen;
   while (scan < olen)
   {
-    USTR_ASSERT(*ptr <= 255);
-
     fast__off_bad[ptr[scan]] = olen - scan;
 
     if (ignore_case &&
@@ -225,7 +223,7 @@ static void fp_loop(FILE *in, const char *prog_name)
 {
   char buf_line[128]; /* can grow */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
-  size_t line_num = 0;
+  uintmax_t line_num = 0;
   
   if (USTR_TRUE)
   {
