@@ -55,9 +55,6 @@ USTR_CONF_e_PROTO void *ustr__cntl_mc_malloc(size_t)
 USTR_CONF_e_PROTO void *ustr__cntl_mc_realloc(void *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_e_PROTO void ustr__cntl_mc_free(void *);
-
-# define USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(x, y)    \
-    ustr_cntl_opt(666, 0x0FF4, x, y)
 #else
 struct Ustr_opts; /* declare opaque struct */
 #endif
@@ -68,7 +65,7 @@ typedef struct Ustr_opts      Ustr_opts;
 #endif
 
 USTR_CONF_E_PROTO int ustr_cntl_opt(int, ...)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+    USTR__COMPILE_ATTR_NONNULL_A();
 
 #if USTR_CONF_INCLUDE_CODEONLY_HEADERS
 #include "ustr-cntl-code.h"
