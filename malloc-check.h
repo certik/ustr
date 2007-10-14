@@ -56,6 +56,7 @@
 
 # define MALLOC_CHECK_MEM(x) (1)
 # define MALLOC_CHECK_SZ_MEM(x, y) (1)
+# define MALLOC_CHECK_MINSZ_MEM(x, y) (1)
 # define MALLOC_CHECK_EMPTY() /* nothing */
 # define MALLOC_CHECK_DEC() (0)
 # define MALLOC_CHECK_FAIL_IN(x) /* nothing */
@@ -121,6 +122,8 @@ static Malloc_check_store                        MALLOC_CHECK_STORE;
 
 # define MALLOC_CHECK_MEM(x)  malloc_check_mem(x, __FILE__, __LINE__)
 # define MALLOC_CHECK_SZ_MEM(x, y) malloc_check_sz_mem(x, y, __FILE__, __LINE__)
+# define MALLOC_CHECK_MINSZ_MEM(x, y) \
+    malloc_check_minsz_mem(x, y, __FILE__, __LINE__)
 # define MALLOC_CHECK_EMPTY() malloc_check_empty(__FILE__, __LINE__)
 # define MALLOC_CHECK_DEC()                                             \
     (MALLOC_CHECK_STORE.mem_fail_num && !--MALLOC_CHECK_STORE.mem_fail_num)
@@ -148,6 +151,8 @@ static void malloc_check_alloc(const char *, unsigned int)
 static unsigned int malloc_check_mem(const void *, const char *, unsigned int)
    MALLOC_CHECK__ATTR_USED();
 static unsigned int malloc_check_sz_mem(const void *, size_t, const char *, unsigned int)
+   MALLOC_CHECK__ATTR_USED();
+static unsigned int malloc_check_minsz_mem(const void *, size_t, const char *, unsigned int)
    MALLOC_CHECK__ATTR_USED();
 static void *malloc_check_malloc(size_t, const char *, unsigned int)
    MALLOC_CHECK__ATTR_MALLOC() MALLOC_CHECK__ATTR_USED();
@@ -206,6 +211,16 @@ static unsigned int malloc_check_sz_mem(const void *ptr, size_t sz,
   unsigned int scan = malloc_check_mem(ptr, file, line);
 
   malloc_check_assert(MALLOC_CHECK_STORE.mem_vals[scan].sz == sz);
+
+  return (scan);
+}
+
+static unsigned int malloc_check_minsz_mem(const void *ptr, size_t sz,
+                                           const char *file, unsigned int line)
+{
+  unsigned int scan = malloc_check_mem(ptr, file, line);
+
+  malloc_check_assert(MALLOC_CHECK_STORE.mem_vals[scan].sz >= sz);
 
   return (scan);
 }
