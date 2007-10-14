@@ -29,6 +29,8 @@ DEPS    =
 ## Compile "static" using parent dir.
 #PCFLAGS = $(CFLAGS) -I..
 #LDFLAGS = ../libustr.a
+#PCFLAGS = $(CFLAGS) -I.. -DUSTR_DEBUG=1
+#LDFLAGS = ../libustr-debug.a
 
 ## Compile "inline" using ustr-import output
 # - do nothing
@@ -126,6 +128,9 @@ mkdir_p: mkdir_p.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 fgrep: fgrep.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
+txt2html: txt2html.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 strip: $(ALL)
