@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Tutorial on ustr APIs</title>
+
+ <link rel="stylesheet" type="text/css" href="http://www.and.org/f_c-1.0.css">
+  <style>
+      A       { background: #FFF; color: #44F; }
+      A:hover {                   color: #20b2aa; }
+
+      A.anchor       { color: #000; }
+      A.anchor:hover { color: #000; }
+
+      P { text-indent: 2em; }
+
+      body { background: #FFF; }
+
+      tr.heading { background: #DDD; }
+      tr.heading:hover { background: #ccc; }
+
+      table.conv       { border-bottom: solid; margin-bottom: 2em; }
+
+      table.conv tr.r1 { background: #eee; }
+      table.conv tr.r2 { }
+      table.conv tr.r1:hover { background: #ccc; }
+      table.conv tr.r2:hover { background: #ccc; }
+
+      table.fig1   { text-align: center; }
+
+      td.ent1     { color: #080; }
+      td.ent2     { color: #800; }
+
+      span.blk        a.anc     {  display: none; }
+      span.blk:hover  a.anc     {  display: inline; color: #d7f;   }
+
+      span.lastmod              {  text-size: 50%; }
+  </style>
+
+  </head>
+
+  <body>
+    <h1>Tutorial on ustr APIs</h1>
+
+<p>
+ ustr is a string library designed to be very space efficient, and easily integrate with "normal" C string handling code. This means that it is designed to allow the programer to create the "strings" from allocated memory, the stack and read-only memory.
+</p>
+
+<p>
+Also note that all error checking is included in every example, it may make the examples somewhat easier to read if it wasn't included ... however including error checking is what the code must look like in a real application. 
+</p>
+
+<ul>
+<li><a href="#skel">Skel</a>: Skeleton template for tutorial snippets.</li>
+<li><a href="#hw_c">Hello World - const</a>: A very simple hello world, using constant strings.</li>
+<li><a href="#hw_d">Hello World - dup</a>: Create the string.</li>
+<li><a href="#hw_m">Hello World - multiple</a>: Create the string from multiple functions.</li>
+<li><a href="#hw_s">Hello World - stack</a>: Use the stack instead of the heap.</li>
+<li><a href="#fgrep">fgrep</a>: Simple fgrep.</li>
+<li><a href="#mkdir">mkdir</a>: Simple mkdir -p.</li>
+<li><a href="#txt2html">Text to html converter</a>: Convert plain text into similar html.</li>
+</ul>
+
+<a class="anchor" id="skel">
+<h2> Skeleton code required to run the tutorial examples </h2>
+</a>
+
+<p> This is the skeleton code required to run all the tutorial examples,
+ <a href="http://www.and.org/ustr/src/examples/">the full versions</a> may
+ require a few more headers though. </p>
+
+<pre class="c2html">
+#<span class="cppinclude">include</span> <span class="str">"ustr.h"</span>
+
+#<span class="cppinclude">include</span> &lt;errno.h&gt;
+
+<span class="static">static</span> <span class="void">void</span> die(<span clas
+s="const">const</span> <span class="char">char</span> *prog_name, <span class="c
+onst">const</span> <span class="char">char</span> *msg)
+{
+  fprintf(<span class="stderr">stderr</span>, <span class="str">"%s: %s\n"</span
+>, prog_name, msg);
+  <span class="exit">exit</span> (<span class="exitfail">EXIT_FAILURE</span>);
+}
+</pre>
+
+<a class="anchor" id="hw_c">
+<h2> Hello World - const </h2>
+</a>
+
+<p> This example is the simplest possible, basically being the same as
+ calling puts() ... note however that the length of the string is passed
+ through to the IO function without any compiler magic.</p>
+
+<pre class="c2html">
+<span class="comment">/* simplest, just "create" a Ustr from a constant string */</span>
+<span class="static">static</span> <span class="void">void</span> hello_world_one(<span class="void">void</span>)
+{
+  Ustr *hello_world = USTR1(\xC, <span class="str">"Hello world!"</span>);
+
+  <span class="if">if</span> (!ustr_io_putfileline(&amp;hello_world, <span class="stdout">stdout</span>))
+    die(<span class="str">"hello_world"</span>, strerror(<span class="errno">errno</span>));
+}
+</pre>
+
+<a class="anchor" id="hw_d">
+<h2> Hello World - dup </h2>
+</a>
+
+<p> This example creates the string before writting it out. Note that although
+ the ustr is allocated, it doesn't need to be free'd because a default
+ configured string of zero length is represented by "".</p>
+
+<pre class="c2html">
+<span class="static">static</span> <span class="void">void</span> hello_world_two(<span class="void">void</span>)
+{ <span class="comment">/* next, create a Ustr from a printf() like format. This needs to be
+   * free'd. */</span>
+  Ustr *out = ustr_dup_fmt(<span class="str">"%s %s"</span>, <span class="str">"Hello"</span>, <span class="str">"world!"</span>);
+
+  <span class="if">if</span> (!out || !ustr_io_putfileline(&amp;out, <span class="stdout">stdout</span>))
+    die(<span class="str">"hello_world"</span>, strerror(<span class="errno">errno</span>));
+}
+</pre>
+
+<a class="anchor" id="hw_m">
+<h2> Hello World - multiple parts</h2>
+</a>
+
+<p> This example creates the string using multiple functions. The interesting
+part to notice is the call to ustr_enomem(), this checks if any allocation
+failures have happened to this particular ustr. Also note that we create
+a specifically configured ustr, which includes a size and a 4 byte reference
+ count.</p>
+
+<pre class="c2html">
+<span class="static">static</span> <span class="void">void</span> hello_world_three(<span class="void">void</span>)
+{ <span class="comment">/* manually create a Ustr, from multiple parts. Often "significantly faster"
+   * than using ustr_*_fmt(), due to printf overhead. Still needs to allocate
+   * memory, and maybe resize it. Still need to free it. */</span>
+  Ustr *hello = USTR1(\5, <span class="str">"Hello"</span>);
+  Ustr *sp    = USTR1(\1, <span class="str">" "</span>);
+  Ustr *world = USTR1(\6, <span class="str">"world!"</span>);
+  Ustr *out   = ustr_dupx_empty(1, 4, USTR_FALSE, USTR_FALSE);
+
+  <span class="if">if</span> (!out)
+    die(<span class="str">"hello_world"</span>, strerror(ENOMEM));
+  
+  ustr_add(&amp;out, hello);
+  ustr_add(&amp;out, sp);
+  ustr_add(&amp;out, world);
+  
+  <span class="if">if</span> (ustr_enomem(out)) <span class="comment">/* check all 3 additions at once */</span>
+    die(<span class="str">"hello_world"</span>, strerror(ENOMEM));
+
+  <span class="if">if</span> (!ustr_io_putfileline(&amp;out, <span class="stdout">stdout</span>))
+    die(<span class="str">"hello_world"</span>, strerror(<span class="errno">errno</span>));
+  
+  ustr_free(out);
+}
+</pre>
+
+<a class="anchor" id="hw_s">
+<h2> Hello World - stack based allocation </h2>
+</a>
+
+<p> This example also creates a string from multiple functions, however the
+storage for the ustr is on the stack and so we don't need to de-allocate the
+ustr (although, as with the constant ustr, it does no harm).</p>
+
+<pre class="c2html">
+<span class="static">static</span> <span class="void">void</span> hello_world_four(<span class="void">void</span>)
+{ <span class="comment">/* manually create a Ustr, but use "auto" allocated storage
+   * (stack instead of heap). As long as you don't use more than ustr_size()
+   * you don't need to free. Also note that ustr_dup() will now always copy. */</span>
+  Ustr *sp    = USTR1(\1, <span class="str">" "</span>);
+  Ustr *world = USTR1(\6, <span class="str">"world!"</span>);
+  <span class="char">char</span> buf_out[1024] = USTR_BEG_FIXED2 <span class="str">"Hello"</span>;
+  Ustr *out = USTR_SC_INIT_AUTO(buf_out, USTR_TRUE, 5);
+
+  ustr_add(&amp;out, sp);
+  ustr_add(&amp;out, world);
+
+  <span class="comment">/* in this can we know !ustr_enomem() as there is more than enough space */</span>
+  
+  <span class="if">if</span> (!ustr_io_putfileline(&amp;out, <span class="stdout">stdout</span>))
+    die(<span class="str">"hello_world"</span>, strerror(<span class="errno">errno</span>));
+  
+  <span class="comment">/* ustr_free() not needed, because nothing was allocated.
+   * Although it's often good to call it anyway, as it does no harm. */</span>
+}
+</pre>
+
+<a class="anchor" id="fgrep">
+<h2> fgrep </h2>
+</a>
+
+<p> This example works like GNU's fgrep --color.</p>
+
+<pre class="c2html">
+<span class="static">static</span> <span class="int">int</span> fgrep(Ustr **ps1, Ustr *fgrep_srch, Ustr *fgrep_repl,
+                 <span class="int">int</span> first_only)
+{
+  <span class="sizet">size_t</span> num = <span class="num0">0</span>;
+
+  <span class="if">if</span> (fgrep_repl)
+    num = ustr_srch_fwd(*ps1, <span class="num0">0</span>, fgrep_srch);
+  <span class="else">else</span> <span class="if">if</span> (!(num = ustr_replace(ps1, fgrep_srch, fgrep_repl,
+                                !first_only)) &amp;&amp; <span class="errno">errno</span>)
+    die(prog_name, strerror(ENOMEM));
+  
+  <span class="if">if</span> (!num)
+    ustr_sc_del(ps1);
+
+  <span class="return">return</span> (!!num);
+}
+
+<span class="static">static</span> <span class="void">void</span> fp_loop(FILE *in, <span class="const">const</span> <span class="char">char</span> *prog_name)
+{
+  <span class="char">char</span> buf_line[128]; <span class="comment">/* can grow */</span>
+  Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, <span class="num0">0</span>);
+  <span class="uintmaxt">uintmax_t</span> line_num = <span class="num0">0</span>;
+  
+  <span class="while">while</span> (ustr_io_getline(&amp;line, in))
+  {
+    ++line_num;
+    
+    <span class="if">if</span> (fgrep(&amp;line))
+    {
+      <span class="if">if</span> (prnt_fname == PRNT_FNAME_ON)
+      {
+        Ustr *tmp = ustr_dup(printable_fname);
+        <span class="if">if</span> (!ustr_io_putfile(&amp;tmp, <span class="stdout">stdout</span>))
+          die(prog_name, strerror(<span class="errno">errno</span>));
+      }
+
+      <span class="if">if</span> (prnt_line_num)
+        <span class="if">if</span> (fprintf(<span class="stdout">stdout</span>, <span class="str">"%ju:"</span>, line_num) == <span class="numm1">-1</span>)
+          die(prog_name, strerror(<span class="errno">errno</span>));
+      
+      <span class="if">if</span> (!ustr_io_putfile(&amp;line, <span class="stdout">stdout</span>))
+        die(prog_name, strerror(<span class="errno">errno</span>));
+    }
+    
+    <span class="if">if</span> (line != USTR(buf_line)) <span class="comment">/* re-init */</span>
+      ustr_sc_free2(&amp;line, USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, <span class="num0">0</span>));
+  }
+  <span class="if">if</span> (<span class="errno">errno</span>)
+    die(prog_name, strerror(<span class="errno">errno</span>));
+}
+</pre>
+
+<a class="anchor" id="mkdir">
+<h2> mkdir </h2>
+</a>
+
+<p> This example .</p>
+
+<pre class="c2html">
+</pre>
+
+<a class="anchor" id="txt2html">
+<h2> text into similar looking html converter</h2>
+</a>
+
+<p> This example .</p>
+
+<pre class="c2html">
+</pre>
+
+    <hr>
+    <address><a href="mailto:james@and.org">James Antill</a></address>
+<!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
+<!-- hhmts start -->
+Last modified: Sat Oct 13 17:28:19 EDT 2007
+<!-- hhmts end -->
+  </body>
+</html>

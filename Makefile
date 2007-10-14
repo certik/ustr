@@ -62,7 +62,8 @@ DOCS = README-DEVELOPERS TODO \
        Documentation/index.html \
        Documentation/functions.html \
        Documentation/constants.html \
-       Documentation/design.html
+       Documentation/design.html \
+       Documentation/tutorial.html
 
 MAN_PAGES_1 = \
        Documentation/ustr-import.1
