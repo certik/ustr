@@ -139,7 +139,7 @@ a specifically configured ustr, which includes a size and a 4 byte reference
   Ustr *hello = USTR1(\5, <span class="str">"Hello"</span>);
   Ustr *sp    = USTR1(\1, <span class="str">" "</span>);
   Ustr *world = USTR1(\6, <span class="str">"world!"</span>);
-  Ustr *out   = ustr_dupx_empty(1, 4, USTR_FALSE, USTR_FALSE);
+  Ustr *out   = ustr_dupx_empty(1, 4, <span class="false">USTR_FALSE</span>, <span class="false">USTR_FALSE</span>);
 
   <span class="if">if</span> (!out)
     die(<span class="str">"hello_world"</span>, strerror(ENOMEM));
@@ -174,7 +174,7 @@ ustr (although, as with the constant ustr, it does no harm).</p>
   Ustr *sp    = USTR1(\1, <span class="str">" "</span>);
   Ustr *world = USTR1(\6, <span class="str">"world!"</span>);
   <span class="char">char</span> buf_out[1024] = USTR_BEG_FIXED2 <span class="str">"Hello"</span>;
-  Ustr *out = USTR_SC_INIT_AUTO(buf_out, USTR_TRUE, 5);
+  Ustr *out = USTR_SC_INIT_AUTO(buf_out, <span class="true">USTR_TRUE</span>, 5);
 
   ustr_add(&amp;out, sp);
   ustr_add(&amp;out, world);
@@ -193,7 +193,16 @@ ustr (although, as with the constant ustr, it does no harm).</p>
 <h2> fgrep </h2>
 </a>
 
-<p> This example works like GNU's fgrep --color.</p>
+<p> This example works like GNU's fgrep --color. There are two main things to
+ notice here. The first is that searching, or searching and replacing with a
+ colourized variant, and reading lines are all just ustr API calls. The second
+ is that the line data is allocated on the stack, by default.
+</p>
+<p> Both of these significantly improve the ease of use and speed of the
+ resulting code, as ustr_io_getline() is significantly faster than fgets() (due
+ to not having the length of data returned) and allocating from the stack can
+ be a huge performance win (note that all functions, including ustr_free(), do the correct thing ... so we don't suffer complexity for that performance).
+ </p>
 
 <pre class="c2html">
 <span class="static">static</span> <span class="int">int</span> fgrep(Ustr **ps1, Ustr *fgrep_srch, Ustr *fgrep_repl,
@@ -213,38 +222,27 @@ ustr (although, as with the constant ustr, it does no harm).</p>
   <span class="return">return</span> (!!num);
 }
 
-<span class="static">static</span> <span class="void">void</span> fp_loop(FILE *in, <span class="const">const</span> <span class="char">char</span> *prog_name)
+<span class="static">static</span> <span class="void">void</span> fgrep_fp_loop(FILE *in, 
+                          Ustr *fgrep_srch, Ustr *fgrep_repl)
 {
-  <span class="char">char</span> buf_line[128]; <span class="comment">/* can grow */</span>
-  Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, <span class="num0">0</span>);
-  <span class="uintmaxt">uintmax_t</span> line_num = <span class="num0">0</span>;
+  <span class="char">char</span> buf[USTR_SIZE_FIXED(160)]; <span class="comment">/* enough for two "normal" lines,
+                                     after that we alloc. */</span>
+  Ustr *line = USTR_SC_INIT_AUTO(buf, <span class="false">USTR_FALSE</span>, <span class="num0">0</span>);
   
   <span class="while">while</span> (ustr_io_getline(&amp;line, in))
   {
-    ++line_num;
+    <span class="if">if</span> (!fgrep(&amp;line, fgrep_srch, fgrep_repl, <span class="false">USTR_FALSE</span>))
+      ustr_sc_del(&amp;line);
+    else <span class="if">if</span> (!ustr_io_putfile(&amp;line, <span class="stdout">stdout</span>))
+      die(prog_name, strerror(<span class="errno">errno</span>));
     
-    <span class="if">if</span> (fgrep(&amp;line))
-    {
-      <span class="if">if</span> (prnt_fname == PRNT_FNAME_ON)
-      {
-        Ustr *tmp = ustr_dup(printable_fname);
-        <span class="if">if</span> (!ustr_io_putfile(&amp;tmp, <span class="stdout">stdout</span>))
-          die(prog_name, strerror(<span class="errno">errno</span>));
-      }
-
-      <span class="if">if</span> (prnt_line_num)
-        <span class="if">if</span> (fprintf(<span class="stdout">stdout</span>, <span class="str">"%ju:"</span>, line_num) == <span class="numm1">-1</span>)
-          die(prog_name, strerror(<span class="errno">errno</span>));
-      
-      <span class="if">if</span> (!ustr_io_putfile(&amp;line, <span class="stdout">stdout</span>))
-        die(prog_name, strerror(<span class="errno">errno</span>));
-    }
-    
-    <span class="if">if</span> (line != USTR(buf_line)) <span class="comment">/* re-init */</span>
-      ustr_sc_free2(&amp;line, USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, <span class="num0">0</span>));
+    <span class="if">if</span> (line != USTR(buf)) <span class="comment">/* re-init */</span>
+      ustr_sc_free2(&amp;line, USTR_SC_INIT_AUTO(buf, <span class="false">USTR_FALSE</span>, <span class="num0">0</span>));
   }
   <span class="if">if</span> (<span class="errno">errno</span>)
     die(prog_name, strerror(<span class="errno">errno</span>));
+
+  ustr_free(line);
 }
 </pre>
 
@@ -259,7 +257,7 @@ ustr (although, as with the constant ustr, it does no harm).</p>
 <span class="static">static</span> <span class="int">int</span> fu__mkdir_p(<span class="const">const</span> Ustr *s1, <span class="int">int</span> mode, <span class="int">int</span> ret)
 {
   <span class="sizet">size_t</span> pos = <span class="num0">0</span>;
-  Ustr *tmp = USTR_NULL;
+  Ustr *tmp = <span class="null">USTR_NULL</span>;
   <span class="char">char</span> *ptr = <span class="null">NULL</span>;
   
   <span class="if">if</span> (mkdir(ustr_cstr(s1), mode) != <span class="numm1">-1</span>)
@@ -332,7 +330,7 @@ ustr (although, as with the constant ustr, it does no harm).</p>
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Sun Oct 14 02:36:07 EDT 2007
+Last modified: Tue Oct 16 01:27:16 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
