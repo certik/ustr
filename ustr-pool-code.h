@@ -94,7 +94,7 @@ void *ustr__pool_ll_sys_realloc(struct Ustr_pool *p, void *old,
   }
   else if (olen >= nlen) /* always allow reductions/nothing */
   {
-    ustr_assert(USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(old, nlen));
+    USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(old, nlen);
     return (old);
   }
   else if ((ret = ustr__pool_ll_sys_malloc(p, nlen)))
