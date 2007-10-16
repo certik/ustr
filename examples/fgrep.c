@@ -20,8 +20,6 @@ static const Ustr *colour_end = USTR1(\x8, "\x1B[00m\x1B[K");
 static Ustr *fgrep_srch = USTR_NULL;
 static Ustr *fgrep_repl = USTR_NULL;
 
-static Ustr *printable_fname = USTR("");
-
 static enum {
  COLOUR_AUTO,
  COLOUR_ON,
@@ -141,7 +139,7 @@ static void fast_analyze(void)
   }
 }
 
-static void *fast_memcasemem(const void *passed_hsptr, size_t hslen)
+static void *fast_memsrch(const void *passed_hsptr, size_t hslen)
 {
   const unsigned char *hsptr = passed_hsptr;
   const unsigned char *ndptr = (unsigned char *)ustr_cstr(fgrep_srch);
@@ -185,72 +183,27 @@ static void *fast_memcasemem(const void *passed_hsptr, size_t hslen)
   return (NULL);
 }
 
-static int fast_check(int fd, const char *prog_name)
+static void fp_loop(FILE *in, Ustr *printable_fname, const char *prog_name)
 {
-  char tbuf[32 * 1024];
-  size_t off = 0;
-  ssize_t len = 0;
-  
-  while ((len = read(fd, tbuf + off, sizeof(tbuf) - off)) > 0)
-  {
-    char *ptr = NULL;
-    
-    len += off;
-
-    if (fast_memcasemem(tbuf, len))
-      return (USTR_TRUE);
-
-    if (!(ptr = memrchr(tbuf, '\n', len)))
-    {
-      if (len < (ssize_t)sizeof(tbuf))
-        continue;
-      
-      die(prog_name, strerror(ENOMEM));
-    }
-      
-    off = (ptr - tbuf) + 1;
-    memmove(tbuf, tbuf + off, len - off);
-    off = len - off;
-  }
-
-  if (len == -1)
-    return (USTR_TRUE);
-  
-  return (USTR_FALSE);
-}
-
-static void fp_loop(FILE *in, const char *prog_name)
-{
-  char buf_line[128]; /* can grow */
+  char buf_line[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
+                                          after that we alloc. */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
   uintmax_t line_num = 0;
-  
-  if (USTR_TRUE)
-  {
-    int fd = fileno(in);
-    off_t off = 0;
 
-    if ((off = lseek(fd, 0, SEEK_CUR)) != -1)
-    {
-      if (!fast_check(fd, prog_name))
-        return;
-
-      if (lseek(fileno(in), off, SEEK_SET) == -1)
-        die(prog_name, strerror(errno));
-    }
-  }
-  
   while (ustr_io_getline(&line, in))
   {
     ++line_num;
     
-    if (fgrep(&line))
+    if (!fast_memsrch(ustr_cstr(line), ustr_len(line)) || !fgrep(&line))
+      ustr_sc_del(&line);
+    else
     {
       if (prnt_fname == PRNT_FNAME_ON)
       {
         Ustr *tmp = ustr_dup(printable_fname);
         if (!ustr_io_putfile(&tmp, stdout))
           die(prog_name, strerror(errno));
+        ustr_free(tmp);
       }
 
       if (prnt_line_num)
@@ -266,6 +219,9 @@ static void fp_loop(FILE *in, const char *prog_name)
   }
   if (errno)
     die(prog_name, strerror(errno));
+
+  ustr_free(line);
+  ustr_free(printable_fname);
 }
 
 static void file_loop(Ustr *fname, const char *prog_name, int sure_file)
@@ -286,15 +242,14 @@ static void file_loop(Ustr *fname, const char *prog_name, int sure_file)
   if (!ustr_add_cstr(&fname, ":"))
     die(prog_name, strerror(ENOMEM));
   
-  printable_fname = fname;
-  fp_loop(fp, prog_name);
+  fp_loop(fp, fname, prog_name);
   
   if (fclose(fp) == EOF)
     die(prog_name, strerror(errno));
 }
 
 static void loop(Ustr *, const char *);
-static void dir_loop(const Ustr *fname, DIR *dir, const char *prog_name)
+static void dir_loop(Ustr *fname, DIR *dir, const char *prog_name)
 {
   struct dirent *ent = NULL;
   
@@ -327,7 +282,8 @@ static void dir_loop(const Ustr *fname, DIR *dir, const char *prog_name)
     }
 #endif
   }
-
+  ustr_free(fname);
+  
   if (closedir(dir) == -1)
     die(prog_name, strerror(errno));
 }
@@ -340,8 +296,6 @@ static void loop(Ustr *fname, const char *prog_name)
     dir_loop(fname, dir, prog_name);
   else
     file_loop(fname, prog_name, USTR_FALSE);
-
-  ustr_free(fname);
 }
 
 
@@ -469,7 +423,7 @@ int main(int argc, char *argv[])
   {
     if (prnt_fname == PRNT_FNAME_AUTO)
       prnt_fname = PRNT_FNAME_OFF;
-    fp_loop(stdin, prog_name);
+    fp_loop(stdin, USTR(""), prog_name);
   }
   
   if (recurse || (argc > 1))
@@ -480,7 +434,7 @@ int main(int argc, char *argv[])
   while (scan < argc)
   {
     if (ustr_cmp_cstr_eq(USTR1(\1, "-"), argv[scan]))
-      fp_loop(stdin, prog_name);
+      fp_loop(stdin, USTR(""), prog_name);
     else
     {
       Ustr *arg = USTR_NULL;
