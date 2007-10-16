@@ -120,14 +120,15 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
 {
   int val = EOF;
   size_t olen = 0;
-  const size_t linesz = 81; /* assume a line is roughly 80 chars */
+  size_t clen = 0;
+  size_t linesz = 80; /* Unix "tradition" is 80x24 */
   
   USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
 
-  olen = ustr_len(*ps1);
+  olen = clen = ustr_len(*ps1);
   while (ustrp__add_undef(p, ps1, linesz))
   {
-    char *wstr = ustr_wstr(*ps1) + olen;
+    char *wstr = ustr_wstr(*ps1) + clen;
     size_t num = linesz;
     
     while (num && ((val = USTR__IO_GETC(fp)) != EOF))
@@ -147,10 +148,10 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
       break;
     }
     
-    olen += linesz;
+    clen += linesz;
   }
 
-  return (val == delim);
+  return ((val == delim) || ((val == EOF) && (ustr_len(*ps1) != olen)));
 }
 #undef USTR__IO_GETC
 USTR_CONF_I_PROTO
