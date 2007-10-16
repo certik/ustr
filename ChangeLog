@@ -1,3 +1,14 @@
+2007-10-15  James Antill  <james@and.org>
+
+	* ustr-io-code.h (ustrp__io_getdelim): Return the last line of a file,
+	even if it doesn't match the delimiter.
+
+	* examples/fgrep.c (fp_loop): Fixup memory allocations free's.
+	(fp_loop): Remove dual IO strategy, going with obvious implementation.
+
+	* ustr-pool-code.h (ustr__pool_ll_sys_realloc): Always call the fixup
+	function for pool realloc, as it can be used in non-debug programs.
+
 2007-10-13  James Antill  <james@and.org>
 
 	* ustr-main-code.h (ustrp__del): Change recorded size in malloc-check

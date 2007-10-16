@@ -62,7 +62,8 @@ static void usage(int xcode)
 
 static void fp_loop(FILE *in, const char *prog_name)
 {
-  char buf_line[128]; /* can grow */
+  char buf_line[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
+                                          after that we alloc. */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
   size_t line_num = 0;
   Ustr *beg = USTR1(\5, "<TT>\n");
@@ -133,6 +134,8 @@ static void fp_loop(FILE *in, const char *prog_name)
   if (errno)
     die(prog_name, strerror(errno));
 
+  ustr_free(line);
+  
   if (!ustr_io_putfile(&end, stdout))
     die(prog_name, strerror(errno));  
 }
