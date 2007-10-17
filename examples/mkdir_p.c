@@ -9,12 +9,11 @@ static void die(const char *prog_name, const char *msg)
   exit (EXIT_FAILURE);
 }
 
-static int fu__mkdir_p(const Ustr *s1, int mode, int ret)
+static int fu__mkdir_p(const Ustr *s1, int mode, size_t off, int ret)
 {
-  size_t pos = 0;
-  Ustr *tmp = USTR_NULL;
+  Ustr *allocd = USTR_NULL;
   char *ptr = NULL;
-  
+
   if (mkdir(ustr_cstr(s1), mode) != -1)
     return (ret + 1);
 
@@ -24,43 +23,42 @@ static int fu__mkdir_p(const Ustr *s1, int mode, int ret)
       
     case ENOENT: break;
     
-    default:
-      return (-1);
+    default:     return (-1);
   }
 
-  if (!ustr_owner(s1))
-  { /* do it this way, so we can pass constant Ustr's to this function */
-    tmp = ustr_dup_buf(ustr_cstr(s1), ustr_len(s1));
-    if (!tmp)
-    {
-      errno = ENOMEM;
-      return (-1);
-    }
-    
-    s1 = tmp;
-  }
-  
-  if (!(pos = ustr_srch_chr_rev(s1, 0, '/')))
+  if ((off = ustr_srch_chr_rev(s1, off, '/')) <= 1)
   {
     errno = EINVAL;
     return (-1);
   }
+  --off; /* NOTE: offset moves from beg. to end */
+  
+  if (!ustr_owner(s1))
+  { /* do it this way, so we can pass constant Ustr's to this function
+     * and don't use ustr_sc_ensure_owner() so that we don't release a
+     * reference */
+    if (!(allocd = ustr_dup_buf(ustr_cstr(s1), ustr_len(s1))))
+      return (-1); /* errno == ENOMEM, done by ustr */
+    s1 = allocd;
+  }
   
   ptr = ustr_wstr((Ustr *)s1);
-  ptr[pos - 1] = 0;
-  if ((ret = fu__mkdir_p(s1, mode, ret + 1)) != -1)
+  ptr[off] = 0;
+  if ((ret = fu__mkdir_p(s1, mode, ustr_len(s1) - off, ret + 1)) != -1)
   {
-    ptr[pos - 1] = '/';
-    mkdir(ustr_cstr(s1), mode);
+    ptr[off] = '/';
+    if (mkdir(ustr_cstr(s1), mode) == -1)
+      ret = -1;
   }
-  ustr_free(tmp);
+  ustr_free(allocd);
 
   return (ret);
 }
 
+/* This returns -1, on error, or the number of directories created. */
 static int mkdir_p(const Ustr *s1, int mode)
 {
-  return (fu__mkdir_p(s1, mode, 0));
+  return (fu__mkdir_p(s1, mode, 0, 0));
 }
 
 int main(int argc, char *argv[])
@@ -82,6 +80,9 @@ int main(int argc, char *argv[])
 #ifdef TST
   mkdir_p(USTR1(\x24, "/tmp/abcd/1/2/3/4/5/6/7/8/9/10/11/12"), 0700, prog_name);
 #endif
+
+  if (argc == 1)
+    die(prog_name, "No arguments given");
   
   while (scan < argc)
   {
