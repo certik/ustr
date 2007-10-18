@@ -254,12 +254,11 @@ ustr (although, as with the constant ustr, it does no harm).</p>
  modifiable) ustr and a constant string ustr, to efficiently modify data.</p>
 
 <pre class="c2html">
-<span class="static">static</span> <span class="int">int</span> fu__mkdir_p(<span class="const">const</span> Ustr *s1, <span class="int">int</span> mode, <span class="int">int</span> ret)
+<span class="static">static</span> <span class="int">int</span> fu__mkdir_p(<span class="const">const</span> Ustr *s1, <span class="int">int</span> mode, <span class="sizet">size_t</span> off, <span class="int">int</span> ret)
 {
-  <span class="sizet">size_t</span> pos = <span class="num0">0</span>;
-  Ustr *tmp = <span class="null">USTR_NULL</span>;
+  Ustr *allocd = USTR_NULL;
   <span class="char">char</span> *ptr = <span class="null">NULL</span>;
-  
+
   <span class="if">if</span> (mkdir(ustr_cstr(s1), mode) != <span class="numm1">-1</span>)
     <span class="return">return</span> (ret + 1);
 
@@ -269,44 +268,45 @@ ustr (although, as with the constant ustr, it does no harm).</p>
       
     <span class="case">case</span> ENOENT: <span class="break">break</span>;
     
-    <span class="default">default</span>:
-      <span class="return">return</span> (<span class="numm1">-1</span>);
+    <span class="default">default</span>:     <span class="return">return</span> (<span class="numm1">-1</span>);
   }
-  <span class="if">if</span> (!ustr_owner(s1))
-  { <span class="comment">/* do it this way, so we can pass constant Ustr's to this function */</span>
-    tmp = ustr_dup_buf(ustr_cstr(s1), ustr_len(s1));
-    <span class="if">if</span> (!tmp)
-    {
-      <span class="errno">errno</span> = ENOMEM;
-      <span class="return">return</span> (<span class="numm1">-1</span>);
-    }
-    
-    s1 = tmp;
-  }
-  
-  <span class="if">if</span> (!(pos = ustr_srch_chr_rev(s1, <span class="num0">0</span>, <span class="chr">'/'</span>)))
+
+  <span class="if">if</span> ((off = ustr_srch_chr_rev(s1, off, <span class="chr">'/'</span>)) &lt;= 1)
   {
     <span class="errno">errno</span> = EINVAL;
     <span class="return">return</span> (<span class="numm1">-1</span>);
   }
+  --off; <span class="comment">/* NOTE: offset moves from beg. to end */</span>
+  
+  <span class="if">if</span> (!ustr_owner(s1))
+  { <span class="comment">/* do it this way, so we can pass constant Ustr's to this function
+     * and don't use ustr_sc_ensure_owner() so that we don't release a
+     * reference */</span>
+    <span class="if">if</span> (!(allocd = ustr_dup_buf(ustr_cstr(s1), ustr_len(s1))))
+      <span class="return">return</span> (<span class="numm1">-1</span>); <span class="comment">/* errno == ENOMEM, done by ustr */</span>
+    s1 = allocd;
+  }
   
   ptr = ustr_wstr((Ustr *)s1);
-  ptr[pos - 1] = <span class="num0">0</span>;
-  <span class="if">if</span> ((ret = fu__mkdir_p(s1, mode, ret + 1)) != <span class="numm1">-1</span>)
+  ptr[off] = <span class="num0">0</span>;
+  <span class="if">if</span> ((ret = fu__mkdir_p(s1, mode, ustr_len(s1) - off, ret + 1)) != <span class="numm1">-1</span>)
   {
-    ptr[pos - 1] = <span class="chr">'/'</span>;
-    mkdir(ustr_cstr(s1), mode);
+    ptr[off] = <span class="chr">'/'</span>;
+    <span class="if">if</span> (mkdir(ustr_cstr(s1), mode) == <span class="numm1">-1</span>)
+      ret = <span class="numm1">-1</span>;
   }
-  ustr_free(tmp);
+  ustr_free(allocd);
 
   <span class="return">return</span> (ret);
 }
 
+<span class="comment">/* This returns -1, on error, or the number of directories created. */</span>
 <span class="static">static</span> <span class="int">int</span> mkdir_p(<span class="const">const</span> Ustr *s1, <span class="int">int</span> mode)
 {
-  <span class="return">return</span> (fu__mkdir_p(s1, mode, <span class="num0">0</span>));
+  <span class="return">return</span> (fu__mkdir_p(s1, mode, <span class="num0">0</span>, <span class="num0">0</span>));
 }
 </pre>
+
 
 <p> In other words:</p>
 
@@ -321,16 +321,110 @@ ustr (although, as with the constant ustr, it does no harm).</p>
 <h2> text into similar looking html converter</h2>
 </a>
 
-<p> This example .</p>
+<p> This is a function program showing how you can do the perl code (written by, tchrist@perl.com - Sunday, December 19th, 1999):</p>
 
 <pre class="c2html">
+<span class="comment">/* 
+# first kill all the tabs
+1 while s{ \t + }
+         { " " x (length($&amp;)*8 - length($`)%8) }ex;
+
+# then the four standard naughty bits 
+s/&amp;/&amp;amp;/g;        # must remember to do this one first!
+s/&lt;/&amp;lt;/g;         # this is the most important one
+s/&gt;/&amp;gt;/g;         # don't close too early
+s/"/&amp;quot;/g;       # only in embedded tags, i guess
+
+# make lines break where they should
+s/^\s*$/&lt;P&gt;/ || s/$/&lt;BR&gt;/;
+
+# make sure spaces aren't squishticated so we
+# can do indentation and properly align comments
+s/( {2,})/'&amp;nbsp;' x length($1)/ge;
+*/</span>
+</pre>
+
+<p> The interesting points here are how simple most of the ustr code is, tab
+ conversion is 2 lines in the original perl and 5 (1 could be dropped for a
+ speed loss) with ustr. The "four std. naughty bits" take a single line in
+ both perl and ustr. The only major difference is in the final perl one liner.
+</p>
+<p> It's also worth noting that the ustr version is <b>significantly</b> faster
+than the smaller perl code.
+</p>
+
+<pre class="c2html">
+<span class="static">static</span> <span class="void">void</span> txt2html(Ustr **pline)
+{
+  Ustr *line = *pline;
+  <span class="sizet">size_t</span> tab_pos = <span class="num0">0</span>;
+  <span class="sizet">size_t</span> tab_off = <span class="num0">0</span>;
+  <span class="int">int</span> has_ret = <span class="num0">0</span>;
+  
+  <span class="comment">/* convert tabs to spaces */</span>
+  <span class="while">while</span> ((tab_pos = ustr_srch_chr_fwd(line, tab_off, <span class="chr">'\t'</span>)))
+  {
+    <span class="sizet">size_t</span> tabs_len = ustr_spn_chr_fwd(line, tab_pos - 1, <span class="chr">'\t'</span>);
+    <span class="sizet">size_t</span> spcs_len = (tabs_len * 8) - ((tab_pos - 1) % 8);
+    
+    ustr_sc_sub_rep_chr(&amp;line, tab_pos, tabs_len, <span class="chr">' '</span>, spcs_len);
+    
+    tab_off = tab_pos + spcs_len - 1;
+  }
+
+  <span class="if">if</span> (ustr_cstr(line)[ustr_len(line) - 1] == <span class="chr">'\n'</span>)
+    has_ret = 1;
+  
+  <span class="if">if</span> (ustr_spn_chr_fwd(line, <span class="num0">0</span>, <span class="chr">' '</span>) == (ustr_len(line) - has_ret))
+    ustr_set(&amp;line, USTR1(\3, <span class="str">"&lt;P&gt;"</span>)); <span class="comment">/* blank lines start new paragraph */</span>
+  <span class="else">else</span>
+  {
+    <span class="sizet">size_t</span> spcs_off = <span class="num0">0</span>;
+    <span class="sizet">size_t</span> spcs_pos = <span class="num0">0</span>;
+    <span class="char">char</span> buf_rep[USTR_SIZE_FIXED(40 * 6)] = USTR_BEG_FIXED2 <span class="str">"&amp;nbsp;"</span>;
+    Ustr *rep_nbsp = USTR_SC_INIT_AUTO_OSTR(buf_rep, USTR_FALSE, <span class="str">"&amp;nbsp;"</span>);
+    
+    ustr_replace_cstr(&amp;line, <span class="str">"&amp;"</span>,  <span class="str">"&amp;amp;"</span>,  <span class="num0">0</span>);
+    ustr_replace_cstr(&amp;line, <span class="str">"&lt;"</span>,  <span class="str">"&amp;lt;"</span>,   <span class="num0">0</span>);
+    ustr_replace_cstr(&amp;line, <span class="str">"&gt;"</span>,  <span class="str">"&amp;gt;"</span>,   <span class="num0">0</span>);
+    ustr_replace_cstr(&amp;line, <span class="str">"\""</span>, <span class="str">"&amp;quot;"</span>, <span class="num0">0</span>);
+    ustr_del(&amp;line, 1);
+    ustr_add_cstr(&amp;line, <span class="str">"&lt;BR&gt;\n"</span>);
+
+    <span class="comment">/* convert runs of two or more spaces into runs of &amp;nbsp; */</span>
+    <span class="while">while</span> ((spcs_pos = ustr_srch_cstr_fwd(line, spcs_off, <span class="str">"  "</span>)))
+    {
+      <span class="sizet">size_t</span> spcs_len = ustr_spn_chr_fwd(line, spcs_pos - 1, <span class="chr">' '</span>);
+      <span class="sizet">size_t</span> rep = spcs_len;
+      <span class="sizet">size_t</span> more = <span class="num0">0</span>;
+
+      ustr_sc_del(&amp;rep_nbsp);
+      more = rep;
+      <span class="while">while</span> (more--)
+        ustr_add_cstr(&amp;rep_nbsp, <span class="str">"&amp;nbsp;"</span>);
+      rep *= strlen(<span class="str">"&amp;nbsp;"</span>);
+
+      <span class="if">if</span> (ustr_enomem(rep_nbsp) ||
+          !ustr_sc_sub_subustr(&amp;line, spcs_pos, spcs_len, rep_nbsp, 1, rep))
+        die(prog_name, strerror(ENOMEM));
+      
+      spcs_off = spcs_pos + rep - 1;
+    }
+    ustr_free(rep_nbsp);
+  }
+  
+  <span class="if">if</span> (ustr_enomem(line))
+    die(prog_name, strerror(<span class="errno">errno</span>));
+
+  *pline = line;
+}
 </pre>
 
     <hr>
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Tue Oct 16 01:27:16 EDT 2007
+Last modified: Wed Oct 17 20:50:43 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
