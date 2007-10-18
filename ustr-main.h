@@ -406,8 +406,13 @@ typedef struct Ustr_pool Ustr_pool;
 
 #define USTR_SC_INIT_AUTO(x, y, z)              \
     ustr_init_fixed(x, sizeof(x), y, z)
+#define USTR_SC_INIT_AUTO_OSTR(x, y, z)              \
+    ustr_init_fixed(x, sizeof(x), y, sizeof(z) - 1)
+
 #define USTRP_SC_INIT_AUTO(x, y, z)             \
     ustrp_init_fixed(x, sizeof(x), y, z)
+#define USTRP_SC_INIT_AUTO_OSTR(x, y, z)             \
+    ustrp_init_fixed(x, sizeof(x), y, sizeof(z) - 1)
 
 /* (x) && (((x) - 1) >= 0xFFFFFFFF) should really be:
    (x) > 0xFFFFFFFF ... but GCC likes to warn about that if x == 4, say */

@@ -223,7 +223,8 @@ Function: ustr_init_fixed()
 
  Note:
 
-  For simplicity you probably want to use USTR_SC_INIT_AUTO() when possible.
+  For simplicity you probably want to use USTR_SC_INIT_AUTO() or
+ USTR_SC_INIT_AUTO() when possible.
 
 
 Function: USTR_SC_INIT_AUTO()
@@ -251,6 +252,35 @@ Function: USTR_SC_INIT_AUTO()
 
  char buf_sz[1024];
  Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
+
+ ...so passing pointers to memory from malloc() will probably just return NULL.
+
+
+Function: USTR_SC_INIT_AUTO_OSTR()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Area of memory to use as a Ustr string
+ Type[1]: char[]
+
+ Parameter[2]: Whether the fixed size Ustr should be limited
+ Type[2]: int
+
+ Parameter[3]: The initial string in the buffer, as a constant string
+ Type[3]: size_t
+
+ Explanation:
+
+  This calls ustr_init_fixed() with sizeof() the area of memory (Parameter[1])
+ as the second argument, given as an "object string".
+
+ Note:
+
+  This does mean that the first argument must be the correct size, as far as
+ sizeof() is concerned, as in...
+
+ char buf_sz[1024] = USTR_BEG_FIXED2 "abcd";
+ Ustr *s1 = USTR_SC_INIT_AUTO_OSTR(buf_sz, USTR_FALSE, "abcd");
 
  ...so passing pointers to memory from malloc() will probably just return NULL.
 
@@ -2064,7 +2094,7 @@ Function: ustr_srch_chr_rev()
  Type[1]: const struct Ustr *
 
  Parameter[2]: Offset within string to start searching at
- Type[2]:  size_t
+ Type[2]: size_t
 
  Parameter[3]: Byte data to search for
  Type[3]: char
@@ -2073,6 +2103,12 @@ Function: ustr_srch_chr_rev()
 
   This function works like ustr_srch_chr_fwd() but it searches from the end of
  the string to the beginning.
+
+ Note:
+
+  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
 
 
 Function: ustr_srch_buf_fwd()
@@ -2118,6 +2154,12 @@ Function: ustr_srch_buf_rev()
   This function works like ustr_srch_buf_fwd() but it searches from the end of
  the string to the beginning.
 
+ Note:
+
+  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
+
 
 Function: ustr_srch_fwd()
  Returns: Position in the Ustr, or zero if not found
@@ -2157,6 +2199,12 @@ Function: ustr_srch_rev()
   This function works like ustr_srch_fwd() but it searches from the end of
  the string to the beginning.
 
+ Note:
+
+  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
+
 
 Function: ustr_srch_cstr_fwd()
  Returns: Position in the Ustr, or zero if not found
@@ -2194,6 +2242,12 @@ Function: ustr_srch_cstr_rev()
 
   This function works like ustr_srch_cstr_fwd() but it searches from the end of
  the string to the beginning.
+
+ Note:
+
+  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
 
 
 Function: ustr_srch_subustr_fwd()
@@ -2244,6 +2298,12 @@ Function: ustr_srch_subustr_rev()
 
   This function works like ustr_srch_rev() but it moves the data to start at
  the correct position and limits the length to the value specified.
+
+ Note:
+
+  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
 
 
 Section: Span lengths of data in a Ustr

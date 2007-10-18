@@ -1,3 +1,7 @@
+2007-10-17  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_SC_INIT_AUTO_OSTR): Added macro function.
+
 2007-10-15  James Antill  <james@and.org>
 
 	* ustr-io-code.h (ustrp__io_getdelim): Return the last line of a file,
