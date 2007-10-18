@@ -1,4 +1,4 @@
-.TH ustr 3 "06-Oct-2007" "Ustr 1.0.1" "Ustr String Library"
+.TH ustr 3 "17-Oct-2007" "Ustr 1.0.1" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -50,6 +50,10 @@ struct Ustr *\fBustr_init_fixed\fR(void *, size_t, int, size_t);
 .in \w'  struct Ustr *\fBUSTR_SC_INIT_AUTO\fR('u
 .ti \w'  'u
 struct Ustr *\fBUSTR_SC_INIT_AUTO\fR(char[], int, size_t);
+.br
+.in \w'  struct Ustr *\fBUSTR_SC_INIT_AUTO_OSTR\fR('u
+.ti \w'  'u
+struct Ustr *\fBUSTR_SC_INIT_AUTO_OSTR\fR(char[], int, size_t);
 .sp
 .br
 .in \w'  struct Ustr *\fBustr_init_alloc\fR('u
@@ -443,7 +447,7 @@ size_t  \fBustr_srch_chr_fwd\fR(const struct Ustr *, size_t, char);
 .br
 .in \w'  size_t  \fBustr_srch_chr_rev\fR('u
 .ti \w'  'u
-size_t  \fBustr_srch_chr_rev\fR(const struct Ustr *,  size_t, char);
+size_t  \fBustr_srch_chr_rev\fR(const struct Ustr *, size_t, char);
 .br
 .in \w'  size_t  \fBustr_srch_buf_fwd\fR('u
 .ti \w'  'u
@@ -1159,7 +1163,7 @@ Type\fB[4]\fR: size_t
 \fBNote:\fR
 
 .br
-  For simplicity you probably want to use USTR_SC_INIT_AUTO() when possible.
+  For simplicity you probably want to use USTR_SC_INIT_AUTO() or USTR_SC_INIT_AUTO() when possible.
 
 .ti -2
 .br
@@ -1198,6 +1202,48 @@ Type\fB[3]\fR: size_t
 .Vb 4
  char buf_sz[1024];
  Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
+
+.Ve
+ ...so passing pointers to memory from malloc() will probably just return NULL.
+
+
+.ti -2
+.br
+\fBFunction: \fR USTR_SC_INIT_AUTO_OSTR()
+.br
+Returns: Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Area of memory to use as a Ustr string
+.br
+Type\fB[1]\fR: char[]
+
+.br
+Parameter\fB[2]\fR: Whether the fixed size Ustr should be limited
+.br
+Type\fB[2]\fR: int
+
+.br
+Parameter\fB[3]\fR: The initial string in the buffer, as a constant string
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This calls ustr_init_fixed() with sizeof() the area of memory (Parameter[1]) as the second argument, given as an "object string".
+.sp
+\fBNote:\fR
+
+.br
+  This does mean that the first argument must be the correct size, as far as sizeof() is concerned, as in...
+
+.Vb 4
+ char buf_sz[1024] = USTR_BEG_FIXED2 "abcd";
+ Ustr *s1 = USTR_SC_INIT_AUTO_OSTR(buf_sz, USTR_FALSE, "abcd");
 
 .Ve
  ...so passing pointers to memory from malloc() will probably just return NULL.
@@ -3856,7 +3902,7 @@ Type\fB[1]\fR: const struct Ustr *
 .br
 Parameter\fB[2]\fR: Offset within string to start searching at
 .br
-Type\fB[2]\fR:  size_t
+Type\fB[2]\fR: size_t
 
 .br
 Parameter\fB[3]\fR: Byte data to search for
@@ -3868,6 +3914,11 @@ Type\fB[3]\fR: char
 
 .br
   This function works like ustr_srch_chr_fwd() but it searches from the end of the string to the beginning.
+.sp
+\fBNote:\fR
+
+.br
+  The searching starts from the end of the string, and so the offset is the offset from the end. However the position of a byte is always relative to the begining, so to do a loop you need to take the position from the length.
 
 .ti -2
 .br
@@ -3936,6 +3987,11 @@ Type\fB[4]\fR: size_t
 
 .br
   This function works like ustr_srch_buf_fwd() but it searches from the end of the string to the beginning.
+.sp
+\fBNote:\fR
+
+.br
+  The searching starts from the end of the string, and so the offset is the offset from the end. However the position of a byte is always relative to the begining, so to do a loop you need to take the position from the length.
 
 .ti -2
 .br
@@ -3994,6 +4050,11 @@ Type\fB[3]\fR: const struct Ustr *
 
 .br
   This function works like ustr_srch_fwd() but it searches from the end of the string to the beginning.
+.sp
+\fBNote:\fR
+
+.br
+  The searching starts from the end of the string, and so the offset is the offset from the end. However the position of a byte is always relative to the begining, so to do a loop you need to take the position from the length.
 
 .ti -2
 .br
@@ -4052,6 +4113,11 @@ Type\fB[3]\fR: const char *
 
 .br
   This function works like ustr_srch_cstr_fwd() but it searches from the end of the string to the beginning.
+.sp
+\fBNote:\fR
+
+.br
+  The searching starts from the end of the string, and so the offset is the offset from the end. However the position of a byte is always relative to the begining, so to do a loop you need to take the position from the length.
 
 .ti -2
 .br
@@ -4130,6 +4196,11 @@ Type\fB[5]\fR: size_t
 
 .br
   This function works like ustr_srch_rev() but it moves the data to start at the correct position and limits the length to the value specified.
+.sp
+\fBNote:\fR
+
+.br
+  The searching starts from the end of the string, and so the offset is the offset from the end. However the position of a byte is always relative to the begining, so to do a loop you need to take the position from the length.
 
 .SH Span lengths of data in a Ustr
 .ti -2

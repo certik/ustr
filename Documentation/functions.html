@@ -25,12 +25,12 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (198)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (199)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
 <li><a href="#indx-Creating_readonly_Ustr_functions">Creating read-only Ustr functions (8)</a>
-<li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (3)</a>
+<li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (4)</a>
 <li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (9)</a>
 <li><a href="#indx-Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr (8)</a>
 <li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (6)</a>
@@ -68,6 +68,7 @@
 <li class="obj"><a href="#USTR_SIZE_FIXED">USTR_SIZE_FIXED()</a>
 <li class="obj"><a href="#ustr_init_fixed">ustr_init_fixed()</a>
 <li class="obj"><a href="#USTR_SC_INIT_AUTO">USTR_SC_INIT_AUTO()</a>
+<li class="obj"><a href="#USTR_SC_INIT_AUTO_OSTR">USTR_SC_INIT_AUTO_OSTR()</a>
 </ul><li><a id="indx-Creating_allocated_Ustr_functions" href="#Creating_allocated_Ustr_functions">Creating allocated Ustr functions</a>
 <ul>
 <li class="obj"><a href="#ustr_init_alloc">ustr_init_alloc()</a>
@@ -442,7 +443,8 @@
  fixed size Ustr.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  For simplicity you probably want to use <a href="functions#USTR_SC_INIT_AUTO">USTR_SC_INIT_AUTO()</a> when possible.
+</p><p>  For simplicity you probably want to use <a href="functions#USTR_SC_INIT_AUTO">USTR_SC_INIT_AUTO()</a> or
+ <a href="functions#USTR_SC_INIT_AUTO">USTR_SC_INIT_AUTO()</a> when possible.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -461,6 +463,26 @@
 </p><pre>
  char buf_sz[1024];
  Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
+
+</pre><p> ...so passing pointers to memory from malloc() will probably just return NULL.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_SC_INIT_AUTO_OSTR">USTR_SC_INIT_AUTO_OSTR()</a>
+<br>Returns: <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Area of memory to use as a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: char[]
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Whether the fixed size Ustr should be limited<br>Type<strong>[2]</strong>: int
+</td></tr><tr><td>Parameter<strong>[3]</strong>: The initial string in the buffer, as a constant string<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This calls <a href="functions#ustr_init_fixed">ustr_init_fixed()</a> with sizeof() the area of memory (Parameter[1])
+ as the second argument, given as an "object string".
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This does mean that the first argument must be the correct size, as far as
+ sizeof() is concerned, as in...
+</p><pre>
+ char buf_sz[1024] = USTR_BEG_FIXED2 "abcd";
+ Ustr *s1 = USTR_SC_INIT_AUTO_OSTR(buf_sz, USTR_FALSE, "abcd");
 
 </pre><p> ...so passing pointers to memory from malloc() will probably just return NULL.
 
@@ -1601,11 +1623,16 @@
 <strong>Function: </strong> <a id="ustr_srch_chr_rev">ustr_srch_chr_rev()</a>
 <br>Returns: Position in the Ustr, or zero if not found<br>Type: size_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string to start searching at<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Byte data to search for<br>Type<strong>[3]</strong>: char
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_srch_chr_fwd">ustr_srch_chr_fwd()</a> but it searches from the end of
  the string to the beginning.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1631,6 +1658,11 @@
 </p><p>  This function works like <a href="functions#ustr_srch_buf_fwd">ustr_srch_buf_fwd()</a> but it searches from the end of
  the string to the beginning.
 
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_srch_fwd">ustr_srch_fwd()</a>
@@ -1654,6 +1686,11 @@
 </p><p>  This function works like <a href="functions#ustr_srch_fwd">ustr_srch_fwd()</a> but it searches from the end of
  the string to the beginning.
 
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_srch_cstr_fwd">ustr_srch_cstr_fwd()</a>
@@ -1675,6 +1712,11 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_srch_cstr_fwd">ustr_srch_cstr_fwd()</a> but it searches from the end of
  the string to the beginning.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1701,6 +1743,11 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_srch_rev">ustr_srch_rev()</a> but it moves the data to start at
  the correct position and limits the length to the value specified.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The searching starts from the end of the string, and so the offset is the
+ offset from the end. However the position of a byte is always relative to
+ the begining, so to do a loop you need to take the position from the length.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Span%20lengths%20of%20data%20in%20a%20Ustr">Span lengths of data in a Ustr</a></h2>
