@@ -1,5 +1,5 @@
 #include "ustr.h"
-/* this is a simple program showing how you can do the perl code:
+/* This is a simple program showing how you can do the perl code:
 
 #!/usr/bin/perl -p
 
@@ -60,6 +60,92 @@ static void usage(int xcode)
   exit (xcode);
 }
 
+static void txt2html(Ustr **pline)
+{
+  Ustr *line = *pline;
+  size_t tab_pos = 0;
+  size_t tab_off = 0;
+  int has_ret = 0;
+  
+  /* convert tabs to spaces */
+  while ((tab_pos = ustr_srch_chr_fwd(line, tab_off, '\t')))
+  {
+    size_t tabs_len = ustr_spn_chr_fwd(line, tab_pos - 1, '\t');
+    size_t spcs_len = (tabs_len * 8) - ((tab_pos - 1) % 8);
+    
+    ustr_sc_sub_rep_chr(&line, tab_pos, tabs_len, ' ', spcs_len);
+    
+    tab_off = tab_pos + spcs_len - 1;
+  }
+
+  if (ustr_cstr(line)[ustr_len(line) - 1] == '\n')
+    has_ret = 1;
+  
+  if (ustr_spn_chr_fwd(line, 0, ' ') == (ustr_len(line) - has_ret))
+    ustr_set(&line, USTR1(\3, "<P>")); /* blank lines start new paragraph */
+  else
+  {
+    size_t spcs_off = 0;
+    size_t spcs_pos = 0;
+    char buf_rep[USTR_SIZE_FIXED(40 * 6)] = USTR_BEG_FIXED2 "&nbsp;";
+    Ustr *rep_nbsp = USTR_SC_INIT_AUTO_OSTR(buf_rep, USTR_FALSE, "&nbsp;");
+    
+    ustr_replace_cstr(&line, "&",  "&amp;",  0);
+    ustr_replace_cstr(&line, "<",  "&lt;",   0);
+    ustr_replace_cstr(&line, ">",  "&gt;",   0);
+    ustr_replace_cstr(&line, "\"", "&quot;", 0);
+    ustr_del(&line, 1);
+    ustr_add_cstr(&line, "<BR>\n");
+
+    /* convert runs of two or more spaces into runs of &nbsp; */
+    while ((spcs_pos = ustr_srch_cstr_fwd(line, spcs_off, "  ")))
+    {
+      size_t spcs_len = ustr_spn_chr_fwd(line, spcs_pos - 1, ' ');
+      size_t rep = spcs_len;
+      size_t more = 0;
+
+#if USTR_FALSE /* simpler, but slower */
+      ustr_sc_del(&rep_nbsp);
+      more = rep;
+      while (more--)
+        ustr_add_cstr(&rep_nbsp, "&nbsp;");
+      
+      rep *= strlen("&nbsp;");
+#else
+      rep *= strlen("&nbsp;");
+
+      if (rep > ustr_len(rep_nbsp))
+      {
+        size_t more = rep - ustr_len(rep_nbsp);
+
+        while (more)
+        {
+          size_t val = more;
+          
+          if (val > ustr_len(rep_nbsp))
+            val = ustr_len(rep_nbsp);
+          
+          ustr_add_subustr(&rep_nbsp, rep_nbsp, 1, val);
+          more -= val;
+        }
+      }
+#endif
+
+      if (ustr_enomem(rep_nbsp) ||
+          !ustr_sc_sub_subustr(&line, spcs_pos, spcs_len, rep_nbsp, 1, rep))
+        die(prog_name, strerror(ENOMEM));
+      
+      spcs_off = spcs_pos + rep - 1;
+    }
+    ustr_free(rep_nbsp);
+  }
+  
+  if (ustr_enomem(line))
+    die(prog_name, strerror(errno));
+
+  *pline = line;
+}
+
 static void fp_loop(FILE *in, const char *prog_name)
 {
   char buf_line[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
@@ -74,57 +160,8 @@ static void fp_loop(FILE *in, const char *prog_name)
     
   while (ustr_io_getline(&line, in))
   {
-    size_t tab_pos = 0;
-    size_t tab_off = 0;
-
-    /* convert tabs to spaces */
-    while ((tab_pos = ustr_srch_chr_fwd(line, tab_off, '\t')))
-    {
-      size_t tabs_len = ustr_spn_chr_fwd(line, tab_pos - 1, '\t');
-      size_t spcs_len = (tabs_len * 8) - ((tab_pos - 1) % 8);
-
-      ustr_sc_sub_rep_chr(&line, tab_pos, tabs_len, ' ', spcs_len);
-
-      tab_off = tab_pos + spcs_len - 1;
-    }
+    txt2html(&line);
     
-    if (ustr_spn_fwd(line, 0, USTR1(\1, " ")) == ustr_len(line) - 1)
-      ustr_set(&line, USTR1(\3, "<P>"));
-    else
-    {
-      size_t spcs_off = 0;
-      size_t spcs_pos = 0;
-      
-      ustr_replace_cstr(&line, "&",  "&amp;",  0);
-      ustr_replace_cstr(&line, "<",  "&lt;",   0);
-      ustr_replace_cstr(&line, ">",  "&gt;",   0);
-      ustr_replace_cstr(&line, "\"", "&quot;", 0);
-      ustr_del(&line, 1);
-      ustr_add_cstr(&line, "<BR>\n");
-
-      while ((spcs_pos = ustr_srch_cstr_fwd(line, spcs_off, "  ")))
-      {
-        size_t spcs_len = ustr_spn_chr_fwd(line, spcs_pos - 1, ' ');
-        size_t rep = spcs_len;
-        Ustr *tmp = ustr_dupx_empty((rep * 6) + 20, 0, USTR_TRUE, USTR_FALSE);
-
-        if (!tmp)
-          die(prog_name, strerror(ENOMEM));
-        
-        while (rep--)
-          ustr_add_cstr(&tmp, "&nbsp;");
-
-        if (ustr_enomem(tmp) || !ustr_sc_sub(&line, spcs_pos, spcs_len, tmp))
-          die(prog_name, strerror(ENOMEM));
-
-        spcs_off = spcs_pos + ustr_len(tmp) - 1;
-        
-        ustr_free(tmp);
-      }
-    }
-    
-    if (ustr_enomem(line))
-      die(prog_name, strerror(errno));
     if (!ustr_io_putfile(&line, stdout))
       die(prog_name, strerror(errno));
     
@@ -162,15 +199,14 @@ static void file_loop(Ustr *fname, const char *prog_name, int sure_file)
   
   if (fclose(fp) == EOF)
     die(prog_name, strerror(errno));
-}
-
-static void loop(Ustr *fname, const char *prog_name)
-{ /* NOTE: takes the reference to fname */
-  file_loop(fname, prog_name, USTR_FALSE);
 
   ustr_free(fname);
 }
 
+static void loop(Ustr *fname, const char *prog_name)
+{
+  file_loop(fname, prog_name, USTR_FALSE);
+}
 
 int main(int argc, char *argv[])
 {
