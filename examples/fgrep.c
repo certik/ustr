@@ -140,17 +140,15 @@ static void fast_analyze(void)
 }
 
 static void *fast_memsrch(const void *passed_hsptr, size_t hslen)
-{
+{ /* case insensitive, ASCII wise */
   const unsigned char *hsptr = passed_hsptr;
   const unsigned char *ndptr = (unsigned char *)ustr_cstr(fgrep_srch);
   size_t ndlen = ustr_len(fgrep_srch);
+  size_t last = ndlen - 1;
   
   while (hslen >= ndlen)
   {
-    size_t last = ndlen - 1;
     size_t scan = last;
-    size_t used = 0;
-    size_t off  = 0;
 
     while (USTR_TRUE)
     {
@@ -169,15 +167,8 @@ static void *fast_memsrch(const void *passed_hsptr, size_t hslen)
         return ((void *)hsptr);
     }
 
-    used = last - scan;
-    off  = fast__off_bad[hsptr[scan]];
-    if (off <= used)
-      off = 1; /* make sure we move at least 1 byte :) */
-    else
-      off -= used;
-
-    hsptr += off;
-    hslen -= off;
+    hslen -= fast__off_bad[hsptr[last]];
+    hsptr += fast__off_bad[hsptr[last]];
   }
 
   return (NULL);
