@@ -97,9 +97,9 @@ tst_%_i_dbg2: dir-i_dbg2-% tst_%.c
 tst_%_l_norm: tst_%.c
 		$(CC) $(CFLAGS) -o $@ tst_$*.c -lustr
 tst_%_l_dbg1: tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -lustr
+		$(CC) $(CFLAGS) -DUSTR_DEBUG=1 -o $@ tst_$*.c -lustr-debug
 tst_%_l_dbg2: tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -lustr
+		$(CC) $(CFLAGS) -DUSTR_DEBUG=1 -o $@ tst_$*.c -lustr-debug
 
 clean:
 		rm -f $(TST_ALL)
