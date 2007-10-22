@@ -3,22 +3,67 @@
 # due to ustr-import and libustr usage.
 
 TST_ALL = \
-     tst_b_c_norm   tst_b_c_dbg1   tst_b_c_dbg2 \
-     tst_b_i_norm   tst_b_i_dbg1   tst_b_i_dbg2 \
-     tst_b_l_norm   tst_b_l_dbg1   tst_b_l_dbg2 \
-     tst_cmp_c_norm tst_cmp_c_dbg1 tst_cmp_c_dbg2 \
-     tst_cmp_i_norm tst_cmp_i_dbg1 tst_cmp_i_dbg2 \
-     tst_cmp_l_norm tst_cmp_l_dbg1 tst_cmp_l_dbg2 \
-     tst_cntl_c_norm tst_cntl_c_dbg1 tst_cntl_c_dbg2 \
-     tst_fmt_c_norm tst_fmt_c_dbg1 tst_fmt_c_dbg2 \
-     tst_fmt_i_norm tst_fmt_i_dbg1 tst_fmt_i_dbg2 \
-     tst_fmt_l_norm tst_fmt_l_dbg1 tst_fmt_l_dbg2 \
-     tst_ins_c_norm tst_ins_c_dbg1 tst_ins_c_dbg2 \
-     tst_ins_i_norm tst_ins_i_dbg1 tst_ins_i_dbg2 \
-     tst_ins_l_norm tst_ins_l_dbg1 tst_ins_l_dbg2 \
-     tst_io_c_norm  tst_io_c_dbg1  tst_io_c_dbg2 \
-     tst_io_i_norm  tst_io_i_dbg1  tst_io_i_dbg2 \
-     tst_io_l_norm  tst_io_l_dbg1  tst_io_l_dbg2 \
+     tst_b_c_norm       tst_b_c_dbg1       tst_b_c_dbg2 \
+     tst_b_i_norm       tst_b_i_dbg1       tst_b_i_dbg2 \
+     tst_b_l_norm       tst_b_l_dbg1       tst_b_l_dbg2 \
+     \
+     tst_cmp_c_norm     tst_cmp_c_dbg1     tst_cmp_c_dbg2 \
+     tst_cmp_i_norm     tst_cmp_i_dbg1     tst_cmp_i_dbg2 \
+     tst_cmp_l_norm     tst_cmp_l_dbg1     tst_cmp_l_dbg2 \
+     \
+     tst_cntl_c_norm    tst_cntl_c_dbg1    tst_cntl_c_dbg2 \
+     \
+     tst_fmt_c_norm     tst_fmt_c_dbg1     tst_fmt_c_dbg2 \
+     tst_fmt_i_norm     tst_fmt_i_dbg1     tst_fmt_i_dbg2 \
+     tst_fmt_l_norm     tst_fmt_l_dbg1     tst_fmt_l_dbg2 \
+     \
+     tst_ins_c_norm     tst_ins_c_dbg1     tst_ins_c_dbg2 \
+     tst_ins_i_norm     tst_ins_i_dbg1     tst_ins_i_dbg2 \
+     tst_ins_l_norm     tst_ins_l_dbg1     tst_ins_l_dbg2 \
+     \
+     tst_io_c_norm      tst_io_c_dbg1      tst_io_c_dbg2 \
+     tst_io_i_norm      tst_io_i_dbg1      tst_io_i_dbg2 \
+     tst_io_l_norm      tst_io_l_dbg1      tst_io_l_dbg2 \
+     \
+     tst_parse_c_norm   tst_parse_c_dbg1   tst_parse_c_dbg2 \
+     tst_parse_i_norm   tst_parse_i_dbg1   tst_parse_i_dbg2 \
+     tst_parse_l_norm   tst_parse_l_dbg1   tst_parse_l_dbg2 \
+     \
+     tst_pool_c_norm    tst_pool_c_dbg1    tst_pool_c_dbg2 \
+     tst_pool_i_norm    tst_pool_i_dbg1    tst_pool_i_dbg2 \
+     tst_pool_l_norm    tst_pool_l_dbg1    tst_pool_l_dbg2 \
+     \
+     tst_replace_c_norm tst_replace_c_dbg1 tst_replace_c_dbg2 \
+     tst_replace_i_norm tst_replace_i_dbg1 tst_replace_i_dbg2 \
+     tst_replace_l_norm tst_replace_l_dbg1 tst_replace_l_dbg2 \
+     \
+     tst_sc_c_norm      tst_sc_c_dbg1      tst_sc_c_dbg2 \
+     tst_sc_i_norm      tst_sc_i_dbg1      tst_sc_i_dbg2 \
+     tst_sc_l_norm      tst_sc_l_dbg1      tst_sc_l_dbg2 \
+     \
+     tst_set_c_norm     tst_set_c_dbg1     tst_set_c_dbg2 \
+     tst_set_i_norm     tst_set_i_dbg1     tst_set_i_dbg2 \
+     tst_set_l_norm     tst_set_l_dbg1     tst_set_l_dbg2 \
+     \
+     tst_split_c_norm   tst_split_c_dbg1   tst_split_c_dbg2 \
+     tst_split_i_norm   tst_split_i_dbg1   tst_split_i_dbg2 \
+     tst_split_l_norm   tst_split_l_dbg1   tst_split_l_dbg2 \
+     \
+     tst_spn_c_norm     tst_spn_c_dbg1     tst_spn_c_dbg2 \
+     tst_spn_i_norm     tst_spn_i_dbg1     tst_spn_i_dbg2 \
+     tst_spn_l_norm     tst_spn_l_dbg1     tst_spn_l_dbg2 \
+     \
+     tst_srch_c_norm    tst_srch_c_dbg1    tst_srch_c_dbg2 \
+     tst_srch_i_norm    tst_srch_i_dbg1    tst_srch_i_dbg2 \
+     tst_srch_l_norm    tst_srch_l_dbg1    tst_srch_l_dbg2 \
+     \
+     tst_sub_c_norm     tst_sub_c_dbg1     tst_sub_c_dbg2 \
+     tst_sub_i_norm     tst_sub_i_dbg1     tst_sub_i_dbg2 \
+     tst_sub_l_norm     tst_sub_l_dbg1     tst_sub_l_dbg2 \
+     \
+     tst_utf8_c_norm    tst_utf8_c_dbg1    tst_utf8_c_dbg2 \
+     tst_utf8_i_norm    tst_utf8_i_dbg1    tst_utf8_i_dbg2 \
+     tst_utf8_l_norm    tst_utf8_l_dbg1    tst_utf8_l_dbg2
 
 
 AR = ar
