@@ -1,5 +1,7 @@
 2007-10-21  James Antill  <james@and.org>
 
+	* ustr-import.in: Fixes needed for bugs found by installed testing.
+
 	* ustr-import.in: Fix default ref bytes to be the same as when using
 	the library.
 

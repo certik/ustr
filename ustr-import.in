@@ -146,9 +146,6 @@ if $all; then
   sub=true
   utf8=true
 else
-  if $utf8; then
-    sc=true
-  fi
   if $split; then
     set=true
     spn=true
@@ -164,11 +161,16 @@ else
     sc=true
   fi
   if $sub; then
-    sc=true
     ins=true
+    sc=true
+    srch=true
   fi
   if $spn; then
     srch=true
+    utf8=true
+  fi
+  if $utf8; then
+    sc=true
   fi
   if $sub && $cfiles; then
     fmt=true
