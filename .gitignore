@@ -25,3 +25,6 @@ examples/fgrep-s
 examples/txt2html
 examples/txt2html-s
 abcd
+T-installed/tst_*_norm
+T-installed/tst_*_dbg1
+T-installed/tst_*_dbg2
