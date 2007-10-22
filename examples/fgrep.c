@@ -148,24 +148,30 @@ static void *fast_memsrch(const void *passed_hsptr, size_t hslen)
   
   while (hslen >= ndlen)
   {
-    size_t scan = last;
+    size_t scan = 0;
 
-    while (USTR_TRUE)
+    if (!ignore_case)
     {
-      unsigned char c1 = hsptr[scan];
-      unsigned char c2 = ndptr[scan];
-      
-      if ((c1 >= 0x61) && (c1 <= 0x7a))
-        c1 ^= 0x20;
-      if ((c2 >= 0x61) && (c2 <= 0x7a))
-        c2 ^= 0x20;
-
-      if (c1 != c2)
-        break;
-      
-      if (!scan--)
-        return ((void *)hsptr);
+      if ((*hsptr == *ndptr) && !memcmp(hsptr, hdptr, ndlen))
+        return (hsptr);
     }
+    else
+      while (USTR_TRUE)
+      {
+        unsigned char c1 = hsptr[scan];
+        unsigned char c2 = ndptr[scan];
+        
+        if ((c1 >= 0x61) && (c1 <= 0x7a))
+          c1 ^= 0x20;
+        if ((c2 >= 0x61) && (c2 <= 0x7a))
+          c2 ^= 0x20;
+        
+        if (c1 != c2)
+          break;
+        
+        if (scan++ > last)
+          return ((void *)hsptr);
+      }
 
     hslen -= fast__off_bad[hsptr[last]];
     hsptr += fast__off_bad[hsptr[last]];
