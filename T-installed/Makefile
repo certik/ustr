@@ -12,6 +12,7 @@ TST_ALL = \
      tst_cmp_l_norm     tst_cmp_l_dbg1     tst_cmp_l_dbg2 \
      \
      tst_cntl_c_norm    tst_cntl_c_dbg1    tst_cntl_c_dbg2 \
+     tst_cntl_l_norm    tst_cntl_l_dbg1    tst_cntl_l_dbg2 \
      \
      tst_fmt_c_norm     tst_fmt_c_dbg1     tst_fmt_c_dbg2 \
      tst_fmt_i_norm     tst_fmt_i_dbg1     tst_fmt_i_dbg2 \
