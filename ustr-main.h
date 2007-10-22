@@ -131,16 +131,17 @@
 #endif
 
 /* ---- BEG: static/dynamic config. ---- */
+/* NOTE: If you alter this it's copied into ustr-cntl-code.c */
 #ifndef USTR_CONF_REF_BYTES /* how many bytes to use for reference count */
 #define USTR_CONF_REF_BYTES 1
 #endif
 
 #ifndef USTR_CONF_HAS_SIZE /* Include a size value */
-#define USTR_CONF_HAS_SIZE 0
+#define USTR_CONF_HAS_SIZE USTR_FALSE
 #endif
 
 #ifndef USTR_CONF_EXACT_BYTES /* don't get a little extra space from malloc() */
-#define USTR_CONF_EXACT_BYTES 0
+#define USTR_CONF_EXACT_BYTES USTR_FALSE
 #endif
 
 /* so you can use something else, if you want */

@@ -16,7 +16,7 @@
 
 /* second set of defaults... *sigh* */
 struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
- {2, /* ref bytes */
+ {1, /* ref bytes */
   {malloc, realloc, free}, /* ustr */
   USTR_FALSE,   /* has_size */
   USTR_FALSE}}; /* exact_bytes */

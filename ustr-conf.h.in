@@ -27,7 +27,7 @@
 
 # define USTR_CONF_USE_DYNAMIC_CONF  USTR_CONF_HAVE_DYNAMIC_CONF
 
-# define USTR_CONF_REF_BYTES   2
+# define USTR_CONF_REF_BYTES   1
 # define USTR_CONF_EXACT_BYTES 0
 # define USTR_CONF_USE_SIZE    0
 
@@ -54,7 +54,7 @@
 /* no USE_DYNAMIC_CONF ... use default in ustr-main.h */
 
 # ifndef USTR_CONF_REF_BYTES
-# define USTR_CONF_REF_BYTES   2
+# define USTR_CONF_REF_BYTES   1
 # endif
 # ifndef USTR_CONF_EXACT_BYTES
 # define USTR_CONF_EXACT_BYTES 0
