@@ -1,7 +1,24 @@
 
+%define show_all_cmds       0
+%define broken_fed_dbg_opts 0
+
+%if %{show_all_cmds}
+%define policy_cflags_hide HIDE=
+%else
+%define policy_cflags_hide %{nil}
+%endif
+
+%if %{broken_fed_dbg_opts}
+# Variable name explains itself.
+%define policy_cflags_broken DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS=
+%else
+%define policy_cflags_broken %{nil}
+%endif
+
+%define policy_cflags %{policy_cflags_hide}  %{policy_cflags_broken}
+
 Name: ustr
-# FIXME: More C&P of VERSION
-Version: 1.0.1
+Version: 1.0.2
 Release: 1%{?dist}
 Summary: String library, very low memory overhead, simple to import
 Group: System Environment/Libraries
@@ -62,13 +79,11 @@ Requires: %{name}-debug = %{version}-%{release}
 %setup -q
 
 %build
-# Last variable name explains itself.
-make %{?_smp_mflags} all-shared CFLAGS="${CFLAGS:-%optflags}" HIDE= \
-     DBG_ONLY_BAD_POLICIES_HAVE_THIS_EMPTY_CFLAGS=
+make %{?_smp_mflags} all-shared CFLAGS="${CFLAGS:-%optflags}" %{policy_cflags}
 
 %check
 %if %{?chk}%{!?chk:1}
-make check HIDE=
+make check %{policy_cflags}
 %endif
 
 %install
@@ -124,6 +139,20 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 28 2007 James Antill <jantill@redhat.com> - 1.0.1-6
+- Add options for fedora policy brokeness, so it's easy to undo.
+- Rebuild for buildid.
+
+* Wed Aug  8 2007 James Antill <james@and.org> - 1.0.1-5
+- Import fix for ustr-import, wrt. repl <=> replace
+
+* Sun Aug  5 2007 James Antill <james@and.org> - 1.0.1-4
+- Patches for minor GIT HEAD documentation fixes.
+- Install mkdir_p and fgrep examples.
+
+* Sat Aug  4 2007 James Antill <james@and.org> - 1.0.1-2
+- First upload to Fedora repos.
+
 * Fri Aug  3 2007 James Antill <james@and.org> - 1.0.1-0.10.fc7
 - Re-fix dups in -devel and -debug file lists.
 - Change license to new format
