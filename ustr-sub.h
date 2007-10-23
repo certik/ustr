@@ -36,8 +36,6 @@ int ustr_sub_subustr(struct Ustr **, size_t, const struct Ustr *, size_t,size_t)
 USTR_CONF_E_PROTO int ustr_sub_rep_chr(struct Ustr **, size_t, char, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 
-/* FIXME: ustr_sub_fmt*() */
-
 USTR_CONF_E_PROTO
 int ustrp_sub_undef(struct Ustr_pool *, struct Ustrp **, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_L((2));
