@@ -717,6 +717,42 @@ Function: ustr_add_cstr()
  the length.
 
 
+Function: USTR_ADD_OSTR()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A constant C-style string
+ Type[2]: const char []
+
+ Explanation:
+
+  This function works as if you had called ustr_add_buf() and passed
+ sizeof() - 1 as the length.
+
+
+Function: USTR_ADD_OBJ()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A symbol
+ Type[2]: ...
+
+ Explanation:
+
+  This function works as if you had called ustr_add_buf() and passed
+ sizeof() as the length.
+
+ Note:
+
+  In most cases you'll want to use USTR_ADD_OSTR().
+
+
 Function: ustr_add()
  Returns: Success or failure
  Type: int 
@@ -822,11 +858,11 @@ Function: ustr_set_buf()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const void *
+ Parameter[2]: Buffer containting data
  Type[2]:  const void *
 
- Parameter[3]:  size_t
- Type[3]:  size_t
+ Parameter[3]: Length of Buffer
+ Type[3]: size_t
 
  Explanation:
 
@@ -841,13 +877,49 @@ Function: ustr_set_cstr()
  Parameter[1]: Pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
- Parameter[2]:  const char *
- Type[2]:  const char *
+ Parameter[2]: A pointer to a constant C-style string
+ Type[2]: const char *
 
  Explanation:
 
   This function works as if you had called ustr_del() for the entire string and
- the ustr_add_cstr().
+ then ustr_add_cstr().
+
+
+Function: USTR_SET_OSTR()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A constant C-style string
+ Type[2]: const char []
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ then USTR_ADD_OSTR().
+
+
+Function: USTR_SET_OSTR()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A symbol
+ Type[2]: ...
+
+ Explanation:
+
+  This function works as if you had called ustr_del() for the entire string and
+ then USTR_ADD_OBJ().
+
+ Note:
+
+  In most cases you'll want to use USTR_SET_OSTR().
 
 
 Function: ustr_set()
@@ -3156,23 +3228,23 @@ Function: ustr_sub_buf()
  Parameter[1]: Pointer to a pointer to a Ustr
  Type[1]: struct Ustr **
 
- Parameter[2]:  Position where to start replacement
+ Parameter[2]:  Position where to start substitution
  Type[2]:  size_t
 
- Parameter[3]: Buffer containing replacement string 
- Type[3]:  const void*
+ Parameter[3]: Buffer containing substitution string 
+ Type[3]:  const void *
 
  Parameter[4]:  Length of buffer
  Type[4]:  size_t
 
  Explanation:
 
-  This function will replace the characters in the Ustr starting at the
+  This function will substitute the characters in the Ustr starting at the
  specified position using data from the buffer.
 
  Note:
 
-  The Ustr will be automatically be resized if necessary.
+  The Ustr will be automatically be resized to be big enough, if necessary.
 
 
 Function: ustr_sub_cstr()
@@ -3182,16 +3254,16 @@ Function: ustr_sub_cstr()
  Parameter[1]: Pointer to a pointer to a Ustr
  Type[1]: struct Ustr **
 
- Parameter[2]: Position where to start replacement
+ Parameter[2]: Position where to start substitution
  Type[2]:  size_t
 
- Parameter[3]:  Replacement Cstring
+ Parameter[3]: A pointer to a constant C-style string, which is the substitution
  Type[3]:  const char *
 
  Explanation:
 
-  This function will replace characters in the Ustr starting at the specified
- position using data from the given Cstring.
+  This function works like ustr_sub_buf() but the length is worked out
+ automatically by strlen().
 
 
 Function: ustr_sc_sub()
@@ -3201,44 +3273,123 @@ Function: ustr_sc_sub()
  Parameter[1]: Pointer to a pointer to a Ustr
  Type[1]: struct Ustr **
 
- Parameter[2]: Position where to start replacement
+ Parameter[2]: Position where to start substitution
  Type[2]: size_t
 
- Parameter[3]: Length of replacement
+ Parameter[3]: Length of substitution
  Type[3]: size_t
 
- Parameter[4]: Pointer to a Ustr containing the replacement string
+ Parameter[4]: Pointer to a Ustr containing the substitute string
  Type[4]: const struct Ustr *
 
  Explanation:
 
-  Replaces a specified number of characters starting at the given position
+  Substitutes a specified number of characters starting at the given position
  with the characters from the given Ustr. 
 
 
 Function: ustr_sc_sub_buf()
- Returns: success or failure 
+ Returns: Success or failure 
+ Type: int 
+
+ Parameter[1]: Pointer to a pointer to a Ustr
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Position where to start substitution
+ Type[2]: size_t 
+
+ Parameter[3]: Length of substitute
+ Type[3]: size_t 
+
+ Parameter[4]: Buffer containting substitute data
+ Type[4]: const void *
+
+ Parameter[5]: Length of Buffer
+ Type[5]: size_t 
+
+ Explanation:
+
+  This function will replace a specific number of characters in a Ustr with
+ the data from a buffer, this function does the job of one or more of
+ ustr_add_buf(), ustr_sub_buf() and ustr_del().
+
+
+Function: ustr_sc_sub_cstr()
+ Returns: Success or failure 
  Type: int 
 
  Parameter[1]: Pointer to a pointer to a Ustr
  Type[1]: struct Ustr **
 
  Parameter[2]: Position where to start replacement 
- Type[2]:  size_t 
+ Type[2]: size_t
 
- Parameter[3]:  Length of replacement
- Type[3]:  size_t 
+ Parameter[3]: Length of replacement
+ Type[3]: size_t
 
- Parameter[4]:  Buffer containting replacement string
- Type[4]:  const void *
-
- Parameter[5]:  Length of Buffer
- Type[5]:  size_t 
+ Parameter[4]: A pointer to a constant C-style string, containing spanning bytes
+ Type[4]: const char *
 
  Explanation:
 
-  This function will replace a specific number of characters in a Ustr with
- the data from a buffer. 
+  This function works like ustr_sc_sub_buf() but the length is worked out
+ automatically by strlen().
+
+
+Function: ustr_replace_buf()
+ Returns: Number of tokens replaced 
+ Type: size_t 
+
+ Parameter[1]: Pointer to a pointer to a Ustr (haystack)
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Buffer containting search data
+ Type[2]: const void *
+
+ Parameter[3]: Length of search buffer
+ Type[3]: size_t
+
+ Parameter[4]: Buffer containting replacement data
+ Type[4]: const void *
+
+ Parameter[5]: Length of replacement buffer
+ Type[5]: size_t
+
+ Parameter[6]: Maximum number of matches to replace (0 for unlimited)
+ Type[6]: size_t
+
+ Explanation:
+
+  This function scans the "haystack" (Parameter[1]) for "needle" (Parameter[2])
+ and replaces max_replacements (Parameter[6]) matches with the
+ "replacement" (Parameter[4]).
+
+ Note: 
+
+  If max_replacements (Parameter[6]) is 0, this function will replace ALL
+ occurrences.
+
+
+Function: ustr_replace_cstr()
+ Returns: Number of tokens replaced 
+ Type: size_t 
+
+ Parameter[1]: Pointer to a pointer to a Ustr (haystack)
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant C-style string, containing search bytes
+ Type[2]: const char *
+
+ Parameter[3]: A pointer to a constant C-style string, containing replacement bytes
+ Type[3]: const char *
+
+ Parameter[4]: Maximum number of matches to replace (0 for unlimited)
+ Type[4]: size_t
+
+ Explanation:
+
+  This function works like ustr_replace_buf but gets the lengths for the
+ buffer automatically from strlen().
 
 
 Function: ustr_replace()
@@ -3254,19 +3405,13 @@ Function: ustr_replace()
  Parameter[3]: Ustr to replace needle with
  Type[3]: const struct Ustr *
 
- Parameter[4]:  Maximum number of matches to replace (0 for unlimited)
- Type[4]:  size_t
+ Parameter[4]: Maximum number of matches to replace (0 for unlimited)
+ Type[4]: size_t
 
  Explanation:
 
-  This function scans the "haystack" (Parameter[1]) for "needle" (Parameter[2])
- and replaces max_replacements (Parameter[4]) matches with the
- "replacement" (Parameter[3]).
-
- Note: 
-
-  If max_replacements (Parameter[4]) is 0, this function will replace ALL
- occurrences.
+  This function works like ustr_replace_buf but gets the lengths from the
+ ustr automatically.
 
 
 Function: ustr_replace_rep_chr()
@@ -4095,7 +4240,7 @@ Function: ustr_parse_b_uint64()
 
 
 Section: Simple Ustr pool API
-Function: ustr_pool_make_pool()
+Function: ustr_pool_ll_make()
  Returns: Ustr pool object
  Type: struct Ustr_pool *
 
@@ -4104,7 +4249,10 @@ Function: ustr_pool_make_pool()
 
  Explanation:
 
-  This allocates a new pool.
+  This allocates a new pool using the "linked list" strategy, each allocation
+ in the pool is added to a linked list ... and any allocations not freed
+ directly are freed by the pool when it is cleared or freed.
+
 
 Function: ustr_pool_make_subpool()
  Returns: struct Ustr_pool *
