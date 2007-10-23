@@ -1,4 +1,6 @@
 
+HIDE=@
+
 # These are tests which are run agains the currently installed ustr
 # due to ustr-import and libustr usage.
 
@@ -72,34 +74,44 @@ RANLIB = ranlib
 
 CFLAGS=-Wall -W -O1 -g
 
-all: check
+all: $(TST_ALL)
+		$(HIDE)echo Done all.
 
 tst_%_c_norm: dir-c_norm-%/libustr.a tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -Idir-c_norm-$* $<
-		rm -rf dir-c_norm-$*
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -Idir-c_norm-$* $<
+		$(HIDE)rm -rf dir-c_norm-$*
 tst_%_c_dbg1: dir-c_dbg1-%/libustr.a tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -Idir-c_dbg1-$* $<
-		rm -rf dir-c_dbg1-$*
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -Idir-c_dbg1-$* $<
+		$(HIDE)rm -rf dir-c_dbg1-$*
 tst_%_c_dbg2: dir-c_dbg2-%/libustr.a tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -Idir-c_dbg2-$* $<
-		rm -rf dir-c_dbg2-$*
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -Idir-c_dbg2-$* $<
+		$(HIDE)rm -rf dir-c_dbg2-$*
 
 tst_%_i_norm: dir-i_norm-% tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -I$<
-		rm -rf $<
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -I$<
+		$(HIDE)rm -rf $<
 tst_%_i_dbg1: dir-i_dbg1-% tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -I$<
-		rm -rf $<
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -I$<
+		$(HIDE)rm -rf $<
 tst_%_i_dbg2: dir-i_dbg2-% tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -I$<
-		rm -rf $<
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -I$<
+		$(HIDE)rm -rf $<
 
 tst_%_l_norm: tst_%.c
-		$(CC) $(CFLAGS) -o $@ tst_$*.c -lustr
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -o $@ tst_$*.c -lustr
 tst_%_l_dbg1: tst_%.c
-		$(CC) $(CFLAGS) -DUSTR_DEBUG=1 -o $@ tst_$*.c -lustr-debug
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -DUSTR_DEBUG=1 -o $@ tst_$*.c -lustr-debug
 tst_%_l_dbg2: tst_%.c
-		$(CC) $(CFLAGS) -DUSTR_DEBUG=1 -o $@ tst_$*.c -lustr-debug
+		$(HIDE)echo CC: $@
+		$(HIDE)$(CC) $(CFLAGS) -DUSTR_DEBUG=1 -o $@ tst_$*.c -lustr-debug
 
 clean:
 		rm -f $(TST_ALL)
@@ -109,56 +121,62 @@ clean:
 # --------------------
 
 dir-c_norm-%/libustr.a: dir-c_norm-%
-		$(CC) $(CFLAGS) -o $</ustr-main-opt-code.o -c $</ustr-main-opt-code.c
-		( for f in b cmp fmt ins io parse pool replace sc set split \
+		$(HIDE)$(CC) $(CFLAGS) -o $</ustr-main-opt-code.o -c $</ustr-main-opt-code.c
+		$(HIDE)( for f in b cmp fmt ins io parse pool replace sc set split \
                       spn srch sub utf8; do \
-                    f=$$f-opt-code; if [ -f $</ustr-$$f.c ]; then echo $$f && \
+                    f=$$f-opt-code; if [ -f $</ustr-$$f.c ]; then \
                     $(CC) $(CFLAGS) -o $</ustr-$$f.o -c $</ustr-$$f.c; fi \
                   done )
-		$(AR) ru $@ $</ustr-*-opt-code.o
-		$(RANLIB) $@
+		$(HIDE)$(AR) ru $@ $</ustr-*-opt-code.o
+		$(HIDE)$(RANLIB) $@
 
 dir-c_dbg%/libustr.a: dir-c_dbg%
-		$(CC) $(CFLAGS) -o $</ustr-main-dbg-code.o -c $</ustr-main-dbg-code.c -I$<
-		( for f in b cmp fmt ins io parse pool replace sc set split \
+		$(HIDE)$(CC) $(CFLAGS) -o $</ustr-main-dbg-code.o -c $</ustr-main-dbg-code.c -I$<
+		$(HIDE)( for f in b cmp fmt ins io parse pool replace sc set split \
                       spn srch sub utf8; do \
-                    f=$$f-dbg-code; if [ -f $</ustr-$$f.c ]; then echo $$f && \
+                    f=$$f-dbg-code; if [ -f $</ustr-$$f.c ]; then \
                     $(CC) $(CFLAGS) -o $</ustr-$$f.o -c $</ustr-$$f.c; fi \
                   done )
-		$(AR) ru $@ $</ustr-*-dbg-code.o
-		$(RANLIB) $@
+		$(HIDE)$(AR) ru $@ $</ustr-*-dbg-code.o
+		$(HIDE)$(RANLIB) $@
 
 # --------------------
 
 dir-c_norm-%:
-		mkdir $@
-		( cd $@ ; ustr-import       -c $* )
+		$(HIDE)echo Creating: $@
+		$(HIDE)mkdir $@
+		$(HIDE)( cd $@ ; ustr-import       -c $* )
 
 dir-c_dbg1-%:
-		mkdir $@
-		( cd $@ ; ustr-import -d    -c $* )
-		mv $@/ustr-debug.h  $@/ustr.h 
+		$(HIDE)echo Creating: $@
+		$(HIDE)mkdir $@
+		$(HIDE)( cd $@ ; ustr-import -d    -c $* )
+		$(HIDE)mv $@/ustr-debug.h  $@/ustr.h 
 
 dir-c_dbg2-%:
-		mkdir $@
-		( cd $@ ; ustr-import -d -d -c $* )
-		mv $@/ustr-debug.h  $@/ustr.h 
+		$(HIDE)echo Creating: $@
+		$(HIDE)mkdir $@
+		$(HIDE)( cd $@ ; ustr-import -d -d -c $* )
+		$(HIDE)mv $@/ustr-debug.h  $@/ustr.h 
 
 
 
 dir-i_norm-%:
-		mkdir $@
-		( cd $@ ; ustr-import       $* )
+		$(HIDE)echo Creating: $@
+		$(HIDE)mkdir $@
+		$(HIDE)( cd $@ ; ustr-import       $* )
 
 dir-i_dbg1-%:
-		mkdir $@
-		( cd $@ ; ustr-import -d    $* )
-		mv $@/ustr-debug.h  $@/ustr.h 
+		$(HIDE)echo Creating: $@
+		$(HIDE)mkdir $@
+		$(HIDE)( cd $@ ; ustr-import -d    $* )
+		$(HIDE)mv $@/ustr-debug.h  $@/ustr.h 
 
 dir-i_dbg2-%:
-		mkdir $@
-		( cd $@ ; ustr-import -d -d $* )
-		mv $@/ustr-debug.h  $@/ustr.h 
+		$(HIDE)echo Creating: $@
+		$(HIDE)mkdir $@
+		$(HIDE)( cd $@ ; ustr-import -d -d $* )
+		$(HIDE)mv $@/ustr-debug.h  $@/ustr.h 
 
 
 # --------------------------------
@@ -166,7 +184,7 @@ dir-i_dbg2-%:
 # --------------------------------
 PACKAGE_BUGREPORT = "james@and.org"
 check: $(TST_ALL)
-	@$(HIDE)failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[        ]'; \
+	$(HIDE)failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[        ]'; \
 	list=' $(TST_ALL) '; \
         if test -n "$$list"; then \
 	  for tst in $$list; do \

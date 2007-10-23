@@ -169,6 +169,9 @@ else
     srch=true
     utf8=true
   fi
+  if $srch; then
+    cmp=true
+  fi
   if $utf8; then
     sc=true
   fi
