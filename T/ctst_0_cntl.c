@@ -20,7 +20,7 @@ int main(void)
   Ustr_cntl_mem  mymem;
   
   ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_REF_BYTES, &rbytes));
-  ASSERT(rbytes == 2);
+  ASSERT(rbytes == 1);
   
   ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_HAS_SIZE, &has_sz));
   ASSERT(has_sz == 0);

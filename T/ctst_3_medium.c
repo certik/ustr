@@ -45,11 +45,15 @@ int tst(void)
   unsigned int i;
   struct Ustr *tmp = NULL;
   Ustr *s3 = USTR1(\xb, "abcd 42 xyz");
-  Ustr *s4 = ustr_dup_undef(18);
+  Ustr *s4 = USTR_NULL;
 
   assert(!USTR_CONF_USE_DYNAMIC_CONF ||
          ustr_cntl_opt(USTR_CNTL_OPT_SET_REF_BYTES, 2));
-  
+
+  if (USTR_CONF_USE_DYNAMIC_CONF)
+  ustr_sc_free2(&s2, ustr_dup_buf(ustr_cstr(s2), ustr_len(s2)));
+
+  ASSERT((s4 = ustr_dup_undef(18)));
   ASSERT(ustr_len(s1) == 0);
   ASSERT(ustr_len(s2) == strlen("s2"));
 
