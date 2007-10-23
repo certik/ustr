@@ -1,3 +1,7 @@
+2007-10-22  James Antill  <james@and.org>
+
+	* libustr.ver: Use different versions for different minor lib. versions.
+
 2007-10-21  James Antill  <james@and.org>
 
 	* ustr-import.in: Fixes needed for bugs found by installed testing.
