@@ -22,7 +22,6 @@ cd ./$pkg-$v
 
 ./scripts/clean.sh full
 ( cd Documentation && make )
-( cd examples && make clean )
 
 rm -rf tmp
 
@@ -30,6 +29,9 @@ rm -rf tmp
 find . \
  \( -name "*.o" -o -name ".*[%~]" -o -name "*[%~]" -o -name "#*#" \) \
  -print0 | xargs --no-run-if-empty -0 rm -f
+
+# git
+rm -rf .git
 
 # Arch stuff...
 rm -rf ./{arch}

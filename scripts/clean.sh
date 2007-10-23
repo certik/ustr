@@ -9,14 +9,12 @@ else
   exit 1;
 fi
 
-# Remove arch stuff
 make distclean
-( cd examples; make clean )
+( cd examples;    make clean )
+( cd T-installed; make clean )
 
-# Arch
+# Remove arch stuff
 rm -rf ,,*
-# git
-rm -rf .git
 
 if [ "x$1" = "xfull" ]; then
   rm -rf lcov-output
