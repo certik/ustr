@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Ustr - 1.0.1 reference documentation -- functions</title>
+<title>Ustr - 1.0.2 reference documentation -- functions</title>
     <style type="text/css">
       A:visited { color: #ff4040; }
       A:hover { color: #20b2aa; }
@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.1 reference documentation -- functions (199)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- functions (206)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -33,8 +33,8 @@
 <li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (4)</a>
 <li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (9)</a>
 <li><a href="#indx-Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr (8)</a>
-<li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (6)</a>
-<li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (7)</a>
+<li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (8)</a>
+<li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (9)</a>
 <li><a href="#indx-Resizing_a_sized_Ustr">Resizing a sized Ustr (1)</a>
 <li><a href="#indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr (12)</a>
 <li><a href="#indx-Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr (15)</a>
@@ -43,7 +43,7 @@
 <li><a href="#indx-Searching_for_data_in_a_Ustr">Searching for data in a Ustr (10)</a>
 <li><a href="#indx-Span_lengths_of_data_in_a_Ustr">Span lengths of data in a Ustr (28)</a>
 <li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (10)</a>
-<li><a href="#indx-String_substitutionreplacement">String substitution/replacement (6)</a>
+<li><a href="#indx-String_substitutionreplacement">String substitution/replacement (9)</a>
 <li><a href="#indx-Splitting_a_Ustr">Splitting a Ustr (4)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (6)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
@@ -95,6 +95,8 @@
 <li class="obj"><a href="#ustr_add_undef">ustr_add_undef()</a>
 <li class="obj"><a href="#ustr_add_buf">ustr_add_buf()</a>
 <li class="obj"><a href="#ustr_add_cstr">ustr_add_cstr()</a>
+<li class="obj"><a href="#USTR_ADD_OSTR">USTR_ADD_OSTR()</a>
+<li class="obj"><a href="#USTR_ADD_OBJ">USTR_ADD_OBJ()</a>
 <li class="obj"><a href="#ustr_add">ustr_add()</a>
 <li class="obj"><a href="#ustr_add_subustr">ustr_add_subustr()</a>
 <li class="obj"><a href="#ustr_add_rep_chr">ustr_add_rep_chr()</a>
@@ -104,6 +106,8 @@
 <li class="obj"><a href="#ustr_set_empty">ustr_set_empty()</a>
 <li class="obj"><a href="#ustr_set_buf">ustr_set_buf()</a>
 <li class="obj"><a href="#ustr_set_cstr">ustr_set_cstr()</a>
+<li class="obj"><a href="#USTR_SET_OSTR">USTR_SET_OSTR()</a>
+<li class="obj"><a href="#USTR_SET_OSTR">USTR_SET_OSTR()</a>
 <li class="obj"><a href="#ustr_set">ustr_set()</a>
 <li class="obj"><a href="#ustr_set_subustr">ustr_set_subustr()</a>
 <li class="obj"><a href="#ustr_set_rep_chr">ustr_set_rep_chr()</a>
@@ -241,6 +245,9 @@
 <li class="obj"><a href="#ustr_sub_cstr">ustr_sub_cstr()</a>
 <li class="obj"><a href="#ustr_sc_sub">ustr_sc_sub()</a>
 <li class="obj"><a href="#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
+<li class="obj"><a href="#ustr_sc_sub_cstr">ustr_sc_sub_cstr()</a>
+<li class="obj"><a href="#ustr_replace_buf">ustr_replace_buf()</a>
+<li class="obj"><a href="#ustr_replace_cstr">ustr_replace_cstr()</a>
 <li class="obj"><a href="#ustr_replace">ustr_replace()</a>
 <li class="obj"><a href="#ustr_replace_rep_chr">ustr_replace_rep_chr()</a>
 </ul><li><a id="indx-Splitting_a_Ustr" href="#Splitting_a_Ustr">Splitting a Ustr</a>
@@ -292,7 +299,7 @@
 <li class="obj"><a href="#ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
 </ul><li><a id="indx-Simple_Ustr_pool_API" href="#Simple_Ustr_pool_API">Simple Ustr pool API</a>
 <ul>
-<li class="obj"><a href="#ustr_pool_make_pool">ustr_pool_make_pool()</a>
+<li class="obj"><a href="#ustr_pool_ll_make">ustr_pool_ll_make()</a>
 <li class="obj"><a href="#ustr_pool_make_subpool">ustr_pool_make_subpool()</a>
 <li class="obj"><a href="#ustr_pool_free">ustr_pool_free()</a>
 <li class="obj"><a href="#ustr_pool_clear">ustr_pool_clear()</a>
@@ -773,6 +780,29 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_ADD_OSTR">USTR_ADD_OSTR()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A constant C-style string<br>Type<strong>[2]</strong>: const char []
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_add_buf">ustr_add_buf()</a> and passed
+ sizeof() - 1 as the length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_ADD_OBJ">USTR_ADD_OBJ()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A symbol<br>Type<strong>[2]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_add_buf">ustr_add_buf()</a> and passed
+ sizeof() as the length.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  In most cases you'll want to use <a href="functions#USTR_ADD_OSTR">USTR_ADD_OSTR()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_add">ustr_add()</a>
 <br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
@@ -838,8 +868,8 @@
 <strong>Function: </strong> <a id="ustr_set_buf">ustr_set_buf()</a>
 <br>Returns: Success or failure<br>Type: int
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  const void *<br>Type<strong>[2]</strong>:  const void *
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  size_t<br>Type<strong>[3]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Buffer containting data<br>Type<strong>[2]</strong>:  const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of Buffer<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_del">ustr_del()</a> for the entire string and
  the <a href="functions#ustr_add_buf">ustr_add_buf()</a>.
@@ -849,10 +879,33 @@
 <strong>Function: </strong> <a id="ustr_set_cstr">ustr_set_cstr()</a>
 <br>Returns: Success or failure<br>Type: int
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  const char *<br>Type<strong>[2]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string<br>Type<strong>[2]</strong>: const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_del">ustr_del()</a> for the entire string and
- the <a href="functions#ustr_add_cstr">ustr_add_cstr()</a>.
+ then <a href="functions#ustr_add_cstr">ustr_add_cstr()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_SET_OSTR">USTR_SET_OSTR()</a>
+<br>Returns: Success or failure<br>Type: int
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A constant C-style string<br>Type<strong>[2]</strong>: const char []
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_del">ustr_del()</a> for the entire string and
+ then <a href="functions#USTR_ADD_OSTR">USTR_ADD_OSTR()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_SET_OSTR">USTR_SET_OSTR()</a>
+<br>Returns: Success or failure<br>Type: int
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A symbol<br>Type<strong>[2]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_del">ustr_del()</a> for the entire string and
+ then <a href="functions#USTR_ADD_OBJ">USTR_ADD_OBJ()</a>.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  In most cases you'll want to use <a href="functions#USTR_SET_OSTR">USTR_SET_OSTR()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2268,51 +2321,95 @@
 <strong>Function: </strong> <a id="ustr_sub_buf">ustr_sub_buf()</a>
 <br>Returns: success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>:  Position where to start replacement<br>Type<strong>[2]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Buffer containing replacement string <br>Type<strong>[3]</strong>:  const void*
+</td></tr><tr><td>Parameter<strong>[2]</strong>:  Position where to start substitution<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Buffer containing substitution string <br>Type<strong>[3]</strong>:  const void *
 </td></tr><tr><td>Parameter<strong>[4]</strong>:  Length of buffer<br>Type<strong>[4]</strong>:  size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function will replace the characters in the Ustr starting at the
+</p><p>  This function will substitute the characters in the Ustr starting at the
  specified position using data from the buffer.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The Ustr will be automatically be resized if necessary.
+</p><p>  The Ustr will be automatically be resized to be big enough, if necessary.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sub_cstr">ustr_sub_cstr()</a>
 <br>Returns: success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement<br>Type<strong>[2]</strong>:  size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  Replacement Cstring<br>Type<strong>[3]</strong>:  const char *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, which is the substitution<br>Type<strong>[3]</strong>:  const char *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function will replace characters in the Ustr starting at the specified
- position using data from the given Cstring.
+</p><p>  This function works like <a href="functions#ustr_sub_buf">ustr_sub_buf()</a> but the length is worked out
+ automatically by strlen().
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sc_sub">ustr_sc_sub()</a>
 <br>Returns: success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of replacement<br>Type<strong>[3]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Pointer to a Ustr containing the replacement string<br>Type<strong>[4]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Pointer to a Ustr containing the substitute string<br>Type<strong>[4]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  Replaces a specified number of characters starting at the given position
+</p><p>  Substitutes a specified number of characters starting at the given position
  with the characters from the given Ustr. 
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
-<br>Returns: success or failure <br>Type: int 
+<br>Returns: Success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement <br>Type<strong>[2]</strong>:  size_t 
-</td></tr><tr><td>Parameter<strong>[3]</strong>:  Length of replacement<br>Type<strong>[3]</strong>:  size_t 
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  Buffer containting replacement string<br>Type<strong>[4]</strong>:  const void *
-</td></tr><tr><td>Parameter<strong>[5]</strong>:  Length of Buffer<br>Type<strong>[5]</strong>:  size_t 
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t 
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitute<br>Type<strong>[3]</strong>: size_t 
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Buffer containting substitute data<br>Type<strong>[4]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of Buffer<br>Type<strong>[5]</strong>: size_t 
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function will replace a specific number of characters in a Ustr with
- the data from a buffer. 
+ the data from a buffer, this function does the job of one or more of
+ <a href="functions#ustr_add_buf">ustr_add_buf()</a>, <a href="functions#ustr_sub_buf">ustr_sub_buf()</a> and <a href="functions#ustr_del">ustr_del()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_cstr">ustr_sc_sub_cstr()</a>
+<br>Returns: Success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement <br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of replacement<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> but the length is worked out
+ automatically by strlen().
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_replace_buf">ustr_replace_buf()</a>
+<br>Returns: Number of tokens replaced <br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr (haystack)<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Buffer containting search data<br>Type<strong>[2]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of search buffer<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Buffer containting replacement data<br>Type<strong>[4]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of replacement buffer<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[6]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function scans the &quot;haystack&quot; (Parameter[1]) for &quot;needle&quot; (Parameter[2])
+ and replaces max_replacements (Parameter[6]) matches with the
+ "replacement" (Parameter[4]).
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  If max_replacements (Parameter[6]) is 0, this function will replace ALL
+ occurrences.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_replace_cstr">ustr_replace_cstr()</a>
+<br>Returns: Number of tokens replaced <br>Type: size_t 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr (haystack)<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string, containing search bytes<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, containing replacement bytes<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like ustr_replace_buf but gets the lengths for the
+ buffer automatically from strlen().
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2321,15 +2418,10 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr (haystack)<br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Ustr to search for (needle)<br>Type<strong>[2]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Ustr to replace needle with<br>Type<strong>[3]</strong>: const struct Ustr *
-</td></tr><tr><td>Parameter<strong>[4]</strong>:  Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[4]</strong>:  size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function scans the &quot;haystack&quot; (Parameter[1]) for &quot;needle&quot; (Parameter[2])
- and replaces max_replacements (Parameter[4]) matches with the
- "replacement" (Parameter[3]).
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  If max_replacements (Parameter[4]) is 0, this function will replace ALL
- occurrences.
+</p><p>  This function works like ustr_replace_buf but gets the lengths from the
+ ustr automatically.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -2827,11 +2919,14 @@
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple Ustr pool API</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_pool_make_pool">ustr_pool_make_pool()</a>
+<strong>Function: </strong> <a id="ustr_pool_ll_make">ustr_pool_ll_make()</a>
 <br>Returns: Ustr pool object<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This allocates a new pool.
+</p><p>  This allocates a new pool using the &quot;linked list&quot; strategy, each allocation
+ in the pool is added to a linked list ... and any allocations not freed
+ directly are freed by the pool when it is cleared or freed.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_make_subpool">ustr_pool_make_subpool()</a>

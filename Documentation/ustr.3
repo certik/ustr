@@ -1,4 +1,4 @@
-.TH ustr 3 "17-Oct-2007" "Ustr 1.0.1" "Ustr String Library"
+.TH ustr 3 "22-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
 .SH "SYNOPSIS"
 .in \w'  'u
 #include "ustr.h"
@@ -138,6 +138,14 @@ int \fBustr_add_buf\fR(struct Ustr **, const void *, size_t);
 .ti \w'  'u
 int  \fBustr_add_cstr\fR(struct Ustr **, const char *);
 .br
+.in \w'  int  \fBUSTR_ADD_OSTR\fR('u
+.ti \w'  'u
+int  \fBUSTR_ADD_OSTR\fR(struct Ustr **, const char []);
+.br
+.in \w'  int  \fBUSTR_ADD_OBJ\fR('u
+.ti \w'  'u
+int  \fBUSTR_ADD_OBJ\fR(struct Ustr **, ...);
+.br
 .in \w'  int  \fBustr_add\fR('u
 .ti \w'  'u
 int  \fBustr_add\fR(struct Ustr **, const struct Ustr *);
@@ -161,11 +169,19 @@ int \fBustr_set_empty\fR(struct Ustr **);
 .br
 .in \w'  int \fBustr_set_buf\fR('u
 .ti \w'  'u
-int \fBustr_set_buf\fR(struct Ustr **,  const void *,  size_t);
+int \fBustr_set_buf\fR(struct Ustr **,  const void *, size_t);
 .br
 .in \w'  int \fBustr_set_cstr\fR('u
 .ti \w'  'u
-int \fBustr_set_cstr\fR(struct Ustr **,  const char *);
+int \fBustr_set_cstr\fR(struct Ustr **, const char *);
+.br
+.in \w'  int \fBUSTR_SET_OSTR\fR('u
+.ti \w'  'u
+int \fBUSTR_SET_OSTR\fR(struct Ustr **, const char []);
+.br
+.in \w'  int \fBUSTR_SET_OSTR\fR('u
+.ti \w'  'u
+int \fBUSTR_SET_OSTR\fR(struct Ustr **, ...);
 .br
 .in \w'  int \fBustr_set\fR('u
 .ti \w'  'u
@@ -638,7 +654,7 @@ int  \fBustr_io_putfilename\fR(struct Ustr **, const char *, const char *);
 .br
 .in \w'  int  \fBustr_sub_buf\fR('u
 .ti \w'  'u
-int  \fBustr_sub_buf\fR(struct Ustr **,  size_t,  const void*,  size_t);
+int  \fBustr_sub_buf\fR(struct Ustr **,  size_t,  const void *,  size_t);
 .br
 .in \w'  int  \fBustr_sub_cstr\fR('u
 .ti \w'  'u
@@ -650,11 +666,23 @@ int  \fBustr_sc_sub\fR(struct Ustr **, size_t, size_t, const struct Ustr *);
 .br
 .in \w'  int  \fBustr_sc_sub_buf\fR('u
 .ti \w'  'u
-int  \fBustr_sc_sub_buf\fR(struct Ustr **,  size_t ,  size_t ,  const void *,  size_t );
+int  \fBustr_sc_sub_buf\fR(struct Ustr **, size_t , size_t , const void *, size_t );
+.br
+.in \w'  int  \fBustr_sc_sub_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_cstr\fR(struct Ustr **, size_t, size_t, const char *);
+.br
+.in \w'  size_t  \fBustr_replace_buf\fR('u
+.ti \w'  'u
+size_t  \fBustr_replace_buf\fR(struct Ustr **, const void *, size_t, const void *, size_t, size_t);
+.br
+.in \w'  size_t  \fBustr_replace_cstr\fR('u
+.ti \w'  'u
+size_t  \fBustr_replace_cstr\fR(struct Ustr **, const char *, const char *, size_t);
 .br
 .in \w'  int  \fBustr_replace\fR('u
 .ti \w'  'u
-int  \fBustr_replace\fR(struct Ustr **, const struct Ustr *, const struct Ustr *,  size_t);
+int  \fBustr_replace\fR(struct Ustr **, const struct Ustr *, const struct Ustr *, size_t);
 .br
 .in \w'  size_t \fBustr_replace_rep_chr\fR('u
 .ti \w'  'u
@@ -807,9 +835,9 @@ uint_least32_t  \fBustr_parse_b_uint32\fR(const struct Ustr *, size_t);
 uint_least64_t  \fBustr_parse_b_uint64\fR(const struct Ustr *, size_t);
 .sp
 .br
-.in \w'  struct Ustr_pool *\fBustr_pool_make_pool\fR('u
+.in \w'  struct Ustr_pool *\fBustr_pool_ll_make\fR('u
 .ti \w'  'u
-struct Ustr_pool *\fBustr_pool_make_pool\fR(void);
+struct Ustr_pool *\fBustr_pool_ll_make\fR(void);
 .br
 .in \w'  struct Ustr_pool *\fBustr_pool_make_subpool\fR('u
 .ti \w'  'u
@@ -1836,6 +1864,59 @@ Type\fB[2]\fR: const char *
 
 .ti -2
 .br
+\fBFunction: \fR USTR_ADD_OSTR()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A constant C-style string
+.br
+Type\fB[2]\fR: const char []
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_add_buf() and passed sizeof() - 1 as the length.
+
+.ti -2
+.br
+\fBFunction: \fR USTR_ADD_OBJ()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A symbol
+.br
+Type\fB[2]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_add_buf() and passed sizeof() as the length.
+.sp
+\fBNote:\fR
+
+.br
+  In most cases you'll want to use USTR_ADD_OSTR().
+
+.ti -2
+.br
 \fBFunction: \fR ustr_add()
 .br
 Returns: Success or failure
@@ -1989,14 +2070,14 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  const void *
+Parameter\fB[2]\fR: Buffer containting data
 .br
 Type\fB[2]\fR:  const void *
 
 .br
-Parameter\fB[3]\fR:  size_t
+Parameter\fB[3]\fR: Length of Buffer
 .br
-Type\fB[3]\fR:  size_t
+Type\fB[3]\fR: size_t
 
 .br
 \fBExplanation:\fR
@@ -2018,15 +2099,68 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  const char *
+Parameter\fB[2]\fR: A pointer to a constant C-style string
 .br
-Type\fB[2]\fR:  const char *
+Type\fB[2]\fR: const char *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_del() for the entire string and the ustr_add_cstr().
+  This function works as if you had called ustr_del() for the entire string and then ustr_add_cstr().
+
+.ti -2
+.br
+\fBFunction: \fR USTR_SET_OSTR()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A constant C-style string
+.br
+Type\fB[2]\fR: const char []
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_del() for the entire string and then USTR_ADD_OSTR().
+
+.ti -2
+.br
+\fBFunction: \fR USTR_SET_OSTR()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A symbol
+.br
+Type\fB[2]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_del() for the entire string and then USTR_ADD_OBJ().
+.sp
+\fBNote:\fR
+
+.br
+  In most cases you'll want to use USTR_SET_OSTR().
 
 .ti -2
 .br
@@ -5428,14 +5562,14 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR:  Position where to start replacement
+Parameter\fB[2]\fR:  Position where to start substitution
 .br
 Type\fB[2]\fR:  size_t
 
 .br
-Parameter\fB[3]\fR: Buffer containing replacement string 
+Parameter\fB[3]\fR: Buffer containing substitution string 
 .br
-Type\fB[3]\fR:  const void*
+Type\fB[3]\fR:  const void *
 
 .br
 Parameter\fB[4]\fR:  Length of buffer
@@ -5446,12 +5580,12 @@ Type\fB[4]\fR:  size_t
 \fBExplanation:\fR
 
 .br
-  This function will replace the characters in the Ustr starting at the specified position using data from the buffer.
+  This function will substitute the characters in the Ustr starting at the specified position using data from the buffer.
 .sp
 \fBNote:\fR
 
 .br
-  The Ustr will be automatically be resized if necessary.
+  The Ustr will be automatically be resized to be big enough, if necessary.
 
 .ti -2
 .br
@@ -5467,12 +5601,12 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Position where to start replacement
+Parameter\fB[2]\fR: Position where to start substitution
 .br
 Type\fB[2]\fR:  size_t
 
 .br
-Parameter\fB[3]\fR:  Replacement Cstring
+Parameter\fB[3]\fR: A pointer to a constant C-style string, which is the substitution
 .br
 Type\fB[3]\fR:  const char *
 
@@ -5480,7 +5614,7 @@ Type\fB[3]\fR:  const char *
 \fBExplanation:\fR
 
 .br
-  This function will replace characters in the Ustr starting at the specified position using data from the given Cstring.
+  This function works like ustr_sub_buf() but the length is worked out automatically by strlen().
 
 .ti -2
 .br
@@ -5496,17 +5630,17 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Position where to start replacement
+Parameter\fB[2]\fR: Position where to start substitution
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Length of replacement
+Parameter\fB[3]\fR: Length of substitution
 .br
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: Pointer to a Ustr containing the replacement string
+Parameter\fB[4]\fR: Pointer to a Ustr containing the substitute string
 .br
 Type\fB[4]\fR: const struct Ustr *
 
@@ -5514,13 +5648,52 @@ Type\fB[4]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  Replaces a specified number of characters starting at the given position with the characters from the given Ustr. 
+  Substitutes a specified number of characters starting at the given position with the characters from the given Ustr. 
 
 .ti -2
 .br
 \fBFunction: \fR ustr_sc_sub_buf()
 .br
-Returns: success or failure 
+Returns: Success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t 
+
+.br
+Parameter\fB[3]\fR: Length of substitute
+.br
+Type\fB[3]\fR: size_t 
+
+.br
+Parameter\fB[4]\fR: Buffer containting substitute data
+.br
+Type\fB[4]\fR: const void *
+
+.br
+Parameter\fB[5]\fR: Length of Buffer
+.br
+Type\fB[5]\fR: size_t 
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function will replace a specific number of characters in a Ustr with the data from a buffer, this function does the job of one or more of ustr_add_buf(), ustr_sub_buf() and ustr_del().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_cstr()
+.br
+Returns: Success or failure 
 .br
 Type: int 
 
@@ -5532,28 +5705,106 @@ Type\fB[1]\fR: struct Ustr **
 .br
 Parameter\fB[2]\fR: Position where to start replacement 
 .br
-Type\fB[2]\fR:  size_t 
+Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR:  Length of replacement
+Parameter\fB[3]\fR: Length of replacement
 .br
-Type\fB[3]\fR:  size_t 
+Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR:  Buffer containting replacement string
+Parameter\fB[4]\fR: A pointer to a constant C-style string, containing spanning bytes
 .br
-Type\fB[4]\fR:  const void *
-
-.br
-Parameter\fB[5]\fR:  Length of Buffer
-.br
-Type\fB[5]\fR:  size_t 
+Type\fB[4]\fR: const char *
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function will replace a specific number of characters in a Ustr with the data from a buffer. 
+  This function works like ustr_sc_sub_buf() but the length is worked out automatically by strlen().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_replace_buf()
+.br
+Returns: Number of tokens replaced 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr (haystack)
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Buffer containting search data
+.br
+Type\fB[2]\fR: const void *
+
+.br
+Parameter\fB[3]\fR: Length of search buffer
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Buffer containting replacement data
+.br
+Type\fB[4]\fR: const void *
+
+.br
+Parameter\fB[5]\fR: Length of replacement buffer
+.br
+Type\fB[5]\fR: size_t
+
+.br
+Parameter\fB[6]\fR: Maximum number of matches to replace (0 for unlimited)
+.br
+Type\fB[6]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function scans the "haystack" (Parameter[1]) for "needle" (Parameter[2]) and replaces max_replacements (Parameter[6]) matches with the "replacement" (Parameter[4]).
+.sp
+\fBNote:\fR
+
+.br
+  If max_replacements (Parameter[6]) is 0, this function will replace ALL occurrences.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_replace_cstr()
+.br
+Returns: Number of tokens replaced 
+.br
+Type: size_t 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr (haystack)
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string, containing search bytes
+.br
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string, containing replacement bytes
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Maximum number of matches to replace (0 for unlimited)
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_replace_buf but gets the lengths for the buffer automatically from strlen().
 
 .ti -2
 .br
@@ -5579,20 +5830,15 @@ Parameter\fB[3]\fR: Ustr to replace needle with
 Type\fB[3]\fR: const struct Ustr *
 
 .br
-Parameter\fB[4]\fR:  Maximum number of matches to replace (0 for unlimited)
+Parameter\fB[4]\fR: Maximum number of matches to replace (0 for unlimited)
 .br
-Type\fB[4]\fR:  size_t
+Type\fB[4]\fR: size_t
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function scans the "haystack" (Parameter[1]) for "needle" (Parameter[2]) and replaces max_replacements (Parameter[4]) matches with the "replacement" (Parameter[3]).
-.sp
-\fBNote:\fR
-
-.br
-  If max_replacements (Parameter[4]) is 0, this function will replace ALL occurrences.
+  This function works like ustr_replace_buf but gets the lengths from the ustr automatically.
 
 .ti -2
 .br
@@ -6821,7 +7067,7 @@ Type\fB[2]\fR: size_t
 .SH Simple Ustr pool API
 .ti -2
 .br
-\fBFunction: \fR ustr_pool_make_pool()
+\fBFunction: \fR ustr_pool_ll_make()
 .br
 Returns: Ustr pool object
 .br
@@ -6836,7 +7082,8 @@ Type\fB[1]\fR: void
 \fBExplanation:\fR
 
 .br
-  This allocates a new pool.
+  This allocates a new pool using the "linked list" strategy, each allocation in the pool is added to a linked list ... and any allocations not freed directly are freed by the pool when it is cleared or freed.
+
 .ti -2
 .br
 \fBFunction: \fR ustr_pool_make_subpool()
