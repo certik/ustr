@@ -113,6 +113,78 @@ Function: USTR4()
  the read-only string can be upto 2**32 - 1 bytes in length.
 
 
+Function: USTR1_CHK()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Data for Ustr string
+ Type[2]: const char[]
+
+ Explanation:
+
+  This function works in the same way as USTR1() but it does a check against
+ the length of (Parameter[2]) using sizeof() - 1.
+
+ Note:
+
+  If the check fails the returned Ustr * will be "".
+
+
+Function: USTR2_CHK()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 2nd byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 1st byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Data for Ustr string
+ Type[3]: const char[]
+
+ Explanation:
+
+  This function works in the same way as USTR2() but it does a check against
+ the length of (Parameter[2]) using sizeof() - 1.
+
+ Note:
+
+  If the check fails the returned Ustr * will be "".
+
+
+Function: USTR4_CHK()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 4th byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 3rd byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Encoded 2nd byte of number of the length of Ustr string
+ Type[3]: symbol
+
+ Parameter[4]: Encoded 1st byte of number of the length of Ustr string
+ Type[4]: symbol
+
+ Parameter[5]: Data for Ustr string
+ Type[5]: const char[]
+
+ Explanation:
+
+  This function works in the same way as USTR4() but it does a check against
+ the length of (Parameter[2]) using sizeof() - 1.
+
+ Note:
+
+  If the check fails the returned Ustr * will be "".
+
+
 Function: USTRP1()
  Returns: Ustr string
  Type: struct Ustr *
@@ -168,6 +240,63 @@ Function: USTRP4()
  Explanation:
 
   This function works like USTR2(), but returns a Ustrp instead.
+
+
+Function: USTRP1_CHK()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Data for Ustr string
+ Type[2]: const char[]
+
+ Explanation:
+
+  This function works like USTR1_CHK(), but returns a Ustrp instead.
+
+
+Function: USTRP2_CHK()
+ Returns: Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Encoded 2nd byte of number of the length of Ustr string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 1st byte of number of the length of Ustr string
+ Type[2]: symbol
+
+ Parameter[3]: Data for Ustr string
+ Type[3]: const char[]
+
+ Explanation:
+
+  This function works like USTR4_CHK(), but returns a Ustrp instead.
+
+
+Function: USTRP4_CHK()
+ Returns: Ustrp string
+ Type: struct Ustrp *
+
+ Parameter[1]: Encoded 4th byte of number of the length of Ustrp string
+ Type[1]: symbol
+
+ Parameter[2]: Encoded 3rd byte of number of the length of Ustrp string
+ Type[2]: symbol
+
+ Parameter[3]: Encoded 2nd byte of number of the length of Ustrp string
+ Type[3]: symbol
+
+ Parameter[4]: Encoded 1st byte of number of the length of Ustrp string
+ Type[4]: symbol
+
+ Parameter[5]: Data for Ustr string
+ Type[5]: const char[]
+
+ Explanation:
+
+  This function works like USTR2_CHK(), but returns a Ustrp instead.
 
 
 Section: Creating fixed Ustr functions

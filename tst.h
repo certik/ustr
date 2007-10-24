@@ -87,7 +87,18 @@ static unsigned long mc_mem_fail_num = 0;
 int main(void)
 {
   int ret = -1;
+  struct Ustr *s2_chk1 = USTR1_CHK(\2, "s2");
+  struct Ustr *s2_chk2 = USTR1_CHK(\x2, "s2");
+  struct Ustr *s2_chk3 = USTR1_CHK(\x02, "s2");
+  struct Ustr *s2_chk4 = USTR2_CHK(\0, \x02, "s2");
+  struct Ustr *s2_chk8 = USTR4_CHK(\0, \0, \0, \x02, "s2");
 
+  ASSERT(ustr_len(s2_chk1));
+  ASSERT(ustr_len(s2_chk2));
+  ASSERT(ustr_len(s2_chk3));
+  ASSERT(ustr_len(s2_chk4));
+  ASSERT(ustr_len(s2_chk8));
+  
   assert(USTR_CNTL_MALLOC_CHECK_MEM("")); /* not enabled yet */
   
 #if USTR_CONF_USE_DYNAMIC_CONF

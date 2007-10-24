@@ -302,15 +302,42 @@ USTR__COMPILE_ASSERT((sizeof(USTR_END_CONSTx) == sizeof(USTR_END_FIXEDx)),
     USTR(USTR_BEG_CONST1 #x1                             y USTR_END_CONSTx)
 #define USTR2(x1, x2, y)                                                \
     USTR(USTR_BEG_CONST2 #x2 #x1                         y USTR_END_CONSTx)
-#define USTR4(x1, x2, x3, x4, y)                   /* Likely? */        \
+#define USTR4(x1, x2, x3, x4, y)                                        \
     USTR(USTR_BEG_CONST4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx)
 
 #define USTRP1(x1, y)                                                   \
     USTRP(USTR_BEG_CONST1 #x1                             y USTR_END_CONSTx)
 #define USTRP2(x1, x2, y)                                               \
     USTRP(USTR_BEG_CONST2 #x2 #x1                         y USTR_END_CONSTx)
-#define USTRP4(x1, x2, x3, x4, y)                   /* Likely? */       \
+#define USTRP4(x1, x2, x3, x4, y)                                       \
     USTRP(USTR_BEG_CONST4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx)
+
+#define USTR1_CHK(x1, y) ((*( #x1 ) == (sizeof(y) - 1)) ?               \
+    USTR(USTR_BEG_CONST1 #x1                              y USTR_END_CONSTx) : \
+    USTR(""))
+#define USTR2_CHK(x1, x2, y)                                            \
+    ((((size_t)*( #x1 ) * 256 + *( #x2 )) == (sizeof(y) - 1)) ?         \
+    USTR(USTR_BEG_CONST2 #x2 #x1                          y USTR_END_CONSTx) : \
+    USTR(""))
+#define USTR4_CHK(x1, x2, x3, x4, y)                                    \
+    ((((size_t)*( #x1 ) * 16777216 + (size_t)*( #x2 ) * 65536 +         \
+       (size_t)*( #x3 ) * 256      + *( #x4 )) == (sizeof(y) - 1)) ?    \
+    USTR(USTR_BEG_CONST4 #x4 #x3 #x2 #x1                  y USTR_END_CONSTx) : \
+    USTR(""))
+
+#define USTRP1_CHK(x1, y) ((*( #x1 ) == (sizeof(y) - 1)) ?              \
+    USTRP(USTR_BEG_CONST1 #x1                             y USTR_END_CONSTx) : \
+    USTRP(""))
+#define USTRP2_CHK(x1, x2, y)                                           \
+    ((((size_t)*( #x1 ) * 256 + *( #x2 )) == (sizeof(y) - 1)) ?         \
+    USTRP(USTR_BEG_CONST2 #x2 #x1                         y USTR_END_CONSTx) : \
+    USTRP(""))
+#define USTRP4_CHK(x1, x2, x3, x4, y)                                   \
+    ((((size_t)*( #x1 ) * 16777216 + (size_t)*( #x2 ) * 65536 +         \
+       (size_t)*( #x3 ) * 256      + *( #x4 )) == (sizeof(y) - 1)) ?    \
+    USTRP(USTR_BEG_CONST4 #x4 #x3 #x2 #x1                 y USTR_END_CONSTx) : \
+    USTRP(""))
+    
 
 /*
  *    ================ English description of struct Ustr ================

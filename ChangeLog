@@ -1,3 +1,9 @@
+2007-10-24  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR1_CHK): Added macro function.
+	(USTR2_CHK): Added macro function.
+	(USTR4_CHK): Added macro function.
+
 2007-10-23  James Antill  <james@and.org>
 
 	* examples/custr.c (main): Add new example, creates constant ustr's from
