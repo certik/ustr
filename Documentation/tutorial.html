@@ -214,7 +214,7 @@ ustr (although, as with the constant ustr, it does no harm).</p>
     num = ustr_srch_fwd(*ps1, <span class="num0">0</span>, fgrep_srch);
   <span class="else">else</span> <span class="if">if</span> (!(num = ustr_replace(ps1, fgrep_srch, fgrep_repl,
                                 !first_only)) &amp;&amp; <span class="errno">errno</span>)
-    die(prog_name, strerror(ENOMEM));
+    die(<span class="str">"fgrep"</span>, strerror(ENOMEM));
   
   <span class="if">if</span> (!num)
     ustr_sc_del(ps1);
@@ -234,13 +234,13 @@ ustr (although, as with the constant ustr, it does no harm).</p>
     <span class="if">if</span> (!fgrep(&amp;line, fgrep_srch, fgrep_repl, <span class="false">USTR_FALSE</span>))
       ustr_sc_del(&amp;line);
     else <span class="if">if</span> (!ustr_io_putfile(&amp;line, <span class="stdout">stdout</span>))
-      die(prog_name, strerror(<span class="errno">errno</span>));
+      die(<span class="str">"fgrep"</span>, strerror(<span class="errno">errno</span>));
     
     <span class="if">if</span> (line != USTR(buf)) <span class="comment">/* re-init */</span>
       ustr_sc_free2(&amp;line, USTR_SC_INIT_AUTO(buf, <span class="false">USTR_FALSE</span>, <span class="num0">0</span>));
   }
   <span class="if">if</span> (<span class="errno">errno</span>)
-    die(prog_name, strerror(<span class="errno">errno</span>));
+    die(<span class="str">"fgrep"</span>, strerror(<span class="errno">errno</span>));
 
   ustr_free(line);
 }
@@ -406,7 +406,7 @@ than the smaller perl code.
 
       <span class="if">if</span> (ustr_enomem(rep_nbsp) ||
           !ustr_sc_sub_subustr(&amp;line, spcs_pos, spcs_len, rep_nbsp, 1, rep))
-        die(prog_name, strerror(ENOMEM));
+        die(<span class="str">"txt2html"</span>, strerror(ENOMEM));
       
       spcs_off = spcs_pos + rep - 1;
     }
@@ -414,7 +414,7 @@ than the smaller perl code.
   }
   
   <span class="if">if</span> (ustr_enomem(line))
-    die(prog_name, strerror(<span class="errno">errno</span>));
+    die(<span class="str">"txt2html"</span>, strerror(<span class="errno">errno</span>));
 
   *pline = line;
 }
@@ -424,7 +424,7 @@ than the smaller perl code.
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Wed Oct 17 20:50:43 EDT 2007
+Last modified: Wed Oct 24 00:17:57 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
