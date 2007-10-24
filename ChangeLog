@@ -1,3 +1,8 @@
+2007-10-23  James Antill  <james@and.org>
+
+	* examples/custr.c (main): Add new example, creates constant ustr's from
+	input.
+
 2007-10-22  James Antill  <james@and.org>
 
 	* ustr-import.in: Missed fixes needed for install testing.

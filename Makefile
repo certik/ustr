@@ -73,6 +73,7 @@ MAN_PAGES_3 = \
        Documentation/ustr_const.3
 
 EXAMPLES = examples/Makefile \
+       examples/custr.c \
        examples/fgrep.c \
        examples/hello_world.c \
        examples/hexdump.c \
