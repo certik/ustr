@@ -395,11 +395,14 @@ int main(int argc, char *argv[])
     char buf_args[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
                                             after that we alloc. */
     Ustr *args = USTR_SC_INIT_AUTO(buf_args, USTR_FALSE, 0);
+    int done = USTR_FALSE;
     
     while (scan < argc)
     {
+      if (done)
+        ustr_add_cstr(&args, " ");
+      done = USTR_TRUE;
       ustr_add_cstr(&args, argv[scan++]);
-      ustr_add_cstr(&args, " ");
     }
     
     if (ustr_enomem(args))
