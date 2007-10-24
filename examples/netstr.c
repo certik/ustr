@@ -7,8 +7,6 @@
 #include <ctype.h>
 
 static int combine = USTR_FALSE;
-static int interp  = USTR_FALSE;
-static int csv     = USTR_FALSE;
 static int fnames  = USTR_FALSE;
 
 static void die(const char *prog_name, const char *msg)
@@ -175,14 +173,14 @@ static Ustr *gen_netstr_buf(const char *buf, size_t len, int interp)
       goto fail_mem;
     if (!(ret = ustr_dup_fmt("%zu:", ustr_len(tmp))))
       goto fail_mem;
-  }
-  else if (!(ret = ustr_dup_fmt("%zu:", len)))
-    goto fail_mem;
-  
-  if (interp)
     ustr_add(&ret, tmp);
+  }
   else
+  {
+    if (!(ret = ustr_dup_fmt("%zu:", len)))
+      goto fail_mem;
     ustr_add_buf(&ret, buf, len);
+  }
   
   ustr_add_rep_chr(&ret, ',', 1);
 
@@ -278,7 +276,6 @@ static Ustr *gen_csv_netstr(Nstrs *nstrs, Ustr **pin, FILE *fp,
   Ustr *ret = USTR_NULL;
   size_t off = 0;
   size_t len = ustr_len(in);
-  int state = 0;
   size_t scan = 0;
   int saved_errno = -1;
   
@@ -406,10 +403,6 @@ static Ustr *gen_csv_netstr(Nstrs *nstrs, Ustr **pin, FILE *fp,
   saved_errno = EINVAL;
   goto fail_csv;
   
- fail_save_csv:
-  saved_errno = errno;
-  goto fail_csv;
-  
  fail_csv:
   ustr_free(ret);
   nstrs_reset(nstrs, onum, ototal);
@@ -475,6 +468,8 @@ int main(int argc, char *argv[])
   Nstrs *nstrs = NULL;
   int scan = 0;
   int optchar = -1;
+  int interp  = USTR_FALSE;
+  int csv     = USTR_FALSE;
   
   USTR_CNTL_MALLOC_CHECK_BEG();
   
@@ -514,12 +509,9 @@ int main(int argc, char *argv[])
 
   if (fnames)
   {
-    Ustr *line = ustr_dupx_empty(1, 0, 0, 0);
-    size_t ns_sz = 32;
-    unsigned int num = 0;
-    
-    if (!line)
-      die(prog_name, strerror(errno));
+    char buf_line[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
+                                            after that we alloc. */
+    Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
 
     while (scan < argc)
     {
@@ -536,7 +528,7 @@ int main(int argc, char *argv[])
       {
         Ustr *arg = USTR_NULL;
 
-        ustr_del(&line, 1);
+        ustr_del(&line, ustr_spn_chr_rev(line, 0, '\n'));
         
         if (!(arg = gen_csv_netstr(nstrs, &line, fp, csv, interp)))
           die(prog_name, strerror(errno));
@@ -553,21 +545,23 @@ int main(int argc, char *argv[])
           ustr_free(arg);
         }
         
-        ustr_sc_del(&line);
+        ustr_sc_del(&line);          
+        if (line != USTR(buf_line)) /* re-init */
+          ustr_sc_free2(&line, USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0));
       }
+      if (errno)
+        die(prog_name, strerror(errno));
+
+      if (line != USTR(buf_line)) /* re-init */
+        ustr_sc_free2(&line, USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0));
+      
       fclose(fp);
       
       if (combine)
         out_combine(prog_name, nstrs);
     }
-
-    nstrs_free(nstrs);
-    
-    return (EXIT_SUCCESS);
   }
-  
-  if (!combine)
-  { /* Output one per. line */
+  else if (!combine)  /* Output one per. line */
     while (scan < argc)
     {
       Ustr *arg = gen_csv_netstr_cstr(nstrs, argv[scan++], csv, interp);
@@ -576,24 +570,21 @@ int main(int argc, char *argv[])
         die(prog_name, strerror(errno));
       ustr_free(arg);
     }
-
-    nstrs_free(nstrs);
-    
-    return (EXIT_SUCCESS);
-  }
-
-  scan = 0;
-  while (scan < argc)
+  else
   {
-    Ustr *arg = gen_csv_netstr_cstr(nstrs, argv[scan++], csv, interp);
-    
-    if (!arg)
-      die(prog_name, strerror(errno));
-    if (!nstrs_add_ustr(nstrs, arg))
-      die(prog_name, strerror(ENOMEM));
-  }
+    while (scan < argc)
+    {
+      Ustr *arg = gen_csv_netstr_cstr(nstrs, argv[scan++], csv, interp);
+      
+      if (!arg)
+        die(prog_name, strerror(errno));
+      if (!nstrs_add_ustr(nstrs, arg))
+        die(prog_name, strerror(ENOMEM));
+    }
 
-  out_combine(prog_name, nstrs);
+    out_combine(prog_name, nstrs);
+  }
+  
   nstrs_free(nstrs);
     
   USTR_CNTL_MALLOC_CHECK_END();

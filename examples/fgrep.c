@@ -41,15 +41,13 @@ static int prnt_line_num = USTR_FALSE;
 
 static int recurse = USTR_FALSE;
 
-static const char *prog_name = NULL;
-
 static void die(const char *prog_name, const char *msg)
 {
   fprintf(stderr, "%s: %s\n", prog_name, msg);
   exit (EXIT_FAILURE);
 }
 
-static void usage(int xcode)
+static void usage(int xcode, const char *prog_name)
 {
   fprintf((xcode == EXIT_SUCCESS) ? stdout : stderr, "\
  Format: %s [-hV] <string> [filename]...\n\
@@ -63,7 +61,7 @@ static void usage(int xcode)
 }
 
 static int grep_srch_only = USTR_FALSE;
-static int fgrep(Ustr **ps1)
+static int fgrep(const char *prog_name, Ustr **ps1)
 {
   size_t num = 0;
 
@@ -152,8 +150,8 @@ static void *fast_memsrch(const void *passed_hsptr, size_t hslen)
 
     if (!ignore_case)
     {
-      if ((*hsptr == *ndptr) && !memcmp(hsptr, hdptr, ndlen))
-        return (hsptr);
+      if ((*hsptr == *ndptr) && !memcmp(hsptr, ndptr, ndlen))
+        return ((void *) hsptr);
     }
     else
       while (USTR_TRUE)
@@ -180,7 +178,7 @@ static void *fast_memsrch(const void *passed_hsptr, size_t hslen)
   return (NULL);
 }
 
-static void fp_loop(FILE *in, Ustr *printable_fname, const char *prog_name)
+static void fp_loop(FILE *in, Ustr *printable_fname, const char *pname)
 {
   char buf_line[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
                                           after that we alloc. */
@@ -191,7 +189,7 @@ static void fp_loop(FILE *in, Ustr *printable_fname, const char *prog_name)
   {
     ++line_num;
     
-    if (!fast_memsrch(ustr_cstr(line), ustr_len(line)) || !fgrep(&line))
+    if (!fast_memsrch(ustr_cstr(line), ustr_len(line)) || !fgrep(pname, &line))
       ustr_sc_del(&line);
     else
     {
@@ -199,23 +197,23 @@ static void fp_loop(FILE *in, Ustr *printable_fname, const char *prog_name)
       {
         Ustr *tmp = ustr_dup(printable_fname);
         if (!ustr_io_putfile(&tmp, stdout))
-          die(prog_name, strerror(errno));
+          die(pname, strerror(errno));
         ustr_free(tmp);
       }
 
       if (prnt_line_num)
         if (fprintf(stdout, "%ju:", line_num) == -1)
-          die(prog_name, strerror(errno));
+          die(pname, strerror(errno));
       
       if (!ustr_io_putfile(&line, stdout))
-        die(prog_name, strerror(errno));
+        die(pname, strerror(errno));
     }
     
     if (line != USTR(buf_line)) /* re-init */
       ustr_sc_free2(&line, USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0));
   }
   if (errno)
-    die(prog_name, strerror(errno));
+    die(pname, strerror(errno));
 
   ustr_free(line);
   ustr_free(printable_fname);
@@ -318,6 +316,8 @@ int main(int argc, char *argv[])
   };
   int scan = 0;
   int optchar = -1;
+  const char *prog_name = NULL;
+
 
   USTR_CNTL_MALLOC_CHECK_BEG();
   if (!argc)
@@ -332,8 +332,8 @@ int main(int argc, char *argv[])
                                 "hirCFHRV", long_options, NULL)) != -1)
     switch (optchar)
     {
-      case '?': usage(EXIT_FAILURE);
-      case   1: usage(EXIT_SUCCESS);
+      case '?': usage(EXIT_FAILURE, prog_name);
+      case   1: usage(EXIT_SUCCESS, prog_name);
       case 'V':
         printf("%s version %s\n", prog_name, "1.0.0");
         exit (EXIT_SUCCESS);
@@ -389,7 +389,7 @@ int main(int argc, char *argv[])
   argv += optind;
 
   if (!argc)
-    usage(EXIT_FAILURE);
+    usage(EXIT_FAILURE, prog_name);
 
   if (!(fgrep_srch = ustr_dupx_cstr(0, 1, USTR_TRUE, USTR_FALSE, argv[0])))
     die(prog_name, strerror(ENOMEM));

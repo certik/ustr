@@ -1,7 +1,11 @@
 #include "ustr.h"
 /* this is a simple program showing how you can make mkdir_p() with Ustr */
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include <errno.h>
+
 
 static void die(const char *prog_name, const char *msg)
 {

@@ -22,6 +22,11 @@ PCFLAGS = $(CFLAGS)
 LDFLAGS = -lustr
 DEPS    =
 
+## Compile "debug" using /ustr/include/ustr*.h and /usr/lib/libustr-debug.so
+#PCFLAGS = $(CFLAGS) $(WARNS) -DUSTR_DEBUG=1
+#LDFLAGS = -lustr-debug
+#DEPS    =
+
 ## Compile "inline" using parent dir.
 #PCFLAGS = $(CFLAGS) -DUSTR_CONF_INCLUDE_CODEONLY_HEADERS=1 -I..
 #LDFLAGS =
@@ -29,7 +34,7 @@ DEPS    =
 ## Compile "static" using parent dir.
 #PCFLAGS = $(CFLAGS) -I..
 #LDFLAGS = ../libustr.a
-#PCFLAGS = $(CFLAGS) -I.. -DUSTR_DEBUG=1
+#PCFLAGS = $(CFLAGS) $(WARNS) -I.. -DUSTR_DEBUG=1
 #LDFLAGS = ../libustr-debug.a
 
 ## Compile "inline" using ustr-import output
@@ -45,14 +50,14 @@ DEPS    =
 #LDFLAGS = libustr.a
 
 ## Compile "static" dbg using ustr-import
-#PCFLAGS = $(CFLAGS)
+#PCFLAGS = $(CFLAGS) $(WARNS)
 #DEPS    = libustr-debug.a
 #LDFLAGS = libustr-debug.a
 
 
 # This is a simple makefile for example programs...
 
-ALL = hello_world netstr hexdump nums mkdir_p fgrep txt2html
+ALL = hello_world netstr hexdump nums mkdir_p fgrep txt2html custr
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
@@ -131,6 +136,9 @@ fgrep: fgrep.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 txt2html: txt2html.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
+custr: custr.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 strip: $(ALL)

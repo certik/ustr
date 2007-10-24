@@ -41,15 +41,13 @@ END { print "</TT>\n" }         # ...shall be with us always
 # define _D_EXACT_NAMLEN(d) strlen((d)->d_name)
 #endif
 
-static const char *prog_name = NULL;
-
 static void die(const char *prog_name, const char *msg)
 {
   fprintf(stderr, "%s: %s\n", prog_name, msg);
   exit (EXIT_FAILURE);
 }
 
-static void usage(int xcode)
+static void usage(int xcode, const char *prog_name)
 {
   fprintf((xcode == EXIT_SUCCESS) ? stdout : stderr, "\
  Format: %s [-hV] [filename]...\n\
@@ -60,7 +58,7 @@ static void usage(int xcode)
   exit (xcode);
 }
 
-static void txt2html(Ustr **pline)
+static void txt2html(const char *prog_name, Ustr **pline)
 {
   Ustr *line = *pline;
   size_t tab_pos = 0;
@@ -116,7 +114,7 @@ static void txt2html(Ustr **pline)
 
       if (rep > ustr_len(rep_nbsp))
       {
-        size_t more = rep - ustr_len(rep_nbsp);
+        more = rep - ustr_len(rep_nbsp);
 
         while (more)
         {
@@ -151,7 +149,6 @@ static void fp_loop(FILE *in, const char *prog_name)
   char buf_line[USTR_SIZE_FIXED(160)]; /* enough for two "normal" lines,
                                           after that we alloc. */
   Ustr *line = USTR_SC_INIT_AUTO(buf_line, USTR_FALSE, 0);
-  size_t line_num = 0;
   Ustr *beg = USTR1(\5, "<TT>\n");
   Ustr *end = USTR1(\6, "</TT>\n");
   
@@ -160,7 +157,7 @@ static void fp_loop(FILE *in, const char *prog_name)
     
   while (ustr_io_getline(&line, in))
   {
-    txt2html(&line);
+    txt2html(prog_name, &line);
     
     if (!ustr_io_putfile(&line, stdout))
       die(prog_name, strerror(errno));
@@ -219,6 +216,7 @@ int main(int argc, char *argv[])
   };
   int scan = 0;
   int optchar = -1;
+  const char *prog_name = NULL;
   
   USTR_CNTL_MALLOC_CHECK_BEG();
   
@@ -233,8 +231,8 @@ int main(int argc, char *argv[])
   while ((optchar = getopt_long(argc, argv, "hV", long_options, NULL)) != -1)
     switch (optchar)
     {
-      case '?': usage(EXIT_FAILURE);
-      case 'h': usage(EXIT_SUCCESS);
+      case '?': usage(EXIT_FAILURE, prog_name);
+      case 'h': usage(EXIT_SUCCESS, prog_name);
       case 'V':
         printf("%s version %s\n", prog_name, "1.0.0");
         exit (EXIT_SUCCESS);
