@@ -23,6 +23,11 @@ cd ./$pkg-$v
 ./scripts/clean.sh full
 ( cd Documentation && make )
 
+perl -p -i -e \
+ 's{href="(constants|design|functions|structs)(?!\.html)\b}
+   {href="$1.html}g;' Documentation/*.html
+
+
 rm -rf tmp
 
 # Backup files...

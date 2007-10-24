@@ -29,6 +29,8 @@ my $hdr_ver = "1.0.2";
 
 my $man_funcs_header = <<EOL;
 .TH ustr 3 "$hdr_date" "Ustr $hdr_ver" "Ustr String Library"
+.SH "NAME"
+ustr - ustr string library functions
 .SH "SYNOPSIS"
 .in \\w'  'u
 #include "ustr.h"
@@ -38,6 +40,8 @@ EOL
 
 my $man_consts_header = <<EOL;
 .TH ustr_const 3 "$hdr_date" "Ustr $hdr_ver" "Ustr String Library"
+.SH "NAME"
+ustr_const - ustr string library constants
 .SH "SYNOPSIS"
 .in \\w'  'u
 #include "ustr.h"
