@@ -50,22 +50,51 @@
 # endif
 #endif
 
+#ifndef MALLOC_CHECK_FUNC_NAME
+#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||       \
+    (defined(__GNUC__) && (__GNUC__ > 3) && !defined(__STRICT_ANSI__))
+# define MALLOC_CHECK_FUNC_NAME __func__
+#else
+# define MALLOC_CHECK_FUNC_NAME ""
+#endif
+#endif
+
+#define MALLOC_CHECK_MEM(x)                                             \
+    malloc_check_mem(x, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+#define MALLOC_CHECK_SZ_MEM(x, y)                                       \
+    malloc_check_sz_mem(x, y, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+#define MALLOC_CHECK_MINSZ_MEM(x, y)                                    \
+    malloc_check_minsz_mem(x, y, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+#define MALLOC_CHECK_EMPTY()                                            \
+    malloc_check_empty(__FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+
+/* smaller because they will be called a _lot_ */
+#define MC_MALLOC(x)                                                    \
+    malloc_check_malloc(x, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+#define MC_CALLOC(x, y)                                                 \
+    malloc_check_calloc(x, y, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+#define MC_REALLOC(x, y)                                                \
+    malloc_check_realloc(x, y, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+#define MC_FREE(x)                                                      \
+    malloc_check_free(x, __FILE__, __LINE__, MALLOC_CHECK_FUNC_NAME)
+
 #if !(USE_MALLOC_CHECK)
 #define MALLOC_CHECK_DECL()                                     \
   static Malloc_check_store MALLOC_CHECK_STORE = {0, 0, 0, NULL}
 
-# define MALLOC_CHECK_MEM(x) (1)
-# define MALLOC_CHECK_SZ_MEM(x, y) (1)
-# define MALLOC_CHECK_MINSZ_MEM(x, y) (1)
-# define MALLOC_CHECK_EMPTY() /* nothing */
-# define MALLOC_CHECK_DEC() (0)
 # define MALLOC_CHECK_FAIL_IN(x) /* nothing */
 # define MALLOC_CHECK_SCRUB_PTR(x, y)  /* nothing */
 
-# define malloc_check_malloc(x, F, L)     malloc(x)
-# define malloc_check_calloc(x, y, F, L)  calloc(x, y)
-# define malloc_check_realloc(x, y, F, L) realloc(x, y)
-# define malloc_check_free(x)             free(x)
+# define malloc_check_mem(x, Fi, L, Fu) (1)
+# define malloc_check_sz_mem(x, y, Fi, L, Fu) (1)
+# define malloc_check_minsz_mem(x, y, Fi, L, Fu) (1)
+# define malloc_check_empty(Fi, L, Fu)  /* nothing */
+
+# define malloc_check_malloc(x, Fi, L, Fu)     malloc(x)
+# define malloc_check_calloc(x, y, Fi, L, Fu)  calloc(x, y)
+# define malloc_check_realloc(x, y, Fi, L, Fu) realloc(x, y)
+# define malloc_check_free(x, Fi, L, Fu)       free(x)
+
 #else
 
 #include <stdio.h>
@@ -78,6 +107,7 @@ typedef struct Malloc_check_vals
  size_t sz;
  const char *file;
  unsigned int line;
+ const char *func;
 } Malloc_check_vals;
 
 typedef struct Malloc_check_store
@@ -101,14 +131,14 @@ static Malloc_check_store                        MALLOC_CHECK_STORE;
 /* custom assert's so that we get the file/line numbers right, always ON */
 #define malloc_check_assert(x) do {                                     \
       if (x) {} else {                                                  \
-        fprintf(stderr, " -=> mc_assert (%s) failed, caller=%s:%d.\n",  \
-                #x , file, line);                                       \
+        fprintf(stderr, " -=> mc_assert (%s) failed, caller=%s:%s:%d.\n", \
+                #x , func, file, line);                                 \
         abort(); }                                                      \
     } while (0)
 #define MALLOC_CHECK_ASSERT(x) do {                                     \
       if (x) {} else {                                                  \
-        fprintf(stderr, " -=> MC_ASSERT (%s) failed, caller=%s:%d.\n",  \
-                #x , file, line);                                       \
+        fprintf(stderr, " -=> MC_ASSERT (%s) failed, caller=%s:%s:%d.\n", \
+                #x , func, file, line);                                 \
         abort(); }                                                      \
     } while (0)
 
@@ -120,11 +150,6 @@ static Malloc_check_store                        MALLOC_CHECK_STORE;
  static Malloc_check_store MALLOC_CHECK_STORE = {0, 0, 0, NULL}
 #endif
 
-# define MALLOC_CHECK_MEM(x)  malloc_check_mem(x, __FILE__, __LINE__)
-# define MALLOC_CHECK_SZ_MEM(x, y) malloc_check_sz_mem(x, y, __FILE__, __LINE__)
-# define MALLOC_CHECK_MINSZ_MEM(x, y) \
-    malloc_check_minsz_mem(x, y, __FILE__, __LINE__)
-# define MALLOC_CHECK_EMPTY() malloc_check_empty(__FILE__, __LINE__)
 # define MALLOC_CHECK_DEC()                                             \
     (MALLOC_CHECK_STORE.mem_fail_num && !--MALLOC_CHECK_STORE.mem_fail_num)
 # define MALLOC_CHECK_FAIL_IN(x) MALLOC_CHECK_STORE.mem_fail_num = (x)
@@ -146,27 +171,28 @@ static Malloc_check_store                        MALLOC_CHECK_STORE;
     } while (0)
 #endif
 
-static void malloc_check_alloc(const char *, unsigned int)
+static void malloc_check_alloc(const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_USED();
-static unsigned int malloc_check_mem(const void *, const char *, unsigned int)
+static unsigned int malloc_check_mem(const void *, const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_USED();
-static unsigned int malloc_check_sz_mem(const void *, size_t, const char *, unsigned int)
+static unsigned int malloc_check_sz_mem(const void *, size_t, const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_USED();
-static unsigned int malloc_check_minsz_mem(const void *, size_t, const char *, unsigned int)
+static unsigned int malloc_check_minsz_mem(const void *, size_t, const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_USED();
-static void *malloc_check_malloc(size_t, const char *, unsigned int)
+static void *malloc_check_malloc(size_t, const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_MALLOC() MALLOC_CHECK__ATTR_USED();
-static void *malloc_check_calloc(size_t, size_t, const char *, unsigned int)
+static void *malloc_check_calloc(size_t, size_t, const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_MALLOC() MALLOC_CHECK__ATTR_USED();
-static void malloc_check_free(void *, const char *, unsigned int)
+static void malloc_check_free(void *, const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_USED();
 static void *malloc_check_realloc(void *, size_t,
-                                  const char *, unsigned int)
+                                  const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_MALLOC() MALLOC_CHECK__ATTR_USED();
-static void malloc_check_empty(const char *, unsigned int)
+static void malloc_check_empty(const char *, unsigned int, const char *)
    MALLOC_CHECK__ATTR_USED();
 
-static void malloc_check_alloc(const char *file, unsigned int line)
+static
+void malloc_check_alloc(const char *file, unsigned int line, const char *func)
 {
   size_t sz = MALLOC_CHECK_STORE.mem_sz;
   
@@ -189,8 +215,9 @@ static void malloc_check_alloc(const char *file, unsigned int line)
   MALLOC_CHECK_STORE.mem_sz = sz;
 }
 
-static unsigned int malloc_check_mem(const void *ptr,
-                                     const char *file, unsigned int line)
+static unsigned int malloc_check_mem(const void *ptr, const
+                                     char *file, unsigned int line,
+                                     const char *func)
 {
   unsigned int scan = 0;
 
@@ -206,9 +233,10 @@ static unsigned int malloc_check_mem(const void *ptr,
 }
 
 static unsigned int malloc_check_sz_mem(const void *ptr, size_t sz,
-                                        const char *file, unsigned int line)
+                                        const char *file, unsigned int line,
+                                        const char *func)
 {
-  unsigned int scan = malloc_check_mem(ptr, file, line);
+  unsigned int scan = malloc_check_mem(ptr, file, line, func);
 
   malloc_check_assert(MALLOC_CHECK_STORE.mem_vals[scan].sz == sz);
 
@@ -216,23 +244,25 @@ static unsigned int malloc_check_sz_mem(const void *ptr, size_t sz,
 }
 
 static unsigned int malloc_check_minsz_mem(const void *ptr, size_t sz,
-                                           const char *file, unsigned int line)
+                                           const char *file, unsigned int line,
+                                           const char *func)
 {
-  unsigned int scan = malloc_check_mem(ptr, file, line);
+  unsigned int scan = malloc_check_mem(ptr, file, line, func);
 
   malloc_check_assert(MALLOC_CHECK_STORE.mem_vals[scan].sz >= sz);
 
   return (scan);
 }
 
-static void *malloc_check_malloc(size_t sz, const char *file, unsigned int line)
+static void *malloc_check_malloc(size_t sz, const char *file, unsigned int line,
+                                 const char *func)
 {
   void *ret = NULL;
 
   if (MALLOC_CHECK_DEC())
     return (NULL);
 
-  malloc_check_alloc(file, line);
+  malloc_check_alloc(file, line, func);
 
   MALLOC_CHECK_ASSERT(sz);
 
@@ -242,7 +272,7 @@ static void *malloc_check_malloc(size_t sz, const char *file, unsigned int line)
     return (NULL);
 
   if (MALLOC_CHECK_TRACE)
-    fprintf(stderr, "mc_make(%zu, %s, %u) = %p\n", sz, file, line, ret);
+    fprintf(stderr, "mc_make(%zu, %s, %u, %s) = %p\n", sz, file,line,func, ret);
   
   MALLOC_CHECK_SCRUB_PTR(ret, sz);
 
@@ -250,32 +280,36 @@ static void *malloc_check_malloc(size_t sz, const char *file, unsigned int line)
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].sz   = sz;
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].file = file;
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].line = line;
+  MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].func = func;
 
   return (ret);
 }
 
 static void *malloc_check_calloc(size_t num, size_t sz,
-                                 const char *file, unsigned int line)
+                                 const char *file, unsigned int line,
+                                 const char *func)
 {
   size_t real_sz = num * sz;
   void *ret = NULL;
   
   if ((num != 0) && ((real_sz / sz) != num))
     return (NULL);
-  if (!(ret = malloc_check_malloc(real_sz, file, line)))
+  if (!(ret = malloc_check_malloc(real_sz, file, line, func)))
     return (NULL);
 
   memset(ret, 0, real_sz);
   return (ret);
 }
 
-static void malloc_check_free(void *ptr, const char *file, unsigned int line)
+static void malloc_check_free(void *ptr, const char *file, unsigned int line,
+                              const char *func)
 {
   if (MALLOC_CHECK_TRACE)
-    fprintf(stderr, "mc_free(%p)\n", ptr);
+    fprintf(stderr, "mc_free(%s, %u, %s, %p)\n", file, line, func, ptr);
+  
   if (ptr)
   {
-    unsigned int scan = malloc_check_mem(ptr, file, line);
+    unsigned int scan = malloc_check_mem(ptr, file, line, func);
     size_t sz = 0;
     
     malloc_check_assert(MALLOC_CHECK_STORE.mem_num > 0);
@@ -292,6 +326,7 @@ static void malloc_check_free(void *ptr, const char *file, unsigned int line)
       MALLOC_CHECK_SWAP_TYPE(val1->sz,   val2->sz,   size_t);
       MALLOC_CHECK_SWAP_TYPE(val1->file, val2->file, const char *);
       MALLOC_CHECK_SWAP_TYPE(val1->line, val2->line, unsigned int);
+      MALLOC_CHECK_SWAP_TYPE(val1->func, val2->func, const char *);
     }
     MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num].ptr = NULL;
     MALLOC_CHECK_SCRUB_PTR(ptr, sz);
@@ -300,16 +335,17 @@ static void malloc_check_free(void *ptr, const char *file, unsigned int line)
 }
 
 static void *malloc_check_realloc(void *ptr, size_t sz,
-                                  const char *file, unsigned int line)
+                                  const char *file, unsigned int line,
+                                  const char *func)
 {
   void *ret = NULL;
-  unsigned int scan = malloc_check_mem(ptr, file, line);
+  unsigned int scan = malloc_check_mem(ptr, file, line, func);
 
   MALLOC_CHECK_ASSERT(ptr && sz);
 
   if (MALLOC_CHECK_SUPPER_SCRUB)
   {
-    if (!(ret = malloc_check_malloc(sz, file, line)))
+    if (!(ret = malloc_check_malloc(sz, file, line, func)))
       return (NULL);
 
     if (sz >= MALLOC_CHECK_STORE.mem_vals[scan].sz)
@@ -317,7 +353,7 @@ static void *malloc_check_realloc(void *ptr, size_t sz,
     if (sz)
       memcpy(ret, ptr, sz);
     
-    malloc_check_free(ptr, file, line);
+    malloc_check_free(ptr, file, line, func);
     
     return (ret);
   }
@@ -338,11 +374,13 @@ static void *malloc_check_realloc(void *ptr, size_t sz,
   MALLOC_CHECK_STORE.mem_vals[scan].sz   = sz;
   MALLOC_CHECK_STORE.mem_vals[scan].file = file;
   MALLOC_CHECK_STORE.mem_vals[scan].line = line;
+  MALLOC_CHECK_STORE.mem_vals[scan].func = func;
 
   return (ret);
 }
 
-static void malloc_check_empty(const char *file, unsigned int line)
+static
+void malloc_check_empty(const char *file, unsigned int line, const char *func)
 {
   if (MALLOC_CHECK_PRINT && MALLOC_CHECK_STORE.mem_num)
   {
@@ -351,9 +389,10 @@ static void malloc_check_empty(const char *file, unsigned int line)
     while (MALLOC_CHECK_STORE.mem_vals[scan].ptr)
     {
       /* NOTE: Using system *printf, so can't use %zu as Solaris is retarded */
-      fprintf(stderr, " FAILED MEM CHECK EMPTY: ptr %p, sz %lu, from %u:%s\n",
+      fprintf(stderr," FAILED MEM CHECK EMPTY: ptr %p, sz %lu, from %s:%u:%s\n",
               MALLOC_CHECK_STORE.mem_vals[scan].ptr,
               (unsigned long)MALLOC_CHECK_STORE.mem_vals[scan].sz,
+              MALLOC_CHECK_STORE.mem_vals[scan].func,
               MALLOC_CHECK_STORE.mem_vals[scan].line,
               MALLOC_CHECK_STORE.mem_vals[scan].file);
       ++scan;

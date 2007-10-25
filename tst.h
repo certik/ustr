@@ -41,9 +41,9 @@
 #include "malloc-check.h"
 
 /* doesn't work on ctst_*.c cotst_*.c -- as they alloc. from the lib. */
-#define USTR_CONF_MALLOC(x)     malloc_check_malloc(x,     __FILE__, __LINE__)
-#define USTR_CONF_REALLOC(x, y) malloc_check_realloc(x, y, __FILE__, __LINE__)
-#define USTR_CONF_FREE(x)       malloc_check_free(x, __FILE__, __LINE__)
+#define USTR_CONF_MALLOC(x)     MC_MALLOC(x)
+#define USTR_CONF_REALLOC(x, y) MC_REALLOC(x, y)
+#define USTR_CONF_FREE(x)       MC_FREE(x)
 
 
 #include <stdlib.h>
@@ -174,8 +174,8 @@ int main(void)
   {
     ustr_free(s1);
     ustr_free(s2);
-    MALLOC_CHECK_EMPTY();
-    assert(USTR_CNTL_MALLOC_CHECK_EMPTY());
+    if (!USTR_CONF_USE_DYNAMIC_CONF)
+      MALLOC_CHECK_EMPTY();
     assert(USTR_CNTL_MALLOC_CHECK_END());
   }
   

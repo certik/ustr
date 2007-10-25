@@ -1,5 +1,10 @@
 2007-10-24  James Antill  <james@and.org>
 
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_BEG): Use as a general enter/exit
+	function macro ... so we can tell much better where the problems are.
+
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_EMPTY): Remove function.
+
 	* ustr-main.h (USTR1_CHK): Added macro function.
 	(USTR2_CHK): Added macro function.
 	(USTR4_CHK): Added macro function.

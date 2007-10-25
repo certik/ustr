@@ -30,12 +30,37 @@ struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
 
 MALLOC_CHECK_DECL();
 
+typedef struct Ustr__cntl_mc_ptrs
+{
+ const char *file;
+ unsigned int line;
+ const char *func;
+} Ustr__cntl_mc_ptrs;
+Ustr__cntl_mc_ptrs USTR__COMPILE_ATTR_H() *ustr__cntl_mc_ptr = 0;
+size_t             USTR__COMPILE_ATTR_H()  ustr__cntl_mc_num = 0;
+size_t             USTR__COMPILE_ATTR_H()  ustr__cntl_mc_sz  = 0;
+
 USTR_CONF_i_PROTO void *ustr__cntl_mc_malloc(size_t x)
-{ return (malloc_check_malloc(x, "ustr__cntl_mc_malloc", 1)); }
+{
+  struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
+  size_t num = ustr__cntl_mc_num;
+  
+  return (malloc_check_malloc(x, ptr[num].file, ptr[num].line, ptr[num].func));
+}
 USTR_CONF_i_PROTO void *ustr__cntl_mc_realloc(void *p, size_t x)
-{ return (malloc_check_realloc(p, x, "ustr__cntl_mc_realloc", 1)); }
+{
+  struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
+  size_t num = ustr__cntl_mc_num;
+  
+  return (malloc_check_realloc(p,x, ptr[num].file,ptr[num].line,ptr[num].func));
+}
 USTR_CONF_i_PROTO void ustr__cntl_mc_free(void *x)
-{ malloc_check_free(x, "ustr__cntl_mc_malloc", 1); }
+{
+  struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
+  size_t num = ustr__cntl_mc_num;
+  
+  malloc_check_free(x, ptr[num].file, ptr[num].line, ptr[num].func);
+}
 
 USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
 {
@@ -144,7 +169,9 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
     case 666:
     {
       unsigned long valT = va_arg(ap, unsigned long);
-      static int enabled = USTR_FALSE;
+      int enabled = ustr__cntl_mc_sz;
+
+      USTR_ASSERT(ustr__cntl_mc_num <= ustr__cntl_mc_sz);
       
       switch (valT)
       {
@@ -155,14 +182,13 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         case 0x0FF2:
         case 0x0FF3:
         case 0x0FF4:
-        case 0x0FFE:
         case 0x0FFF:
           ret = USTR_TRUE;
       }
       USTR_ASSERT(ret);
 
       if (!enabled && (valT != 0x0FF0))
-        break;
+        break; /* pretend it worked */
       
       switch (valT)
       {
@@ -181,60 +207,112 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         break;
         
         case 0x0FF0:
-          enabled = USTR_TRUE;
-          ustr__opts->ustr.sys_malloc  = ustr__cntl_mc_malloc;
-          ustr__opts->ustr.sys_realloc = ustr__cntl_mc_realloc;
-          ustr__opts->ustr.sys_free    = ustr__cntl_mc_free;
+        {
+          const char  *file = va_arg(ap, char *);
+          unsigned int line = va_arg(ap, unsigned int);
+          const char  *func = va_arg(ap, char *);
+
+          if (!enabled)
+          {
+            ustr__cntl_mc_sz = 3;
+            if (!(ustr__cntl_mc_ptr = MC_MALLOC(sizeof(Ustr__cntl_mc_ptrs) *
+                                                ustr__cntl_mc_sz)))
+              abort(); /* In theory we can fail here... */
+          
+            ustr__opts->ustr.sys_malloc  = ustr__cntl_mc_malloc;
+            ustr__opts->ustr.sys_realloc = ustr__cntl_mc_realloc;
+            ustr__opts->ustr.sys_free    = ustr__cntl_mc_free;
+          }
+          else if (++ustr__cntl_mc_num >= ustr__cntl_mc_sz)
+          {
+            ustr__cntl_mc_sz = (ustr__cntl_mc_sz * 2) + 1;
+            if (!(ustr__cntl_mc_ptr = MC_REALLOC(ustr__cntl_mc_ptr,
+                                                 sizeof(Ustr__cntl_mc_ptrs) *
+                                                 ustr__cntl_mc_sz)))
+              abort(); /* In theory we can fail here... */
+          }
+          
+          ustr__cntl_mc_ptr[ustr__cntl_mc_num].file = file;
+          ustr__cntl_mc_ptr[ustr__cntl_mc_num].line = line;
+          ustr__cntl_mc_ptr[ustr__cntl_mc_num].func = func;
+        }
         break;
 
         case 0x0FF1:
         {
+          struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
+          size_t num = ustr__cntl_mc_num;
           void *valP = va_arg(ap, void *);
-          MALLOC_CHECK_MEM(valP);
+          malloc_check_mem(valP, ptr[num].file, ptr[num].line, ptr[num].func);
         }
         break;
 
         case 0x0FF2:
         {
+          struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
+          size_t num = ustr__cntl_mc_num;
           void *valP  = va_arg(ap, void *);
           size_t valV = va_arg(ap, size_t);
-          MALLOC_CHECK_SZ_MEM(valP, valV);
+          malloc_check_sz_mem(valP, valV,
+                              ptr[num].file, ptr[num].line, ptr[num].func);
         }
         break;
 
         case 0x0FF3:
         {
+          struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
+          size_t num = ustr__cntl_mc_num;
           void *valP  = va_arg(ap, void *);
           size_t valV = va_arg(ap, size_t);
-          MALLOC_CHECK_MINSZ_MEM(valP, valV);
+          malloc_check_minsz_mem(valP, valV,
+                                 ptr[num].file, ptr[num].line, ptr[num].func);
         }
         break;
 
         case 0x0FF4:
         { /* needed for realloc() down doesn't fail */
+          struct Ustr__cntl_mc_ptrs *ptr_mc = ustr__cntl_mc_ptr;
+          size_t num_mc = ustr__cntl_mc_num;
           void *ptr = va_arg(ap, void *);
           size_t nsz = va_arg(ap, size_t);
-          unsigned int scan = MALLOC_CHECK_MEM(ptr);
+          unsigned int scan = malloc_check_mem(ptr,
+                                               ptr_mc[num_mc].file,
+                                               ptr_mc[num_mc].line,
+                                               ptr_mc[num_mc].func);
 
           MALLOC_CHECK_STORE.mem_vals[scan].sz = nsz;
         }
         break;
 
-        case 0x0FFE:
-          MALLOC_CHECK_EMPTY();
-          break;
-
         case 0x0FFF:
-          MALLOC_CHECK_EMPTY(); /* it's bad otherwise */
+        {
+          const char  *file = va_arg(ap, char *);
+          unsigned int line = va_arg(ap, unsigned int);
+          const char  *func = va_arg(ap, char *);
+
+          USTR_ASSERT(!strcmp(file, ustr__cntl_mc_ptr[ustr__cntl_mc_num].file));
+          USTR_ASSERT(line); /* can't say much about this */
+          USTR_ASSERT(!strcmp(func, ustr__cntl_mc_ptr[ustr__cntl_mc_num].func));
           
-          enabled = USTR_FALSE;
+          if (ustr__cntl_mc_num)
+            --ustr__cntl_mc_num;
+          else
+          {
+            ustr__cntl_mc_sz = 0;
+            MC_FREE(ustr__cntl_mc_ptr);
+
+            /* it's bad otherwise */
+            malloc_check_empty(file, line, func);
+          }
+          
           ustr__opts->ustr.sys_malloc  = malloc;
           ustr__opts->ustr.sys_realloc = realloc;
           ustr__opts->ustr.sys_free    = free;
 
           MALLOC_CHECK_STORE.mem_num      = 0;
           MALLOC_CHECK_STORE.mem_fail_num = 0;
-          break;
+        }
+        break;
       }
     }
     break;
