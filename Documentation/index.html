@@ -309,10 +309,10 @@ struct Simple_str
 <tr>
      <td class="heading">String</td> 
      <td class="heading">Alloc. C-string</td> 
-     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==4</td> 
-     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==2</td> 
-     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==<span title="(default)">1</span></td> 
-     <td class="heading">Alloc./Used <span title="Micro String">Ustr</span>, <span title="USTR_CONF_REF_BYTES">ref</span>==<span title="No sharing of strings">0</span></td> 
+     <td class="heading">Alloc./Used Ustr, ref==4</td> 
+     <td class="heading">Alloc./Used Ustr, ref==2</td> 
+     <td class="heading"><span title="(default)">Alloc./Used Ustr, ref==1</span></td> 
+     <td class="heading"><span title="No sharing of strings">Alloc./Used Ustr, ref==0</span></td> 
  </tr>
 
  <tr class="r1">
@@ -390,9 +390,9 @@ struct Simple_str
      <td>8 bytes</td> 
 
      <td class="ok" title="100% overhead">16/14</td> <!-- ref=4 -->
-     <td class="ok" title="50% overhead">12/12</td> <!-- ref=2 -->
-     <td class="ok" title="50% overhead">12/11</td> <!-- ref=1 -->
-     <td class="ok" title="50% overhead">12/10</td> <!-- ref=0 -->
+     <td class="good" title="50% overhead">12/12</td> <!-- ref=2 -->
+     <td class="good" title="50% overhead">12/11</td> <!-- ref=1 -->
+     <td class="good" title="50% overhead">12/10</td> <!-- ref=0 -->
  </tr>
 
  <tr class="r1">
@@ -496,37 +496,217 @@ struct Simple_str
  </tr>
 
  <tr class="r1">
-     <td>"123456789 123456789 123456"</td> 
-     <td>26 bytes</td> 
+     <td>"123456789 12345678"</td> 
+     <td>19 bytes</td> 
 
-     <td class="good" title="84.62% overhead">48/32</td> <!-- ref=4 -->
-     <td class="good" title="23.08% overhead">32/30</td> <!-- ref=2 -->
-     <td class="good" title="23.08% overhead">32/29</td> <!-- ref=1 -->
-     <td class="good" title="23.08% overhead">32/28</td> <!-- ref=0 -->
+     <td class="good" title="68.42% overhead">32/25</td> <!-- ref=4 -->
+     <td class="good" title="26.32% overhead">24/23</td> <!-- ref=2 -->
+     <td class="good" title="26.32% overhead">24/22</td> <!-- ref=1 -->
+     <td class="good" title="26.32% overhead">24/21</td> <!-- ref=0 -->
  </tr>
 
  <tr class="r2">
-     <td>"123456789 1234..."</td> 
-     <td>42 bytes</td> 
+     <td>"123456789 123456789"</td> 
+     <td>20 bytes</td> 
 
-     <td class="good" title="52.38% overhead">64/48</td> <!-- ref=4 -->
-     <td class="good" title="14.29% overhead">48/46</td> <!-- ref=2 -->
-     <td class="good" title="14.29% overhead">48/45</td> <!-- ref=1 -->
-     <td class="good" title="14.29% overhead">48/44</td> <!-- ref=0 -->
+     <td class="good" title="60% overhead">32/26</td> <!-- ref=4 -->
+     <td class="vgood" title="20% overhead">24/24</td> <!-- ref=2 -->
+     <td class="vgood" title="20% overhead">24/23</td> <!-- ref=1 -->
+     <td class="vgood" title="20% overhead">24/22</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...45"</td> 
+     <td>26 bytes</td> 
+
+     <td class="vgood" title="23.08% overhead">32/32</td> <!-- ref=4 -->
+     <td class="vgood" title="23.08% overhead">32/30</td> <!-- ref=2 -->
+     <td class="vgood" title="23.08% overhead">32/29</td> <!-- ref=1 -->
+     <td class="vgood" title="23.08% overhead">32/28</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...56"</td> 
+     <td>27 bytes</td> 
+
+     <td class="good" title="77.78% overhead">48/33</td> <!-- ref=4 -->
+     <td class="vgood" title="18.52% overhead">32/31</td> <!-- ref=2 -->
+     <td class="vgood" title="18.52% overhead">32/32</td> <!-- ref=1 -->
+     <td class="vgood" title="18.52% overhead">32/31</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...78"</td> 
+     <td>28 bytes</td> 
+
+     <td class="good" title="71.43% overhead">48/34</td> <!-- ref=4 -->
+     <td class="vgood" title="14.29% overhead">32/32</td> <!-- ref=2 -->
+     <td class="vgood" title="14.29% overhead">32/31</td> <!-- ref=1 -->
+     <td class="vgood" title="14.29% overhead">32/30</td> <!-- ref=0 -->
  </tr>
 
  <tr class="r2">
      <td>"123456789 1234...89"</td> 
+     <td>29 bytes</td> 
+
+     <td class="good" title="65.51% overhead">48/35</td> <!-- ref=4 -->
+     <td class="good" title="65.51% overhead">48/33</td> <!-- ref=2 -->
+     <td class="vgood" title="10.34% overhead">32/32</td> <!-- ref=1 -->
+     <td class="vgood" title="10.34% overhead">32/31</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...9 "</td> 
+     <td>30 bytes</td> 
+
+     <td class="good" title="60% overhead">48/36</td> <!-- ref=4 -->
+     <td class="good" title="60% overhead">48/34</td> <!-- ref=2 -->
+     <td class="good" title="60% overhead">48/33</td> <!-- ref=1 -->
+     <td class="vgood" title="6.6% overhead">32/32</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234... 1"</td> 
+     <td>42 bytes</td> 
+
+     <td class="vgood" title="14.29% overhead">48/48</td> <!-- ref=4 -->
+     <td class="vgood" title="14.29% overhead">48/46</td> <!-- ref=2 -->
+     <td class="vgood" title="14.29% overhead">48/45</td> <!-- ref=1 -->
+     <td class="vgood" title="14.29% overhead">48/44</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...12"</td> 
+     <td>43 bytes</td> 
+
+     <td class="good" title="48.84% overhead">64/49</td> <!-- ref=4 -->
+     <td class="vgood" title="11.63% overhead">48/47</td> <!-- ref=2 -->
+     <td class="vgood" title="11.63% overhead">48/46</td> <!-- ref=1 -->
+     <td class="vgood" title="11.63% overhead">48/45</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...23"</td> 
+     <td>44 bytes</td> 
+
+     <td class="good" title="45.45% overhead">64/50</td> <!-- ref=4 -->
+     <td class="vgood" title="9.09% overhead">48/48</td> <!-- ref=2 -->
+     <td class="vgood" title="9.09% overhead">48/47</td> <!-- ref=1 -->
+     <td class="vgood" title="9.09% overhead">48/46</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...34"</td> 
+     <td>45 bytes</td> 
+
+     <td class="good" title="42.2% overhead">64/51</td> <!-- ref=4 -->
+     <td class="good" title="42.2% overhead">64/49</td> <!-- ref=2 -->
+     <td class="vgood" title="6.6% overhead">48/48</td> <!-- ref=1 -->
+     <td class="vgood" title="6.6% overhead">48/47</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...45"</td> 
+     <td>46 bytes</td> 
+
+     <td class="good" title="39.13% overhead">64/52</td> <!-- ref=4 -->
+     <td class="good" title="39.13% overhead">64/50</td> <!-- ref=2 -->
+     <td class="good" title="39.13% overhead">64/49</td> <!-- ref=1 -->
+     <td class="vgood" title="4.35% overhead">48/48</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...89"</td> 
+     <td>60 bytes</td> 
+
+     <td class="good" title="60% overhead">96/66</td> <!-- ref=4 -->
+     <td class="vgood" title="6.6% overhead">64/64</td> <!-- ref=2 -->
+     <td class="vgood" title="6.6% overhead">64/63</td> <!-- ref=1 -->
+     <td class="vgood" title="6.6% overhead">64/62</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...9 "</td> 
+     <td>61 bytes</td> 
+
+     <td class="good" title="57.38% overhead">96/67</td> <!-- ref=4 -->
+     <td class="good" title="57.38% overhead">96/65</td> <!-- ref=2 -->
+     <td class="vgood" title="4.92% overhead">64/64</td> <!-- ref=1 -->
+     <td class="vgood" title="4.92% overhead">64/63</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234... 1"</td> 
+     <td>62 bytes</td> 
+
+     <td class="good" title="54.84% overhead">96/68</td> <!-- ref=4 -->
+     <td class="good" title="54.84% overhead">96/66</td> <!-- ref=2 -->
+     <td class="good" title="54.84% overhead">96/65</td> <!-- ref=1 -->
+     <td class="vgood" title="3.23% overhead">64/64</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...23"</td> 
+     <td>124 bytes</td> 
+
+     <td class="good" title="54.84% overhead">192/130</td> <!-- ref=4 -->
+     <td class="vgood" title="3.23% overhead">128/128</td> <!-- ref=2 -->
+     <td class="vgood" title="3.23% overhead">128/127</td> <!-- ref=1 -->
+     <td class="vgood" title="3.23% overhead">128/126</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...34"</td> 
+     <td>125 bytes</td> 
+
+     <td class="good" title="53.6% overhead">192/131</td> <!-- ref=4 -->
+     <td class="good" title="53.6% overhead">192/129</td> <!-- ref=2 -->
+     <td class="vgood" title="2.4% overhead">128/128</td> <!-- ref=1 -->
+     <td class="vgood" title="2.4% overhead">128/127</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...45"</td> 
+     <td>126 bytes</td> 
+
+     <td class="good" title="52.38% overhead">192/132</td> <!-- ref=4 -->
+     <td class="good" title="52.38% overhead">192/130</td> <!-- ref=2 -->
+     <td class="good" title="52.38% overhead">192/129</td> <!-- ref=1 -->
+     <td class="vgood" title="1.59% overhead">128/128</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234... 1"</td> 
+     <td>232 bytes</td> 
+
+     <td class="vgood" title="10.34% overhead">256/256</td> <!-- ref=4 -->
+     <td class="vgood" title="10.34% overhead">256/254</td> <!-- ref=2 -->
+     <td class="vgood" title="10.34% overhead">256/253</td> <!-- ref=1 -->
+     <td class="vgood" title="10.34% overhead">256/252</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r2">
+     <td>"123456789 1234...12"</td> 
+     <td>233 bytes</td> 
+
+     <td class="vgood" title="9.87% overhead">256/256</td> <!-- ref=4 -->
+     <td class="vgood" title="9.87% overhead">256/254</td> <!-- ref=2 -->
+     <td class="vgood" title="9.87% overhead">256/253</td> <!-- ref=1 -->
+     <td class="vgood" title="9.87% overhead">256/252</td> <!-- ref=0 -->
+ </tr>
+
+ <tr class="r1">
+     <td>"123456789 1234...89"</td> 
      <td>250 bytes</td> 
 
-     <td class="vgood" title="2.4 overhead">256/256</td> <!-- ref=4 -->
+     <td class="vgood" title="2.4% overhead">256/256</td> <!-- ref=4 -->
      <td class="vgood" title="2.4% overhead">256/254</td> <!-- ref=2 -->
      <td class="vgood" title="2.4% overhead">256/253</td> <!-- ref=1 -->
      <td class="vgood" title="2.4% overhead">256/252</td> <!-- ref=0 -->
  </tr>
 
  <tr class="r2">
-     <td>"123456789 1234...89"</td> 
+     <td>"123456789 1234...9 "</td> 
      <td>251 bytes</td> 
 
      <td class="good" title="52.99% overhead">384/258</td> <!-- ref=4 -->
@@ -746,7 +926,7 @@ if (ustr_ro(s2))     <span class="comment">/* This is  TRUE */</span>
     <address><a href="mailto:james-web@and.org">James Antill</a></address>
 <!-- Created: Thu May 10 02:10:59 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Wed Oct 24 12:36:49 EDT 2007
+Last modified: Thu Oct 25 02:06:51 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
