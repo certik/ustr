@@ -224,15 +224,15 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           const char  *func = va_arg(ap, char *);
           struct Ustr__cntl_mc_ptrs *tptr = ustr__cntl_mc_ptr;
           size_t tsz = 3;
-          
-          if (!enabled && (++ustr__cntl_mc_num >= ustr__cntl_mc_sz))
-            tsz = (ustr__cntl_mc_sz * 2) + 1;
 
-          if (tptr)
-            tptr = MC_REALLOC(tptr, sizeof(Ustr__cntl_mc_ptrs) * tsz);
-          else
+          if (!enabled)
             tptr = MC_MALLOC(sizeof(Ustr__cntl_mc_ptrs) * tsz);
-
+          else if (++ustr__cntl_mc_num >= ustr__cntl_mc_sz)
+          {
+            tsz = (ustr__cntl_mc_sz * 2) + 1;
+            tptr = MC_REALLOC(tptr, sizeof(Ustr__cntl_mc_ptrs) * tsz);
+          }
+          
           if (!tptr)
           {
             if (enabled)
@@ -240,7 +240,8 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
             ret = USTR_FALSE;
             break;
           }
-          else if (!enabled)
+
+          if (!enabled)
           {
             ustr__opts->ustr.sys_malloc  = ustr__cntl_mc_malloc;
             ustr__opts->ustr.sys_realloc = ustr__cntl_mc_realloc;
