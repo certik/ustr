@@ -11,7 +11,7 @@ static void die(const char *prog_name, const char *msg)
 /* simplest, just "create" a Ustr from a constant string */
 static void hello_world_one(void)
 {
-  Ustr *hello_world = USTR1(\xC, "Hello world!");
+  Ustr *hello_world = USTR1_CHK(\xC, "Hello world!");
 
   if (!ustr_io_putfileline(&hello_world, stdout))
     die("hello_world", strerror(errno));
@@ -74,7 +74,7 @@ static void hello_world_four(void)
 
 int main(void)
 {
-  USTR_CNTL_MALLOC_CHECK_BEG();
+  USTR_CNTL_MALLOC_CHECK_BEG(USTR_DEBUG);
   
   hello_world_one();
   hello_world_two();

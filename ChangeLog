@@ -1,3 +1,7 @@
+2007-10-25  James Antill  <james@and.org>
+
+	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_LVL): Added function.
+
 2007-10-24  James Antill  <james@and.org>
 
 	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_BEG): Use as a general enter/exit

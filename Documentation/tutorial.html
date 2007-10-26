@@ -88,14 +88,15 @@ onst">const</span> <span class="char">char</span> *msg)
 </a>
 
 <p> This example is the simplest possible, basically being the same as
- calling puts() ... note however that the length of the string is passed
- through to the IO function without any compiler magic.</p>
+ calling puts(). Note however that the length of the string is passed
+ through to the IO function without any compiler magic by using the checked
+ constant ustr creation macro.</p>
 
 <pre class="c2html">
 <span class="comment">/* simplest, just "create" a Ustr from a constant string */</span>
 <span class="static">static</span> <span class="void">void</span> hello_world_one(<span class="void">void</span>)
 {
-  Ustr *hello_world = USTR1(\xC, <span class="str">"Hello world!"</span>);
+  Ustr *hello_world = USTR1_CHK(\xC, <span class="str">"Hello world!"</span>);
 
   <span class="if">if</span> (!ustr_io_putfileline(&amp;hello_world, <span class="stdout">stdout</span>))
     die(<span class="str">"hello_world"</span>, strerror(<span class="errno">errno</span>));
@@ -424,7 +425,7 @@ than the smaller perl code.
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Wed Oct 24 00:17:57 EDT 2007
+Last modified: Fri Oct 26 00:15:17 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>

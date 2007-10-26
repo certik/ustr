@@ -111,34 +111,47 @@
 #if USTR_CONF_USE_DYNAMIC_CONF
 # include "ustr-cntl.h"
 
-# if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||       \
+# if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||      \
     (defined(__GNUC__) && (__GNUC__ > 3) && !defined(__STRICT_ANSI__))
-#  define USTR_CNTL_MALLOC_CHECK_BEG()                          \
-    ustr_cntl_opt(666, 0x0FF0, __FILE__, __LINE__, __func__)
+#  define USTR_CNTL_MALLOC_CHECK_BEG(x) ((x) ?                          \
+   ustr_cntl_opt(666, 0x0FF0, __FILE__, (unsigned int)__LINE__, __func__) : \
+   USTR_FALSE)
 # else
-#  define USTR_CNTL_MALLOC_CHECK_BEG()                  \
-    ustr_cntl_opt(666, 0x0FF0, __FILE__, __LINE__, "")
+#  define USTR_CNTL_MALLOC_CHECK_BEG(x) ((x) ?                          \
+   ustr_cntl_opt(666, 0x0FF0, __FILE__, (unsigned int)__LINE__, "") :   \
+   USTR_FALSE)
 # endif
+# define USTR_CNTL_MALLOC_CHECK_LVL()           ustr_cntl_opt(666, 0x0FFE)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)          ustr_cntl_opt(666, 0x0FF1, x)
 # define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y)    ustr_cntl_opt(666, 0x0FF2, x, y)
 # define USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(x, y) ustr_cntl_opt(666, 0x0FF3, x, y)
-# if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||       \
+# if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||      \
     (defined(__GNUC__) && (__GNUC__ > 3) && !defined(__STRICT_ANSI__))
-# define USTR_CNTL_MALLOC_CHECK_END()           \
-    ustr_cntl_opt(666, 0x0FFF, __FILE__, __LINE__, __func__)
+# define USTR_CNTL_MALLOC_CHECK_END()                                   \
+    ustr_cntl_opt(666, 0x0FFF, __FILE__, (unsigned int)__LINE__, __func__)
 # else
-# define USTR_CNTL_MALLOC_CHECK_END()           \
-    ustr_cntl_opt(666, 0x0FFF, __FILE__, __LINE__, "")
+# define USTR_CNTL_MALLOC_CHECK_END()                                   \
+    ustr_cntl_opt(666, 0x0FFF, __FILE__, (unsigned int)__LINE__, "")
 # endif
+
+# define USTR_CNTL_MALLOC_CHECK_ADD(x)                                  \
+    (((x) && USTR_CNTL_MALLOC_CHECK_LVL())     ?                        \
+     USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE) : USTR_FALSE)
+# define USTR_CNTL_MALLOC_CHECK_DEL(x)                                  \
+    (((x) && USTR_CNTL_MALLOC_CHECK_LVL() > 1) ?                        \
+     USTR_CNTL_MALLOC_CHECK_END() : USTR_FALSE)
 
 # define USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(x, y)    \
     (void) ustr_cntl_opt(666, 0x0FF4, x, y)
 #else
-# define USTR_CNTL_MALLOC_CHECK_BEG()           (USTR_FALSE)
+# define USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE)  (USTR_FALSE)
+# define USTR_CNTL_MALLOC_CHECK_LVL()           (0)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)          (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y)    (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(x, y) (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_END()           (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_ADD(x)          (USTR_FALSE)
+# define USTR_CNTL_MALLOC_CHECK_DEL(x)          (USTR_TRUE)
 
 # define USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(x, y) /* do nothing */
 #endif

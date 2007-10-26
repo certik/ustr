@@ -309,17 +309,19 @@ int main(int argc, char *argv[])
    {"ignore-case", no_argument,      NULL, 'i'},
    {"line-number", no_argument,      NULL, 'n'},
    
-   {"help", no_argument, NULL, 1},
+   {"help", no_argument, NULL, 2},
    {"version", no_argument, NULL, 'V'},
+   
+   {"debug-memory", no_argument,      NULL, 1},
    
    {NULL, 0, NULL, 0}
   };
   int scan = 0;
   int optchar = -1;
   const char *prog_name = NULL;
-
-
-  USTR_CNTL_MALLOC_CHECK_BEG();
+  const char *repl_cstr = NULL;
+  int debug_mem = USTR_DEBUG;
+  
   if (!argc)
     exit (EXIT_FAILURE);
   
@@ -333,14 +335,13 @@ int main(int argc, char *argv[])
     switch (optchar)
     {
       case '?': usage(EXIT_FAILURE, prog_name);
-      case   1: usage(EXIT_SUCCESS, prog_name);
+      case   2: usage(EXIT_SUCCESS, prog_name);
       case 'V':
         printf("%s version %s\n", prog_name, "1.0.0");
         exit (EXIT_SUCCESS);
 
       case 'R':
-        if (!(fgrep_repl = ustr_dupx_cstr(0, 0, USTR_TRUE, USTR_FALSE, optarg)))
-          die(prog_name, strerror(ENOMEM));
+        repl_cstr = optarg;
         break;
       case 'C':
         if (ustr_cmp_case_cstr_eq(USTR1(\1, "0"),      optarg) ||
@@ -383,14 +384,21 @@ int main(int argc, char *argv[])
         
       case 'H': prnt_fname  = PRNT_FNAME_ON;  break;
       case 'h': prnt_fname  = PRNT_FNAME_OFF; break;
+
+      case 1:   debug_mem   = USTR_TRUE; break;
     }
   
   argc -= optind;
   argv += optind;
 
+  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
+
   if (!argc)
     usage(EXIT_FAILURE, prog_name);
 
+  if (repl_cstr &&
+      !(fgrep_repl = ustr_dupx_cstr(0, 0, USTR_TRUE, USTR_FALSE, repl_cstr)))
+    die(prog_name, strerror(ENOMEM));    
   if (!(fgrep_srch = ustr_dupx_cstr(0, 1, USTR_TRUE, USTR_FALSE, argv[0])))
     die(prog_name, strerror(ENOMEM));
 

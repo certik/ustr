@@ -12,6 +12,40 @@ int tst(void)
   unsigned int scan = 0;
   unsigned int lim  = 0;
   size_t off = 0;
+
+  if (USTR_CONF_USE_DYNAMIC_CONF)
+  {
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 1);
+    TST_MC_SET_NUM(1);
+    assert(USTR_CNTL_MALLOC_CHECK_ADD(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 2);
+    assert(USTR_CNTL_MALLOC_CHECK_ADD(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 3);
+    assert(!USTR_CNTL_MALLOC_CHECK_ADD(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 3);
+    assert(USTR_CNTL_MALLOC_CHECK_ADD(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 4);
+    assert(USTR_CNTL_MALLOC_CHECK_DEL(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 3);
+    assert(USTR_CNTL_MALLOC_CHECK_DEL(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 2);
+    assert(USTR_CNTL_MALLOC_CHECK_DEL(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 1);
+    assert(!USTR_CNTL_MALLOC_CHECK_DEL(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 1);
+    assert(!USTR_CNTL_MALLOC_CHECK_DEL(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 1);
+    ustr_free(s2); s2 = USTR("");
+    assert(USTR_CNTL_MALLOC_CHECK_END());
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 0);
+    assert(!USTR_CNTL_MALLOC_CHECK_END());
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 0);
+    assert(!USTR_CNTL_MALLOC_CHECK_END());
+    
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 0);
+    assert(USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE));
+    assert(USTR_CNTL_MALLOC_CHECK_LVL() == 1);
+  }
   
   lim  = 1;
   scan = 0;

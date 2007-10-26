@@ -212,16 +212,17 @@ int main(int argc, char *argv[])
    {"help", no_argument, NULL, 'h'},
    {"version", no_argument, NULL, 'V'},
    
+   {"debug-memory", no_argument,      NULL, 1},
+   
    {NULL, 0, NULL, 0}
   };
   int scan = 0;
   int optchar = -1;
   const char *prog_name = NULL;
-  
-  USTR_CNTL_MALLOC_CHECK_BEG();
+  int debug_mem = USTR_DEBUG;
   
   if (!argc)
-    exit (EXIT_FAILURE);
+    usage(EXIT_FAILURE, NULL);
   
   if ((prog_name = strrchr(argv[0], '/')))
     ++prog_name;
@@ -236,11 +237,15 @@ int main(int argc, char *argv[])
       case 'V':
         printf("%s version %s\n", prog_name, "1.0.0");
         exit (EXIT_SUCCESS);
+
+      case 1:   debug_mem   = USTR_TRUE; break;
     }
   
   argc -= optind;
   argv += optind;
 
+  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
+  
   if (!argc)
     fp_loop(stdin, prog_name);
   

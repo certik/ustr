@@ -107,12 +107,12 @@ int main(void)
 
     ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_SET_MEM, &mc_mem));
     
-    assert(USTR_CNTL_MALLOC_CHECK_BEG());
+    assert(USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE));
 
     assert(!TST_MC_GET_NUM());
   }
 #else
-  assert(!USTR_CNTL_MALLOC_CHECK_BEG());
+  assert(!USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE));
 #endif
   
   ASSERT(ustr_size(s1) == 0);

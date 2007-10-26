@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
   int scan = 1;
   Ustr *s1 = USTR("");
   
-  USTR_CNTL_MALLOC_CHECK_BEG();
+  USTR_CNTL_MALLOC_CHECK_BEG(USTR_DEBUG);
   
   if (!argc)
     exit (EXIT_FAILURE);
