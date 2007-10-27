@@ -64,8 +64,6 @@ int main(int argc, char *argv[])
    {"help", no_argument, NULL, 'h'},
    {"version", no_argument, NULL, 'V'},
    
-   {"debug-memory", no_argument,      NULL, 1},
-   
    {NULL, 0, NULL, 0}
   };
   const char *prog_name = NULL;
@@ -85,7 +83,6 @@ int main(int argc, char *argv[])
   unsigned int flags = (USTR_FLAG_PARSE_NUM_SEP | USTR_FLAG_PARSE_NUM_OVERFLOW |
                         USTR_FLAG_PARSE_NUM_SPACE | USTR_FLAG_PARSE_NUM_EXACT);
   unsigned int ern = 0;
-  int debug_mem = USTR_DEBUG;
   
   if (!argc)
     usage(NULL, EXIT_FAILURE);
@@ -106,14 +103,10 @@ int main(int argc, char *argv[])
 
       case 'a': all_loc = !all_loc; break;
       case 'l': loc     = !loc;     break;
-
-      case 1:   debug_mem   = USTR_TRUE; break;
     }
 
   argc -= optind;
   argv += optind;
-
-  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
   
   if (argc != 1)
     usage(prog_name, EXIT_FAILURE);

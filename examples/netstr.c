@@ -462,8 +462,6 @@ int main(int argc, char *argv[])
    {"help", no_argument, NULL, 'h'},
    {"version", no_argument, NULL, 'V'},
    
-   {"debug-memory", no_argument,      NULL, 1},
-   
    {NULL, 0, NULL, 0}
   };
   const char *prog_name = NULL;
@@ -472,7 +470,6 @@ int main(int argc, char *argv[])
   int optchar = -1;
   int interp  = USTR_FALSE;
   int csv     = USTR_FALSE;
-  int debug_mem = USTR_DEBUG;
   
   if (!argc)
     usage(NULL, EXIT_FAILURE);
@@ -496,14 +493,10 @@ int main(int argc, char *argv[])
       case 'C': csv     = !csv;     break;
 
       case 'f': fnames  = !fnames;  break;
-
-      case 1:   debug_mem   = USTR_TRUE; break;
     }
 
   argc -= optind;
   argv += optind;
-
-  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
   
   if (!argc)
     usage(prog_name, EXIT_FAILURE);

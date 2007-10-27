@@ -298,14 +298,11 @@ int main(int argc, char *argv[])
    {"help", no_argument, NULL, 'h'},
    {"version", no_argument, NULL, 'V'},
    
-   {"debug-memory", no_argument,      NULL, 1},
-   
    {NULL, 0, NULL, 0}
   };
   int scan = 0;
   int optchar = -1;
   const char *prog_name = NULL;
-  int debug_mem = USTR_DEBUG;
   
   if (!argc)
     usage(NULL, EXIT_FAILURE);
@@ -327,15 +324,11 @@ int main(int argc, char *argv[])
       case 'c': combine = !combine; break;
       case 'f': fnames  = !fnames;  break;
       case 'i': interp  = !interp;  break;
-        
-      case 1:   debug_mem   = USTR_TRUE; break;
     }
 
   argc -= optind;
   argv += optind;
 
-  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
-  
   if (!argc)
     usage(prog_name, EXIT_FAILURE);
 

@@ -142,15 +142,12 @@ int main(int argc, char *argv[])
    {"help", no_argument, NULL, 'h'},
    {"version", no_argument, NULL, 'V'},
    
-   {"debug-memory", no_argument,      NULL, 1},
-   
    {NULL, 0, NULL, 0}
   };
   const char *prog_name = NULL;
   Ustr *io = NULL;
   int scan = 0;
   int optchar = -1;
-  int debug_mem = USTR_DEBUG;
   
   if (!argc)
     exit (EXIT_FAILURE);
@@ -171,15 +168,11 @@ int main(int argc, char *argv[])
 
       case 'H': prnt_high_bytes = !prnt_high_bytes;  break;
       case 'S': prnt_spac_bytes = !prnt_spac_bytes;  break;
-
-      case 1:   debug_mem   = USTR_TRUE; break;
     }
 
   argc -= optind;
   argv += optind;
 
-  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
-  
   if (!(io = ustr_dupx_empty(4096, 0, USTR_FALSE, USTR_FALSE)))
     die(prog_name, strerror(ENOMEM));
   

@@ -312,15 +312,12 @@ int main(int argc, char *argv[])
    {"help", no_argument, NULL, 2},
    {"version", no_argument, NULL, 'V'},
    
-   {"debug-memory", no_argument,      NULL, 1},
-   
    {NULL, 0, NULL, 0}
   };
   int scan = 0;
   int optchar = -1;
   const char *prog_name = NULL;
   const char *repl_cstr = NULL;
-  int debug_mem = USTR_DEBUG;
   
   if (!argc)
     exit (EXIT_FAILURE);
@@ -384,14 +381,10 @@ int main(int argc, char *argv[])
         
       case 'H': prnt_fname  = PRNT_FNAME_ON;  break;
       case 'h': prnt_fname  = PRNT_FNAME_OFF; break;
-
-      case 1:   debug_mem   = USTR_TRUE; break;
     }
   
   argc -= optind;
   argv += optind;
-
-  USTR_CNTL_MALLOC_CHECK_BEG(debug_mem);
 
   if (!argc)
     usage(EXIT_FAILURE, prog_name);
