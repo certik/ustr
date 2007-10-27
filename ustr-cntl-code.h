@@ -17,14 +17,23 @@
 /* second set of defaults... *sigh* */
 struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
  {1, /* ref bytes */
-  {malloc, realloc, free}, /* ustr */
+  {ustr__cntl_mc_setup_malloc, /* malloc be called first */
+   realloc,
+   free}, /* Ustr_cntl_mem */
   USTR_FALSE,   /* has_size */
-  USTR_FALSE}}; /* exact_bytes */
+  USTR_FALSE,   /* exact_bytes */
+  USTR_FALSE,   /* scrub on malloc */
+  USTR_FALSE,   /* scrub on free */
+  USTR_FALSE    /* scrub on realloc */
+ }};
 
 /* not namespaced because this must be in a C-file. */
 #ifndef USE_MALLOC_CHECK
 #define USE_MALLOC_CHECK 1
 #endif
+#define MALLOC_CHECK_API_M_SCRUB ustr__opts->mc_m_scrub
+#define MALLOC_CHECK_API_F_SCRUB ustr__opts->mc_f_scrub
+#define MALLOC_CHECK_API_R_SCRUB ustr__opts->mc_r_scrub
 #define MALLOC_CHECK_SCOPE_EXTERN 0
 #include "malloc-check.h"
 
@@ -40,6 +49,60 @@ Ustr__cntl_mc_ptrs USTR__COMPILE_ATTR_H() *ustr__cntl_mc_ptr = 0;
 size_t             USTR__COMPILE_ATTR_H()  ustr__cntl_mc_num = 0;
 size_t             USTR__COMPILE_ATTR_H()  ustr__cntl_mc_sz  = 0;
 
+#define USTR__STREQ(x, y) !strcmp(x, y)
+
+USTR_CONF_i_PROTO int   ustr__cntl_mc_setup_env2bool(const char *key, int def)
+{
+  const char *ptr = getenv(key);
+
+  if (!ptr)                    return (!!def);
+
+  if (USTR__STREQ(ptr, "1"))   return (USTR_TRUE);
+  if (USTR__STREQ(ptr, "on"))  return (USTR_TRUE);
+  if (USTR__STREQ(ptr, "yes")) return (USTR_TRUE);
+
+  if (USTR__STREQ(ptr, "0"))   return (USTR_FALSE);
+  if (USTR__STREQ(ptr, "off")) return (USTR_FALSE);
+  if (USTR__STREQ(ptr, "no"))  return (USTR_FALSE);
+
+                               return (!!def);
+}
+
+USTR_CONF_i_PROTO void  ustr__cntl_mc_setup_main(void)
+{
+  int val = 0;
+  
+  if (!ustr__cntl_mc_setup_env2bool("USTR_CNTL_MC", USTR_CONF_USE_ASSERT))
+  {
+    ustr__opts->ustr.sys_malloc  = malloc;
+    ustr__opts->ustr.sys_realloc = realloc;
+    ustr__opts->ustr.sys_free    = free;
+    
+    return;
+  }
+
+  val = ustr__opts->mc_m_scrub;
+  val = ustr__cntl_mc_setup_env2bool("USTR_CNTL_MC_M_SCRUB", val);
+  ustr__opts->mc_m_scrub = val;
+
+  val = ustr__opts->mc_f_scrub;
+  val = ustr__cntl_mc_setup_env2bool("USTR_CNTL_MC_F_SCRUB", val);
+  ustr__opts->mc_f_scrub = val;
+  
+  val = ustr__opts->mc_r_scrub;
+  val = ustr__cntl_mc_setup_env2bool("USTR_CNTL_MC_R_SCRUB", val);
+  ustr__opts->mc_r_scrub = val;
+
+  USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE);
+}
+
+USTR_CONF_i_PROTO void *ustr__cntl_mc_setup_malloc(size_t x)
+{ /* again, it's not possible to call anything but malloc() or free(NULL).
+   * So just doing setup here is fine. */
+  ustr__cntl_mc_setup_main();
+  return (ustr__opts->ustr.sys_malloc(x));
+}
+
 USTR_CONF_i_PROTO void *ustr__cntl_mc_malloc(size_t x)
 {
   struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
@@ -54,7 +117,7 @@ USTR_CONF_i_PROTO void *ustr__cntl_mc_realloc(void *p, size_t x)
   
   return (malloc_check_realloc(p,x, ptr[num].file,ptr[num].line,ptr[num].func));
 }
-USTR_CONF_i_PROTO void ustr__cntl_mc_free(void *x)
+USTR_CONF_i_PROTO void  ustr__cntl_mc_free(void *x)
 {
   struct Ustr__cntl_mc_ptrs *ptr = ustr__cntl_mc_ptr;
   size_t num = ustr__cntl_mc_num;
@@ -166,6 +229,72 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
     }
     break;
 
+    case USTR_CNTL_OPT_GET_MC_M_SCRUB:
+    {
+      int *val = va_arg(ap, int *);
+
+      *val = ustr__opts->mc_m_scrub;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+    
+    case USTR_CNTL_OPT_SET_MC_M_SCRUB:
+    {
+      int val = va_arg(ap, int);
+      
+      USTR_ASSERT_RET((val == !!val), USTR_FALSE);
+      
+      ustr__opts->mc_m_scrub = val;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+    
+    case USTR_CNTL_OPT_GET_MC_F_SCRUB:
+    {
+      int *val = va_arg(ap, int *);
+
+      *val = ustr__opts->mc_f_scrub;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+    
+    case USTR_CNTL_OPT_SET_MC_F_SCRUB:
+    {
+      int val = va_arg(ap, int);
+      
+      USTR_ASSERT_RET((val == !!val), USTR_FALSE);
+      
+      ustr__opts->mc_f_scrub = val;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+    
+    case USTR_CNTL_OPT_GET_MC_R_SCRUB:
+    {
+      int *val = va_arg(ap, int *);
+
+      *val = ustr__opts->mc_r_scrub;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+    
+    case USTR_CNTL_OPT_SET_MC_R_SCRUB:
+    {
+      int val = va_arg(ap, int);
+      
+      USTR_ASSERT_RET((val == !!val), USTR_FALSE);
+      
+      ustr__opts->mc_r_scrub = val;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+      
     case 666:
     {
       unsigned long valT = va_arg(ap, unsigned long);

@@ -29,12 +29,8 @@
 #define USTRP_NULL ((struct Ustrp *)0)
 #define USTR_POOL_NULL ((struct Ustr_pool *)0)
 
-#ifndef USTR_CONF_USE_ASSERT
-# ifdef NDEBUG
+#ifndef USTR_CONF_USE_ASSERT /* Really defined in ustr-conf.h */
 #define USTR_CONF_USE_ASSERT 0
-# else
-#define USTR_CONF_USE_ASSERT 1
-# endif
 #endif
 
 #if !defined(ustr_assert)     || !defined(USTR_ASSERT) || \
@@ -109,8 +105,6 @@
 /* ---- END: always static config. ---- */
 
 #if USTR_CONF_USE_DYNAMIC_CONF
-# include "ustr-cntl.h"
-
 # if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||      \
     (defined(__GNUC__) && (__GNUC__ > 3) && !defined(__STRICT_ANSI__))
 #  define USTR_CNTL_MALLOC_CHECK_BEG(x) ((x) ?                          \
@@ -143,6 +137,8 @@
 
 # define USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(x, y)    \
     (void) ustr_cntl_opt(666, 0x0FF4, x, y)
+
+# include "ustr-cntl.h"
 #else
 # define USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE)  (USTR_FALSE)
 # define USTR_CNTL_MALLOC_CHECK_LVL()           (0)

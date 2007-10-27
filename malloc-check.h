@@ -25,8 +25,16 @@
 #endif
 #endif
 
-#ifndef MALLOC_CHECK_SUPPER_SCRUB /* never really call realloc() */
-#define MALLOC_CHECK_SUPPER_SCRUB 0
+#ifndef MALLOC_CHECK_API_M_SCRUB /* memset data at ptr's on malloc */
+#define MALLOC_CHECK_API_M_SCRUB 0
+#endif
+
+#ifndef MALLOC_CHECK_API_F_SCRUB /* memset data at ptr's on free */
+#define MALLOC_CHECK_API_F_SCRUB 0
+#endif
+
+#ifndef MALLOC_CHECK_API_R_SCRUB /* never really call realloc() */
+#define MALLOC_CHECK_API_R_SCRUB 0
 #endif
 
 #ifndef MALLOC_CHECK_STORE
@@ -273,8 +281,9 @@ static void *malloc_check_malloc(size_t sz, const char *file, unsigned int line,
 
   if (MALLOC_CHECK_TRACE)
     fprintf(stderr, "mc_make(%zu, %s, %u, %s) = %p\n", sz, file,line,func, ret);
-  
-  MALLOC_CHECK_SCRUB_PTR(ret, sz);
+
+  if (MALLOC_CHECK_API_M_SCRUB)
+    MALLOC_CHECK_SCRUB_PTR(ret, sz);
 
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].ptr  = ret;
   MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num - 1].sz   = sz;
@@ -329,7 +338,10 @@ static void malloc_check_free(void *ptr, const char *file, unsigned int line,
       MALLOC_CHECK_SWAP_TYPE(val1->func, val2->func, const char *);
     }
     MALLOC_CHECK_STORE.mem_vals[MALLOC_CHECK_STORE.mem_num].ptr = NULL;
-    MALLOC_CHECK_SCRUB_PTR(ptr, sz);
+
+    if (MALLOC_CHECK_API_F_SCRUB)
+      MALLOC_CHECK_SCRUB_PTR(ptr, sz);
+    
     free(ptr);
   }
 }
@@ -343,7 +355,7 @@ static void *malloc_check_realloc(void *ptr, size_t sz,
 
   MALLOC_CHECK_ASSERT(ptr && sz);
 
-  if (MALLOC_CHECK_SUPPER_SCRUB)
+  if (MALLOC_CHECK_API_R_SCRUB)
   {
     if (!(ret = malloc_check_malloc(sz, file, line, func)))
       return (NULL);
@@ -389,7 +401,7 @@ void malloc_check_empty(const char *file, unsigned int line, const char *func)
     while (MALLOC_CHECK_STORE.mem_vals[scan].ptr)
     {
       /* NOTE: Using system *printf, so can't use %zu as Solaris is retarded */
-      fprintf(stderr," FAILED MEM CHECK EMPTY: ptr %p, sz %lu, from %s:%u:%s\n",
+      fprintf(stderr," MEM CHECK NOT EMPTY: ptr %p, sz %lu, from %s:%u:%s\n",
               MALLOC_CHECK_STORE.mem_vals[scan].ptr,
               (unsigned long)MALLOC_CHECK_STORE.mem_vals[scan].sz,
               MALLOC_CHECK_STORE.mem_vals[scan].func,

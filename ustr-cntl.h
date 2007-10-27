@@ -6,14 +6,20 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-#define USTR_CNTL_OPT_GET_REF_BYTES   (1)
-#define USTR_CNTL_OPT_SET_REF_BYTES   (2)
-#define USTR_CNTL_OPT_GET_HAS_SIZE    (3)
-#define USTR_CNTL_OPT_SET_HAS_SIZE    (4)
-#define USTR_CNTL_OPT_GET_EXACT_BYTES (5)
-#define USTR_CNTL_OPT_SET_EXACT_BYTES (6)
-#define USTR_CNTL_OPT_GET_MEM         (7)
-#define USTR_CNTL_OPT_SET_MEM         (8)
+#define USTR_CNTL_OPT_GET_REF_BYTES   ( 1)
+#define USTR_CNTL_OPT_SET_REF_BYTES   ( 2)
+#define USTR_CNTL_OPT_GET_HAS_SIZE    ( 3)
+#define USTR_CNTL_OPT_SET_HAS_SIZE    ( 4)
+#define USTR_CNTL_OPT_GET_EXACT_BYTES ( 5)
+#define USTR_CNTL_OPT_SET_EXACT_BYTES ( 6)
+#define USTR_CNTL_OPT_GET_MEM         ( 7)
+#define USTR_CNTL_OPT_SET_MEM         ( 8)
+#define USTR_CNTL_OPT_GET_MC_M_SCRUB  ( 9)
+#define USTR_CNTL_OPT_SET_MC_M_SCRUB  (10)
+#define USTR_CNTL_OPT_GET_MC_F_SCRUB  (11)
+#define USTR_CNTL_OPT_SET_MC_F_SCRUB  (12)
+#define USTR_CNTL_OPT_GET_MC_R_SCRUB  (13)
+#define USTR_CNTL_OPT_SET_MC_R_SCRUB  (14)
 
 /* move to dynamic configuration, so it's more usable from a shared library */
 #undef  USTR_CONF_REF_BYTES
@@ -45,16 +51,25 @@ struct Ustr_opts
 
  unsigned int has_size    : 1;
  unsigned int exact_bytes : 1;
+ unsigned int mc_m_scrub  : 1;
+ unsigned int mc_f_scrub  : 1;
+ unsigned int mc_r_scrub  : 1;
 };
 
 /* this is for use within the shared library only... */
 extern struct Ustr_opts ustr__opts[1];
 
+USTR_CONF_e_PROTO int   ustr__cntl_mc_setup_env2bool(const char *, int)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
+USTR_CONF_e_PROTO void  ustr__cntl_mc_setup_main(void);
+USTR_CONF_e_PROTO void *ustr__cntl_mc_setup_malloc(size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET();
+
 USTR_CONF_e_PROTO void *ustr__cntl_mc_malloc(size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 USTR_CONF_e_PROTO void *ustr__cntl_mc_realloc(void *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET();
-USTR_CONF_e_PROTO void ustr__cntl_mc_free(void *);
+USTR_CONF_e_PROTO void  ustr__cntl_mc_free(void *);
 #else
 struct Ustr_opts; /* declare opaque struct */
 #endif

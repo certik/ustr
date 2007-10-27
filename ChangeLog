@@ -1,3 +1,21 @@
+2007-10-27  James Antill  <james@and.org>
+
+	* ustr-cntl.h (USTR_CNTL_OPT_GET_MC_M_SCRUB): Added control option for
+	malloc check scrubbing.
+	(USTR_CNTL_OPT_SET_MC_M_SCRUB): Added control option for malloc check
+	scrubbing.
+	(USTR_CNTL_OPT_GET_MC_F_SCRUB): Added control option for malloc check
+	scrubbing.
+	(USTR_CNTL_OPT_SET_MC_F_SCRUB): Added control option for malloc check
+	scrubbing.
+	(USTR_CNTL_OPT_GET_MC_R_SCRUB): Added control option for malloc check
+	scrubbing.
+	(USTR_CNTL_OPT_SET_MC_R_SCRUB): Added control option for malloc check
+	scrubbing.
+
+	* ustr-cntl-code.h (ustr__cntl_mc_setup_malloc): Added enablement of
+	malloc checking via. environment variables.
+
 2007-10-25  James Antill  <james@and.org>
 
 	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_LVL): Added function.
