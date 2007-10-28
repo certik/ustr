@@ -6,6 +6,7 @@
 	of arguments.
 	(USTR_CNTL_MALLOC_CHECK_MEM_USTR): Added function to ease calls to
 	other USTR_CNTL_MALLOC_CHECK_MEM_*() functions.
+	(USTR_CNTL_MALLOC_CHECK_MEM_USTRP): Added function.
 
 	* ustr-main-code.h (ustr_conf): Remove the refnn argument as at was the
 	exact same thing as the ref argument.

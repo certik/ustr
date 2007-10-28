@@ -116,8 +116,12 @@ int tst(void)
     ASSERT(lenn == 1);
   }
   
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_USTRP(spa));
+  
   ASSERT(ustrp_dup(pool, spa));
   ASSERT(ustrp_set(pool, &spa, USTRP1(\x4, "abcd")));
+
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_USTRP(spa));
   
   ASSERT(pool);
   ASSERT(!ustrp_ro(sp1));

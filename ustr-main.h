@@ -121,6 +121,8 @@
 # define USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(x, y) ustr_cntl_opt(666, 0x0FF3, x, y)
 # define USTR_CNTL_MALLOC_CHECK_MEM_USTR(s1) (!ustr_alloc(s1) ||        \
     USTR_CNTL_MALLOC_CHECK_MEM_SZ(s1, ustr_size_alloc(s1)))
+# define USTR_CNTL_MALLOC_CHECK_MEM_USTRP(sp1) (!ustrp_alloc(sp1) ||    \
+    USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(sp1, ustrp_size_alloc(sp1)))
 
 # if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||      \
     (defined(__GNUC__) && (__GNUC__ > 3) && !defined(__STRICT_ANSI__))
@@ -149,6 +151,7 @@
 # define USTR_CNTL_MALLOC_CHECK_MEM_SZ(x, y)    (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(x, y) (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_MEM_USTR(s1)    (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_MEM_USTRP(s1)   (USTR_TRUE) /* pretend */
 # define USTR_CNTL_MALLOC_CHECK_END(x)          (USTR_TRUE)
 # define USTR_CNTL_MALLOC_CHECK_ADD(x)          (USTR_FALSE)
 # define USTR_CNTL_MALLOC_CHECK_DEL(x)          (USTR_TRUE)

@@ -503,6 +503,11 @@ Function: USTR_CNTL_MALLOC_CHECK_MEM()
   This function asserts that the pointer (Parameter[1]) was allocated from
  malloc checking.
 
+ Note:
+
+  Unless you are doing something special, or using a builtin Ustr_pool it is
+ very likely you want to just call USTR_CNTL_MALLOC_CHECK_MEM_USTR().
+
 
 Function: USTR_CNTL_MALLOC_CHECK_MEM_SZ()
  Returns: Success or failure
@@ -519,18 +524,10 @@ Function: USTR_CNTL_MALLOC_CHECK_MEM_SZ()
   This function asserts that the pointer (Parameter[1]) was allocated from
  malloc checking, and has the specified size (Parameter[2]).
 
+ Note:
 
-Function: USTR_CNTL_MALLOC_CHECK_MEM_USTR()
- Returns: Success or failure
- Type: int
-
- Parameter[1]: Pointer to a Ustr string
- Type[1]: Ustr *
-
- Explanation:
-
-  This function asserts that the pointer (Parameter[1]) is a Ustr allocated from
- malloc checking, if the Ustr is allocated (if not it returns TRUE).
+  Unless you are doing something special, or using a builtin Ustr_pool it is
+ very likely you want to just call USTR_CNTL_MALLOC_CHECK_MEM_USTR().
 
 
 Function: USTR_CNTL_MALLOC_CHECK_MEM_MINSZ()
@@ -547,6 +544,46 @@ Function: USTR_CNTL_MALLOC_CHECK_MEM_MINSZ()
 
   This function asserts that the pointer (Parameter[1]) was allocated from
  malloc checking, and has at least the specified size (Parameter[2]).
+
+ Note:
+
+  Unless you are doing something special, or using a builtin Ustr_pool it is
+ very likely you want to just call USTR_CNTL_MALLOC_CHECK_MEM_USTR().
+
+
+Function: USTR_CNTL_MALLOC_CHECK_MEM_USTR()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a Ustr string
+ Type[1]: Ustr *
+
+ Explanation:
+
+  This function asserts that the pointer (Parameter[1]) is a Ustr allocated from
+ malloc checking, if the Ustr is allocated (if not it returns TRUE).
+
+ Note:
+
+  Because of the layering between the Ustr code and the pool code, if you
+ allocate an implicity sized Ustrp from a pool and then delete some data from
+ it (which fails) the Ustr layer will think it has an implicit less than the
+ actual size so this function will fail. This is what
+ USTR_CNTL_MALLOC_CHECK_MEM_USTRP() is for.
+
+
+Function: USTR_CNTL_MALLOC_CHECK_MEM_USTRP()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a Ustrp string
+ Type[1]: Ustrp *
+
+ Explanation:
+
+  This function asserts that the pointer (Parameter[1]) is a Ustr allocated from
+ a builtin pool using malloc checking, if the Ustr is allocated (if not it
+ returns TRUE).
 
 
 Function: USTR_CNTL_MALLOC_CHECK_END()
