@@ -401,7 +401,7 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           size_t num = ustr__cntl_mc_num;
           void *valP  = va_arg(ap, void *);
           size_t valV = va_arg(ap, size_t);
-          malloc_check_sz_mem(valP, valV,
+          malloc_check_mem_sz(valP, valV,
                               ptr[num].file, ptr[num].line, ptr[num].func);
         }
         break;
@@ -412,7 +412,7 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           size_t num = ustr__cntl_mc_num;
           void *valP  = va_arg(ap, void *);
           size_t valV = va_arg(ap, size_t);
-          malloc_check_minsz_mem(valP, valV,
+          malloc_check_mem_minsz(valP, valV,
                                  ptr[num].file, ptr[num].line, ptr[num].func);
         }
         break;

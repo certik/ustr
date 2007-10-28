@@ -346,6 +346,29 @@ int tst(void)
   ASSERT(ustr_srch_rep_chr_fwd(s1, 0, 'j', 1) == 10);
   ASSERT(ustr_srch_rep_chr_rev(s1, 0, 'j', 1) == 10);
   
+  {
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t lenn;
+
+    s4 = ustr_dup_cstr("x");
+    
+    ustr_conf(s4, NULL,NULL,NULL,NULL);
+    ustr_conf(s4, &esz,&ref,&exact,&lenn);
+
+    ASSERT(!esz);
+    ASSERT(ref == 2);
+    ASSERT(!exact);
+    
+    ASSERT(lenn == 1);
+    
+    ASSERT(ustr_len(s4)  ==  1);
+    if (!USTR_DEBUG)
+    ASSERT(ustr_size(s4) ==  1);
+    ustr_sc_free(&s4);
+  }
+
   { /* bug */
     int scan = 0;
     Ustr *os1 = s1;

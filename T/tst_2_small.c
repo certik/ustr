@@ -101,17 +101,15 @@ int tst(void)
     size_t esz;
     size_t ref;
     int exact;
-    size_t refn;
     size_t lenn;
 
-    ustr_conf(s4, NULL,NULL,NULL, NULL,NULL);
-    ustr_conf(s4, &esz,&ref,&exact, &refn,&lenn);
+    ustr_conf(s4, NULL,NULL,NULL,NULL);
+    ustr_conf(s4, &esz,&ref,&exact,&lenn);
 
     ASSERT(!esz);
     ASSERT(ref == 1);
     ASSERT(!exact);
     
-    ASSERT(refn == 1);
     ASSERT(lenn == 1);
     
     ASSERT(ustr_len(s4)  ==  1);

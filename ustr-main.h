@@ -117,8 +117,11 @@
 # endif
 # define USTR_CNTL_MALLOC_CHECK_LVL()           ustr_cntl_opt(666, 0x0FFE)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)          ustr_cntl_opt(666, 0x0FF1, x)
-# define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y)    ustr_cntl_opt(666, 0x0FF2, x, y)
-# define USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(x, y) ustr_cntl_opt(666, 0x0FF3, x, y)
+# define USTR_CNTL_MALLOC_CHECK_MEM_SZ(x, y)    ustr_cntl_opt(666, 0x0FF2, x, y)
+# define USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(x, y) ustr_cntl_opt(666, 0x0FF3, x, y)
+# define USTR_CNTL_MALLOC_CHECK_MEM_USTR(s1) (!ustr_alloc(s1) ||        \
+    USTR_CNTL_MALLOC_CHECK_MEM_SZ(s1, ustr_size_alloc(s1)))
+
 # if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) ||      \
     (defined(__GNUC__) && (__GNUC__ > 3) && !defined(__STRICT_ANSI__))
 # define USTR_CNTL_MALLOC_CHECK_END()                                   \
@@ -143,9 +146,10 @@
 # define USTR_CNTL_MALLOC_CHECK_BEG(USTR_TRUE)  (USTR_FALSE)
 # define USTR_CNTL_MALLOC_CHECK_LVL()           (0)
 # define USTR_CNTL_MALLOC_CHECK_MEM(x)          (USTR_TRUE) /* pretend */
-# define USTR_CNTL_MALLOC_CHECK_SZ_MEM(x, y)    (USTR_TRUE) /* pretend */
-# define USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(x, y) (USTR_TRUE) /* pretend */
-# define USTR_CNTL_MALLOC_CHECK_END()           (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_MEM_SZ(x, y)    (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(x, y) (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_MEM_USTR(s1)    (USTR_TRUE) /* pretend */
+# define USTR_CNTL_MALLOC_CHECK_END(x)          (USTR_TRUE)
 # define USTR_CNTL_MALLOC_CHECK_ADD(x)          (USTR_FALSE)
 # define USTR_CNTL_MALLOC_CHECK_DEL(x)          (USTR_TRUE)
 
@@ -565,7 +569,7 @@ USTR_CONF_E_PROTO  int ustr_owner(const struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO
-void ustr_conf(const struct Ustr *, size_t *,size_t *,int *, size_t *,size_t *)
+void ustr_conf(const struct Ustr *, size_t *, size_t *, int *, size_t *)
     USTR__COMPILE_ATTR_NONNULL_L((1));
 
 USTR_CONF_E_PROTO int ustr_setf_enomem_err(struct Ustr *)
@@ -959,7 +963,7 @@ USTR_CONF_EI_PROTO int ustrp_owner(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
-void ustrp_conf(const struct Ustrp*, size_t *,size_t *,int *, size_t *,size_t *)
+void ustrp_conf(const struct Ustrp *, size_t *, size_t *, int *, size_t *)
     USTR__COMPILE_ATTR_NONNULL_L((1));
 
 USTR_CONF_EI_PROTO int ustrp_setf_enomem_err(struct Ustrp *)
@@ -1015,8 +1019,8 @@ USTR_CONF_II_PROTO int ustrp_owner(const struct Ustrp *s1)
 { return (ustr_owner(&s1->s)); }
 USTR_CONF_II_PROTO
 void ustrp_conf(const struct Ustrp *s1, size_t *esz, size_t *ref,
-                int *exact, size_t *refn, size_t *lenn)
-{ ustr_conf(&s1->s, esz, ref, exact, refn, lenn); }
+                int *exact, size_t *lenn)
+{ ustr_conf(&s1->s, esz, ref, exact, lenn); }
 
 USTR_CONF_II_PROTO int ustrp_setf_enomem_err(struct Ustrp *s1)
 { return (ustr_setf_enomem_err(&s1->s)); }

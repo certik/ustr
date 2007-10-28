@@ -122,17 +122,17 @@ int main(void)
   ASSERT(ustr_dup(s1) == s1);
   ASSERT(ustr_dup(s2) == s2);
   
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_USTR(s2));
   ASSERT(ustr_sc_ensure_owner(&s2));
   ASSERT(s2);
   assert(USTR_CNTL_MALLOC_CHECK_MEM(s2));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_USTR(s2));
   ASSERT(!ustr_ro(s2));
   
   {
     size_t esz;
     size_t ref;
     int exact;
-    size_t refn;
     size_t lenn;
 
 #if USTR_CONF_USE_DYNAMIC_CONF
@@ -144,8 +144,8 @@ int main(void)
     ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_EXACT_BYTES, &conf_exact));
 #endif
 
-    ustr_conf(s1, NULL,NULL,NULL, NULL,NULL);
-    ustr_conf(s1, &esz,&ref,&exact, &refn,&lenn);
+    ustr_conf(s1, NULL,NULL,NULL, NULL);
+    ustr_conf(s1, &esz,&ref,&exact, &lenn);
 #if USTR_CONF_USE_DYNAMIC_CONF
     ASSERT(!conf_esz   == !esz);
     ASSERT( conf_ref   ==  ref);
@@ -155,8 +155,8 @@ int main(void)
     ASSERT( USTR_CONF_REF_BYTES   ==  ref);
     ASSERT( USTR_CONF_EXACT_BYTES ==  exact);
 #endif
-    ustr_conf(s2, NULL,NULL,NULL, NULL,NULL);
-    ustr_conf(s2, &esz,&ref,&exact, &refn,&lenn);
+    ustr_conf(s2, NULL,NULL,NULL, NULL);
+    ustr_conf(s2, &esz,&ref,&exact, &lenn);
 #if USTR_CONF_USE_DYNAMIC_CONF
     ASSERT(!conf_esz   == !esz);
     ASSERT( conf_ref   ==  ref);

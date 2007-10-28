@@ -890,9 +890,9 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
       {
         if (!p)
         {
-          ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(*ps1, osz));
+          ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(*ps1, osz));
           USTR__CNTL_MALLOC_CHECK_FIXUP_REALLOC(*ps1, nsz);
-          ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(*ps1, nsz));
+          ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(*ps1, nsz));
         }
         
         if (!emem)
@@ -1474,7 +1474,7 @@ USTR_CONF_I_PROTO void ustrp_sc_del(struct Ustr_pool *p, struct Ustrp **ps1)
 
 USTR_CONF_I_PROTO
 void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
-               int *ret_exact, size_t *ret_refn,size_t *ret_lenn)
+               int *ret_exact, size_t *ret_lenn)
 {
   size_t esz = 0;
   size_t ref = 0;
@@ -1506,6 +1506,5 @@ void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
   if (ret_ref)   *ret_ref   = ref;
   if (ret_exact) *ret_exact = exact;
 
-  if (ret_refn)  *ret_refn  = USTR__REF_LEN(s1);
   if (ret_lenn)  *ret_lenn  = USTR__LEN_LEN(s1);
 }

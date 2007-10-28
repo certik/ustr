@@ -793,8 +793,8 @@ int tst(void)
   ASSERT(ustr_len(s2) == 5);
   ASSERT(ustr_cmp_cstr_eq(s2, "-----"));
   assert(USTR_CNTL_MALLOC_CHECK_MEM(s2));
-  assert(USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(s2, ustr_size_alloc(s2)));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(s2, ustr_size_alloc(s2)));
 
   ASSERT((pool = ustr_pool_ll_make()));
 
@@ -808,8 +808,8 @@ int tst(void)
   ASSERT(ustrp_len(sp2) == 5);
   ASSERT(ustrp_cmp_cstr_eq(sp2, "-----"));
   assert(USTR_CNTL_MALLOC_CHECK_MEM(sp2));
-  assert(USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(sp2, ustrp_size_alloc(sp2)));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(sp2, 96));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(sp2, ustrp_size_alloc(sp2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(sp2, 96));
 
   /* now with exact implicit SIZE */
   
@@ -824,8 +824,8 @@ int tst(void)
   ASSERT(ustr_len(s2) == 5);
   ASSERT(ustr_cmp_cstr_eq(s2, "-----"));
   assert(USTR_CNTL_MALLOC_CHECK_MEM(s2));
-  assert(USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(s2, ustr_size_alloc(s2)));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(s2, ustr_size_alloc(s2)));
 
   ASSERT((sp2 = ustrp_dupx_empty(pool, 0, 0, 1, 0)));
   ustrp_set_rep_chr(pool, &sp2, '-', 65);
@@ -838,8 +838,8 @@ int tst(void)
   ASSERT(ustrp_len(sp2) == 5);
   ASSERT(ustrp_cmp_cstr_eq(sp2, "-----"));
   assert(USTR_CNTL_MALLOC_CHECK_MEM(sp2));
-  assert(USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(sp2, ustrp_size_alloc(sp2)));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(sp2, off));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(sp2, ustrp_size_alloc(sp2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(sp2, off));
 
   /* now with inexact explicit stored SIZE */
   
@@ -853,8 +853,8 @@ int tst(void)
   ASSERT(ustr_len(s2) == 5);
   ASSERT(ustr_cmp_cstr_eq(s2, "-----"));
   assert(USTR_CNTL_MALLOC_CHECK_MEM(s2));
-  assert(USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(s2, ustr_size_alloc(s2)));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(s2, ustr_size_alloc(s2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(s2, ustr_size_alloc(s2)));
 
   TST_MC_SET_NUM(0);
   ASSERT((sp2 = ustrp_dupx_empty(pool, 1, 0, 0, 0)));
@@ -867,8 +867,8 @@ int tst(void)
   ASSERT(ustrp_len(sp2) == 5);
   ASSERT(ustrp_cmp_cstr_eq(sp2, "-----"));
   assert(USTR_CNTL_MALLOC_CHECK_MEM(sp2));
-  assert(USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(sp2, ustrp_size_alloc(sp2)));
-  assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(sp2, ustrp_size_alloc(sp2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(sp2, ustrp_size_alloc(sp2)));
+  assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(sp2, ustrp_size_alloc(sp2)));
 
   ustr_pool_free(pool);
   

@@ -52,7 +52,7 @@ USTR_CONF_i_PROTO void *ustr__pool_ll_sys_malloc(struct Ustr_pool *p,size_t len)
   struct Ustr__pool_ll_node *np;
   void *ret = USTR_CONF_MALLOC(len);
 
-  ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(p,
+  ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(p,
                                             sizeof(struct Ustr__pool_ll_base)));
   
   if (!ret)
@@ -78,10 +78,10 @@ void *ustr__pool_ll_sys_realloc(struct Ustr_pool *p, void *old,
   struct Ustr__pool_ll_base *sip = (struct Ustr__pool_ll_base *)p;
   void *ret = 0;
 
-  ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(p,
+  ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(p,
                                             sizeof(struct Ustr__pool_ll_base)));
   USTR_ASSERT((old && sip->beg && sip->beg->ptr) || !olen);
-  ustr_assert(olen ? USTR_CNTL_MALLOC_CHECK_MINSZ_MEM(old, olen) :
+  ustr_assert(olen ? USTR_CNTL_MALLOC_CHECK_MEM_MINSZ(old, olen) :
               (!old || USTR_CNTL_MALLOC_CHECK_MEM(old)));
 
   if (!nlen)
@@ -110,7 +110,7 @@ void ustr__pool_ll_sys_free(struct Ustr_pool *p, void *old)
   struct Ustr__pool_ll_node **op = &sip->beg;
   unsigned int num = sip->free_num;
 
-  ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(p,
+  ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(p,
                                             sizeof(struct Ustr__pool_ll_base)));
   ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM(old));
   
@@ -158,7 +158,7 @@ USTR_CONF_i_PROTO void ustr__pool_ll__clear(struct Ustr__pool_ll_base *base,
 }
 USTR_CONF_i_PROTO void ustr__pool_ll_clear(struct Ustr_pool *base)
 {
-  ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(base,
+  ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(base,
                                             sizeof(struct Ustr__pool_ll_base)));
   ustr__pool_ll__clear((struct Ustr__pool_ll_base *)base, USTR_FALSE);
 }
@@ -181,7 +181,7 @@ USTR_CONF_i_PROTO void ustr__pool_ll_free(struct Ustr_pool *p)
 {
   struct Ustr__pool_ll_base *sip = (struct Ustr__pool_ll_base *)p;
   
-  ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(p,
+  ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(p,
                                             sizeof(struct Ustr__pool_ll_base)));
 
   if (sip->prev)
@@ -227,7 +227,7 @@ struct Ustr_pool *ustr__pool_ll_make_subpool(struct Ustr_pool *p)
   if (!p)
     return (&tmp->cbs);
   
-  ustr_assert(USTR_CNTL_MALLOC_CHECK_SZ_MEM(p,
+  ustr_assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(p,
                                             sizeof(struct Ustr__pool_ll_base)));
 
   if ((tmp->next = sip->sbeg))

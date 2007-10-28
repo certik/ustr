@@ -19,7 +19,7 @@
 # define USTR__EINVAL ERANGE /* EINVAL isn't in ISO 9899:1999, *sigh* */
 #endif
 
-/* default sized to 1 ... */
+/* default sized is 1 byte... */
 #define USTR__DUPX_DEF                                  \
     USTR_CONF_HAS_SIZE, USTR_CONF_REF_BYTES,            \
     USTR_CONF_EXACT_BYTES, USTR_FALSE
@@ -30,11 +30,8 @@
     (ustr_alloc(x) ? ustr_exact(x) : USTR_CONF_EXACT_BYTES), ustr_enomem(x)
 
 
-#define USTR__ASSERT_MALLOC_CHECK_MEM(p, s1) ((p) || !ustr_alloc(s1) || \
-    USTR_CNTL_MALLOC_CHECK_SZ_MEM(s1, ustr_size_alloc(s1)))
-
- /* #include <stdio.h>
-    printf("sz=%zu rbytes=%zu exact=%s len=%zu --> rsz=%zu\n", sz, rbytes, exact ? "TRUE" : "FALSE", len, rsz); */
+#define USTR__ASSERT_MALLOC_CHECK_MEM(p, s1) ((p) ||                    \
+    USTR_CNTL_MALLOC_CHECK_MEM_USTR(s1))
 
 USTR_CONF_e_PROTO int ustr__dupx_cmp_eq(size_t, size_t, int, int,
                                         size_t, size_t, int, int)
