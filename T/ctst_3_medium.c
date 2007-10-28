@@ -351,17 +351,19 @@ int tst(void)
     size_t ref;
     int exact;
     size_t lenn;
+    size_t refc;
 
     s4 = ustr_dup_cstr("x");
     
-    ustr_conf(s4, NULL,NULL,NULL,NULL);
-    ustr_conf(s4, &esz,&ref,&exact,&lenn);
+    ustr_conf(s4, NULL,NULL,NULL, NULL,NULL);
+    ustr_conf(s4, &esz,&ref,&exact, &lenn,&refc);
 
     ASSERT(!esz);
     ASSERT(ref == 2);
     ASSERT(!exact);
     
     ASSERT(lenn == 1);
+    ASSERT(refc == 1);
     
     ASSERT(ustr_len(s4)  ==  1);
     if (!USTR_DEBUG)

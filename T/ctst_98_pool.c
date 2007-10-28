@@ -107,18 +107,36 @@ int tst(void)
     size_t ref;
     int exact;
     size_t lenn;
+    size_t refc;
 
-    ustrp_conf(spa, NULL,NULL,NULL, NULL);
-    ustrp_conf(spa, &esz,&ref,&exact, &lenn);
+    ustrp_conf(spa, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(spa, &esz,&ref,&exact, &lenn,&refc);
     ASSERT(!esz);
     ASSERT(ref == 1);
     ASSERT(!exact);
     ASSERT(lenn == 1);
+    ASSERT(refc == 1);
   }
   
   assert(USTR_CNTL_MALLOC_CHECK_MEM_USTRP(spa));
   
   ASSERT(ustrp_dup(pool, spa));
+  {
+    size_t esz;
+    size_t ref;
+    int exact;
+    size_t lenn;
+    size_t refc;
+
+    ustrp_conf(spa, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(spa, &esz,&ref,&exact, &lenn,&refc);
+    ASSERT(!esz);
+    ASSERT(ref == 1);
+    ASSERT(!exact);
+    ASSERT(lenn == 1);
+    ASSERT(refc == 2);
+  }
+  
   ASSERT(ustrp_set(pool, &spa, USTRP1(\x4, "abcd")));
 
   assert(USTR_CNTL_MALLOC_CHECK_MEM_USTRP(spa));
@@ -163,13 +181,15 @@ int tst(void)
     size_t ref;
     int exact;
     size_t lenn;
+    size_t refc;
 
-    ustrp_conf(sp1, NULL,NULL,NULL, NULL);
-    ustrp_conf(sp1, &esz,&ref,&exact, &lenn);
+    ustrp_conf(sp1, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(sp1, &esz,&ref,&exact, &lenn,&refc);
     ASSERT(!esz);
     ASSERT(!ref);
     ASSERT(!exact);
     ASSERT(lenn == 1);
+    ASSERT(refc == 0);
   }
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 1, 1, 1, 1, sp2, 1, 0)));
   ASSERT(ustrp_len(sp1) == 0);
@@ -178,13 +198,15 @@ int tst(void)
     size_t ref;
     int exact;
     size_t lenn;
+    size_t refc;
 
-    ustrp_conf(sp1, NULL,NULL,NULL, NULL);
-    ustrp_conf(sp1, &esz,&ref,&exact, &lenn);
+    ustrp_conf(sp1, NULL,NULL,NULL, NULL,NULL);
+    ustrp_conf(sp1, &esz,&ref,&exact, &lenn,&refc);
     ASSERT(esz == ustrp_size_alloc(sp1));
     ASSERT(ref == 2);
     ASSERT(exact);
     ASSERT(lenn == 2);
+    ASSERT(refc == 1);
   }
   ASSERT((sp1 = ustrp_dupx_subustrp(pool, 0, 0, 0, 0, sp2, 1, 2)));
   ASSERT(ustrp_len(sp1) == 2);

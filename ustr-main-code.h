@@ -1474,11 +1474,12 @@ USTR_CONF_I_PROTO void ustrp_sc_del(struct Ustr_pool *p, struct Ustrp **ps1)
 
 USTR_CONF_I_PROTO
 void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
-               int *ret_exact, size_t *ret_lenn)
+               int *ret_exact, size_t *ret_lenn, size_t *ret_refc)
 {
-  size_t esz = 0;
-  size_t ref = 0;
-  int exact = 0;
+  size_t esz   = 0;
+  size_t ref   = 0;
+  int    exact = 0;
+  size_t refc  = 0;
   
   USTR_ASSERT(ustr_assert_valid(s1));
 
@@ -1497,6 +1498,7 @@ void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
     
     ref   = USTR__REF_LEN(s1);
     exact = ustr_exact(s1);
+    refc  = !!ref;
   }
   
   USTR_ASSERT(ustr__dupx_cmp_eq(USTR__DUPX_FROM(s1),
@@ -1507,4 +1509,5 @@ void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
   if (ret_exact) *ret_exact = exact;
 
   if (ret_lenn)  *ret_lenn  = USTR__LEN_LEN(s1);
+  if (ret_refc)  *ret_refc  = refc ? ustr_xi__ref_get(s1) : 0;
 }

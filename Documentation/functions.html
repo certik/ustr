@@ -1777,11 +1777,22 @@
 <br>Returns: Nothing<br>Type: void 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Return size allocated number<br>Type<strong>[2]</strong>: size_t *
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Return number of references<br>Type<strong>[3]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Return number of bytes used in the reference count<br>Type<strong>[3]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Return exact allocations flag<br>Type<strong>[4]</strong>: int *
-</td></tr><tr><td>Parameter<strong>[5]</strong>: Return size of length bytes<br>Type<strong>[5]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Return number of bytes used in the length<br>Type<strong>[5]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Return number of references to this Ustr<br>Type<strong>[5]</strong>: size_t *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function 
+</p><p>  This function gives the configuration of the current Ustr needed to duplicate
+ it via. the ustr_dupx_*() functions. It also gives the number of bytes used
+ for the length and the number of references, which are mainly informational.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function differs from calling the <a href="functions#ustr_exact">ustr_exact()</a> etc. functions in that
+ it returns the global options if this Ustr isn't allocated, thus telling you
+ what the configuration would be if the Ustr was turned into an allocated Ustr
+ by adding data etc.
+</p><p>  Zero references for an allocated Ustr with a non-zero number of bytes for a
+ reference count means it's in "shared" mode).
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Setting%20the%20%22flags%22%20of%20a%20Ustr">Setting the "flags" of a Ustr</a></h2>

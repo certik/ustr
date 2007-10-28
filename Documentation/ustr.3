@@ -456,7 +456,7 @@ size_t  \fBustr_size_overhead\fR(const struct Ustr *);
 .br
 .in \w'  void  \fBustr_conf\fR('u
 .ti \w'  'u
-void  \fBustr_conf\fR(const struct Ustr *, size_t *, size_t *, int *, size_t *);
+void  \fBustr_conf\fR(const struct Ustr *, size_t *, size_t *, int *, size_t *, size_t *);
 .sp
 .br
 .in \w'  int  \fBustr_setf_enomem_err\fR('u
@@ -4259,7 +4259,7 @@ Parameter\fB[2]\fR: Return size allocated number
 Type\fB[2]\fR: size_t *
 
 .br
-Parameter\fB[3]\fR: Return number of references
+Parameter\fB[3]\fR: Return number of bytes used in the reference count
 .br
 Type\fB[3]\fR: size_t *
 
@@ -4269,7 +4269,12 @@ Parameter\fB[4]\fR: Return exact allocations flag
 Type\fB[4]\fR: int *
 
 .br
-Parameter\fB[5]\fR: Return size of length bytes
+Parameter\fB[5]\fR: Return number of bytes used in the length
+.br
+Type\fB[5]\fR: size_t *
+
+.br
+Parameter\fB[5]\fR: Return number of references to this Ustr
 .br
 Type\fB[5]\fR: size_t *
 
@@ -4277,7 +4282,14 @@ Type\fB[5]\fR: size_t *
 \fBExplanation:\fR
 
 .br
-  This function 
+  This function gives the configuration of the current Ustr needed to duplicate it via. the ustr_dupx_*() functions. It also gives the number of bytes used for the length and the number of references, which are mainly informational.
+.sp
+\fBNote:\fR
+
+.br
+  This function differs from calling the ustr_exact() etc. functions in that it returns the global options if this Ustr isn't allocated, thus telling you what the configuration would be if the Ustr was turned into an allocated Ustr by adding data etc.
+.br
+  Zero references for an allocated Ustr with a non-zero number of bytes for a reference count means it's in "shared" mode).
 
 .SH Setting the "flags" of a Ustr
 .ti -2

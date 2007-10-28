@@ -1,5 +1,7 @@
 2007-10-27  James Antill  <james@and.org>
 
+	* ustr-main-code.h (ustr_conf): Add a reference count argument.
+
 	* ustr-main.h (USTR_CNTL_MALLOC_CHECK_MEM_SZ): Renamed function to
 	follow order of arguments.
 	(USTR_CNTL_MALLOC_CHECK_MEM_MINSZ): Renamed function to	follow order

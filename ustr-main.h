@@ -572,7 +572,7 @@ USTR_CONF_E_PROTO  int ustr_owner(const struct Ustr *)
     USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO
-void ustr_conf(const struct Ustr *, size_t *, size_t *, int *, size_t *)
+void ustr_conf(const struct Ustr *, size_t *,size_t *,int *, size_t *,size_t *)
     USTR__COMPILE_ATTR_NONNULL_L((1));
 
 USTR_CONF_E_PROTO int ustr_setf_enomem_err(struct Ustr *)
@@ -966,7 +966,7 @@ USTR_CONF_EI_PROTO int ustrp_owner(const struct Ustrp *)
     USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_EI_PROTO
-void ustrp_conf(const struct Ustrp *, size_t *, size_t *, int *, size_t *)
+void ustrp_conf(const struct Ustrp*, size_t *,size_t *,int *, size_t *,size_t *)
     USTR__COMPILE_ATTR_NONNULL_L((1));
 
 USTR_CONF_EI_PROTO int ustrp_setf_enomem_err(struct Ustrp *)
@@ -1022,8 +1022,8 @@ USTR_CONF_II_PROTO int ustrp_owner(const struct Ustrp *s1)
 { return (ustr_owner(&s1->s)); }
 USTR_CONF_II_PROTO
 void ustrp_conf(const struct Ustrp *s1, size_t *esz, size_t *ref,
-                int *exact, size_t *lenn)
-{ ustr_conf(&s1->s, esz, ref, exact, lenn); }
+                int *exact, size_t *lenn, size_t *refc)
+{ ustr_conf(&s1->s, esz, ref, exact, lenn, refc); }
 
 USTR_CONF_II_PROTO int ustrp_setf_enomem_err(struct Ustrp *s1)
 { return (ustr_setf_enomem_err(&s1->s)); }

@@ -134,6 +134,7 @@ int main(void)
     size_t ref;
     int exact;
     size_t lenn;
+    size_t refc;
 
 #if USTR_CONF_USE_DYNAMIC_CONF
     int conf_esz;
@@ -144,8 +145,8 @@ int main(void)
     ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_GET_EXACT_BYTES, &conf_exact));
 #endif
 
-    ustr_conf(s1, NULL,NULL,NULL, NULL);
-    ustr_conf(s1, &esz,&ref,&exact, &lenn);
+    ustr_conf(s1, NULL,NULL,NULL, NULL,NULL);
+    ustr_conf(s1, &esz,&ref,&exact, &lenn,&refc);
 #if USTR_CONF_USE_DYNAMIC_CONF
     ASSERT(!conf_esz   == !esz);
     ASSERT( conf_ref   ==  ref);
@@ -155,8 +156,8 @@ int main(void)
     ASSERT( USTR_CONF_REF_BYTES   ==  ref);
     ASSERT( USTR_CONF_EXACT_BYTES ==  exact);
 #endif
-    ustr_conf(s2, NULL,NULL,NULL, NULL);
-    ustr_conf(s2, &esz,&ref,&exact, &lenn);
+    ustr_conf(s2, NULL,NULL,NULL, NULL,NULL);
+    ustr_conf(s2, &esz,&ref,&exact, &lenn,&refc);
 #if USTR_CONF_USE_DYNAMIC_CONF
     ASSERT(!conf_esz   == !esz);
     ASSERT( conf_ref   ==  ref);
