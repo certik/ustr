@@ -414,6 +414,141 @@ Function: USTR_SC_INIT_AUTO_OSTR()
  ...so passing pointers to memory from malloc() will probably just return NULL.
 
 
+Section: Malloc debugging functions
+Function: USTR_CNTL_MALLOC_CHECK_BEG()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Condition for begin malloc checking or not
+ Type[1]: int
+
+
+ Explanation:
+
+  This function begins malloc checking, meaning all ustr allocations will go
+ through the malloc check routines, but it fails if the condition
+ check (Parameter[1]) fails.
+
+ Note:
+
+  Turning malloc checking on after one or more allocations has happened will
+ lead to false failures unless you really known what you are doing.
+  You can automatically turn malloc checking on by giving the USTR_CNTL_MC
+ environment variable the value of "1", "yes" or "on".
+
+
+Function: USTR_CNTL_MALLOC_CHECK_LVL()
+ Returns: Level of current malloc check
+ Type: int
+
+ Parameter[1]: Nothing
+ Type[1]: void
+
+ Explanation:
+
+  This function returns the current "level" of the malloc check, with 0
+ indicating that malloc check isn't enabled.
+  The level goes up by one whenever USTR_CNTL_MALLOC_CHECK_BEG() or
+ USTR_CNTL_MALLOC_CHECK_ADD() returns success, and goes down by one whenever
+ USTR_CNTL_MALLOC_CHECK_DEL() or USTR_CNTL_MALLOC_CHECK_END() returns success.
+
+
+Function: USTR_CNTL_MALLOC_CHECK_MEM()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer returned from malloc check
+ Type[1]: void *
+
+ Explanation:
+
+  This function asserts that the pointer (Parameter[1]) was allocated from
+ malloc checking.
+
+
+Function: USTR_CNTL_MALLOC_CHECK_MEM_SZ()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer returned from malloc check
+ Type[1]: void *
+
+ Parameter[2]: Length of allocated memory
+ Type[2]: size_t
+
+ Explanation:
+
+  This function asserts that the pointer (Parameter[1]) was allocated from
+ malloc checking, and has the specified size (Parameter[2]).
+
+
+Function: USTR_CNTL_MALLOC_CHECK_MEM_MINSZ()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer returned from malloc check
+ Type[1]: void *
+
+ Parameter[2]: Length of allocated memory
+ Type[2]: size_t
+
+ Explanation:
+
+  This function asserts that the pointer (Parameter[1]) was allocated from
+ malloc checking, and has at least the specified size (Parameter[2]).
+
+
+Function: USTR_CNTL_MALLOC_CHECK_END()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Nothing
+ Type[1]: void
+
+ Explanation:
+
+  This macro will cleanup any memory used by malloc check, and assert that
+ no memory is left allocated.
+
+ Note:
+
+  If any memory is left allocated, each one found is output to stderr with
+ the file/line/function of the level it was allocated from.
+
+
+Function: USTR_CNTL_MALLOC_CHECK_ADD()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Condition to begin malloc checking or not
+ Type[1]: int
+
+ Explanation:
+
+  This function works like USTR_CNTL_MALLOC_CHECK_END() but it fails if the
+ condition check (Parameter[1]) fails, or if USTR_CNTL_MALLOC_CHECK_LVL() is
+ zero.
+
+
+Function: USTR_CNTL_MALLOC_CHECK_DEL()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Condition to end malloc checking or not
+ Type[1]: int
+
+ Explanation:
+
+  This function works like USTR_CNTL_MALLOC_CHECK_END() but it fails if the
+ condition check (Parameter[1]) fails, or if USTR_CNTL_MALLOC_CHECK_LVL() is
+ one.
+
+ Note:
+
+  The condition (Parameter[1]) to this macro should almost certainly be the
+ return value from USTR_CNTL_MALLOC_CHECK_ADD().
+
+
 Section: Creating allocated Ustr functions
 Function: ustr_init_alloc()
  Returns: Ustr string
