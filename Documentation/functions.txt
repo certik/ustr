@@ -19,7 +19,7 @@ Function: USTRP()
  Returns: Ustrp string
  Type: struct Ustrp *
 
- Parameter[1]: Pointer to Ustr data
+ Parameter[1]: Pointer to Ustrp data
  Type[1]: void *
 
  Explanation:
@@ -480,6 +480,19 @@ Function: USTR_CNTL_MALLOC_CHECK_MEM_SZ()
 
   This function asserts that the pointer (Parameter[1]) was allocated from
  malloc checking, and has the specified size (Parameter[2]).
+
+
+Function: USTR_CNTL_MALLOC_CHECK_MEM_USTR()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer returned from malloc check
+ Type[1]: Pointer to a Ustr string *
+
+ Explanation:
+
+  This function asserts that the pointer (Parameter[1]) is a Ustr allocated from
+ malloc checking, if the Ustr is allocated (if not it returns TRUE).
 
 
 Function: USTR_CNTL_MALLOC_CHECK_MEM_MINSZ()
