@@ -2203,18 +2203,20 @@ Function: ustr_conf()
  Parameter[2]: Return size allocated number
  Type[2]: size_t *
 
- Parameter[3]: Return number of references
+ Parameter[3]: Return number of bytes in reference count
  Type[3]: size_t *
 
  Parameter[4]: Return exact allocations flag
  Type[4]: int *
 
- Parameter[5]: Return size of length bytes
+ Parameter[5]: Return number of bytes in length
  Type[5]: size_t *
 
  Explanation:
 
-  This function 
+  This function gives the configuration of the current Ustr needed to duplicate
+ it via. the ustr_dupx_*() functions, it also gives the number of bytes of the
+ length which is informational only.
 
 
 Section: Setting the "flags" of a Ustr
