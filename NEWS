@@ -1,3 +1,12 @@
+1.0.2 - 2007-10-29
+ Documentation improvements.
+ Added some more functions, for ASCII caseless compare/search, exporting data
+ from a ustr easily and getting a ustr's configuration.
+ Integrated malloc checking into the library itself, making debugging
+ much easier.
+ Added some new examples and a tutorial.
+ Some bugfixes.
+
 1.0.1 - 2007-08-04
  Documentation improvements.
  Add a lot of new functions: insert, replace, split, substitute, io_getdelim
