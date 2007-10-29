@@ -837,6 +837,30 @@ Function: ustr_dupx()
  reference fails it works like ustr_dupx_buf() using ustr_cstr() and ustr_len().
 
 
+Function: ustr_sc_dup()
+ Returns: A pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_dup(), but if the reference count is
+ maxed out then and so a new Ustr string has been allocated then that is stored
+ in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+
+ Note:
+
+  The reason to use this is that if you have a "main" Ustr string pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using ustr_dup() will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
 Function: ustr_sc_dupx()
  Returns: Pointer to a Ustr string
  Type: struct Ustr *
@@ -875,30 +899,6 @@ Function: ustr_sc_dupx()
  function will create 4 Ustr strings.
 
 
-Function: ustr_sc_dup()
- Returns: A pointer to a Ustr string
- Type: struct Ustr *
-
- Parameter[1]: A pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Explanation:
-
-  This function works like calling ustr_dupx(), but if the reference count is
- maxed out then and so a new Ustr string has been allocated then that is stored
- in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
-
- Note:
-
-  The reason to use this is that if you have a "main" Ustr string pointer that
- a lot of things are getting references too then when the reference count maxes
- out you'll degrade into worst case behaviour which acts as though there are no
- reference counts. This function stops that problem.
-  As an example, if you have a 1 byte reference count and have 255 * 2
- references then using ustr_dup() will create 256 Ustr strings using this
- function will create 4 Ustr strings.
-
-
 Function: ustr_dup_buf()
  Returns: A pointer to a Ustr string
  Type: struct Ustr *
@@ -912,7 +912,35 @@ Function: ustr_dup_buf()
  Explanation:
 
   This function works as if you had called ustr_dup_undef() and then copied the
- data into the new undefined spacee.
+ data into the new undefined space.
+
+
+Function: ustr_dupx_buf()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Pointer to data
+ Type[5]: const void *
+
+ Parameter[6]: Length of data
+ Type[6]: size_t
+
+ Explanation:
+
+  This function works as if you had called ustr_dupx_undef() and then copied the
+ data into the new undefined space.
 
 
 Function: ustr_dup_cstr()
@@ -926,6 +954,31 @@ Function: ustr_dup_cstr()
 
   This function works as if you had called ustr_dup_buf() and passed strlen() as
  the length.
+
+
+Function: ustr_dupx_cstr()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Pointer to constant C-style string
+ Type[5]: const char *
+
+ Explanation:
+
+  This function works as if you had called ustr_dupx_buf() and passed strlen()
+ as the length.
 
 
 Function: USTR_DUP_OSTR()
@@ -982,6 +1035,42 @@ Function: ustr_dup_subustr()
  just calls ustr_dup().
 
 
+Function: ustr_dupx_subustr()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: A pointer to a constant Ustr string
+ Type[5]: const struct Ustr *
+
+ Parameter[6]: Position in the Ustr
+ Type[6]: size_t
+
+ Parameter[7]: Length to add from the Ustr
+ Type[7]: size_t
+
+ Explanation:
+
+  This function mostly works as if you had called ustr_dupx_buf() with the
+ ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+
+ Note:
+
+  If the position is 1 and the length is the length of the Ustr string then it
+ just calls ustr_dupx().
+
+
 Function: ustr_dup_rep_chr()
  Returns: A pointer to a Ustr string
  Type: struct Ustr *
@@ -995,6 +1084,34 @@ Function: ustr_dup_rep_chr()
  Explanation:
 
   This function works as if you had called ustr_dup_undef() and then copied the
+ byte value to each position.
+
+
+Function: ustr_dupx_rep_chr()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Byte value of data
+ Type[5]: char
+
+ Parameter[6]: Length of bytes as data
+ Type[6]: size_t
+
+ Explanation:
+
+  This function works as if you had called ustr_dupx_undef() and then copied the
  byte value to each position.
 
 
@@ -1171,7 +1288,7 @@ Function: ustr_add_buf()
  Explanation:
 
   This function works as if you had called ustr_add_undef() and then copied the
- data into the new undefined spacee.
+ data into the new undefined space.
 
 
 Function: ustr_add_cstr()
@@ -1631,29 +1748,6 @@ Function: ustr_ins_rep_chr()
 
   This function works as if you had called ustr_ins_undef() and then copied the
  byte value to each position.
-
-
-Section: Resizing a sized Ustr
-Function: ustr_realloc()
- Returns: Success or failure
- Type: int
-
- Parameter[1]: Pointer to a pointer to a Ustr string
- Type[1]: struct Ustr **
-
- Parameter[2]: Size of allocation
- Type[2]: size_t
-
- Explanation:
-
-  This function is re-sizes the Ustr to the specified size (Parameter[2]).
-  This is mostly used to shrink a sized Ustr that is now significantly
- smaller than it once was. Although this function can also grow a Ustr.
-
- Note:
-
-  To have a size that isn't implied from the length the Ustr must store a size
- value as well as a length (ustr_sized() must return USTR_TRUE).
 
 
 Section: Adding, duplicating and setting formatted data to a Ustr
@@ -5383,6 +5477,45 @@ Function: ustr_parse_b_uint64()
 
   This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
+
+
+Section: Misc. functions
+Function: ustr_realloc()
+ Returns: Success or failure
+ Type: int
+
+ Parameter[1]: Pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Size of allocation
+ Type[2]: size_t
+
+ Explanation:
+
+  This function is re-sizes the Ustr to the specified size (Parameter[2]).
+  This is mostly used to shrink a sized Ustr that is now significantly
+ smaller than it once was. Although this function can also grow a Ustr.
+
+ Note:
+
+  To have a size that isn't implied from the length the Ustr must store a size
+ value as well as a length (ustr_sized() must return USTR_TRUE).
+
+
+Function: ustr_cntl_opt()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: Optional value starting with USTR_CNTL_OPT_
+ Type[1]: int
+
+ Parameter[2]: Arugments to option
+ Type[2]: ...
+
+ Explanation:
+
+  This function views and/or changes global Ustr options, like whether ustr's
+ have an implicit or explicit size (USTR_CNTL_OPT_GET_HAS_SIZE).
 
 
 Section: Simple Ustr pool API
