@@ -25,19 +25,18 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- functions (261)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- functions (266)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
 <li><a href="#indx-Creating_readonly_Ustr_functions">Creating read-only Ustr functions (14)</a>
 <li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (4)</a>
 <li><a href="#indx-Debugging_functions">Debugging functions (12)</a>
-<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (16)</a>
+<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (20)</a>
 <li><a href="#indx-Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr (8)</a>
 <li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (8)</a>
 <li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (9)</a>
 <li><a href="#indx-Inserting_data_into_a_Ustr">Inserting data into a Ustr (8)</a>
-<li><a href="#indx-Resizing_a_sized_Ustr">Resizing a sized Ustr (1)</a>
 <li><a href="#indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr (14)</a>
 <li><a href="#indx-Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr (16)</a>
 <li><a href="#indx-Setting_the_flags_of_a_Ustr">Setting the "flags" of a Ustr (4)</a>
@@ -52,6 +51,7 @@
 <li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (9)</a>
 <li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
 <li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
+<li><a href="#indx-Misc_functions">Misc. functions (2)</a>
 <li><a href="#indx-Simple_Ustr_pool_API">Simple Ustr pool API (4)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
@@ -101,14 +101,18 @@
 <li class="obj"><a href="#ustr_dup_undef">ustr_dup_undef()</a>
 <li class="obj"><a href="#ustr_dup">ustr_dup()</a>
 <li class="obj"><a href="#ustr_dupx">ustr_dupx()</a>
-<li class="obj"><a href="#ustr_sc_dupx">ustr_sc_dupx()</a>
 <li class="obj"><a href="#ustr_sc_dup">ustr_sc_dup()</a>
+<li class="obj"><a href="#ustr_sc_dupx">ustr_sc_dupx()</a>
 <li class="obj"><a href="#ustr_dup_buf">ustr_dup_buf()</a>
+<li class="obj"><a href="#ustr_dupx_buf">ustr_dupx_buf()</a>
 <li class="obj"><a href="#ustr_dup_cstr">ustr_dup_cstr()</a>
+<li class="obj"><a href="#ustr_dupx_cstr">ustr_dupx_cstr()</a>
 <li class="obj"><a href="#USTR_DUP_OSTR">USTR_DUP_OSTR()</a>
 <li class="obj"><a href="#USTR_DUP_OBJ">USTR_DUP_OBJ()</a>
 <li class="obj"><a href="#ustr_dup_subustr">ustr_dup_subustr()</a>
+<li class="obj"><a href="#ustr_dupx_subustr">ustr_dupx_subustr()</a>
 <li class="obj"><a href="#ustr_dup_rep_chr">ustr_dup_rep_chr()</a>
+<li class="obj"><a href="#ustr_dupx_rep_chr">ustr_dupx_rep_chr()</a>
 </ul><li><a id="indx-Deleting_a_Ustr_or_data_within_a_Ustr" href="#Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_free">ustr_free()</a>
@@ -150,9 +154,6 @@
 <li class="obj"><a href="#ustr_ins">ustr_ins()</a>
 <li class="obj"><a href="#ustr_ins_subustr">ustr_ins_subustr()</a>
 <li class="obj"><a href="#ustr_ins_rep_chr">ustr_ins_rep_chr()</a>
-</ul><li><a id="indx-Resizing_a_sized_Ustr" href="#Resizing_a_sized_Ustr">Resizing a sized Ustr</a>
-<ul>
-<li class="obj"><a href="#ustr_realloc">ustr_realloc()</a>
 </ul><li><a id="indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr" href="#Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_add_vfmt_lim">ustr_add_vfmt_lim()</a>
@@ -358,6 +359,10 @@
 <li class="obj"><a href="#ustr_parse_b_uint16">ustr_parse_b_uint16()</a>
 <li class="obj"><a href="#ustr_parse_b_uint32">ustr_parse_b_uint32()</a>
 <li class="obj"><a href="#ustr_parse_b_uint64">ustr_parse_b_uint64()</a>
+</ul><li><a id="indx-Misc_functions" href="#Misc_functions">Misc. functions</a>
+<ul>
+<li class="obj"><a href="#ustr_realloc">ustr_realloc()</a>
+<li class="obj"><a href="#ustr_cntl_opt">ustr_cntl_opt()</a>
 </ul><li><a id="indx-Simple_Ustr_pool_API" href="#Simple_Ustr_pool_API">Simple Ustr pool API</a>
 <ul>
 <li class="obj"><a href="#ustr_pool_ll_make">ustr_pool_ll_make()</a>
@@ -915,6 +920,25 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_dup">ustr_sc_dup()</a>
+<br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_dup">ustr_dup()</a>, but if the reference count is
+ maxed out then and so a new <a href="design">Ustr string</a> has been allocated then that is stored
+ in the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
+ a lot of things are getting references too then when the reference count maxes
+ out you'll degrade into worst case behaviour which acts as though there are no
+ reference counts. This function stops that problem.
+</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
+ references then using <a href="functions#ustr_dup">ustr_dup()</a> will create 256 Ustr strings using this
+ function will create 4 Ustr strings.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sc_dupx">ustr_sc_dupx()</a>
 <br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
@@ -940,32 +964,27 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_dup">ustr_sc_dup()</a>
-<br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like calling <a href="functions#ustr_dupx">ustr_dupx()</a>, but if the reference count is
- maxed out then and so a new <a href="design">Ustr string</a> has been allocated then that is stored
- in the passed argument (Parameter[1]) and the "old" <a href="design">Ustr string</a> is returned.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The reason to use this is that if you have a &quot;main&quot; <a href="design">Ustr string</a> pointer that
- a lot of things are getting references too then when the reference count maxes
- out you'll degrade into worst case behaviour which acts as though there are no
- reference counts. This function stops that problem.
-</p><p>  As an example, if you have a 1 byte reference count and have 255 * 2
- references then using <a href="functions#ustr_dup">ustr_dup()</a> will create 256 Ustr strings using this
- function will create 4 Ustr strings.
-
-
-</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_dup_buf">ustr_dup_buf()</a>
 <br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to data<br>Type<strong>[1]</strong>: const void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Length of data<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_dup_undef">ustr_dup_undef()</a> and then copied the
- data into the new undefined spacee.
+ data into the new undefined space.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_buf">ustr_dupx_buf()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to data<br>Type<strong>[5]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Length of data<br>Type<strong>[6]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_dupx_undef">ustr_dupx_undef()</a> and then copied the
+ data into the new undefined space.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -975,6 +994,19 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_dup_buf">ustr_dup_buf()</a> and passed strlen() as
  the length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_cstr">ustr_dupx_cstr()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Pointer to constant C-style string<br>Type<strong>[5]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_dupx_buf">ustr_dupx_buf()</a> and passed strlen()
+ as the length.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1014,12 +1046,45 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_subustr">ustr_dupx_subustr()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Position in the Ustr<br>Type<strong>[6]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[7]</strong>: Length to add from the Ustr<br>Type<strong>[7]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function mostly works as if you had called <a href="functions#ustr_dupx_buf">ustr_dupx_buf()</a> with the
+ <a href="functions#ustr_cstr">ustr_cstr()</a> + position - 1 and length values of the <a href="design">Ustr string</a> to be added.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  If the position is 1 and the length is the length of the <a href="design">Ustr string</a> then it
+ just calls <a href="functions#ustr_dupx">ustr_dupx()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_dup_rep_chr">ustr_dup_rep_chr()</a>
 <br>Returns: A pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Byte value of data<br>Type<strong>[1]</strong>: char
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Length of bytes as data<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_dup_undef">ustr_dup_undef()</a> and then copied the
+ byte value to each position.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_dupx_rep_chr">ustr_dupx_rep_chr()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Byte value of data<br>Type<strong>[5]</strong>: char
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Length of bytes as data<br>Type<strong>[6]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_dupx_undef">ustr_dupx_undef()</a> and then copied the
  byte value to each position.
 
 
@@ -1137,7 +1202,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Length of data<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_add_undef">ustr_add_undef()</a> and then copied the
- data into the new undefined spacee.
+ data into the new undefined space.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1416,22 +1481,6 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_ins_undef">ustr_ins_undef()</a> and then copied the
  byte value to each position.
-
-
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Resizing%20a%20sized%20Ustr">Resizing a sized Ustr</a></h2>
-</td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_realloc">ustr_realloc()</a>
-<br>Returns: Success or failure<br>Type: int
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Size of allocation<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function is re-sizes the Ustr to the specified size (Parameter[2]).
-</p><p>  This is mostly used to shrink a sized Ustr that is now significantly
- smaller than it once was. Although this function can also grow a Ustr.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  To have a size that isn't implied from the length the Ustr must store a size
- value as well as a length (<a href="functions#ustr_sized">ustr_sized()</a> must return <a href="constants#USTR_TRUE">USTR_TRUE</a>).
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%2c%20duplicating%20and%20setting%20formatted%20data%20to%20a%20Ustr">Adding, duplicating and setting formatted data to a Ustr</a></h2>
@@ -3670,6 +3719,32 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function parses a binary representation from a Ustr (Parameter[1]) 
  starting at the offset (Parameter[2]).
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Misc%2e%20functions">Misc. functions</a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_realloc">ustr_realloc()</a>
+<br>Returns: Success or failure<br>Type: int
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Size of allocation<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function is re-sizes the Ustr to the specified size (Parameter[2]).
+</p><p>  This is mostly used to shrink a sized Ustr that is now significantly
+ smaller than it once was. Although this function can also grow a Ustr.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  To have a size that isn't implied from the length the Ustr must store a size
+ value as well as a length (<a href="functions#ustr_sized">ustr_sized()</a> must return <a href="constants#USTR_TRUE">USTR_TRUE</a>).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_cntl_opt">ustr_cntl_opt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Optional value starting with USTR_CNTL_OPT_<br>Type<strong>[1]</strong>: int
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Arugments to option<br>Type<strong>[2]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function views and/or changes global Ustr options, like whether ustr's
+ have an implicit or explicit size (<a href="constants#USTR_CNTL_OPT_GET_HAS_SIZE">USTR_CNTL_OPT_GET_HAS_SIZE</a>).
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple Ustr pool API</a></h2>

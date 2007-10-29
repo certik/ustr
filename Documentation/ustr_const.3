@@ -1,4 +1,4 @@
-.TH ustr_const 3 "28-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
+.TH ustr_const 3 "29-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
 .SH "NAME"
 ustr_const - ustr string library constants
 .SH "SYNOPSIS"
@@ -156,6 +156,37 @@ ustr_const - ustr string library constants
 .br
 .ti \w'  'u
 \fBUSTR_CNTL_OPT_GET_MEM\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_MC_M_SCRUB\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_SET_MC_M_SCRUB\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_MC_F_SCRUB\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_SET_MC_F_SCRUB\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_GET_MC_R_SCRUB\fR
+.br
+.ti \w'  'u
+\fBUSTR_CNTL_OPT_SET_MC_R_SCRUB\fR
+.sp
+.br
+.ti \w'  'u
+\fBUSTR_POOL_LL_CNTL_GET_FREE_CMP\fR
+.br
+.ti \w'  'u
+\fBUSTR_POOL_LL_CNTL_SET_FREE_CMP\fR
+.br
+.ti \w'  'u
+\fBUSTR_POOL_LL_CNTL_GET_REALLOC\fR
+.br
+.ti \w'  'u
+\fBUSTR_POOL_LL_CNTL_SET_REALLOC\fR
 
 .ti
 .HY
@@ -610,7 +641,7 @@ Type\fB[1]\fR: size_t
 .br
 Parameter\fB[1]\fR: Default flag for whether to include an explicit size in a Ustr
 .br
-Type\fB[1]\fR: size_t *
+Type\fB[1]\fR: int *
 
 .br
 \fBExplanation:\fR
@@ -624,7 +655,7 @@ Type\fB[1]\fR: size_t *
 .br
 Parameter\fB[1]\fR: Default flag for whether to include an explicit size in a Ustr
 .br
-Type\fB[1]\fR: size_t
+Type\fB[1]\fR: int
 
 .br
 \fBExplanation:\fR
@@ -643,7 +674,7 @@ Type\fB[1]\fR: size_t
 .br
 Parameter\fB[1]\fR: Default flag for whether to exactly allocate memory
 .br
-Type\fB[1]\fR: size_t *
+Type\fB[1]\fR: int *
 
 .br
 \fBExplanation:\fR
@@ -657,7 +688,7 @@ Type\fB[1]\fR: size_t *
 .br
 Parameter\fB[1]\fR: Default flag for whether to exactly allocate memory
 .br
-Type\fB[1]\fR: size_t
+Type\fB[1]\fR: int
 
 .br
 \fBExplanation:\fR
@@ -701,5 +732,187 @@ Type\fB[1]\fR: const struct Ustr_cntl_mem *
 .br
   As you would expect the default values are: malloc, realloc, free.
 .br
-  If this option is set after a Ustr has been created, then when freeing or reallocating the existing Ustr the given functions will be used. So they must either be compatible with the default or you must ensure that nothing is allocated before they are set..SH "SEE ALSO"
+  If this option is set after a Ustr has been created, then when freeing or reallocating the existing Ustr the given functions will be used. So they must either be compatible with the default or you must ensure that nothing is allocated before they are set.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_MC_M_SCRUB
+
+.br
+Parameter\fB[1]\fR: Flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the flag for whether to "scrub" data allocated via. malloc check.
+.sp
+\fBNote:\fR
+
+.br
+  Malloc check has to be enabled for this to mean anything, Ie. USTR_CNTL_MALLOC_LVL() must be positive.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_SET_MC_M_SCRUB
+
+.br
+Parameter\fB[1]\fR: Flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: int
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the flag for whether to "scrub" data allocated via. malloc check.
+.sp
+\fBNote:\fR
+
+.br
+  Malloc check has to be enabled for this to mean anything, Ie. USTR_CNTL_MALLOC_LVL() must be positive.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_MC_F_SCRUB
+
+.br
+Parameter\fB[1]\fR: Flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the flag for whether to "scrub" data freed via. malloc check.
+.sp
+\fBNote:\fR
+
+.br
+  Malloc check has to be enabled for this to mean anything, Ie. USTR_CNTL_MALLOC_LVL() must be positive.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_SET_MC_F_SCRUB
+
+.br
+Parameter\fB[1]\fR: Flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: int
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the flag for whether to "scrub" data freed via. malloc check.
+.sp
+\fBNote:\fR
+
+.br
+  Malloc check has to be enabled for this to mean anything, Ie. USTR_CNTL_MALLOC_LVL() must be positive.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_GET_MC_R_SCRUB
+
+.br
+Parameter\fB[1]\fR: Flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the flag for whether to "scrub" data reallocated via. malloc check. This is done by turning all reallocations into a malloc() and free(), and so is even more costly than normal scrubbing.
+.sp
+\fBNote:\fR
+
+.br
+  Malloc check has to be enabled for this to mean anything, Ie. USTR_CNTL_MALLOC_LVL() must be positive.
+
+.br
+\fBConstant: \fR USTR_CNTL_OPT_SET_MC_R_SCRUB
+
+.br
+Parameter\fB[1]\fR: Flag for whether to include an explicit size in a Ustr
+.br
+Type\fB[1]\fR: int
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the flag for whether to "scrub" data reallocated via. malloc check. This is done by turning all reallocations into a malloc() and free(), and so is even more costly than normal scrubbing.
+.sp
+\fBNote:\fR
+
+.br
+  Malloc check has to be enabled for this to mean anything, Ie. USTR_CNTL_MALLOC_LVL() must be positive.
+
+.SH Constants passed to ustr_pool_ll_cntl()
+.br
+\fBConstant: \fR USTR_POOL_LL_CNTL_GET_FREE_CMP
+
+.br
+Parameter\fB[1]\fR: Number of pointers to compare to in the pool
+.br
+Type\fB[1]\fR: unsigned int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the number of comparisons done on a pool free operation.
+
+.br
+\fBConstant: \fR USTR_POOL_LL_CNTL_SET_FREE_CMP
+
+.br
+Parameter\fB[1]\fR: Number of pointers to compare to in the pool
+.br
+Type\fB[1]\fR: unsigned int
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the number of comparisons done on a pool free operation.
+.sp
+\fBNote:\fR
+
+.br
+  The default is a small non-zero value, as it's significantly common to have very short lived ustr's ... however this doesn't mean that you can't forget to take references even with pool allocated ustrs.
+
+.br
+\fBConstant: \fR USTR_POOL_LL_CNTL_GET_REALLOC
+
+.br
+Parameter\fB[1]\fR: Flag for if we should call realloc()
+.br
+Type\fB[1]\fR: int *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will get the flag for if we call realloc() to make data bigger, or revert to just allocating anew each time.
+
+.br
+\fBConstant: \fR USTR_POOL_LL_CNTL_SET_REALLOC
+
+.br
+Parameter\fB[1]\fR: Flag for if we should call realloc()
+.br
+Type\fB[1]\fR: int
+
+.br
+\fBExplanation:\fR
+
+.br
+  This option will set the flag for if we call realloc() to make data bigger, or revert to just allocating anew each time.
+.sp
+\fBNote:\fR
+
+.br
+  As with USTR_POOL_LL_CNTL_SET_FREE_CMP this option means you can't assume that pool allocated data is never freed until ustr_pool_free() is called, and again it is due to there being significant speed improvements for not making that assumption. Instead of disabling this option, just take areference (which will also make sure the ustr isn't modified behind your back).
+.SH "SEE ALSO"
 .BR ustr (3)

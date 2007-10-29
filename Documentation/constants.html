@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- constants (48)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- constants (58)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -34,7 +34,8 @@
 <li><a href="#indx-Constants_to_use_with_parsing_numbers:_ustr_parse_uintmaxx_etc">Constants to use with parsing numbers: ustr_parse_uintmaxx, etc. (16)</a>
 <li><a href="#indx-Constants_to_pass_to_ustr_split">Constants to pass to ustr_split* (4)</a>
 <li><a href="#indx-Misc_constants_to_use_in_code">Misc constants to use in code (4)</a>
-<li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (8)</a></ul>
+<li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (14)</a>
+<li><a href="#indx-Constants_passed_to_ustr_pool_ll_cntl">Constants passed to ustr_pool_ll_cntl() (4)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
 <li><a id="indx-Compile_switch_constants" href="#Compile_switch_constants">Compile switch constants</a>
@@ -97,6 +98,18 @@
 <li class="obj"><a href="#USTR_CNTL_OPT_SET_EXACT_BYTES">USTR_CNTL_OPT_SET_EXACT_BYTES</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_MC_M_SCRUB">USTR_CNTL_OPT_GET_MC_M_SCRUB</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_MC_M_SCRUB">USTR_CNTL_OPT_SET_MC_M_SCRUB</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_MC_F_SCRUB">USTR_CNTL_OPT_GET_MC_F_SCRUB</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_MC_F_SCRUB">USTR_CNTL_OPT_SET_MC_F_SCRUB</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_MC_R_SCRUB">USTR_CNTL_OPT_GET_MC_R_SCRUB</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_MC_R_SCRUB">USTR_CNTL_OPT_SET_MC_R_SCRUB</a>
+</ul><li><a id="indx-Constants_passed_to_ustr_pool_ll_cntl" href="#Constants_passed_to_ustr_pool_ll_cntl">Constants passed to ustr_pool_ll_cntl()</a>
+<ul>
+<li class="obj"><a href="#USTR_POOL_LL_CNTL_GET_FREE_CMP">USTR_POOL_LL_CNTL_GET_FREE_CMP</a>
+<li class="obj"><a href="#USTR_POOL_LL_CNTL_SET_FREE_CMP">USTR_POOL_LL_CNTL_SET_FREE_CMP</a>
+<li class="obj"><a href="#USTR_POOL_LL_CNTL_GET_REALLOC">USTR_POOL_LL_CNTL_GET_REALLOC</a>
+<li class="obj"><a href="#USTR_POOL_LL_CNTL_SET_REALLOC">USTR_POOL_LL_CNTL_SET_REALLOC</a>
 </ul></ul>
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Compile%20switch%20constants">Compile switch constants</a></h2>
 
@@ -491,7 +504,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_HAS_SIZE">USTR_CNTL_OPT_GET_HAS_SIZE</a>
 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This option will get the default flag for whether to store an explicit size
  in created Ustr's.
@@ -500,7 +513,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_HAS_SIZE">USTR_CNTL_OPT_SET_HAS_SIZE</a>
 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This option will set the default flag for whether to store an explicit size
  in created Ustr's.
@@ -512,7 +525,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_EXACT_BYTES">USTR_CNTL_OPT_GET_EXACT_BYTES</a>
 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to exactly allocate memory<br>Type<strong>[1]</strong>: size_t *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to exactly allocate memory<br>Type<strong>[1]</strong>: int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This option will get the default flag for whether to exactly allocate memory
  when a Ustr needs to be resized.
@@ -521,7 +534,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_EXACT_BYTES">USTR_CNTL_OPT_SET_EXACT_BYTES</a>
 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to exactly allocate memory<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Default flag for whether to exactly allocate memory<br>Type<strong>[1]</strong>: int
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This option will set the default flag for whether to exactly allocate memory
  when a Ustr needs to be resized.
@@ -551,6 +564,137 @@
  reallocating the existing Ustr the given functions will be used. So they must
  either be compatible with the default or you must ensure that nothing is
  allocated before they are set.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_MC_M_SCRUB">USTR_CNTL_OPT_GET_MC_M_SCRUB</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the flag for whether to &quot;scrub&quot; data allocated via.
+ malloc check.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Malloc check has to be enabled for this to mean anything, Ie.
+ <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_MC_M_SCRUB">USTR_CNTL_OPT_SET_MC_M_SCRUB</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the flag for whether to &quot;scrub&quot; data allocated via.
+ malloc check.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Malloc check has to be enabled for this to mean anything, Ie.
+ <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_MC_F_SCRUB">USTR_CNTL_OPT_GET_MC_F_SCRUB</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the flag for whether to &quot;scrub&quot; data freed via.
+ malloc check.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Malloc check has to be enabled for this to mean anything, Ie.
+ <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_MC_F_SCRUB">USTR_CNTL_OPT_SET_MC_F_SCRUB</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the flag for whether to &quot;scrub&quot; data freed via.
+ malloc check.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Malloc check has to be enabled for this to mean anything, Ie.
+ <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_MC_R_SCRUB">USTR_CNTL_OPT_GET_MC_R_SCRUB</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the flag for whether to &quot;scrub&quot; data reallocated via.
+ malloc check. This is done by turning all reallocations into a malloc() and
+ free(), and so is even more costly than normal scrubbing.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Malloc check has to be enabled for this to mean anything, Ie.
+ <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_MC_R_SCRUB">USTR_CNTL_OPT_SET_MC_R_SCRUB</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for whether to include an explicit size in a Ustr<br>Type<strong>[1]</strong>: int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the flag for whether to &quot;scrub&quot; data reallocated via.
+ malloc check. This is done by turning all reallocations into a malloc() and
+ free(), and so is even more costly than normal scrubbing.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Malloc check has to be enabled for this to mean anything, Ie.
+ <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20passed%20to%20ustr_pool_ll_cntl%28%29">Constants passed to
+			 	<a id="ustr_pool_ll_cntl()"><a href="functions#ustr_pool_ll_cntl">ustr_pool_ll_cntl()</a></a>
+
+		      </a></h2>
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_POOL_LL_CNTL_GET_FREE_CMP">USTR_POOL_LL_CNTL_GET_FREE_CMP</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Number of pointers to compare to in the pool<br>Type<strong>[1]</strong>: unsigned int *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the number of comparisons done on a pool free operation.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_POOL_LL_CNTL_SET_FREE_CMP">USTR_POOL_LL_CNTL_SET_FREE_CMP</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Number of pointers to compare to in the pool<br>Type<strong>[1]</strong>: unsigned int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the number of comparisons done on a pool free operation.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  The default is a small non-zero value, as it's significantly common to have
+ very short lived ustr's ... however this doesn't mean that you can't forget to
+ take references even with pool allocated ustrs.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_POOL_LL_CNTL_GET_REALLOC">USTR_POOL_LL_CNTL_GET_REALLOC</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for if we should call realloc()<br>Type<strong>[1]</strong>: int *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the flag for if we call realloc() to make data bigger,
+ or revert to just allocating anew each time.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_POOL_LL_CNTL_SET_REALLOC">USTR_POOL_LL_CNTL_SET_REALLOC</a>
+
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Flag for if we should call realloc()<br>Type<strong>[1]</strong>: int
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the flag for if we call realloc() to make data bigger,
+ or revert to just allocating anew each time.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  As with <a href="constants#USTR_POOL_LL_CNTL_SET_FREE_CMP">USTR_POOL_LL_CNTL_SET_FREE_CMP</a> this option means you can't assume that
+ pool allocated data is never freed until <a href="functions#ustr_pool_free">ustr_pool_free()</a> is called, and again
+ it is due to there being significant speed improvements for not making that
+ assumption. Instead of disabling this option, just take areference (which will
+ also make sure the ustr isn't modified behind your back).
+
 
 </td></tr></table>
 </body></html>

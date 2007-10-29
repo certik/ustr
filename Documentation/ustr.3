@@ -1,4 +1,4 @@
-.TH ustr 3 "28-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
+.TH ustr 3 "29-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -163,21 +163,29 @@ struct Ustr *\fBustr_dup\fR(const struct Ustr *);
 .ti \w'  'u
 struct Ustr *\fBustr_dupx\fR(size_t, size_t, int, int, const struct Ustr *);
 .br
-.in \w'  struct Ustr *\fBustr_sc_dupx\fR('u
-.ti \w'  'u
-struct Ustr *\fBustr_sc_dupx\fR(size_t, size_t, int, int, struct Ustr **);
-.br
 .in \w'  struct Ustr *\fBustr_sc_dup\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_sc_dup\fR(struct Ustr **);
+.br
+.in \w'  struct Ustr *\fBustr_sc_dupx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_dupx\fR(size_t, size_t, int, int, struct Ustr **);
 .br
 .in \w'  struct Ustr *\fBustr_dup_buf\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_buf\fR(const void *, size_t);
 .br
+.in \w'  struct Ustr *\fBustr_dupx_buf\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx_buf\fR(size_t, size_t, int, int, const void *, size_t);
+.br
 .in \w'  struct Ustr *\fBustr_dup_cstr\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_cstr\fR(const char *);
+.br
+.in \w'  struct Ustr *\fBustr_dupx_cstr\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx_cstr\fR(size_t, size_t, int, int, const char *);
 .br
 .in \w'  struct Ustr *\fBUSTR_DUP_OSTR\fR('u
 .ti \w'  'u
@@ -191,9 +199,17 @@ struct Ustr *\fBUSTR_DUP_OBJ\fR(...);
 .ti \w'  'u
 struct Ustr *\fBustr_dup_subustr\fR(const struct Ustr *, size_t, size_t);
 .br
+.in \w'  struct Ustr *\fBustr_dupx_subustr\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx_subustr\fR(size_t, size_t, int, int, const struct Ustr *, size_t, size_t);
+.br
 .in \w'  struct Ustr *\fBustr_dup_rep_chr\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dup_rep_chr\fR(char, size_t);
+.br
+.in \w'  struct Ustr *\fBustr_dupx_rep_chr\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_dupx_rep_chr\fR(size_t, size_t, int, int, char, size_t);
 .sp
 .br
 .in \w'  void  \fBustr_free\fR('u
@@ -330,11 +346,6 @@ int  \fBustr_ins_subustr\fR(struct Ustr **, size_t, const struct Ustr *, size_t,
 .in \w'  int  \fBustr_ins_rep_chr\fR('u
 .ti \w'  'u
 int  \fBustr_ins_rep_chr\fR(struct Ustr **, size_t, char, size_t);
-.sp
-.br
-.in \w'  int \fBustr_realloc\fR('u
-.ti \w'  'u
-int \fBustr_realloc\fR(struct Ustr **, size_t);
 .sp
 .br
 .in \w'  int  \fBustr_add_vfmt_lim\fR('u
@@ -1057,6 +1068,15 @@ uint_least32_t  \fBustr_parse_b_uint32\fR(const struct Ustr *, size_t);
 .in \w'  uint_least64_t  \fBustr_parse_b_uint64\fR('u
 .ti \w'  'u
 uint_least64_t  \fBustr_parse_b_uint64\fR(const struct Ustr *, size_t);
+.sp
+.br
+.in \w'  int \fBustr_realloc\fR('u
+.ti \w'  'u
+int \fBustr_realloc\fR(struct Ustr **, size_t);
+.br
+.in \w'  int  \fBustr_cntl_opt\fR('u
+.ti \w'  'u
+int  \fBustr_cntl_opt\fR(int, ...);
 .sp
 .br
 .in \w'  struct Ustr_pool *\fBustr_pool_ll_make\fR('u
@@ -2271,6 +2291,32 @@ Type\fB[5]\fR: const struct Ustr *
 
 .ti -2
 .br
+\fBFunction: \fR ustr_sc_dup()
+.br
+Returns: A pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_dup(), but if the reference count is maxed out then and so a new Ustr string has been allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
+.sp
+\fBNote:\fR
+
+.br
+  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
+.br
+  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dup() will create 256 Ustr strings using this function will create 4 Ustr strings.
+
+.ti -2
+.br
 \fBFunction: \fR ustr_sc_dupx()
 .br
 Returns: Pointer to a Ustr string
@@ -2319,32 +2365,6 @@ Type\fB[5]\fR: struct Ustr **
 
 .ti -2
 .br
-\fBFunction: \fR ustr_sc_dup()
-.br
-Returns: A pointer to a Ustr string
-.br
-Type: struct Ustr *
-
-.br
-Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function works like calling ustr_dupx(), but if the reference count is maxed out then and so a new Ustr string has been allocated then that is stored in the passed argument (Parameter[1]) and the "old" Ustr string is returned.
-.sp
-\fBNote:\fR
-
-.br
-  The reason to use this is that if you have a "main" Ustr string pointer that a lot of things are getting references too then when the reference count maxes out you'll degrade into worst case behaviour which acts as though there are no reference counts. This function stops that problem.
-.br
-  As an example, if you have a 1 byte reference count and have 255 * 2 references then using ustr_dup() will create 256 Ustr strings using this function will create 4 Ustr strings.
-
-.ti -2
-.br
 \fBFunction: \fR ustr_dup_buf()
 .br
 Returns: A pointer to a Ustr string
@@ -2365,7 +2385,51 @@ Type\fB[2]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_dup_undef() and then copied the data into the new undefined spacee.
+  This function works as if you had called ustr_dup_undef() and then copied the data into the new undefined space.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dupx_buf()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Pointer to data
+.br
+Type\fB[5]\fR: const void *
+
+.br
+Parameter\fB[6]\fR: Length of data
+.br
+Type\fB[6]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_dupx_undef() and then copied the data into the new undefined space.
 
 .ti -2
 .br
@@ -2385,6 +2449,45 @@ Type\fB[1]\fR: const char *
 
 .br
   This function works as if you had called ustr_dup_buf() and passed strlen() as the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dupx_cstr()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Pointer to constant C-style string
+.br
+Type\fB[5]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_dupx_buf() and passed strlen() as the length.
 
 .ti -2
 .br
@@ -2465,6 +2568,60 @@ Type\fB[3]\fR: size_t
 
 .ti -2
 .br
+\fBFunction: \fR ustr_dupx_subustr()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[5]\fR: const struct Ustr *
+
+.br
+Parameter\fB[6]\fR: Position in the Ustr
+.br
+Type\fB[6]\fR: size_t
+
+.br
+Parameter\fB[7]\fR: Length to add from the Ustr
+.br
+Type\fB[7]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function mostly works as if you had called ustr_dupx_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+.sp
+\fBNote:\fR
+
+.br
+  If the position is 1 and the length is the length of the Ustr string then it just calls ustr_dupx().
+
+.ti -2
+.br
 \fBFunction: \fR ustr_dup_rep_chr()
 .br
 Returns: A pointer to a Ustr string
@@ -2486,6 +2643,50 @@ Type\fB[2]\fR: size_t
 
 .br
   This function works as if you had called ustr_dup_undef() and then copied the byte value to each position.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_dupx_rep_chr()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Byte value of data
+.br
+Type\fB[5]\fR: char
+
+.br
+Parameter\fB[6]\fR: Length of bytes as data
+.br
+Type\fB[6]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_dupx_undef() and then copied the byte value to each position.
 
 .SH Deleting a Ustr, or data within a Ustr
 .ti -2
@@ -2731,7 +2932,7 @@ Type\fB[3]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_add_undef() and then copied the data into the new undefined spacee.
+  This function works as if you had called ustr_add_undef() and then copied the data into the new undefined space.
 
 .ti -2
 .br
@@ -3411,38 +3612,6 @@ Type\fB[3]\fR: size_t
 
 .br
   This function works as if you had called ustr_ins_undef() and then copied the byte value to each position.
-
-.SH Resizing a sized Ustr
-.ti -2
-.br
-\fBFunction: \fR ustr_realloc()
-.br
-Returns: Success or failure
-.br
-Type: int
-
-.br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-Parameter\fB[2]\fR: Size of allocation
-.br
-Type\fB[2]\fR: size_t
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function is re-sizes the Ustr to the specified size (Parameter[2]).
-.br
-  This is mostly used to shrink a sized Ustr that is now significantly smaller than it once was. Although this function can also grow a Ustr.
-.sp
-\fBNote:\fR
-
-.br
-  To have a size that isn't implied from the length the Ustr must store a size value as well as a length (ustr_sized() must return USTR_TRUE).
 
 .SH Adding, duplicating and setting formatted data to a Ustr
 .ti -2
@@ -8971,6 +9140,62 @@ Type\fB[2]\fR: size_t
 
 .br
   This function parses a binary representation from a Ustr (Parameter[1])  starting at the offset (Parameter[2]).
+
+.SH Misc. functions
+.ti -2
+.br
+\fBFunction: \fR ustr_realloc()
+.br
+Returns: Success or failure
+.br
+Type: int
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Size of allocation
+.br
+Type\fB[2]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function is re-sizes the Ustr to the specified size (Parameter[2]).
+.br
+  This is mostly used to shrink a sized Ustr that is now significantly smaller than it once was. Although this function can also grow a Ustr.
+.sp
+\fBNote:\fR
+
+.br
+  To have a size that isn't implied from the length the Ustr must store a size value as well as a length (ustr_sized() must return USTR_TRUE).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_cntl_opt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Optional value starting with USTR_CNTL_OPT_
+.br
+Type\fB[1]\fR: int
+
+.br
+Parameter\fB[2]\fR: Arugments to option
+.br
+Type\fB[2]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function views and/or changes global Ustr options, like whether ustr's have an implicit or explicit size (USTR_CNTL_OPT_GET_HAS_SIZE).
 
 .SH Simple Ustr pool API
 .ti -2
