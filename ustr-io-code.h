@@ -11,7 +11,7 @@ int ustrp__io_get(struct Ustr_pool *p, struct Ustr **ps1, FILE *fp,
   size_t olen = ustr_len(*ps1);
   size_t ret  = 0;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1) && fp);
 
   if (!minlen)
   {
@@ -123,7 +123,7 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
   size_t clen = 0;
   size_t linesz = 80; /* Unix "tradition" is 80x24 */
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1) && fp);
 
   olen = clen = ustr_len(*ps1);
   while (ustrp__add_undef(p, ps1, linesz))
@@ -184,7 +184,7 @@ int ustrp__io_put(struct Ustr_pool *p, struct Ustr **ps1,FILE *fp,size_t beglen)
   size_t ret = 0;
   size_t clen = ustr_len(*ps1);
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && fp);
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1) && fp);
 
   USTR_ASSERT_RET(beglen <= clen, USTR_FALSE);
   

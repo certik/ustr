@@ -9,12 +9,12 @@ USTR_CONF_i_PROTO int ustrp__sub_undef(struct Ustr_pool *p, struct Ustr **ps1,
 {
   size_t clen;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   if (!len)
     return (USTR_TRUE);
 
-  clen = ustr_assert_valid_subustr(*ps1, pos, 1);
+  clen = ustrp__assert_valid_subustr(!!p, *ps1, pos, 1);
   if (!clen)
     return (USTR_FALSE);
   --pos;
@@ -88,7 +88,7 @@ int ustrp__sub_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
   if (!len2)
     return (USTR_TRUE);
   
-  if (!ustr_assert_valid_subustr(s2, pos2, len2))
+  if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
     return (USTR_FALSE);
   --pos2;
   
@@ -139,7 +139,7 @@ USTR_CONF_i_PROTO int ustrp__sc_sub_undef(struct Ustr_pool *p,struct Ustr **ps1,
   if (!olen)
     return (ustrp__ins_undef(p, ps1, pos - 1, len));
   
-  if (!ustr_assert_valid_subustr(*ps1, pos, olen))
+  if (!ustrp__assert_valid_subustr(!!p, *ps1, pos, olen))
     return (USTR_FALSE);
   
   if (len == olen)
@@ -214,7 +214,7 @@ int ustrp__sc_sub_subustr(struct Ustr_pool *p,
   if (!len2)
     return (ustrp__del_subustr(p, ps1, pos1, len1));
   
-  if (!ustr_assert_valid_subustr(s2, pos2, len2))
+  if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
     return (USTR_FALSE);
   --pos2;
   
@@ -291,7 +291,7 @@ int ustrp__sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   vsnprintf(ptr + pos, rc + 1, fmt, ap);
   ptr[pos + rc] = save_end;
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   
   return (USTR_TRUE);
 }
@@ -401,7 +401,7 @@ int ustrp__sc_sub_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   vsnprintf(ptr + pos, rc + 1, fmt, ap);
   ptr[pos + rc] = save_end;
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   
   return (USTR_TRUE);
 }

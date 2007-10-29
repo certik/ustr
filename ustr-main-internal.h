@@ -43,6 +43,15 @@ USTR_CONF_e_PROTO size_t ustr__sz_get(const struct Ustr *)
 USTR_CONF_e_PROTO size_t ustr__nb(size_t num)
     USTR__COMPILE_ATTR_CONST() USTR__COMPILE_ATTR_WARN_UNUSED_RET();
 
+USTR_CONF_e_PROTO
+int ustrp__assert_valid(int, const struct Ustr *)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_L((2));
+USTR_CONF_e_PROTO
+size_t ustrp__assert_valid_subustr(int, const struct Ustr *, size_t, size_t)
+    USTR__COMPILE_ATTR_PURE() USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_L((2));
+
 USTR_CONF_e_PROTO void ustr__embed_val_set(unsigned char *, size_t, size_t)
     USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_e_PROTO int ustr__ref_set(struct Ustr *, size_t)

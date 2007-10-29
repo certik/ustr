@@ -48,7 +48,7 @@ size_t ustrp__replace_buf(struct Ustr_pool *p, struct Ustr **ps1,
   size_t lpos = 0;
   size_t roff = 0;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   if ((nlen == olen) && ustr_owner(*ps1))
     return (ustrp__replace_inline_buf(p, ps1, optr, olen, nptr, nlen, lim));
@@ -157,8 +157,8 @@ size_t ustrp__replace(struct Ustr_pool *p, struct Ustr **ps1,
                       const struct Ustr *srch,
                       const struct Ustr *repl, size_t lim)
 {
-  USTR_ASSERT(ustr_assert_valid(srch));
-  USTR_ASSERT(ustr_assert_valid(repl));
+  USTR_ASSERT(ustrp__assert_valid(!!p, srch));
+  USTR_ASSERT(ustrp__assert_valid(!!p, repl));
 
   return (ustrp__replace_buf(p, ps1,
                              ustr_cstr(srch), ustr_len(srch),
@@ -224,7 +224,7 @@ size_t ustrp__replace_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
   size_t lpos = 0;
   size_t roff = 0;
 
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   if ((nlen == olen) && ustr_owner(*ps1))
     return (ustrp__replace_inline_rep_chr(p, ps1, odata,olen, ndata,nlen, lim));

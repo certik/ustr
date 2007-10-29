@@ -472,7 +472,7 @@ int ustrp__sc_utf8_reverse(struct Ustr_pool *p, struct Ustr **ps1)
   const unsigned char *beg;
   const unsigned char *scan;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   if (!(ptr = ustrp__sc_wstr(p, ps1)))
     return (USTR_FALSE);

@@ -16,7 +16,7 @@ int ustrp__set_undef(struct Ustr_pool *p, struct Ustr **ps1, size_t nlen)
   size_t nsz = 0;
   int alloc = USTR_FALSE;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
 
   s1 = *ps1;
   clen = ustr_len(s1);
@@ -60,11 +60,11 @@ USTR_CONF_i_PROTO int ustrp__set_empty(struct Ustr_pool *p, struct Ustr **ps1)
 {
   struct Ustr *ret = USTR_NULL;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
 
   if (ustr_sized(*ps1) && ustr_owner(*ps1))
     return (ustrp__del(p, ps1, ustr_len(*ps1)));
-
+  
   if (!(ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1))))
   {
     ustr_setf_enomem_err(*ps1);
@@ -87,14 +87,14 @@ USTR_CONF_I_PROTO int ustrp_set_empty(struct Ustr_pool *p, struct Ustrp **ps1)
 USTR_CONF_i_PROTO int ustrp__set_buf(struct Ustr_pool *p, struct Ustr **ps1,
                                      const void *buf, size_t len)
 {
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
 
   if (!ustrp__set_undef(p, ps1, len))
     return (USTR_FALSE);
   
   ustr__memcpy(*ps1, 0, buf, len);
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO
@@ -114,7 +114,8 @@ int ustrp__set(struct Ustr_pool *p, struct Ustr **ps1, const struct Ustr *s2)
 {
   struct Ustr *ret = USTR_NULL;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1) && ustr_assert_valid(s2));
+  USTR_ASSERT(ps1 &&
+              ustrp__assert_valid(!!p, *ps1) && ustrp__assert_valid(!!p, s2));
 
   if (*ps1 == s2)
     return (USTR_TRUE);
@@ -148,9 +149,9 @@ int ustrp__set_subustr(struct Ustr_pool *p, struct Ustr **ps1,
 {
   size_t clen = 0;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
 
-  clen = ustr_assert_valid_subustr(s2, pos, len);
+  clen = ustrp__assert_valid_subustr(!!p, s2, pos, len);
   if (!clen)
     return (USTR_FALSE);
   if (len == clen)
@@ -182,14 +183,14 @@ int ustrp_set_subustrp(struct Ustr_pool *p, struct Ustrp **ps1,
 USTR_CONF_i_PROTO int ustrp__set_rep_chr(struct Ustr_pool *p, struct Ustr **ps1,
                                          char chr, size_t len)
 {
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
 
   if (!ustrp__set_undef(p, ps1, len))
     return (USTR_FALSE);
 
   ustr__memset(*ps1, 0, chr, len);
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO
@@ -232,7 +233,7 @@ int ustrp__set_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
   
   vsnprintf(ustr_wstr(*ps1), rc + 1, fmt, ap);
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   
   return (USTR_TRUE);
 }

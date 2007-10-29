@@ -59,7 +59,7 @@ int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
   int rc = -1;
   char buf[USTR__SNPRINTF_LOCAL];
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   USTR__VA_COPY(nap, ap);
   rc = vsnprintf(buf, sizeof(buf), fmt, nap);
@@ -82,7 +82,7 @@ int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
   
   vsnprintf(tmp, rc + 1, fmt, ap);
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   
   return (USTR_TRUE);
 }
@@ -186,7 +186,7 @@ struct Ustr *ustrp__dupx_vfmt_lim(struct Ustr_pool *p, size_t sz, size_t rbytes,
   
   vsnprintf(ustr_wstr(ret), rc + 1, fmt, ap);
 
-  USTR_ASSERT(ustr_assert_valid(ret));
+  USTR_ASSERT(ustrp__assert_valid(!!p, ret));
   
   return (ret);
 }

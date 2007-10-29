@@ -19,7 +19,7 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
   int alloc = USTR_FALSE;
   const char *ocstr = 0;
 
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   if (!len)
     return (USTR_TRUE);
@@ -43,7 +43,7 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
     ptr = ustr_wstr(*ps1);
     memmove(ptr + pos + len, ptr + pos, (clen - pos));
 
-    USTR_ASSERT(ustr_assert_valid(*ps1));
+    USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
     return (USTR_TRUE);
   }
     
@@ -59,7 +59,7 @@ int ustrp__ins_undef(struct Ustr_pool*p,struct Ustr **ps1,size_t pos,size_t len)
 
   ustrp__sc_free2(p, ps1, ret);
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   return (USTR_TRUE);
 
  fail_enomem:
@@ -120,7 +120,7 @@ USTR_CONF_i_PROTO
 int ustrp__ins_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
                        const struct Ustr *s2, size_t pos2, size_t len2)
 {
-  if (!ustr_assert_valid_subustr(s2, pos2, len2))
+  if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
     return (USTR_FALSE);
   --pos2;
   
@@ -197,7 +197,7 @@ int ustrp__ins_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   vsnprintf(ptr + pos, rc + 1, fmt, ap);
   ptr[pos + rc] = save_end;
 
-  USTR_ASSERT(ustr_assert_valid(*ps1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   
   return (USTR_TRUE);
 }

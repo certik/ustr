@@ -97,7 +97,7 @@ int ustrp__sc_ensure_owner(struct Ustr_pool *p, struct Ustr **ps1)
   struct Ustr *ret = USTR_NULL;
   size_t len = 0;
   
-  USTR_ASSERT(ps1 && ustr_assert_valid(*ps1));
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
 
   if (ustr_owner(*ps1))
     return (USTR_TRUE);
@@ -249,7 +249,7 @@ char *ustrp__sc_export_subustr(struct Ustr_pool *p,
 
   USTR_ASSERT(my_alloc || p);
   
-  if (!ustr_assert_valid_subustr(s1, pos, len))
+  if (!ustrp__assert_valid_subustr(!!p, s1, pos, len))
   {
     errno = USTR__EINVAL;
     return (ret);

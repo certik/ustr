@@ -19,7 +19,7 @@ struct Ustr *ustrp__split_buf(struct Ustr_pool *p,
   size_t found_pos = 0;
   size_t ret_len   = 0;
   
-  USTR_ASSERT(ustr_assert_valid(s1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, s1));
 
   USTR_ASSERT_RET(off <= len, USTR_NULL);
 
@@ -93,7 +93,7 @@ struct Ustr *ustr_split(const struct Ustr *s1, size_t *off,
                         const struct Ustr *sep, struct Ustr *ret,
                         unsigned int flags)
 {
-  USTR_ASSERT(ustr_assert_valid(sep));
+  USTR_ASSERT(ustrp__assert_valid(0, sep));
   return (ustrp__split_buf(0, s1,off,ustr_cstr(sep),ustr_len(sep), ret, flags));
 }
 
@@ -119,7 +119,7 @@ struct Ustr *ustrp__split_spn_chrs(struct Ustr_pool *p, const struct Ustr *s1,
   size_t sep = 0;
   size_t ret_len = 0;
   
-  USTR_ASSERT(ustr_assert_valid(s1));
+  USTR_ASSERT(ustrp__assert_valid(!!p, s1));
 
   USTR_ASSERT_RET(off <= len, USTR_NULL);
 
@@ -181,7 +181,7 @@ struct Ustr *ustr_split_spn(const struct Ustr *s1, size_t *off,
                             const struct Ustr *sep, struct Ustr *ret,
                             unsigned int flags)
 {
-  USTR_ASSERT(ustr_assert_valid(sep));
+  USTR_ASSERT(ustrp__assert_valid(0, sep));
   return (ustrp__split_spn_chrs(0, s1, off, ustr_cstr(sep), ustr_len(sep),
                                 ret, flags));
 }
