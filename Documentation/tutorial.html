@@ -89,8 +89,20 @@ onst">const</span> <span class="char">char</span> *msg)
 
 <p> This example is the simplest possible, basically being the same as
  calling puts(). Note however that the length of the string is passed
- through to the IO function without any compiler magic by using the checked
- constant ustr creation macro.</p>
+ through to the IO function without any compiler magic by using the
+ <a href="functions#USTR1_CHK">USTR1_CHK (checked
+ constant ustr creation)</a> macro, if it looks a little weird at first you
+ can use the
+ <a href="http://www.and.org/ustr/src/examples/custr.c">custr</a> example
+ program, to create constant ustr's automatically).
+</p>
+
+<p> Note: Although the USTR1_CHK() macro is handed constant data and should be
+ able to determine at compile time whether the length check is correct, GCC
+ doesn't think this is constant and so for file scope variables you'll need to
+ use the <a href="functions#USTR1">USTR1 (non-checking constant ustr
+ creation)</a> macro. Or even the simple
+ <a href="functions#USTR">USTR("")</a> macro for empty ustr strings.</p>
 
 <pre class="c2html">
 <span class="comment">/* simplest, just "create" a Ustr from a constant string */</span>
@@ -425,7 +437,7 @@ than the smaller perl code.
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Tue Oct 30 01:10:43 EDT 2007
+Last modified: Tue Oct 30 01:20:07 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>
