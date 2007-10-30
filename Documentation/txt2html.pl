@@ -132,10 +132,16 @@ sub conv_A_refs
     s{(\W|^)(Ustrp string)(\W|$)}
       {$1<a href="design">$2</a>$3}g;
 
-    s{([^#"_0-9a-z])ustr_([_0-9a-z]+)\(\)}
-      {$1<a href="functions#ustr_${2}">ustr_$2()</a>}g;
-    s{([^#"_0-9A-Z])USTR_([_0-9A-Z]+)\(\)}
-      {$1<a href="functions#USTR_${2}">USTR_$2()</a>}g;
+    s{(\W|^)(Ustr pool)(\W|$)}
+      {$1<a href="design#possibilities">$2</a>$3}g;
+
+    s{([^#"_0-9a-z])ustr(p|)_([_0-9a-z]+)\(\)}
+      {$1<a href="functions#ustr${2}_${3}">ustr${2}_$3()</a>}g;
+    s{([^#"_0-9A-Z])USTR(P|)_([_0-9A-Z]+)\(\)}
+      {$1<a href="functions#USTR${2}_${3}">USTR${2}_$3()</a>}g;
+
+    s{([^#"_0-9A-Z])USTR(P|)([1-4]+)\(\)}
+      {$1<a href="functions#USTR${2}${3}">USTR$3()</a>}g;
 
     if ($params && defined($current_function))
       {

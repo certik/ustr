@@ -67,6 +67,8 @@ Function: USTR1()
 
   Having ustr_ro() return true means that the Ustr cannot be written to without
  be reallocated into allocation space ... not that ustr_add() etc. will fail.
+  There is now USTR1_CHK() which performs a compile time check so you can never
+ have an invalid ustr.
 
 
 Function: USTR2()
@@ -130,7 +132,8 @@ Function: USTR1_CHK()
 
  Note:
 
-  If the check fails the returned Ustr * will be "".
+  If the check fails the returned Ustr * will be "", so you can check
+ ustr_len() to see if you screwed something up.
 
 
 Function: USTR2_CHK()
@@ -1132,7 +1135,7 @@ Function: ustrp_free()
  Returns: Nothing
  Type: void 
 
- Parameter[1]: Pointer to a Ustr_pool object
+ Parameter[1]: Pointer to a Ustr pool object
  Type[1]: struct Ustr_pool *
 
  Parameter[2]: Pointer to a Ustrp (pool allocated Ustr)
@@ -4214,7 +4217,7 @@ Function: ustr_io_getdelim()
 
  Note:
 
-  The delimiter is included, use ustr_del to remove 1 byte from the end if you
+  The delimiter is included, use ustr_del() to remove 1 byte from the end if you
  don't want it.
   This function assumes a delimiter will happen every 80 bytes or so.
 
@@ -4569,7 +4572,7 @@ Function: ustr_replace_cstr()
 
  Explanation:
 
-  This function works like ustr_replace_buf but gets the lengths for the
+  This function works like ustr_replace_buf() but gets the lengths for the
  buffer automatically from strlen().
 
 
@@ -4591,7 +4594,7 @@ Function: ustr_replace()
 
  Explanation:
 
-  This function works like ustr_replace_buf but gets the lengths from the
+  This function works like ustr_replace_buf() but gets the lengths from the
  ustr automatically.
 
 
@@ -5288,7 +5291,7 @@ Function: ustrp_sc_export_subustrp()
  Returns: A pointer to newly allocated block of memory
  Type: char *
 
- Parameter[1]: Pointer to a Ustr_pool object
+ Parameter[1]: Pointer to a Ustr pool object
  Type[1]: struct Ustr_pool *
 
  Parameter[2]: A pointer to a constant Ustr string
@@ -5315,7 +5318,7 @@ Function: ustrp_sc_export()
  Returns: A pointer to newly allocated block of memory
  Type: char *
 
- Parameter[1]: Pointer to a Ustr_pool object
+ Parameter[1]: Pointer to a Ustr pool object
  Type[1]: struct Ustr_pool *
 
  Parameter[2]: A pointer to a constant Ustr string
@@ -5520,7 +5523,7 @@ Function: ustr_cntl_opt()
 
 Section: Simple Ustr pool API
 Function: ustr_pool_ll_make()
- Returns: Ustr pool object
+ Returns: Pointer to a Ustr pool object
  Type: struct Ustr_pool *
 
  Parameter[1]: Nothing
@@ -5534,7 +5537,7 @@ Function: ustr_pool_ll_make()
 
 
 Function: ustr_pool_make_subpool()
- Returns: struct Ustr_pool *
+ Returns: Pointer to a Ustr pool object
  Type: struct Ustr_pool *
 
  Parameter[1]: struct Ustr_pool *
@@ -5552,7 +5555,7 @@ Function: ustr_pool_free()
  Returns: Nothing
  Type: void
 
- Parameter[1]: Ustr pool object
+ Parameter[1]: Pointer to a Ustr pool object
  Type[1]: struct Ustr_pool *
 
  Explanation:
@@ -5568,7 +5571,7 @@ Function: ustr_pool_clear()
  Returns: Nothing
  Type: void
 
- Parameter[1]: Ustr pool object
+ Parameter[1]: Pointer to a Ustr pool object
  Type[1]: struct Ustr_pool *
 
  Explanation:
