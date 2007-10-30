@@ -24,7 +24,7 @@ cd ./$pkg-$v
 ( cd Documentation && make )
 
 perl -p -i -e \
- 's{href="(constants|design|functions|structs)(?!\.html)\b}
+ 's{href="(tutorial|constants|design|functions|structs)(?!\.html)\b}
    {href="$1.html}g;' Documentation/*.html
 
 
