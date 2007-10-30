@@ -1,4 +1,4 @@
-.TH ustr 3 "29-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
+.TH ustr 3 "30-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -1204,6 +1204,8 @@ Type\fB[2]\fR: const char[]
 
 .br
   Having ustr_ro() return true means that the Ustr cannot be written to without be reallocated into allocation space ... not that ustr_add() etc. will fail.
+.br
+  There is now USTR1_CHK() which performs a compile time check so you can never have an invalid ustr.
 
 .ti -2
 .br
@@ -1300,7 +1302,7 @@ Type\fB[2]\fR: const char[]
 \fBNote:\fR
 
 .br
-  If the check fails the returned Ustr * will be "".
+  If the check fails the returned Ustr * will be "", so you can check ustr_len() to see if you screwed something up.
 
 .ti -2
 .br
@@ -2716,7 +2718,7 @@ Returns: Nothing
 Type: void 
 
 .br
-Parameter\fB[1]\fR: Pointer to a Ustr_pool object
+Parameter\fB[1]\fR: Pointer to a Ustr pool object
 .br
 Type\fB[1]\fR: struct Ustr_pool *
 
@@ -7266,7 +7268,7 @@ Type\fB[3]\fR: char
 \fBNote:\fR
 
 .br
-  The delimiter is included, use ustr_del to remove 1 byte from the end if you don't want it.
+  The delimiter is included, use ustr_del() to remove 1 byte from the end if you don't want it.
 .br
   This function assumes a delimiter will happen every 80 bytes or so.
 
@@ -7793,7 +7795,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_replace_buf but gets the lengths for the buffer automatically from strlen().
+  This function works like ustr_replace_buf() but gets the lengths for the buffer automatically from strlen().
 
 .ti -2
 .br
@@ -7827,7 +7829,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_replace_buf but gets the lengths from the ustr automatically.
+  This function works like ustr_replace_buf() but gets the lengths from the ustr automatically.
 
 .ti -2
 .br
@@ -8860,7 +8862,7 @@ Returns: A pointer to newly allocated block of memory
 Type: char *
 
 .br
-Parameter\fB[1]\fR: Pointer to a Ustr_pool object
+Parameter\fB[1]\fR: Pointer to a Ustr pool object
 .br
 Type\fB[1]\fR: struct Ustr_pool *
 
@@ -8899,7 +8901,7 @@ Returns: A pointer to newly allocated block of memory
 Type: char *
 
 .br
-Parameter\fB[1]\fR: Pointer to a Ustr_pool object
+Parameter\fB[1]\fR: Pointer to a Ustr pool object
 .br
 Type\fB[1]\fR: struct Ustr_pool *
 
@@ -9202,7 +9204,7 @@ Type\fB[2]\fR: ...
 .br
 \fBFunction: \fR ustr_pool_ll_make()
 .br
-Returns: Ustr pool object
+Returns: Pointer to a Ustr pool object
 .br
 Type: struct Ustr_pool *
 
@@ -9221,7 +9223,7 @@ Type\fB[1]\fR: void
 .br
 \fBFunction: \fR ustr_pool_make_subpool()
 .br
-Returns: struct Ustr_pool *
+Returns: Pointer to a Ustr pool object
 .br
 Type: struct Ustr_pool *
 
@@ -9245,7 +9247,7 @@ Returns: Nothing
 Type: void
 
 .br
-Parameter\fB[1]\fR: Ustr pool object
+Parameter\fB[1]\fR: Pointer to a Ustr pool object
 .br
 Type\fB[1]\fR: struct Ustr_pool *
 
@@ -9269,7 +9271,7 @@ Returns: Nothing
 Type: void
 
 .br
-Parameter\fB[1]\fR: Ustr pool object
+Parameter\fB[1]\fR: Pointer to a Ustr pool object
 .br
 Type\fB[1]\fR: struct Ustr_pool *
 

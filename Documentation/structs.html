@@ -42,7 +42,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="pool_sys_malloc">pool_sys_malloc()</a>
 <br>Returns: Allocated data<br>Type: void *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Length of new allocation<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This is a callback to provide a similar usage to malloc().
@@ -53,7 +53,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="pool_sys_realloc">pool_sys_realloc()</a>
 <br>Returns: Re-allocated data<br>Type: void *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the old data<br>Type<strong>[2]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Length of old allocation<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of new allocation<br>Type<strong>[4]</strong>: size_t
@@ -72,7 +72,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="pool_sys_free">pool_sys_free()</a>
 <br>Returns: Nothing<br>Type: void
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: void *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: void *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to the data<br>Type<strong>[2]</strong>: void *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This is a callback to provide a similar usage to free().

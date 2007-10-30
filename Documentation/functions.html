@@ -422,6 +422,8 @@
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  Having <a href="functions#ustr_ro">ustr_ro()</a> return true means that the Ustr cannot be written to without
  be reallocated into allocation space ... not that <a href="functions#ustr_add">ustr_add()</a> etc. will fail.
+</p><p>  There is now USTR1_CHK() which performs a compile time check so you can never
+ have an invalid ustr.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -431,7 +433,7 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works in the same way as USTR1() but takes two length bytes, so
+</p><p>  This function works in the same way as <a href="functions#USTR1">USTR1()</a> but takes two length bytes, so
  the read-only string can be upto 65,535 (2**16 - 1) bytes in length.
 
 
@@ -444,7 +446,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[4]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works in the same way as USTR1() but takes four length bytes, so
+</p><p>  This function works in the same way as <a href="functions#USTR1">USTR1()</a> but takes four length bytes, so
  the read-only string can be upto 2**32 - 1 bytes in length.
 
 
@@ -454,11 +456,12 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works in the same way as USTR1() but it does a check against
+</p><p>  This function works in the same way as <a href="functions#USTR1">USTR1()</a> but it does a check against
  the length of (Parameter[2]) using sizeof() - 1.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  If the check fails the returned Ustr * will be &quot;&quot;.
+</p><p>  If the check fails the returned Ustr * will be &quot;&quot;, so you can check
+ <a href="functions#ustr_len">ustr_len()</a> to see if you screwed something up.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -468,7 +471,7 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works in the same way as USTR2() but it does a check against
+</p><p>  This function works in the same way as <a href="functions#USTR2">USTR2()</a> but it does a check against
  the length of (Parameter[2]) using sizeof() - 1.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
@@ -484,7 +487,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[4]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works in the same way as USTR4() but it does a check against
+</p><p>  This function works in the same way as <a href="functions#USTR4">USTR4()</a> but it does a check against
  the length of (Parameter[2]) using sizeof() - 1.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
@@ -497,7 +500,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Encoded number of the length of <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like USTR1(), but returns a Ustrp instead.
+</p><p>  This function works like <a href="functions#USTR1">USTR1()</a>, but returns a Ustrp instead.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -507,7 +510,7 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like USTR4(), but returns a Ustrp instead.
+</p><p>  This function works like <a href="functions#USTR4">USTR4()</a>, but returns a Ustrp instead.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -519,7 +522,7 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Encoded 1st byte of number of the length of <a href="design">Ustrp string</a><br>Type<strong>[4]</strong>: symbol
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Data for <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const char[]
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like USTR2(), but returns a Ustrp instead.
+</p><p>  This function works like <a href="functions#USTR2">USTR2()</a>, but returns a Ustrp instead.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1100,7 +1103,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustrp_free">ustrp_free()</a>
 <br>Returns: Nothing<br>Type: void 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr_pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a Ustrp (pool allocated Ustr)<br>Type<strong>[2]</strong>: struct Ustrp *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_free">ustr_free()</a> but calls the pool_free member function
@@ -2970,7 +2973,7 @@
 </p><p>  This function reads bytes from the file until it hits the delimiter byte.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The delimiter is included, use ustr_del to remove 1 byte from the end if you
+</p><p>  The delimiter is included, use <a href="functions#ustr_del">ustr_del()</a> to remove 1 byte from the end if you
  don't want it.
 </p><p>  This function assumes a delimiter will happen every 80 bytes or so.
 
@@ -3179,7 +3182,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string, containing replacement bytes<br>Type<strong>[3]</strong>: const char *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like ustr_replace_buf but gets the lengths for the
+</p><p>  This function works like <a href="functions#ustr_replace_buf">ustr_replace_buf()</a> but gets the lengths for the
  buffer automatically from strlen().
 
 
@@ -3191,7 +3194,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Ustr to replace needle with<br>Type<strong>[3]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Maximum number of matches to replace (0 for unlimited)<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like ustr_replace_buf but gets the lengths from the
+</p><p>  This function works like <a href="functions#ustr_replace_buf">ustr_replace_buf()</a> but gets the lengths from the
  ustr automatically.
 
 
@@ -3601,7 +3604,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustrp_sc_export_subustrp">ustrp_sc_export_subustrp()</a>
 <br>Returns: A pointer to newly allocated block of memory<br>Type: char *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr_pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Position in the Ustr<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length to export from the Ustr<br>Type<strong>[4]</strong>: size_t
@@ -3616,12 +3619,12 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustrp_sc_export">ustrp_sc_export()</a>
 <br>Returns: A pointer to newly allocated block of memory<br>Type: char *
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a Ustr_pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Allocation function (like malloc)<br>Type<strong>[3]</strong>: void *(*)(size_t)
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like calling ustrp_sc_export_subustrp() with a position of
- 1 and a length of ustrp_len().
+</p><p>  This function works like calling <a href="functions#ustrp_sc_export_subustrp">ustrp_sc_export_subustrp()</a> with a position of
+ 1 and a length of <a href="functions#ustrp_len">ustrp_len()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3747,10 +3750,10 @@
  have an implicit or explicit size (<a href="constants#USTR_CNTL_OPT_GET_HAS_SIZE">USTR_CNTL_OPT_GET_HAS_SIZE</a>).
 
 
-</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple Ustr pool API</a></h2>
+</td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Simple%20Ustr%20pool%20API">Simple <a href="design#possibilities">Ustr pool</a> API</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_ll_make">ustr_pool_ll_make()</a>
-<br>Returns: Ustr pool object<br>Type: struct Ustr_pool *
+<br>Returns: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Nothing<br>Type<strong>[1]</strong>: void
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This allocates a new pool using the &quot;linked list&quot; strategy, each allocation
@@ -3760,7 +3763,7 @@
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_make_subpool">ustr_pool_make_subpool()</a>
-<br>Returns: struct Ustr_pool *<br>Type: struct Ustr_pool *
+<br>Returns: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type: struct Ustr_pool *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: struct Ustr_pool *<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This allocates a new pool as a child of the passed in pool (Parameter[1]),
@@ -3772,7 +3775,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_free">ustr_pool_free()</a>
 <br>Returns: Nothing<br>Type: void
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This deallocates a pool, and all sub-pools.
 
@@ -3783,7 +3786,7 @@
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_pool_clear">ustr_pool_clear()</a>
 <br>Returns: Nothing<br>Type: void
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Ustr pool object<br>Type<strong>[1]</strong>: struct Ustr_pool *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a <a href="design#possibilities">Ustr pool</a> object<br>Type<strong>[1]</strong>: struct Ustr_pool *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This allows all the data in the pool to be reused, it may also free some/all
  of the data in the pool, from the pool API.
