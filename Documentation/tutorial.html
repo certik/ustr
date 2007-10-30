@@ -389,7 +389,7 @@ than the smaller perl code.
     ustr_replace_cstr(&amp;line, <span class="str">"&lt;"</span>,  <span class="str">"&amp;lt;"</span>,   <span class="num0">0</span>);
     ustr_replace_cstr(&amp;line, <span class="str">"&gt;"</span>,  <span class="str">"&amp;gt;"</span>,   <span class="num0">0</span>);
     ustr_replace_cstr(&amp;line, <span class="str">"\""</span>, <span class="str">"&amp;quot;"</span>, <span class="num0">0</span>);
-    ustr_del(&amp;line, 1);
+    ustr_del(&amp;line, has_ret);
     ustr_add_cstr(&amp;line, <span class="str">"&lt;BR&gt;\n"</span>);
 
     <span class="comment">/* convert runs of two or more spaces into runs of &amp;nbsp; */</span>
@@ -425,7 +425,7 @@ than the smaller perl code.
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Fri Oct 26 00:15:17 EDT 2007
+Last modified: Tue Oct 30 00:51:37 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>

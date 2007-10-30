@@ -92,7 +92,7 @@ static void txt2html(const char *prog_name, Ustr **pline)
     ustr_replace_cstr(&line, "<",  "&lt;",   0);
     ustr_replace_cstr(&line, ">",  "&gt;",   0);
     ustr_replace_cstr(&line, "\"", "&quot;", 0);
-    ustr_del(&line, 1);
+    ustr_del(&line, has_ret);
     ustr_add_cstr(&line, "<BR>\n");
 
     /* convert runs of two or more spaces into runs of &nbsp; */
