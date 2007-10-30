@@ -33,9 +33,9 @@
   </Company_Info>
   <Program_Info>
     <Program_Name>ustr</Program_Name>
-    <Program_Version>1.0.1</Program_Version>
-    <Program_Release_Month>08</Program_Release_Month>
-    <Program_Release_Day>04</Program_Release_Day>
+    <Program_Version>1.0.2</Program_Version>
+    <Program_Release_Month>10</Program_Release_Month>
+    <Program_Release_Day>29</Program_Release_Day>
     <Program_Release_Year>2007</Program_Release_Year>
     <Program_Cost_Dollars>0</Program_Cost_Dollars>
     <Program_Cost_Other_Code>USD</Program_Cost_Other_Code>
@@ -45,7 +45,7 @@
     <Program_Install_Support>Install and Uninstall</Program_Install_Support>
     <Program_OS_Support>Linux,Unix,WinXP,WinNT 4.x,Windows2000,Windows CE,Mac PPC,MS-DOS</Program_OS_Support>
     <Program_Language>English</Program_Language>
-    <Program_Change_Info>Lots of new functions, more testing coverage.</Program_Change_Info>
+    <Program_Change_Info>A few new functions, some more documentation and integrated malloc checking to make debugging much easier. Added some examples.</Program_Change_Info>
     <Program_System_Requirements/>
     <Program_Specific_Category>Development Tools</Program_Specific_Category>
     <Program_Categories/>
@@ -54,12 +54,12 @@
     <Includes_DirectX>N</Includes_DirectX>
     <File_Info>
       <Filename_Generic>ustr</Filename_Generic>
-      <Filename_Versioned>ustr-1.0.1</Filename_Versioned>
-      <Filename_Previous>ustr-1.0.0</Filename_Previous>
-      <Filename_Long>ustr-1.0.1.tar.gz</Filename_Long>
-      <File_Size_Bytes>331670</File_Size_Bytes>
-      <File_Size_K>323.90</File_Size_K>
-      <File_Size_MB>0.32</File_Size_MB>
+      <Filename_Versioned>ustr-1.0.2</Filename_Versioned>
+      <Filename_Previous>ustr-1.0.1</Filename_Previous>
+      <Filename_Long>ustr-1.0.2.tar.gz</Filename_Long>
+      <File_Size_Bytes>281119</File_Size_Bytes>
+      <File_Size_K>274.53</File_Size_K>
+      <File_Size_MB>0.27</File_Size_MB>
     </File_Info>
     <Expire_Info>
       <Has_Expire_Info>N</Has_Expire_Info>
@@ -84,10 +84,10 @@
       <Application_XML_File_URL>http://www.and.org/ustr/ustr_pad.xml</Application_XML_File_URL>
     </Application_URLs>
     <Download_URLs>
-      <Primary_Download_URL>http://www.and.org/ustr/1.0.1/ustr-1.0.1.tar.gz</Primary_Download_URL>
-      <Secondary_Download_URL>ftp://ftp.and.org/pub/james/ustr/1.0.1/ustr-1.0.1.tar.gz</Secondary_Download_URL>
-      <Additional_Download_URL_1>http://www.and.org/ustr/1.0.1/rpms/</Additional_Download_URL_1>
-      <Additional_Download_URL_2>ftp://ftp.and.org/pub/james/ustr/1.0.1/rpms/</Additional_Download_URL_2>
+      <Primary_Download_URL>http://www.and.org/ustr/1.0.2/ustr-1.0.2.tar.gz</Primary_Download_URL>
+      <Secondary_Download_URL>ftp://ftp.and.org/pub/james/ustr/1.0.2/ustr-1.0.2.tar.gz</Secondary_Download_URL>
+      <Additional_Download_URL_1>http://www.and.org/ustr/1.0.2/rpms/</Additional_Download_URL_1>
+      <Additional_Download_URL_2>ftp://ftp.and.org/pub/james/ustr/1.0.2/rpms/</Additional_Download_URL_2>
     </Download_URLs>
   </Web_Info>
   <Permissions>
