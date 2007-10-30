@@ -348,7 +348,9 @@ s/( {2,})/'&amp;nbsp;' x length($1)/ge;
 <p> The interesting points here are how simple most of the ustr code is, tab
  conversion is 2 lines in the original perl and 5 (1 could be dropped for a
  speed loss) with ustr. The "four std. naughty bits" take a single line in
- both perl and ustr. The only major difference is in the final perl one liner.
+ both perl and ustr. The only major difference is in the final perl 1 liner,
+ which is 8 interesting lines (due to the two or more spaces constraint, or
+ we could just use <a href="functions#ustr_replace">ustr_replace()</a>).
 </p>
 <p> It's also worth noting that the ustr version is <b>significantly</b> faster
 than the smaller perl code.
@@ -383,7 +385,6 @@ than the smaller perl code.
     <span class="sizet">size_t</span> spcs_off = <span class="num0">0</span>;
     <span class="sizet">size_t</span> spcs_pos = <span class="num0">0</span>;
     <span class="char">char</span> buf_rep[USTR_SIZE_FIXED(40 * 6)] = USTR_BEG_FIXED2 <span class="str">"&amp;nbsp;"</span>;
-    Ustr *rep_nbsp = USTR_SC_INIT_AUTO_OSTR(buf_rep, USTR_FALSE, <span class="str">"&amp;nbsp;"</span>);
     
     ustr_replace_cstr(&amp;line, <span class="str">"&amp;"</span>,  <span class="str">"&amp;amp;"</span>,  <span class="num0">0</span>);
     ustr_replace_cstr(&amp;line, <span class="str">"&lt;"</span>,  <span class="str">"&amp;lt;"</span>,   <span class="num0">0</span>);
@@ -398,20 +399,19 @@ than the smaller perl code.
       <span class="sizet">size_t</span> spcs_len = ustr_spn_chr_fwd(line, spcs_pos - 1, <span class="chr">' '</span>);
       <span class="sizet">size_t</span> rep = spcs_len;
       <span class="sizet">size_t</span> more = <span class="num0">0</span>;
+      Ustr *rep_nbsp = USTR_SC_INIT_AUTO(buf_rep, USTR_FALSE, <span class="num0">0</span>);
 
-      ustr_sc_del(&amp;rep_nbsp);
-      more = rep;
-      <span class="while">while</span> (more--)
+      <span class="while">while</span> (rep--)
         ustr_add_cstr(&amp;rep_nbsp, <span class="str">"&amp;nbsp;"</span>);
-      rep *= strlen(<span class="str">"&amp;nbsp;"</span>);
 
       <span class="if">if</span> (ustr_enomem(rep_nbsp) ||
-          !ustr_sc_sub_subustr(&amp;line, spcs_pos, spcs_len, rep_nbsp, 1, rep))
-        die(<span class="str">"txt2html"</span>, strerror(ENOMEM));
-      
-      spcs_off = spcs_pos + rep - 1;
+          !ustr_sc_sub(&amp;line, spcs_pos, spcs_len, rep_nbsp))
+        die(prog_name, strerror(ENOMEM));
+
+      spcs_off = spcs_pos + (spcs_len * strlen(<span class="str">"&amp;nbsp;"</span>)) - 1;
+
+      ustr_free(rep_nbsp);
     }
-    ustr_free(rep_nbsp);
   }
   
   <span class="if">if</span> (ustr_enomem(line))
@@ -425,7 +425,7 @@ than the smaller perl code.
     <address><a href="mailto:james@and.org">James Antill</a></address>
 <!-- Created: Sat Oct 13 16:41:12 EDT 2007 -->
 <!-- hhmts start -->
-Last modified: Tue Oct 30 00:51:37 EDT 2007
+Last modified: Tue Oct 30 01:10:43 EDT 2007
 <!-- hhmts end -->
   </body>
 </html>

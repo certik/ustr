@@ -100,21 +100,23 @@ static void txt2html(const char *prog_name, Ustr **pline)
     {
       size_t spcs_len = ustr_spn_chr_fwd(line, spcs_pos - 1, ' ');
       size_t rep = spcs_len;
-      size_t more = 0;
 
 #if USTR_FALSE /* simpler, but slower */
-      ustr_sc_del(&rep_nbsp);
-      more = rep;
-      while (more--)
+      ustr_sc_free2(&rep_nbsp, USTR_SC_INIT_AUTO(buf_rep, USTR_FALSE, 0));
+      while (rep--)
         ustr_add_cstr(&rep_nbsp, "&nbsp;");
       
-      rep *= strlen("&nbsp;");
+      if (ustr_enomem(rep_nbsp) ||
+          !ustr_sc_sub(&line, spcs_pos, spcs_len, rep_nbsp))
+        die(prog_name, strerror(ENOMEM));
+      
+      spcs_off = spcs_pos + (spcs_len * strlen("&nbsp;")) - 1;
 #else
       rep *= strlen("&nbsp;");
 
       if (rep > ustr_len(rep_nbsp))
       {
-        more = rep - ustr_len(rep_nbsp);
+        size_t more = rep - ustr_len(rep_nbsp);
 
         while (more)
         {
@@ -127,13 +129,13 @@ static void txt2html(const char *prog_name, Ustr **pline)
           more -= val;
         }
       }
-#endif
 
       if (ustr_enomem(rep_nbsp) ||
           !ustr_sc_sub_subustr(&line, spcs_pos, spcs_len, rep_nbsp, 1, rep))
         die(prog_name, strerror(ENOMEM));
       
       spcs_off = spcs_pos + rep - 1;
+#endif
     }
     ustr_free(rep_nbsp);
   }
