@@ -139,6 +139,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 29 2007 James Antill <james@and.org> - 1.0.2-1
+- New release
+
 * Tue Aug 28 2007 James Antill <jantill@redhat.com> - 1.0.1-6
 - Add options for fedora policy brokeness, so it's easy to undo.
 - Rebuild for buildid.
