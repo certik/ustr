@@ -69,11 +69,9 @@ fi
 
 perl -i -pe "s/^Release: 1/Release: $rel/" $pkg-$v/$pkg.spec
 
-tar -cf   $pkg-$v.tar $pkg-$v
-bzip2 -9f $pkg-$v.tar
-
-tar -cf   $pkg-$v.tar $pkg-$v
-gzip -9f  $pkg-$v.tar
+tar -cf - $pkg-$v | \
+  tee >(gzip  -9 -c > $pkg-$v.tar.gz) | \
+        bzip2 -9 -c > $pkg-$v.tar.bz2
 
 # sudo rpmbuild -ts --define "chk $chk" $pkg-$v.tar.gz
 rpmbuild --define "_sourcedir `pwd`/tmp"   --define "_specdir `pwd`/tmp" \
