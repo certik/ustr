@@ -20,6 +20,7 @@ struct Ustr_opts USTR__COMPILE_ATTR_H() ustr__opts[1] = {
   {ustr__cntl_mc_setup_malloc, /* malloc be called first */
    realloc,
    free}, /* Ustr_cntl_mem */
+  {vsnprintf, vsnprintf}, /* fmt */
   USTR_FALSE,   /* has_size */
   USTR_FALSE,   /* exact_bytes */
   USTR_FALSE,   /* scrub on malloc */
@@ -74,9 +75,9 @@ USTR_CONF_i_PROTO void  ustr__cntl_mc_setup_main(void)
   
   if (!ustr__cntl_mc_setup_env2bool("USTR_CNTL_MC", USTR_CONF_USE_ASSERT))
   {
-    ustr__opts->ustr.sys_malloc  = malloc;
-    ustr__opts->ustr.sys_realloc = realloc;
-    ustr__opts->ustr.sys_free    = free;
+    ustr__opts->umem.sys_malloc  = malloc;
+    ustr__opts->umem.sys_realloc = realloc;
+    ustr__opts->umem.sys_free    = free;
     
     return;
   }
@@ -100,7 +101,7 @@ USTR_CONF_i_PROTO void *ustr__cntl_mc_setup_malloc(size_t x)
 { /* again, it's not possible to call anything but malloc() or free(NULL).
    * So just doing setup here is fine. */
   ustr__cntl_mc_setup_main();
-  return (ustr__opts->ustr.sys_malloc(x));
+  return (ustr__opts->umem.sys_malloc(x));
 }
 
 USTR_CONF_i_PROTO void *ustr__cntl_mc_malloc(size_t x)
@@ -209,9 +210,9 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
     {
       struct Ustr_cntl_mem *val = va_arg(ap, struct Ustr_cntl_mem *);
 
-      val->sys_malloc  = ustr__opts->ustr.sys_malloc;
-      val->sys_realloc = ustr__opts->ustr.sys_realloc;
-      val->sys_free    = ustr__opts->ustr.sys_free;
+      val->sys_malloc  = ustr__opts->umem.sys_malloc;
+      val->sys_realloc = ustr__opts->umem.sys_realloc;
+      val->sys_free    = ustr__opts->umem.sys_free;
       
       ret = USTR_TRUE;
     }
@@ -221,9 +222,9 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
     {
       const struct Ustr_cntl_mem *val = va_arg(ap, struct Ustr_cntl_mem *);
 
-      ustr__opts->ustr.sys_malloc  = val->sys_malloc;
-      ustr__opts->ustr.sys_realloc = val->sys_realloc;
-      ustr__opts->ustr.sys_free    = val->sys_free;
+      ustr__opts->umem.sys_malloc  = val->sys_malloc;
+      ustr__opts->umem.sys_realloc = val->sys_realloc;
+      ustr__opts->umem.sys_free    = val->sys_free;
       
       ret = USTR_TRUE;
     }
@@ -372,9 +373,9 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
 
           if (!enabled)
           {
-            ustr__opts->ustr.sys_malloc  = ustr__cntl_mc_malloc;
-            ustr__opts->ustr.sys_realloc = ustr__cntl_mc_realloc;
-            ustr__opts->ustr.sys_free    = ustr__cntl_mc_free;
+            ustr__opts->umem.sys_malloc  = ustr__cntl_mc_malloc;
+            ustr__opts->umem.sys_realloc = ustr__cntl_mc_realloc;
+            ustr__opts->umem.sys_free    = ustr__cntl_mc_free;
           }
           
           ustr__cntl_mc_ptr = tptr;
@@ -458,9 +459,9 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
           /* it's bad otherwise */
           malloc_check_empty(file, line, func);
           
-          ustr__opts->ustr.sys_malloc  = malloc;
-          ustr__opts->ustr.sys_realloc = realloc;
-          ustr__opts->ustr.sys_free    = free;
+          ustr__opts->umem.sys_malloc  = malloc;
+          ustr__opts->umem.sys_realloc = realloc;
+          ustr__opts->umem.sys_free    = free;
           
           MALLOC_CHECK_STORE.mem_num      = 0;
           MALLOC_CHECK_STORE.mem_fail_num = 0;
@@ -468,6 +469,29 @@ USTR_CONF_I_PROTO int ustr_cntl_opt(int option, ...)
         break;
       }
     }
+    break;
+    
+    case USTR_CNTL_OPT_GET_FMT:
+    {
+      struct Ustr_cntl_fmt *val = va_arg(ap, struct Ustr_cntl_fmt *);
+
+      val->sys_vsnprintf_beg = ustr__opts->ufmt.sys_vsnprintf_beg;
+      val->sys_vsnprintf_end = ustr__opts->ufmt.sys_vsnprintf_end;
+      
+      ret = USTR_TRUE;
+    }
+    break;
+    
+    case USTR_CNTL_OPT_SET_FMT:
+    {
+      const struct Ustr_cntl_fmt *val = va_arg(ap, struct Ustr_cntl_fmt *);
+
+      ustr__opts->ufmt.sys_vsnprintf_beg = val->sys_vsnprintf_beg;
+      ustr__opts->ufmt.sys_vsnprintf_end = val->sys_vsnprintf_end;
+      
+      ret = USTR_TRUE;
+    }
+    /* break; */
 
     USTR_ASSERT_NO_SWITCH_DEF("Bad option passed to ustr_cntl_opt()");
   }

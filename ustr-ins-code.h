@@ -176,7 +176,7 @@ int ustrp__ins_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   char save_end;
   
   USTR__VA_COPY(nap, ap);
-  rc = vsnprintf(buf, sizeof(buf), fmt, nap);
+  rc = USTR_CONF_VSNPRINTF_BEG(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
   if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
@@ -194,7 +194,7 @@ int ustrp__ins_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t pos,
   ptr = ustr_wstr(*ps1);
 
   save_end = ptr[pos + rc]; /* might be NIL, might be a char */
-  vsnprintf(ptr + pos, rc + 1, fmt, ap);
+  USTR_CONF_VSNPRINTF_END(ptr + pos, rc + 1, fmt, ap);
   ptr[pos + rc] = save_end;
 
   USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));

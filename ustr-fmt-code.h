@@ -14,6 +14,9 @@ int ustr__retard_vfmt_ret(const char *fmt, va_list ap)
   char *ptr = 0;
   int ret = -1;
   va_list nap;
+
+  if (USTR_CONF_VSNPRINTF_BEG != vsnprintf)
+    return (-1);
   
   if (!(ptr = USTR_CONF_MALLOC(sz)))
     return (-1);
@@ -62,7 +65,7 @@ int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
   USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
   USTR__VA_COPY(nap, ap);
-  rc = vsnprintf(buf, sizeof(buf), fmt, nap);
+  rc = USTR_CONF_VSNPRINTF_BEG(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
   if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
@@ -80,7 +83,7 @@ int ustrp__add_vfmt_lim(struct Ustr_pool *p, struct Ustr **ps1, size_t lim,
   
   tmp = ustr_wstr(*ps1) + os1len;
   
-  vsnprintf(tmp, rc + 1, fmt, ap);
+  USTR_CONF_VSNPRINTF_END(tmp, rc + 1, fmt, ap);
 
   USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
   
@@ -169,7 +172,7 @@ struct Ustr *ustrp__dupx_vfmt_lim(struct Ustr_pool *p, size_t sz, size_t rbytes,
   char buf[USTR__SNPRINTF_LOCAL];
   
   USTR__VA_COPY(nap, ap);
-  rc = vsnprintf(buf, sizeof(buf), fmt, nap);
+  rc = USTR_CONF_VSNPRINTF_BEG(buf, sizeof(buf), fmt, nap);
   va_end(nap);
 
   if ((rc == -1) && ((rc = ustr__retard_vfmt_ret(fmt, ap)) == -1))
@@ -184,7 +187,7 @@ struct Ustr *ustrp__dupx_vfmt_lim(struct Ustr_pool *p, size_t sz, size_t rbytes,
   if (!(ret = ustrp__dupx_undef(p, sz, rbytes, exact, emem, rc)))
     return (USTR_FALSE);
   
-  vsnprintf(ustr_wstr(ret), rc + 1, fmt, ap);
+  USTR_CONF_VSNPRINTF_END(ustr_wstr(ret), rc + 1, fmt, ap);
 
   USTR_ASSERT(ustrp__assert_valid(!!p, ret));
   

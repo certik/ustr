@@ -1,3 +1,10 @@
+2007-11-24  James Antill  <james@and.org>
+
+	* T-installed/tst_vstr_chk.c (main): Add test for new option.
+
+	* ustr-cntl.h (struct Ustr_cntl_fmt): Add a way to use another
+	vsnprintf() type function, for instance vstr_add_vfmt().
+
 2007-10-29  James Antill  <james@and.org>
 
 	* NEWS: Release 1.0.2

@@ -6,8 +6,6 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-#include <stdarg.h> /* va_list for *printf like functionality */
-
 /* We assume this is enough,
  * C99 specifies that va_copy() exists and is a macro */
 #ifdef va_copy

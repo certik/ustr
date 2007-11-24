@@ -6,10 +6,6 @@
 #error " You should have already included ustr-main.h, or just include ustr.h."
 #endif
 
-#ifndef USTR_FMT_INTERNAL_H
-#include <stdio.h>
-#endif
-
 USTR_CONF_E_PROTO int ustr_io_get(struct Ustr **, FILE *, size_t, size_t *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2));
 USTR_CONF_E_PROTO int ustr_io_getfile(struct Ustr **, FILE *)

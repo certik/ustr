@@ -23,6 +23,10 @@
 #endif
 #include <limits.h> /* CHAR_BIT */
 
+#include <stdarg.h> /* va_list for *printf like functionality,
+                     * needed globally now due to cntl */
+#include <stdio.h>  /* vsnprintf */
+
 #define USTR_FALSE 0
 #define USTR_TRUE  1
 #define USTR_NULL  ((struct Ustr *) 0)
@@ -182,6 +186,12 @@
 #endif
 #ifndef USTR_CONF_FREE
 #define USTR_CONF_FREE(x)       free(x)
+#endif
+#ifndef USTR_CONF_VSNPRINTF_BEG
+#define USTR_CONF_VSNPRINTF_BEG vsnprintf
+#endif
+#ifndef USTR_CONF_VSNPRINTF_END
+#define USTR_CONF_VSNPRINTF_END vsnprintf
 #endif
 /* ---- END: static/dynamic config. ---- */
 

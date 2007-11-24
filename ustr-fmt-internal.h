@@ -24,8 +24,6 @@
 #define USTR_CONF_HAVE_RETARDED_VSNPRINTF 1
 #endif
 
-#include <stdio.h>  /* vsnprintf */
-
 #if USTR_CONF_HAVE_VA_COPY
 # if USTR_CONF_HAVE_RETARDED_VSNPRINTF
 USTR_CONF_e_PROTO
