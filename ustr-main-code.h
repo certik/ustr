@@ -1531,3 +1531,54 @@ void ustr_conf(const struct Ustr *s1, size_t *ret_esz, size_t *ret_ref,
   if (ret_lenn)  *ret_lenn  = USTR__LEN_LEN(s1);
   if (ret_refc)  *ret_refc  = refc ? ustr_xi__ref_get(s1) : 0;
 }
+
+USTR_CONF_i_PROTO
+int ustrp__sc_ensure_owner(struct Ustr_pool *p, struct Ustr **ps1)
+{
+  struct Ustr *ret = USTR_NULL;
+  size_t clen = 0;
+  
+  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
+
+  if (ustr_owner(*ps1))
+    return (USTR_TRUE);
+
+  if (!(clen = ustr_len(*ps1))) /* so ustr_enomem() and ustr_wstr() work */
+    ret = ustrp__dupx_empty(p, USTR__DUPX_FROM(*ps1));
+  else
+    ret = ustrp__dupx_buf(p, USTR__DUPX_FROM(*ps1), ustr_cstr(*ps1), clen);
+
+  if (!ret)
+    return (USTR_FALSE);
+  
+  ustrp__sc_free2(p, ps1, ret);
+
+  return (USTR_TRUE);
+}
+USTR_CONF_I_PROTO int ustr_sc_ensure_owner(struct Ustr **ps1)
+{ return (ustrp__sc_ensure_owner(0, ps1)); }
+USTR_CONF_I_PROTO
+int ustrp_sc_ensure_owner(struct Ustr_pool *p, struct Ustrp **ps1)
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  int ret = ustrp__sc_ensure_owner(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}
+
+USTR_CONF_i_PROTO char *ustrp__sc_wstr(struct Ustr_pool *p, struct Ustr **ps1)
+{
+  if (!ustrp__sc_ensure_owner(p, ps1))
+    return (USTR_FALSE);
+
+  return (ustr_wstr(*ps1));
+}
+USTR_CONF_I_PROTO char *ustr_sc_wstr(struct Ustr **ps1)
+{ return (ustrp__sc_wstr(0, ps1)); }
+USTR_CONF_I_PROTO char *ustrp_sc_wstr(struct Ustr_pool *p, struct Ustrp **ps1)
+{
+  struct Ustr *tmp = &(*ps1)->s;
+  char *ret = ustrp__sc_wstr(p, &tmp);
+  *ps1 = USTRP(tmp);
+  return (ret);
+}

@@ -1,5 +1,9 @@
 2007-11-24  James Antill  <james@and.org>
 
+	* ustr-sc-code.h (ustr_sc_lstrip): Added function.
+	(ustr_sc_rstrip): Added function.
+	(ustr_sc_strip): Added function.
+
 	* T-installed/tst_vstr_chk.c (main): Add test for new option.
 
 	* ustr-cntl.h (struct Ustr_cntl_fmt): Add a way to use another

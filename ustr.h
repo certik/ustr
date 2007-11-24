@@ -15,7 +15,6 @@
 #include "ustr-b.h"
 #include "ustr-cmp.h"
 #include "ustr-fmt.h"
-#include "ustr-sc.h"
 #include "ustr-io.h"
 #include "ustr-ins.h"
 #include "ustr-parse.h"
@@ -27,5 +26,6 @@
 #include "ustr-sub.h"
 #include "ustr-replace.h"
 #include "ustr-split.h"
+#include "ustr-sc.h"
 
 #endif

@@ -797,6 +797,16 @@ USTR_CONF_E_PROTO
 void ustrp_sc_free2(struct Ustr_pool *, struct Ustrp **, struct Ustrp *)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
+
+USTR_CONF_E_PROTO int ustr_sc_ensure_owner(struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO char *ustr_sc_wstr(struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+USTR_CONF_E_PROTO int ustrp_sc_ensure_owner(struct Ustr_pool *, struct Ustrp **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
+USTR_CONF_E_PROTO char *ustrp_sc_wstr(struct Ustr_pool *, struct Ustrp **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
+
 /* ---------------- pre inlines ---------------- */
 #if USTR_CONF_COMPILE_USE_INLINE
 USTR_CONF_II_PROTO struct Ustr_pool *ustr_pool_make_subpool(struct Ustr_pool *p)

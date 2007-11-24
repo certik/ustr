@@ -13,23 +13,39 @@ struct Ustr *ustrp__sc_dupx(struct Ustr_pool *p,
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
 USTR_CONF_e_PROTO struct Ustr *ustrp__sc_dup(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO int ustrp__sc_ensure_owner(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO void ustrp__sc_free_shared(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO void ustr__reverse(char *ptr, size_t pos, size_t len)
     USTR__COMPILE_ATTR_NONNULL_A();
+#ifdef USTR_UTF8_H
+USTR_CONF_e_PROTO
+int ustrp__sc_utf8_reverse(struct Ustr_pool *, struct Ustr **)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
+#endif
+
 USTR_CONF_e_PROTO int ustrp__sc_reverse(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO int ustrp__sc_tolower(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO int ustrp__sc_toupper(struct Ustr_pool *, struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-USTR_CONF_e_PROTO char *ustrp__sc_wstr(struct Ustr_pool *, struct Ustr **)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_e_PROTO
 char *ustrp__sc_export_subustr(struct Ustr_pool *, const struct Ustr *,
                                size_t, size_t, void *(*)(size_t))
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
-    
+
+USTR_CONF_e_PROTO
+int ustrp__sc_lstrip_chrs(struct Ustr_pool *, struct Ustr **,
+                          const char *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO
+int ustrp__sc_rstrip_chrs(struct Ustr_pool *, struct Ustr **,
+                          const char *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO
+int ustrp__sc_strip_chrs(struct Ustr_pool *, struct Ustr **,
+                         const char *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+
+
 #endif

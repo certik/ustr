@@ -8,8 +8,6 @@
 
  scons build?
 
- chomp/strip/ltrim/rtrim?
-
  ustr_to_uint() => like ustr_parse_uint() but no error checking etc.
    Ie. the aotl() of strtol()
    This allows attribute pure to be used, so it'll be hoisted from loops etc.

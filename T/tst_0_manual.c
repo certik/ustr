@@ -7,7 +7,6 @@
 #include "ustr-fmt.h"
 #include "ustr-cmp.h"
 #include "ustr-srch.h"
-#include "ustr-sc.h"
 #include "ustr-b.h"
 #include "ustr-spn.h"
 #include "ustr-io.h"
@@ -18,6 +17,7 @@
 #include "ustr-sub.h"
 #include "ustr-replace.h"
 #include "ustr-split.h"
+#include "ustr-sc.h"
 
 int main(void)
 {

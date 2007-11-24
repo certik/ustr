@@ -157,13 +157,12 @@ else
     srch=true
     sub=true
   fi
-  if $io; then
-    sc=true
-  fi
   if $sub; then
     ins=true
-    sc=true
     srch=true
+  fi
+  if $sc; then
+    spn=true
   fi
   if $spn; then
     srch=true
@@ -172,8 +171,10 @@ else
   if $srch; then
     cmp=true
   fi
-  if $utf8; then
-    sc=true
+
+  # *.c requires file to compile...
+  if $sc && $cfiles; then
+    utf8=true
   fi
   if $sub && $cfiles; then
     fmt=true
@@ -507,11 +508,7 @@ if $fmt; then
   echo '#include "ustr-fmt.h"'  >> $outname
 fi
 
-if $sc; then
-  echo '#include "ustr-sc.h"' >> $outname
-fi
-
-if $io; then # IO deps. on SC
+if $io; then
   echo '#include "ustr-io.h"' >> $outname
 fi
 
@@ -534,9 +531,7 @@ fi
 if $srch; then
   echo '#include "ustr-srch.h"' >> $outname
 fi
-if $utf8; then # UTF8 deps. on SC
-  echo '#include "ustr-utf8.h"' >> $outname
-fi
+
 if $spn; then # SPN deps. on SRCH and weak deps. on UTF8
   echo '#include "ustr-spn.h"'  >> $outname
 fi
@@ -545,12 +540,20 @@ if $split; then # SPLIT hard deps. on set, spn, srch
   echo '#include "ustr-split.h"' >> $outname
 fi
 
-if $sub; then # SUB hard deps. on ins, sc, srch, weak dep. on FMT
+if $sub; then # SUB hard deps. on ins, srch, weak dep. on FMT
   echo '#include "ustr-sub.h"' >> $outname
 fi
 
 if $repl; then # REPLACE hard deps. on set, spn, srch, sub
   echo '#include "ustr-replace.h"' >> $outname
+fi
+
+if $utf8; then
+  echo '#include "ustr-utf8.h"' >> $outname
+fi
+
+if $sc; then
+  echo '#include "ustr-sc.h"' >> $outname
 fi
 
 echo >> $outname

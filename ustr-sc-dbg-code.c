@@ -9,6 +9,8 @@
 #define USTR_CONF_EI_PROTO extern
 #define USTR_CONF_II_PROTO extern inline
 #include "ustr-main.h"
+#include "ustr-spn.h"
+#include "ustr-utf8.h"
 #undef  USTR_CONF_INCLUDE_CODEONLY_HEADERS
 #define USTR_CONF_INCLUDE_CODEONLY_HEADERS 1
 #undef  USTR_CONF_i_PROTO
