@@ -802,6 +802,7 @@ USTR_CONF_E_PROTO int ustr_sc_ensure_owner(struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 USTR_CONF_E_PROTO char *ustr_sc_wstr(struct Ustr **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
+
 USTR_CONF_E_PROTO int ustrp_sc_ensure_owner(struct Ustr_pool *, struct Ustrp **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_E_PROTO char *ustrp_sc_wstr(struct Ustr_pool *, struct Ustrp **)

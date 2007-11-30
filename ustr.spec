@@ -88,7 +88,7 @@ make check %{policy_cflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make $@ install prefix=%{_prefix} \
+make $@ install-multilib-linux prefix=%{_prefix} \
                 bindir=%{_bindir}         mandir=%{_mandir} \
                 datadir=%{_datadir}       libdir=%{_libdir} \
                 includedir=%{_includedir} \

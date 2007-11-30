@@ -144,6 +144,9 @@ SRC_HDRS = ustr.h      ustr-debug.h \
            ustr-sub.h \
            ustr-utf8.h
 
+SRC_HDRS_MULTI_LIB = \
+           ustr-conf-multilib-linux.h ustr-conf-debug-multilib-linux.h \
+
 SRC_SRCS_H = malloc-check.h \
              ustr-b-code.h \
              ustr-cmp-code.h \
@@ -339,6 +342,18 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -m 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES_3)
 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
 		install -m 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
+
+install-multilib-linux: install autoconf_64b
+		install -m 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS_MULTI_LIB)
+		$(HIDE)mlib=`./autoconf_64b`; \
+                   if test "x$$mlib" = "x1"; then mlib=64; else mlib=32; fi; \
+                   mv -f $(DESTDIR)$(includedir)/ustr-conf-debug.h \
+                         $(DESTDIR)$(includedir)/ustr-conf-debug-$$mlib.h; \
+                   mv -f $(DESTDIR)$(includedir)/ustr-conf.h \
+                         $(DESTDIR)$(includedir)/ustr-conf-$$mlib.h
+		$(HIDE)mv -f $(DESTDIR)$(includedir)/ustr-conf-debug-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf-debug.h
+		$(HIDE)mv -f $(DESTDIR)$(includedir)/ustr-conf-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf.h
+
 
 clean:
 		$(HIDE)echo Cleanup

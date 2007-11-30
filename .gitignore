@@ -7,6 +7,8 @@
 /lcov-output
 /lib-all-ustr.info
 /lib-all.info
+/libustr-1.0.so.1.0.*
+/libustr-debug-1.0.so.1.0.*
 /ustr-conf-debug.h
 /ustr-conf.h
 /ustr-import
@@ -30,3 +32,4 @@ abcd
 T-installed/tst_*_norm
 T-installed/tst_*_dbg1
 T-installed/tst_*_dbg2
+T-installed/tst_vstr_chk
