@@ -276,71 +276,71 @@ char *ustrp_sc_export_subustrp(struct Ustr_pool *p,
 { return (ustrp__sc_export_subustr(p, &s1->s, pos, len, my_alloc)); }
 
 USTR_CONF_i_PROTO
-int ustrp__sc_lstrip_chrs(struct Ustr_pool *p, struct Ustr **ps1,
-                          const char *chrs, size_t len)
+int ustrp__sc_ltrim_chrs(struct Ustr_pool *p, struct Ustr **ps1,
+                         const char *chrs, size_t len)
 {
   return (ustrp__del_subustr(p, ps1, 1, ustr_spn_chrs_fwd(*ps1, 0, chrs, len)));
 }
 USTR_CONF_I_PROTO
-int ustr_sc_lstrip_chrs(struct Ustr **ps1, const char *chrs, size_t len)
-{ return (ustrp__sc_lstrip_chrs(0, ps1, chrs, len)); }
+int ustr_sc_ltrim_chrs(struct Ustr **ps1, const char *chrs, size_t len)
+{ return (ustrp__sc_ltrim_chrs(0, ps1, chrs, len)); }
 USTR_CONF_I_PROTO
-int ustrp_sc_lstrip_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
-                         const char *chrs, size_t len)
+int ustrp_sc_ltrim_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
+                        const char *chrs, size_t len)
 {
   struct Ustr *tmp = &(*ps1)->s;
-  int ret = ustrp__sc_lstrip_chrs(p, &tmp, chrs, len);
+  int ret = ustrp__sc_ltrim_chrs(p, &tmp, chrs, len);
   *ps1 = USTRP(tmp);
   return (ret);
 }
 
 USTR_CONF_i_PROTO
-int ustrp__sc_rstrip_chrs(struct Ustr_pool *p, struct Ustr **ps1,
-                          const char *chrs, size_t len)
+int ustrp__sc_rtrim_chrs(struct Ustr_pool *p, struct Ustr **ps1,
+                         const char *chrs, size_t len)
 {
-  size_t rstrip = ustr_spn_chrs_rev(*ps1, 0, chrs, len);
+  size_t rtrim = ustr_spn_chrs_rev(*ps1, 0, chrs, len);
   size_t clen = ustr_len(*ps1);
-  size_t pos = (clen - rstrip) + 1;
+  size_t pos = (clen - rtrim) + 1;
   
-  return (ustrp__del_subustr(p, ps1, pos, rstrip));
+  return (ustrp__del_subustr(p, ps1, pos, rtrim));
 }
 USTR_CONF_I_PROTO
-int ustr_sc_rstrip_chrs(struct Ustr **ps1, const char *chrs, size_t len)
-{ return (ustrp__sc_rstrip_chrs(0, ps1, chrs, len)); }
+int ustr_sc_rtrim_chrs(struct Ustr **ps1, const char *chrs, size_t len)
+{ return (ustrp__sc_rtrim_chrs(0, ps1, chrs, len)); }
 USTR_CONF_I_PROTO
-int ustrp_sc_rstrip_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
-                         const char *chrs, size_t len)
+int ustrp_sc_rtrim_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
+                        const char *chrs, size_t len)
 {
   struct Ustr *tmp = &(*ps1)->s;
-  int ret = ustrp__sc_rstrip_chrs(p, &tmp, chrs, len);
+  int ret = ustrp__sc_rtrim_chrs(p, &tmp, chrs, len);
   *ps1 = USTRP(tmp);
   return (ret);
 }
 
 USTR_CONF_i_PROTO
-int ustrp__sc_strip_chrs(struct Ustr_pool *p, struct Ustr **ps1,
-                         const char *chrs, size_t len)
+int ustrp__sc_trim_chrs(struct Ustr_pool *p, struct Ustr **ps1,
+                        const char *chrs, size_t len)
 {
-  size_t lstrip = ustr_spn_chrs_fwd(*ps1, 0, chrs, len);
-  size_t rstrip = 0;
+  size_t ltrim = ustr_spn_chrs_fwd(*ps1, 0, chrs, len);
+  size_t rtrim = 0;
   size_t clen = ustr_len(*ps1);
   size_t nlen = 0;
   char *ptr;
 
   USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   
-  if (lstrip == clen)
-    return (ustrp__del(p, ps1, lstrip));
+  if (ltrim == clen)
+    return (ustrp__del(p, ps1, ltrim));
 
-  rstrip = ustr_spn_chrs_rev(*ps1, 0, chrs, len);
+  rtrim = ustr_spn_chrs_rev(*ps1, 0, chrs, len);
 
-  if (!lstrip && !rstrip)
+  if (!ltrim && !rtrim)
     return (USTR_TRUE); /* minor speed hack */
   
-  nlen = clen - (lstrip + rstrip);
+  nlen = clen - (ltrim + rtrim);
   if (!ustr_owner(*ps1))
   {
-    struct Ustr *ret = ustrp__dup_subustr(p, *ps1, 1 + lstrip, nlen);
+    struct Ustr *ret = ustrp__dup_subustr(p, *ps1, 1 + ltrim, nlen);
 
     if (ret)
       ustrp__sc_free2(p, ps1, ret);
@@ -349,22 +349,22 @@ int ustrp__sc_strip_chrs(struct Ustr_pool *p, struct Ustr **ps1,
   }
   
   ptr = ustr_wstr(*ps1);
-  memmove(ptr, ptr + lstrip, nlen);
+  memmove(ptr, ptr + ltrim, nlen);
 
-  ustrp__del(p, ps1, lstrip + rstrip);
+  ustrp__del(p, ps1, ltrim + rtrim);
   
   USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
   return (USTR_TRUE);
 }
 USTR_CONF_I_PROTO
-int ustr_sc_strip_chrs(struct Ustr **ps1, const char *chrs, size_t len)
-{ return (ustrp__sc_strip_chrs(0, ps1, chrs, len)); }
+int ustr_sc_trim_chrs(struct Ustr **ps1, const char *chrs, size_t len)
+{ return (ustrp__sc_trim_chrs(0, ps1, chrs, len)); }
 USTR_CONF_I_PROTO
-int ustrp_sc_strip_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
-                        const char *chrs, size_t len)
+int ustrp_sc_trim_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
+                       const char *chrs, size_t len)
 {
   struct Ustr *tmp = &(*ps1)->s;
-  int ret = ustrp__sc_strip_chrs(p, &tmp, chrs, len);
+  int ret = ustrp__sc_trim_chrs(p, &tmp, chrs, len);
   *ps1 = USTRP(tmp);
   return (ret);
 }

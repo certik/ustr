@@ -35,16 +35,16 @@ char *ustrp__sc_export_subustr(struct Ustr_pool *, const struct Ustr *,
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 
 USTR_CONF_e_PROTO
-int ustrp__sc_lstrip_chrs(struct Ustr_pool *, struct Ustr **,
-                          const char *, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_e_PROTO
-int ustrp__sc_rstrip_chrs(struct Ustr_pool *, struct Ustr **,
-                          const char *, size_t)
-    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_e_PROTO
-int ustrp__sc_strip_chrs(struct Ustr_pool *, struct Ustr **,
+int ustrp__sc_ltrim_chrs(struct Ustr_pool *, struct Ustr **,
                          const char *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO
+int ustrp__sc_rtrim_chrs(struct Ustr_pool *, struct Ustr **,
+                         const char *, size_t)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO
+int ustrp__sc_trim_chrs(struct Ustr_pool *, struct Ustr **,
+                        const char *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
 

@@ -5,9 +5,9 @@
 
 2007-11-24  James Antill  <james@and.org>
 
-	* ustr-sc-code.h (ustr_sc_lstrip): Added function.
-	(ustr_sc_rstrip): Added function.
-	(ustr_sc_strip): Added function.
+	* ustr-sc-code.h (ustr_sc_ltrim): Added function.
+	(ustr_sc_rtrim): Added function.
+	(ustr_sc_trim): Added function.
 
 	* T-installed/tst_vstr_chk.c (main): Add test for new option.
 
