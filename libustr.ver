@@ -591,3 +591,28 @@ USTR_1.0.2 {
   ustrp_sc_export;
   ustrp_sc_export_subustrp;
 };
+
+USTR_1.0.3 {
+    global:
+
+  ustr_sc_rtrim;
+  ustr_sc_rtrim_chrs;
+  ustr_sc_rtrim_cstr;
+  ustr_sc_ltrim;
+  ustr_sc_ltrim_chrs;
+  ustr_sc_ltrim_cstr;
+  ustr_sc_trim;
+  ustr_sc_trim_chrs;
+  ustr_sc_trim_cstr;
+
+  ustrp_sc_rtrim;
+  ustrp_sc_rtrim_chrs;
+  ustrp_sc_rtrim_cstr;
+  ustrp_sc_ltrim;
+  ustrp_sc_ltrim_chrs;
+  ustrp_sc_ltrim_cstr;
+  ustrp_sc_trim;
+  ustrp_sc_trim_chrs;
+  ustrp_sc_trim_cstr;
+
+};
