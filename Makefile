@@ -85,42 +85,50 @@ EXAMPLES = examples/Makefile \
 
 TST_ALL =  tst_0_sizes  tst_0_manual  ctst_0_cntl \
           otst_0_sizes otst_0_manual octst_0_cntl \
-           tst_0_nothing  ctst_0_nothing \
-          otst_0_nothing octst_0_nothing \
-           tst_1_basic  tst_2_small  tst_3_medium  ctst_3_medium \
-          otst_1_basic otst_2_small otst_3_medium octst_3_medium \
-           tst_4_grow  ctst_4_grow  tst_5_shrink  ctst_5_shrink \
-          otst_4_grow octst_4_grow otst_5_shrink octst_5_shrink \
+           tst_0_nothing   ctst_0_nothing \
+          otst_0_nothing  octst_0_nothing \
+           tst_1_basic \
+          otst_1_basic \
+           tst_2_small \
+          otst_2_small \
+           tst_3_medium    ctst_3_medium \
+          otst_3_medium   octst_3_medium \
+           tst_4_grow      ctst_4_grow \
+          otst_4_grow     octst_4_grow \
+           tst_5_shrink    ctst_5_shrink \
+          otst_5_shrink   octst_5_shrink \
            tst_6_tiny \
           otst_6_tiny \
-           tst_7_auto  ctst_7_auto \
-          otst_7_auto octst_7_auto \
-           tst_8_spn  ctst_8_spn \
-          otst_8_spn octst_8_spn \
-           tst_9_ins  ctst_9_ins \
-          otst_9_ins octst_9_ins \
-           tst_10_b  ctst_10_b \
-          otst_10_b octst_10_b \
-           tst_11_io  ctst_11_io \
-          otst_11_io octst_11_io \
-           tst_12_fmt  ctst_12_fmt \
-          otst_12_fmt octst_12_fmt \
-           tst_13_utf8  ctst_13_utf8 \
-          otst_13_utf8 octst_13_utf8 \
-           tst_14_cmp  ctst_14_cmp \
-          otst_14_cmp octst_14_cmp \
-           tst_15_enomem  ctst_15_enomem \
-          otst_15_enomem octst_15_enomem \
-           tst_16_parse  ctst_16_parse \
-          otst_16_parse octst_16_parse \
-           tst_17_sub    ctst_17_sub \
-          otst_17_sub   octst_17_sub \
-           tst_18_split    ctst_18_split \
-          otst_18_split   octst_18_split \
-           tst_98_pool   ctst_98_pool \
-          otst_98_pool  octst_98_pool \
-           tst_99_64bit  ctst_99_64bit \
-          otst_99_64bit octst_99_64bit
+           tst_7_auto      ctst_7_auto \
+          otst_7_auto     octst_7_auto \
+           tst_8_spn       ctst_8_spn \
+          otst_8_spn      octst_8_spn \
+           tst_9_ins       ctst_9_ins \
+          otst_9_ins      octst_9_ins \
+           tst_10_b       ctst_10_b \
+          otst_10_b      octst_10_b \
+           tst_11_io      ctst_11_io \
+          otst_11_io     octst_11_io \
+           tst_12_fmt     ctst_12_fmt \
+          otst_12_fmt    octst_12_fmt \
+           tst_13_utf8    ctst_13_utf8 \
+          otst_13_utf8   octst_13_utf8 \
+           tst_14_cmp     ctst_14_cmp \
+          otst_14_cmp    octst_14_cmp \
+           tst_15_trim    ctst_15_trim \
+          otst_15_trim   octst_15_trim \
+           tst_16_parse   ctst_16_parse \
+          otst_16_parse  octst_16_parse \
+           tst_17_sub     ctst_17_sub \
+          otst_17_sub    octst_17_sub \
+           tst_18_split   ctst_18_split \
+          otst_18_split  octst_18_split \
+           tst_98_pool    ctst_98_pool \
+          otst_98_pool   octst_98_pool \
+           tst_99_enomem  ctst_99_enomem \
+          otst_99_enomem octst_99_enomem \
+           tst_99_64bit   ctst_99_64bit \
+          otst_99_64bit  octst_99_64bit
 XFAIL_TESTS = 
 
 SRC_HDRS = ustr.h      ustr-debug.h \
@@ -435,11 +443,11 @@ ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
 		$(HIDE)$(CC) $(DBG_CFLAGS) -fPIC $(CFLG_LIB_DBG) -o $@ -c $<
 
 %-code-a-opt.o:  %-opt-code.c %-code.h %.h $(DEPS_C_ALL)
-		$(HIDE)echo Compiling for A OPT lib: $<
+		$(HIDE)echo Compiling for A  OPT lib: $<
 		$(HIDE)$(CC) $(CFLAGS)           $(CFLG_LIB_OPT) -o $@ -c $<
 
 %-code-a-dbg.o:  %-dbg-code.c %-code.h %.h $(DEPS_C_ALL)
-		$(HIDE)echo Compiling for A DBG lib: $<
+		$(HIDE)echo Compiling for A  DBG lib: $<
 		$(HIDE)$(CC) $(DBG_CFLAGS)       $(CFLG_LIB_DBG) -o $@ -c $<
 
 
@@ -465,14 +473,14 @@ octst_%.c: T/ctst_%.c
 
 # Debugging tst and "compiled" tst (links with libustr-debug)
 tst_%.o: tst_%.c tst.h $(DEPS_NONC_ALL)
-		$(HIDE)echo Compiling: $@
+		$(HIDE)echo "Compiling:  " $@
 		$(HIDE)$(CC) $(DBG_CFLAGS) $(CFLG_TST_C) -o $@ -c $<
 
 tst_%: tst_%.o
 		$(HIDE)$(CC) $(LDFLAGS)  -o $@ $<
 
 ctst_%.o: ctst_%.c tst.h $(DEPS_C_ALL)
-		$(HIDE)echo Compiling: $@
+		$(HIDE)echo "Compiling: " $@
 		$(HIDE)$(CC) $(DBG_CFLAGS) $(CFLG_TST) -o $@ -c $<
 
 ctst_%: ctst_%.o $(OBJS_C_DBG_ALL)
@@ -480,14 +488,14 @@ ctst_%: ctst_%.o $(OBJS_C_DBG_ALL)
 
 # Optimized tst and "compiled" tst (links with libustr)
 otst_%.o: otst_%.c tst.h $(DEPS_NONC_ALL)
-		$(HIDE)echo Compiling: $@
+		$(HIDE)echo "Compiling: " $@
 		$(HIDE)$(CC) $(CFLAGS) $(CFLG_TST_CO) -o $@ -c $<
 
 otst_%: otst_%.o
 		$(HIDE)$(CC) $(LDFLAGS)  -o $@ $<
 
 octst_%.o: octst_%.c tst.h $(DEPS_C_ALL)
-		$(HIDE)echo Compiling: $@
+		$(HIDE)echo "Compiling:" $@
 		$(HIDE)$(CC) $(CFLAGS) $(CFLG_TST_O) -o $@ -c $<
 
 octst_%: octst_%.o $(OBJS_C_OPT_ALL)

@@ -1,6 +1,33 @@
+#if defined(USTR_CONF_INCLUDE_CODEONLY_HEADERS) &&      \
+    USTR_CONF_INCLUDE_CODEONLY_HEADERS
+#define _GNU_SOURCE 1
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
+
+# define USTR_CONF_VSNPRINTF_BEG tst_12_fmt_beg
+# define USTR_CONF_VSNPRINTF_END tst_12_fmt_end
+static int tst_12_fmt_beg(char *buf, size_t len, const char *fmt, va_list ap);
+static int tst_12_fmt_end(char *buf, size_t len, const char *fmt, va_list ap);
+#endif
 #include "tst.h"
 
 static const char *rf = __FILE__;
+
+static unsigned int tst__12_fmt_beg_count = 0;
+static int tst_12_fmt_beg(char *buf, size_t len, const char *fmt, va_list ap)
+{
+  ++tst__12_fmt_beg_count;
+  return vsnprintf(buf, len, fmt, ap);
+}
+static unsigned int tst__12_fmt_end_count = 0;
+static int tst_12_fmt_end(char *buf, size_t len, const char *fmt, va_list ap)
+{
+  ++tst__12_fmt_end_count;
+  return vsnprintf(buf, len, fmt, ap);
+}
+
 
 int tst(void)
 {
@@ -10,7 +37,15 @@ int tst(void)
   Ustr  *s4  = USTR("");
   Ustrp *sp3 = ustrp_dupx_empty(pool, 0, 1, 0, 0);
   Ustrp *sp4 = USTRP("");
+#if !USTR_CONF_INCLUDE_CODEONLY_HEADERS
+  Ustr_cntl_fmt ofmt;
+  Ustr_cntl_fmt nfmt = {tst_12_fmt_beg, tst_12_fmt_end};
   
+  assert(ustr_cntl_opt(USTR_CNTL_OPT_GET_FMT, &ofmt) &&
+         ofmt.sys_vsnprintf_beg == vsnprintf && 
+         ofmt.sys_vsnprintf_end == vsnprintf);
+#endif
+
   ASSERT(pool);
   ASSERT(s3);
 
@@ -110,5 +145,32 @@ int tst(void)
   ustr_sc_free(&s3);
   ustr_sc_free(&s4);
 
+  ASSERT(ustr_set_fmt(&s1, "%s%d%*s%d%s", "a", 4, 128, "b", 8, "c"));
+  ASSERT(ustr_set_fmt(&s2, "%s%d%s%d%s",  "a", 4,      "b", 8, "c"));
+
+#if USTR_CONF_INCLUDE_CODEONLY_HEADERS
+  ASSERT(tst__12_fmt_beg_count && tst__12_fmt_end_count);
+#else
+  ASSERT(ustr_cntl_opt(USTR_CNTL_OPT_SET_FMT, &nfmt));
+  assert(ustr_cntl_opt(USTR_CNTL_OPT_GET_FMT, &ofmt) &&
+         ofmt.sys_vsnprintf_beg == nfmt.sys_vsnprintf_beg && 
+         ofmt.sys_vsnprintf_end == nfmt.sys_vsnprintf_end);
+  ASSERT(!tst__12_fmt_beg_count && !tst__12_fmt_end_count);
+#endif
+
+  tst__12_fmt_beg_count = 0;
+  tst__12_fmt_end_count = 0;
+  ASSERT((s3 = ustr_dup_fmt("%s%d%*s%d%s", "a", 4, 128, "b", 8, "c")));
+  ASSERT(tst__12_fmt_beg_count == 1);
+  ASSERT(tst__12_fmt_end_count == 1);
+  ASSERT_EQ(s1, s3);
+  ASSERT((s4 = ustr_dup_fmt("%s%d%s%d%s",  "a", 4,      "b", 8, "c")));
+  ASSERT(tst__12_fmt_beg_count == 2);
+  ASSERT(tst__12_fmt_end_count == 1);
+  ASSERT_EQ(s2, s4);
+
+  ustr_sc_free(&s3);
+  ustr_sc_free(&s4);
+  
   return (EXIT_SUCCESS);
 }

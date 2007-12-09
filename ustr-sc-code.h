@@ -298,11 +298,7 @@ USTR_CONF_i_PROTO
 int ustrp__sc_rtrim_chrs(struct Ustr_pool *p, struct Ustr **ps1,
                          const char *chrs, size_t len)
 {
-  size_t rtrim = ustr_spn_chrs_rev(*ps1, 0, chrs, len);
-  size_t clen = ustr_len(*ps1);
-  size_t pos = (clen - rtrim) + 1;
-  
-  return (ustrp__del_subustr(p, ps1, pos, rtrim));
+  return (ustrp__del(p, ps1, ustr_spn_chrs_rev(*ps1, 0, chrs, len)));
 }
 USTR_CONF_I_PROTO
 int ustr_sc_rtrim_chrs(struct Ustr **ps1, const char *chrs, size_t len)
@@ -351,10 +347,7 @@ int ustrp__sc_trim_chrs(struct Ustr_pool *p, struct Ustr **ps1,
   ptr = ustr_wstr(*ps1);
   memmove(ptr, ptr + ltrim, nlen);
 
-  ustrp__del(p, ps1, ltrim + rtrim);
-  
-  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
-  return (USTR_TRUE);
+  return (ustrp__del(p, ps1, ltrim + rtrim));
 }
 USTR_CONF_I_PROTO
 int ustr_sc_trim_chrs(struct Ustr **ps1, const char *chrs, size_t len)
