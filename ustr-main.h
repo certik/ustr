@@ -876,7 +876,9 @@ size_t ustr_xi__embed_val_get(const unsigned char *data, size_t len)
 }
 
 USTR_CONF_II_PROTO size_t ustr_xi__pow2(int use_big, unsigned char len)
-{
+{ /* FIXME: for 2.0 or whatever make this something like:
+     static const unsigned char map_pow2[4] = {0, 1, 2, sizeof(size_t)};
+   */
   static const unsigned char map_big_pow2[4] = {2, 4, 8, 16};
   static const unsigned char map_pow2[4] = {0, 1, 2,  4};
   

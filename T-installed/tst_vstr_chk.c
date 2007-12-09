@@ -34,14 +34,19 @@ static int ufmt_add_ustr(struct Vstr_conf *conf, const char *name)
 static Vstr_base *vs1 = NULL;
 int ufmt_beg(char *buf, size_t len, const char *fmt, va_list ap)
 {
+  size_t ret;
+  
   vstr_del(vs1, 1, vs1->len);
 
   if (!vstr_add_vfmt(vs1, 0, fmt, ap))
     return -1;
 
+  ret = vs1->len;
   vstr_export_cstr_buf(vs1, 1, vs1->len, buf, len);
+  if (vs1->len > len)
+    vstr_del(vs1, 1, vs1->len);
   
-  return vs1->len;
+  return ret;
 }
 
 int ufmt_end(char *buf, size_t len, const char *fmt, va_list ap)

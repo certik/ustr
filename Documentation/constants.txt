@@ -460,8 +460,12 @@ Constant: USTR_CNTL_OPT_GET_MEM
   This option will get the "system" allocation functions (malloc, realloc, free)
  for allocated Ustr's.
 
+ Note:
 
-Constant: USTR_CNTL_OPT_GET_MEM
+  As you would expect the default values are: malloc, realloc, free.
+
+
+Constant: USTR_CNTL_OPT_SET_MEM
  Parameter[1]: Pointer to colleciton of function pointers for system allocation
  Type[1]: const struct Ustr_cntl_mem *
 
@@ -472,7 +476,6 @@ Constant: USTR_CNTL_OPT_GET_MEM
 
  Note:
 
-  As you would expect the default values are: malloc, realloc, free.
   If this option is set after a Ustr has been created, then when freeing or
  reallocating the existing Ustr the given functions will be used. So they must
  either be compatible with the default or you must ensure that nothing is
@@ -575,6 +578,31 @@ Constant: USTR_CNTL_OPT_SET_MC_R_SCRUB
 
   Malloc check has to be enabled for this to mean anything, Ie.
  USTR_CNTL_MALLOC_LVL() must be positive.
+
+
+Constant: USTR_CNTL_OPT_GET_FMT
+ Parameter[1]: Pointer to colleciton of function pointers for system formating
+ Type[1]: struct Ustr_cntl_fmt *
+
+ Explanation:
+
+  This option will get the system formatting functions (vsnprintf) for Ustr's.
+  There are two functions, the first is always called and the second is likely
+ called (always with the exact same arguments) if the length passed to the
+ first call was not big enough.
+
+ Note:
+
+  As you would expect the default values are: vsnprintf and vsnprintf
+
+
+Constant: USTR_CNTL_OPT_SET_FMT
+ Parameter[1]: Pointer to colleciton of function pointers for system formatting
+ Type[1]: const struct Ustr_cntl_fmt *
+
+ Explanation:
+
+  This option will set the system formatting functions (vsnprintf) for Ustr's.
 
 
 Section: Constants passed to ustr_pool_ll_cntl()
