@@ -682,7 +682,8 @@ struct Ustr *ustrp__dupx_undef(struct Ustr_pool *p, size_t sz, size_t rbytes,
   USTR_ASSERT(emem  == !!emem);
 
   if (!len && ustr__dupx_cmp_eq(sz, rbytes, exact, emem, USTR__DUPX_DEF))
-    return USTR("");
+    return (USTR("")); /* We don't go to all the trouble ustr_del() does.
+                        * Which is probably better overall. */
   
   if (!(rsz = ustr_init_size(sz, rbytes, exact, len)))
     return (USTR_NULL);
@@ -885,8 +886,12 @@ int ustrp__del(struct Ustr_pool *p, struct Ustr **ps1, size_t len)
 
   s1   = *ps1;
   clen = ustr_len(s1);
-  if (!(nlen = clen - len) && !ustr_fixed(*ps1) &&
-      ustr__dupx_cmp_eq(USTR__DUPX_DEF, USTR__DUPX_FROM(s1)))
+  /* under certain conditions, we can just return "" as it's much more efficient
+   * and we don't get anything with not doing it. */
+  if (!(nlen = clen - len) && /* we are deleting everything */
+      !(ustr_fixed(*ps1) ||   /* NOT in "free" space, or */
+        (ustr_sized(*ps1) && ustr_owner(*ps1))) &&    /* sized with one ref. */
+      ustr__dupx_cmp_eq(USTR__DUPX_DEF, USTR__DUPX_FROM(s1))) /* def. config. */
   {
     ustrp__sc_free2(p, ps1, USTR(""));
     return (USTR_TRUE);
@@ -1478,7 +1483,10 @@ USTR_CONF_I_PROTO void ustrp_sc_free(struct Ustr_pool *p, struct Ustrp **ps1)
 USTR_CONF_i_PROTO void ustrp__sc_del(struct Ustr_pool *p, struct Ustr **ps1)
 {
   if (!ustrp__del(p, ps1, ustr_len(*ps1)))
-    /* very unlikely, but in this case ignore saving the options */
+    /* Very unlikely, but in this case ignore saving the options/data.
+     * We can be a little less efficient etc., but no error handling is nice.
+     * Only thing you have to watch for is ustr_enomem() might not "work"
+     * after a call to here. */
     ustrp__sc_free2(p, ps1, USTR(""));
   
   USTR_ASSERT(!ustr_len(*ps1));

@@ -121,7 +121,7 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
   int val = EOF;
   size_t olen = 0;
   size_t clen = 0;
-  size_t linesz = 80; /* Unix "tradition" is 80x24 */
+  size_t linesz = 80; /* Unix "tradition" is 80x24, assuming delim == '\n' */
   
   USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1) && fp);
 
@@ -143,7 +143,7 @@ USTR_CONF_i_PROTO int ustrp__io_getdelim(struct Ustr_pool *p, struct Ustr **ps1,
       if (!ferror(fp)) /* only way we can easily test,
                           as it might be hanging from previously */
         errno = 0;
-      
+
       ustrp__del(p, ps1, num);
       break;
     }
@@ -203,10 +203,13 @@ int ustrp__io_put(struct Ustr_pool *p, struct Ustr **ps1,FILE *fp,size_t beglen)
   {
     int save_errno = errno;
     
-    if (beglen == clen) /* Note not ret == clen, see above */
-      ustrp__sc_del(p, ps1);
-    else
+    if (beglen != clen) /* Note not ret != clen, see above. */
       ustrp__del_subustr(p, ps1, 1, ret); /* if it fails, see above */
+    else
+      /* In certain cases this means we'll lose the config. for *ps1. But it's
+       * worth it so we don't have to ensure_owner() all the time. If you care
+       * pass owned Ustr's. */
+      ustrp__sc_del(p, ps1);
     errno = save_errno;
   }
   
