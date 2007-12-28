@@ -1,0 +1,2 @@
+#undef  USTR_CONF_HAS_SIZE
+#define USTR_CONF_HAS_SIZE 1
