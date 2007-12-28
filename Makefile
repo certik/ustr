@@ -78,6 +78,7 @@ EXAMPLES = examples/Makefile \
        examples/fgrep.c \
        examples/hello_world.c \
        examples/hexdump.c \
+       examples/linecat.c \
        examples/mkdir_p.c \
        examples/netstr.c \
        examples/nums.c \

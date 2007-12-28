@@ -57,7 +57,8 @@ DEPS    =
 
 # This is a simple makefile for example programs...
 
-ALL = hello_world netstr hexdump nums mkdir_p fgrep txt2html custr
+ALL = hello_world netstr hexdump nums mkdir_p fgrep txt2html custr \
+      linecat_buf linecat_sized
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
@@ -114,9 +115,6 @@ libustr-debug.a: $(LIB_STATIC_DBG)
 		@echo Compiling for A DBG lib: $<
 		@$(CC) $(CFLG_LIB_DBG) -o $@ -c $<
 
-clean:
-		rm -f *.o $(ALL) $(LIB_STATIC) *-s
-
 hello_world: hello_world.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
@@ -141,7 +139,18 @@ txt2html: txt2html.c
 custr: custr.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
+linecat_buf: linecat.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS) -DCAT_TYPE=1
+
+linecat_sized: linecat.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS) -DCAT_TYPE=2
+
+
 strip: $(ALL)
 		@for i in $(ALL); do \
 		echo "Creating: $$i-s"; cp $$i $$i-s; strip $$i-s; \
 		done
+
+clean:
+		rm -f *.o $(ALL) $(LIB_STATIC) *-s
+

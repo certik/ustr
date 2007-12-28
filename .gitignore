@@ -28,6 +28,8 @@ examples/txt2html
 examples/txt2html-s
 examples/custr
 examples/custr-s
+examples/linecat_*
+examples/linecat*-s
 abcd
 T-installed/tst_*_norm
 T-installed/tst_*_dbg1
