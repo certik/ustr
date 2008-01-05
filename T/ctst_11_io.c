@@ -88,6 +88,7 @@ int tst(void)
   Ustrp *sp1 = USTRP("");
   FILE *fp = fopen("T/ctst_11_io.c", "rb");
   size_t got = 1;
+  int ret = EXIT_SUCCESS;
   
   ASSERT(pool);
   ASSERT(fp);
@@ -283,25 +284,39 @@ int tst(void)
 #endif
   ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)));
 
-#ifdef __linux__
-  ASSERT(!ustr_io_putfilename(&s2, "/dev/full", "wb"));
-  ASSERT(errno == ENOSPC);
-  ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)) ||
-         !ustr_len(s2));
+#ifdef ENOSPC
+  do
+  {
+    FILE *filechk = fopen("/dev/full", "wb");
 
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(ustrp_add(pool, &sp1, sp1));
-  ASSERT(!ustrp_io_putfilename(pool, &sp1, "/dev/full", "wb"));
-  ASSERT(errno == ENOSPC);
+    if (!filechk) /* some versions of mock didn't have it */
+    {
+      ret = EXIT_FAILED_OK;
+      break;
+    }
+    fclose(filechk);
+    
+    ASSERT(!ustr_io_putfilename(&s2, "/dev/full", "wb"));
+    ASSERT(errno == ENOSPC);
+    ASSERT(ustr_cmp_buf_eq(s2, ustrp_cstr(sp1), ustrp_len(sp1)) ||
+           !ustr_len(s2));
+
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(ustrp_add(pool, &sp1, sp1));
+    ASSERT(!ustrp_io_putfilename(pool, &sp1, "/dev/full", "wb"));
+    ASSERT(errno == ENOSPC);
+  } while (FALSE);
+#else
+  ret = EXIT_FAILED_OK;
 #endif
   
   ustr_pool_free(pool);
 
-  return (EXIT_SUCCESS);
+  return (ret);
 }
