@@ -78,6 +78,6 @@ rpmbuild --define "_sourcedir `pwd`/tmp"   --define "_specdir `pwd`/tmp" \
          --define "_srcrpmdir `pwd`" -ts \
   $pkg-$v.tar.gz
 
-mock --autocache $pkg-$v-$rel*.src.rpm
+mock $pkg-$v-$rel*.src.rpm
 
 ls -ahslF `pwd`/$pkg-$v-$rel*.src.rpm
