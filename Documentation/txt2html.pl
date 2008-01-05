@@ -22,7 +22,7 @@ if (!defined ($docs))
   }
 
 # FIXME: More C&P of VERSION
-my $name = "Ustr - 1.0.2 reference documentation";
+my $name = "Ustr - 1.0.3 reference documentation";
 
 my $html_header = "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML//EN\">\n<html>\n<head>\n";
 my $html_body = <<EOF;
