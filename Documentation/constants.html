@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Ustr - 1.0.2 reference documentation -- constants</title>
+<title>Ustr - 1.0.3 reference documentation -- constants</title>
     <style type="text/css">
       A:visited { color: #ff4040; }
       A:hover { color: #20b2aa; }
@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- constants (58)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.3 reference documentation -- constants (60)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -34,7 +34,7 @@
 <li><a href="#indx-Constants_to_use_with_parsing_numbers:_ustr_parse_uintmaxx_etc">Constants to use with parsing numbers: ustr_parse_uintmaxx, etc. (16)</a>
 <li><a href="#indx-Constants_to_pass_to_ustr_split">Constants to pass to ustr_split* (4)</a>
 <li><a href="#indx-Misc_constants_to_use_in_code">Misc constants to use in code (4)</a>
-<li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (14)</a>
+<li><a href="#indx-Constants_passed_to_ustr_cntl_opt">Constants passed to ustr_cntl_opt() (16)</a>
 <li><a href="#indx-Constants_passed_to_ustr_pool_ll_cntl">Constants passed to ustr_pool_ll_cntl() (4)</a></ul>
 <h2 class="ind">Index of sections, and their contents</h2>
 <ul>
@@ -97,13 +97,15 @@
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_EXACT_BYTES">USTR_CNTL_OPT_GET_EXACT_BYTES</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_SET_EXACT_BYTES">USTR_CNTL_OPT_SET_EXACT_BYTES</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
-<li class="obj"><a href="#USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_MEM">USTR_CNTL_OPT_SET_MEM</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_MC_M_SCRUB">USTR_CNTL_OPT_GET_MC_M_SCRUB</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_SET_MC_M_SCRUB">USTR_CNTL_OPT_SET_MC_M_SCRUB</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_MC_F_SCRUB">USTR_CNTL_OPT_GET_MC_F_SCRUB</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_SET_MC_F_SCRUB">USTR_CNTL_OPT_SET_MC_F_SCRUB</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_GET_MC_R_SCRUB">USTR_CNTL_OPT_GET_MC_R_SCRUB</a>
 <li class="obj"><a href="#USTR_CNTL_OPT_SET_MC_R_SCRUB">USTR_CNTL_OPT_SET_MC_R_SCRUB</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_GET_FMT">USTR_CNTL_OPT_GET_FMT</a>
+<li class="obj"><a href="#USTR_CNTL_OPT_SET_FMT">USTR_CNTL_OPT_SET_FMT</a>
 </ul><li><a id="indx-Constants_passed_to_ustr_pool_ll_cntl" href="#Constants_passed_to_ustr_pool_ll_cntl">Constants passed to ustr_pool_ll_cntl()</a>
 <ul>
 <li class="obj"><a href="#USTR_POOL_LL_CNTL_GET_FREE_CMP">USTR_POOL_LL_CNTL_GET_FREE_CMP</a>
@@ -550,16 +552,18 @@
 </p><p>  This option will get the &quot;system&quot; allocation functions (malloc, realloc, free)
  for allocated Ustr's.
 
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  As you would expect the default values are: malloc, realloc, free.
+
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_MEM">USTR_CNTL_OPT_GET_MEM</a>
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_MEM">USTR_CNTL_OPT_SET_MEM</a>
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to colleciton of function pointers for system allocation<br>Type<strong>[1]</strong>: const struct Ustr_cntl_mem *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This option will set the &quot;system&quot; allocation functions (malloc, realloc, free)
  for allocated Ustr's.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  As you would expect the default values are: malloc, realloc, free.
 </p><p>  If this option is set after a Ustr has been created, then when freeing or
  reallocating the existing Ustr the given functions will be used. So they must
  either be compatible with the default or you must ensure that nothing is
@@ -644,6 +648,26 @@
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  Malloc check has to be enabled for this to mean anything, Ie.
  <a href="functions#USTR_CNTL_MALLOC_LVL">USTR_CNTL_MALLOC_LVL()</a> must be positive.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_GET_FMT">USTR_CNTL_OPT_GET_FMT</a>
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to colleciton of function pointers for system formating<br>Type<strong>[1]</strong>: struct Ustr_cntl_fmt *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will get the system formatting functions (vsnprintf) for Ustr's.
+</p><p>  There are two functions, the first is always called and the second is likely
+ called (always with the exact same arguments) if the length passed to the
+ first call was not big enough.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  As you would expect the default values are: vsnprintf and vsnprintf
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Constant: </strong> <a id="USTR_CNTL_OPT_SET_FMT">USTR_CNTL_OPT_SET_FMT</a>
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to colleciton of function pointers for system formatting<br>Type<strong>[1]</strong>: const struct Ustr_cntl_fmt *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This option will set the system formatting functions (vsnprintf) for Ustr's.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Constants%20passed%20to%20ustr_pool_ll_cntl%28%29">Constants passed to

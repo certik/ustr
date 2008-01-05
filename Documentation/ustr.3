@@ -1,4 +1,4 @@
-.TH ustr 3 "30-Oct-2007" "Ustr 1.0.2" "Ustr String Library"
+.TH ustr 3 "05-Jan-2008" "Ustr 1.0.3" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -1011,6 +1011,10 @@ short  \fBustr_parse_short\fR(const struct Ustr *, size_t, unsigned int, size_t 
 .ti \w'  'u
 int  \fBustr_sc_ensure_owner\fR(struct Ustr **);
 .br
+.in \w'  char *\fBustr_sc_wstr\fR('u
+.ti \w'  'u
+char *\fBustr_sc_wstr\fR(struct Ustr **);
+.br
 .in \w'  char *\fBustr_sc_export_subustr\fR('u
 .ti \w'  'u
 char *\fBustr_sc_export_subustr\fR(const struct Ustr *, size_t, size_t, void *(*)(size_t));
@@ -1039,9 +1043,41 @@ int  \fBustr_sc_tolower\fR(struct Ustr **);
 .ti \w'  'u
 int  \fBustr_sc_toupper\fR(struct Ustr **);
 .br
-.in \w'  char *\fBustr_sc_wstr\fR('u
+.in \w'  int  \fBustr_sc_ltrim_chrs\fR('u
 .ti \w'  'u
-char *\fBustr_sc_wstr\fR(struct Ustr **);
+int  \fBustr_sc_ltrim_chrs\fR(struct Ustr **, const char *, size_t);
+.br
+.in \w'  int  \fBustr_sc_ltrim\fR('u
+.ti \w'  'u
+int  \fBustr_sc_ltrim\fR(struct Ustr **, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_sc_ltrim_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_sc_ltrim_cstr\fR(struct Ustr **, const char *);
+.br
+.in \w'  int  \fBustr_sc_rtrim_chrs\fR('u
+.ti \w'  'u
+int  \fBustr_sc_rtrim_chrs\fR(struct Ustr **, const char *, size_t);
+.br
+.in \w'  int  \fBustr_sc_rtrim\fR('u
+.ti \w'  'u
+int  \fBustr_sc_rtrim\fR(struct Ustr **, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_sc_rtrim_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_sc_rtrim_cstr\fR(struct Ustr **, const char *);
+.br
+.in \w'  int  \fBustr_sc_trim_chrs\fR('u
+.ti \w'  'u
+int  \fBustr_sc_trim_chrs\fR(struct Ustr **, const char *, size_t);
+.br
+.in \w'  int  \fBustr_sc_trim\fR('u
+.ti \w'  'u
+int  \fBustr_sc_trim\fR(struct Ustr **, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_sc_trim_cstr\fR('u
+.ti \w'  'u
+int  \fBustr_sc_trim_cstr\fR(struct Ustr **, const char *);
 .sp
 .br
 .in \w'  int  \fBustr_add_b_uint16\fR('u
@@ -6313,12 +6349,12 @@ Parameter\fB[2]\fR: Offset within string, to start spanning from
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Array of byte data
+Parameter\fB[3]\fR: Array of byte data, for spanning
 .br
 Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR: Length of byte data
+Parameter\fB[4]\fR: Length of byte data, for spanning
 .br
 Type\fB[4]\fR: size_t
 
@@ -8797,6 +8833,25 @@ Type\fB[1]\fR: struct Ustr **
 
 .ti -2
 .br
+\fBFunction: \fR ustr_sc_wstr()
+.br
+Returns: Writable pointer to the start of data in the Ustr, or NULL
+.br
+Type: char *
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling ustr_sc_ensure_owner(), to make sure the Ustr string is writable, and if that succeeds it returns ustr_wstr(). On failure it returns NULL.
+
+.ti -2
+.br
 \fBFunction: \fR ustr_sc_export_subustr()
 .br
 Returns: A pointer to newly allocated block of memory
@@ -8980,11 +9035,11 @@ Type\fB[1]\fR: struct Ustr **
 
 .ti -2
 .br
-\fBFunction: \fR ustr_sc_wstr()
+\fBFunction: \fR ustr_sc_ltrim_chrs()
 .br
-Returns: Writable pointer to the start of data in the Ustr, or NULL
+Returns: Success or failure
 .br
-Type: char *
+Type: int 
 
 .br
 Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
@@ -8992,10 +9047,227 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
+Parameter\fB[2]\fR: Array of bytes, containing trimming data
+.br
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: Length of byte data
+.br
+Type\fB[3]\fR: size_t
+
+.br
 \fBExplanation:\fR
 
 .br
-  This function works like calling ustr_sc_ensure_owner(), to make sure the Ustr string is writable, and if that succeeds it returns ustr_wstr(). On failure it returns NULL.
+  This function deletes the bytes at the begining of the Ustr (Parameter[1]) that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_ltrim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string, containing trimming bytes
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_ltrim_chrs() and passed ustr_cstr() and ustr_len() values of the Ustr string (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_ltrim_cstr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string, containing trimming bytes
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_ltrim_chrs() and passed strlen() as the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_rtrim_chrs()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Array of bytes, containing trimming data
+.br
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: Length of byte data
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function deletes the bytes at the end of the Ustr (Parameter[1]) that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_rtrim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string, containing trimming bytes
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_rtrim_chrs() and passed ustr_cstr() and ustr_len() values of the Ustr string (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_rtrim_cstr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string, containing trimming bytes
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_rtrim_chrs() and passed strlen() as the length.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_trim_chrs()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Array of bytes, containing trimming data
+.br
+Type\fB[2]\fR: const char *
+
+.br
+Parameter\fB[3]\fR: Length of byte data
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function deletes the bytes at the begining or end of the Ustr (Parameter[1]) that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+.sp
+\fBNote:\fR
+
+.br
+  Calling this function is much more efficient than calling ustr_sc_rtrim_chrs() and then ustr_sc_ltrim_chrs(), as both ends are trimmed in a single pass.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_trim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant Ustr string, containing trimming bytes
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_trim_chrs() and passed ustr_cstr() and ustr_len() values of the Ustr string (Parameter[2]).
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_trim_cstr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: A pointer to a constant C-style string, containing trimming bytes
+.br
+Type\fB[2]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_trim_chrs() and passed strlen() as the length.
 
 .SH Adding binary data to a Ustr
 .ti -2

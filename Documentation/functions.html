@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Ustr - 1.0.2 reference documentation -- functions</title>
+<title>Ustr - 1.0.3 reference documentation -- functions</title>
     <style type="text/css">
       A:visited { color: #ff4040; }
       A:hover { color: #20b2aa; }
@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.2 reference documentation -- functions (266)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.3 reference documentation -- functions (275)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -48,7 +48,7 @@
 <li><a href="#indx-Splitting_a_Ustr">Splitting a Ustr (6)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (6)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
-<li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (9)</a>
+<li><a href="#indx-Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs (18)</a>
 <li><a href="#indx-Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr (3)</a>
 <li><a href="#indx-Parsing_binary_data_from_a_Ustr">Parsing binary data from a Ustr (3)</a>
 <li><a href="#indx-Misc_functions">Misc. functions (2)</a>
@@ -341,6 +341,7 @@
 </ul><li><a id="indx-Misc_shortcut_helper_functions_for_Ustrs" href="#Misc_shortcut_helper_functions_for_Ustrs">Misc shortcut helper functions for Ustrs</a>
 <ul>
 <li class="obj"><a href="#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>
+<li class="obj"><a href="#ustr_sc_wstr">ustr_sc_wstr()</a>
 <li class="obj"><a href="#ustr_sc_export_subustr">ustr_sc_export_subustr()</a>
 <li class="obj"><a href="#ustr_sc_export">ustr_sc_export()</a>
 <li class="obj"><a href="#ustrp_sc_export_subustrp">ustrp_sc_export_subustrp()</a>
@@ -348,7 +349,15 @@
 <li class="obj"><a href="#ustr_sc_reverse">ustr_sc_reverse()</a>
 <li class="obj"><a href="#ustr_sc_tolower">ustr_sc_tolower()</a>
 <li class="obj"><a href="#ustr_sc_toupper">ustr_sc_toupper()</a>
-<li class="obj"><a href="#ustr_sc_wstr">ustr_sc_wstr()</a>
+<li class="obj"><a href="#ustr_sc_ltrim_chrs">ustr_sc_ltrim_chrs()</a>
+<li class="obj"><a href="#ustr_sc_ltrim">ustr_sc_ltrim()</a>
+<li class="obj"><a href="#ustr_sc_ltrim_cstr">ustr_sc_ltrim_cstr()</a>
+<li class="obj"><a href="#ustr_sc_rtrim_chrs">ustr_sc_rtrim_chrs()</a>
+<li class="obj"><a href="#ustr_sc_rtrim">ustr_sc_rtrim()</a>
+<li class="obj"><a href="#ustr_sc_rtrim_cstr">ustr_sc_rtrim_cstr()</a>
+<li class="obj"><a href="#ustr_sc_trim_chrs">ustr_sc_trim_chrs()</a>
+<li class="obj"><a href="#ustr_sc_trim">ustr_sc_trim()</a>
+<li class="obj"><a href="#ustr_sc_trim_cstr">ustr_sc_trim_cstr()</a>
 </ul><li><a id="indx-Adding_binary_data_to_a_Ustr" href="#Adding_binary_data_to_a_Ustr">Adding binary data to a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_add_b_uint16">ustr_add_b_uint16()</a>
@@ -2571,8 +2580,8 @@
 <br>Returns: Number of bytes in the span<br>Type: size_t 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Offset within string, to start spanning from<br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Array of byte data<br>Type<strong>[3]</strong>: const char *
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of byte data<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Array of byte data, for spanning<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of byte data, for spanning<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function returns the length of the start of the Ustr (Parameter[1]) that
  only contains bytes that are equal to any byte in the data (Parameter[3]),
@@ -3579,6 +3588,16 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_wstr">ustr_sc_wstr()</a>
+<br>Returns: Writable pointer to the start of data in the Ustr, or NULL<br>Type: char *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling <a href="functions#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>, to make sure the
+ <a href="design">Ustr string</a> is writable, and if that succeeds it returns <a href="functions#ustr_wstr">ustr_wstr()</a>. On
+ failure it returns NULL.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sc_export_subustr">ustr_sc_export_subustr()</a>
 <br>Returns: A pointer to newly allocated block of memory<br>Type: char *
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
@@ -3653,13 +3672,101 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_wstr">ustr_sc_wstr()</a>
-<br>Returns: Writable pointer to the start of data in the Ustr, or NULL<br>Type: char *
+<strong>Function: </strong> <a id="ustr_sc_ltrim_chrs">ustr_sc_ltrim_chrs()</a>
+<br>Returns: Success or failure<br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Array of bytes, containing trimming data<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of byte data<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like calling <a href="functions#ustr_sc_ensure_owner">ustr_sc_ensure_owner()</a>, to make sure the
- <a href="design">Ustr string</a> is writable, and if that succeeds it returns <a href="functions#ustr_wstr">ustr_wstr()</a>. On
- failure it returns NULL.
+</p><p>  This function deletes the bytes at the begining of the Ustr (Parameter[1])
+ that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_ltrim">ustr_sc_ltrim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing trimming bytes<br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_ltrim_chrs">ustr_sc_ltrim_chrs()</a> and passed
+ <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> values of the <a href="design">Ustr string</a> (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_ltrim_cstr">ustr_sc_ltrim_cstr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string, containing trimming bytes<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_ltrim_chrs">ustr_sc_ltrim_chrs()</a> and passed
+ strlen() as the length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_rtrim_chrs">ustr_sc_rtrim_chrs()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Array of bytes, containing trimming data<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of byte data<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function deletes the bytes at the end of the Ustr (Parameter[1])
+ that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_rtrim">ustr_sc_rtrim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing trimming bytes<br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_rtrim_chrs">ustr_sc_rtrim_chrs()</a> and passed
+ <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> values of the <a href="design">Ustr string</a> (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_rtrim_cstr">ustr_sc_rtrim_cstr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string, containing trimming bytes<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_rtrim_chrs">ustr_sc_rtrim_chrs()</a> and passed
+ strlen() as the length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_trim_chrs">ustr_sc_trim_chrs()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Array of bytes, containing trimming data<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of byte data<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function deletes the bytes at the begining or end of the
+ Ustr (Parameter[1]) that are in the span (Parameter[2]) of the specificed
+ length (parameter[2]).
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  Calling this function is much more efficient than calling <a href="functions#ustr_sc_rtrim_chrs">ustr_sc_rtrim_chrs()</a>
+ and then <a href="functions#ustr_sc_ltrim_chrs">ustr_sc_ltrim_chrs()</a>, as both ends are trimmed in a single pass.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_trim">ustr_sc_trim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant <a href="design">Ustr string</a>, containing trimming bytes<br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_trim_chrs">ustr_sc_trim_chrs()</a> and passed
+ <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> values of the <a href="design">Ustr string</a> (Parameter[2]).
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_trim_cstr">ustr_sc_trim_cstr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to a constant C-style string, containing trimming bytes<br>Type<strong>[2]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_trim_chrs">ustr_sc_trim_chrs()</a> and passed
+ strlen() as the length.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Adding%20binary%20data%20to%20a%20Ustr">Adding binary data to a Ustr</a></h2>
