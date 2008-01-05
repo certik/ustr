@@ -3552,10 +3552,10 @@ Function: ustr_spn_chrs_fwd()
  Parameter[2]: Offset within string, to start spanning from
  Type[2]: size_t
 
- Parameter[3]: Array of byte data
+ Parameter[3]: Array of byte data, for spanning
  Type[3]: const char *
 
- Parameter[4]: Length of byte data
+ Parameter[4]: Length of byte data, for spanning
  Type[4]: size_t
 
  Explanation:
@@ -5248,6 +5248,20 @@ Function: ustr_sc_ensure_owner()
  ustr_owner() returns USTR_TRUE), or it fails to allocate.
 
 
+Function: ustr_sc_wstr()
+ Returns: Writable pointer to the start of data in the Ustr, or NULL
+ Type: char *
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Explanation:
+
+  This function works like calling ustr_sc_ensure_owner(), to make sure the
+ Ustr string is writable, and if that succeeds it returns ustr_wstr(). On
+ failure it returns NULL.
+
+
 Function: ustr_sc_export_subustr()
  Returns: A pointer to newly allocated block of memory
  Type: char *
@@ -5370,18 +5384,163 @@ Function: ustr_sc_toupper()
   This function changes any ASCII lower case bytes into ASCII upper case bytes.
 
 
-Function: ustr_sc_wstr()
- Returns: Writable pointer to the start of data in the Ustr, or NULL
- Type: char *
+Function: ustr_sc_ltrim_chrs()
+ Returns: Success or failure
+ Type: int 
 
  Parameter[1]: A pointer to a pointer to a Ustr string
  Type[1]: struct Ustr **
 
+ Parameter[2]: Array of bytes, containing trimming data
+ Type[2]: const char *
+
+ Parameter[3]: Length of byte data
+ Type[3]: size_t
+
  Explanation:
 
-  This function works like calling ustr_sc_ensure_owner(), to make sure the
- Ustr string is writable, and if that succeeds it returns ustr_wstr(). On
- failure it returns NULL.
+  This function deletes the bytes at the begining of the Ustr (Parameter[1])
+ that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+
+
+Function: ustr_sc_ltrim()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant Ustr string, containing trimming bytes
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function works as if you had called ustr_sc_ltrim_chrs() and passed
+ ustr_cstr() and ustr_len() values of the Ustr string (Parameter[2]).
+
+
+Function: ustr_sc_ltrim_cstr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant C-style string, containing trimming bytes
+ Type[2]: const char *
+
+ Explanation:
+
+  This function works as if you had called ustr_sc_ltrim_chrs() and passed
+ strlen() as the length.
+
+
+Function: ustr_sc_rtrim_chrs()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Array of bytes, containing trimming data
+ Type[2]: const char *
+
+ Parameter[3]: Length of byte data
+ Type[3]: size_t
+
+ Explanation:
+
+  This function deletes the bytes at the end of the Ustr (Parameter[1])
+ that are in the span (Parameter[2]) of the specificed length (parameter[2]).
+
+
+Function: ustr_sc_rtrim()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant Ustr string, containing trimming bytes
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function works as if you had called ustr_sc_rtrim_chrs() and passed
+ ustr_cstr() and ustr_len() values of the Ustr string (Parameter[2]).
+
+
+Function: ustr_sc_rtrim_cstr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant C-style string, containing trimming bytes
+ Type[2]: const char *
+
+ Explanation:
+
+  This function works as if you had called ustr_sc_rtrim_chrs() and passed
+ strlen() as the length.
+
+
+Function: ustr_sc_trim_chrs()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: Array of bytes, containing trimming data
+ Type[2]: const char *
+
+ Parameter[3]: Length of byte data
+ Type[3]: size_t
+
+ Explanation:
+
+  This function deletes the bytes at the begining or end of the
+ Ustr (Parameter[1]) that are in the span (Parameter[2]) of the specificed
+ length (parameter[2]).
+
+ Note:
+
+  Calling this function is much more efficient than calling ustr_sc_rtrim_chrs()
+ and then ustr_sc_ltrim_chrs(), as both ends are trimmed in a single pass.
+
+
+Function: ustr_sc_trim()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant Ustr string, containing trimming bytes
+ Type[2]: const struct Ustr *
+
+ Explanation:
+
+  This function works as if you had called ustr_sc_trim_chrs() and passed
+ ustr_cstr() and ustr_len() values of the Ustr string (Parameter[2]).
+
+
+Function: ustr_sc_trim_cstr()
+ Returns: Success or failure
+ Type: int 
+
+ Parameter[1]: A pointer to a pointer to a Ustr string
+ Type[1]: struct Ustr **
+
+ Parameter[2]: A pointer to a constant C-style string, containing trimming bytes
+ Type[2]: const char *
+
+ Explanation:
+
+  This function works as if you had called ustr_sc_trim_chrs() and passed
+ strlen() as the length.
 
 
 Section: Adding binary data to a Ustr
