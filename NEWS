@@ -1,3 +1,10 @@
+1.0.3 - 2008-01-14
+ Added trim functions.
+ Multi-lib support.
+ Added support to swap out system vsnprintf calls.
+ Don't delete sized Ustr's when we don't need to.
+ Added linecat example.
+
 1.0.2 - 2007-10-29
  Documentation improvements.
  Added some more functions, for ASCII caseless compare/search, exporting data
