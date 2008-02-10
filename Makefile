@@ -12,12 +12,14 @@ DESTDIR =
 prefix=/usr
 datadir=$(prefix)/share
 libdir=$(prefix)/lib
+libexecdir=$(prefix)/libexec
 bindir=$(prefix)/bin
 includedir=$(prefix)/include
 SHRDIR=$(datadir)/ustr-$(VERS_FULL)
 DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
-EXAMDIR=$(datadir)/ustr-$(VERS_FULL)/examples
+EXAMDIR=$(SHRDIR)/examples
 mandir=$(datadir)/doc/man
+MBINDIR=$(libexecdir)/ustr-$(VERS_FULL)
 
 ###############################################################################
 #  This is here to work around the "Fedora build system requirement" that a big
@@ -397,16 +399,23 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
 		install -m 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
 
-install-multilib-linux: install autoconf_64b
-		install -m 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS_MULTI_LIB)
+ustr-import-multilib: ustr-import-multilib.in
+		sed -e 's,@MBINDIR@,$(MBINDIR),g' < $< > $@
+
+install-multilib-linux: install autoconf_64b ustr-import-multilib
 		$(HIDE)mlib=`./autoconf_64b`; \
                    if test "x$$mlib" = "x1"; then mlib=64; else mlib=32; fi; \
                    mv -f $(DESTDIR)$(includedir)/ustr-conf-debug.h \
                          $(DESTDIR)$(includedir)/ustr-conf-debug-$$mlib.h; \
                    mv -f $(DESTDIR)$(includedir)/ustr-conf.h \
                          $(DESTDIR)$(includedir)/ustr-conf-$$mlib.h
+                   mv -f $(DESTDIR)$(bindir)/ustr-import \
+                         $(DESTDIR)$(MBINDIR)/ustr-import-$$mlib
+		install -m 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS_MULTI_LIB)
 		$(HIDE)mv -f $(DESTDIR)$(includedir)/ustr-conf-debug-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf-debug.h
 		$(HIDE)mv -f $(DESTDIR)$(includedir)/ustr-conf-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf.h
+		install -m 755 -t $(DESTDIR)$(bindir) ustr-import-multilib
+		$(HIDE)mv -f $(DESTDIR)$(bindir)/ustr-import-multilib $(DESTDIR)$(bindir)/ustr-import
 
 
 clean:

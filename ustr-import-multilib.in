@@ -1,0 +1,12 @@
+#! /bin/sh -e
+
+MBINDIR=@MBINDIR@
+
+one=64
+two=32
+
+if [ -f "$MBINDIR/ustr-import-$one" ]; then
+  exec "$MBINDIR/ustr-import-$one" "$@"
+fi
+
+exec "$MBINDIR/ustr-import-$two" "$@"
