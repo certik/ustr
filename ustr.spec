@@ -1,6 +1,7 @@
 
 %define show_all_cmds       0
 %define broken_fed_dbg_opts 0
+%define multilib_inst       1
 
 %if %{show_all_cmds}
 %define policy_cflags_hide HIDE=
@@ -16,6 +17,13 @@
 %endif
 
 %define policy_cflags %{policy_cflags_hide}  %{policy_cflags_broken}
+
+%if %{multilib_inst}
+%define ustr_make_install install-multilib-linux
+%else
+%define ustr_make_install install
+%endif
+
 
 Name: ustr
 Version: 1.0.3
@@ -88,10 +96,10 @@ make check %{policy_cflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make $@ install-multilib-linux prefix=%{_prefix} \
+make $@ %{ustr_make_install} prefix=%{_prefix} \
                 bindir=%{_bindir}         mandir=%{_mandir} \
                 datadir=%{_datadir}       libdir=%{_libdir} \
-                includedir=%{_includedir} \
+                includedir=%{_includedir} libexecdir=%{_libexecdir} \
                 DESTDIR=$RPM_BUILD_ROOT LDCONFIG=/bin/true HIDE=
 
 %clean
@@ -114,9 +122,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_datadir}/ustr-%{version}
 %{_bindir}/ustr-import
+%if %{multilib_inst}
+%{_libexecdir}/ustr-import*
+%endif
 %{_includedir}/ustr.h
 %{_includedir}/ustr-*.h
-%exclude %{_includedir}/ustr*debug.h
+%exclude %{_includedir}/ustr*debug*.h
 %{_libdir}/pkgconfig/ustr.pc
 %{_libdir}/libustr.so
 %{_datadir}/doc/ustr-devel-%{version}
@@ -130,8 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_libdir}/libustr-debug-1.0.so.*
 %{_libdir}/libustr-debug.so
-%{_includedir}/ustr-debug.h
-%{_includedir}/ustr-conf-debug.h
+%{_includedir}/ustr*debug*.h
 %{_libdir}/pkgconfig/ustr-debug.pc
 
 %files debug-static
