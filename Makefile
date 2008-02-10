@@ -403,12 +403,13 @@ ustr-import-multilib: ustr-import-multilib.in
 		sed -e 's,@MBINDIR@,$(MBINDIR),g' < $< > $@
 
 install-multilib-linux: install autoconf_64b ustr-import-multilib
+		install -d $(DESTDIR)$(MBINDIR)
 		$(HIDE)mlib=`./autoconf_64b`; \
                    if test "x$$mlib" = "x1"; then mlib=64; else mlib=32; fi; \
                    mv -f $(DESTDIR)$(includedir)/ustr-conf-debug.h \
                          $(DESTDIR)$(includedir)/ustr-conf-debug-$$mlib.h; \
                    mv -f $(DESTDIR)$(includedir)/ustr-conf.h \
-                         $(DESTDIR)$(includedir)/ustr-conf-$$mlib.h
+                         $(DESTDIR)$(includedir)/ustr-conf-$$mlib.h; \
                    mv -f $(DESTDIR)$(bindir)/ustr-import \
                          $(DESTDIR)$(MBINDIR)/ustr-import-$$mlib
 		install -m 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS_MULTI_LIB)

@@ -123,7 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ustr-%{version}
 %{_bindir}/ustr-import
 %if %{multilib_inst}
-%{_libexecdir}/ustr-import*
+%{_libexecdir}/ustr-%{version}/ustr-import*
 %endif
 %{_includedir}/ustr.h
 %{_includedir}/ustr-*.h
