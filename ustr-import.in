@@ -16,7 +16,7 @@ usesz=0
 
 cmdname="`basename $0`"
 
-function usage
+usage()
 {
   echo " Format: $cmdname [-d] [-d] [-c] [-b x] [-s] [-e] gdb | all | <section> ..." 1>&2
   echo "     List of options:" 1>&2
@@ -207,7 +207,7 @@ fi
 # ---------------------------------------------
 # Copy all the files locally...
 # ---------------------------------------------
-function copy
+copy()
 {
   name="$1"
   cp "$INCDIR/ustr-$name.h" .
