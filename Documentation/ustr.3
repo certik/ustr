@@ -5,7 +5,6 @@ ustr - ustr string library functions
 .in \w'  'u
 #include "ustr.h"
 .sp
-.NH
 .sp
 .br
 .in \w'  struct Ustr *\fBUSTR\fR('u
@@ -1132,7 +1131,6 @@ void \fBustr_pool_free\fR(struct Ustr_pool *);
 void \fBustr_pool_clear\fR(struct Ustr_pool *);
 
 .ti
-.HY
 .SH "DESCRIPTION"
  A very simple overview is that you can use ustr_dup_cstr() to convert a C-style
 to a Ustr, and ustr_cstr() to convert it back. You can also use USTR1() to
@@ -1215,24 +1213,18 @@ Type\fB[2]\fR: const char[]
 .br
   This macro function simplifies the creation of read-only Ustr string's. And is normally used like...
 
-.Vb 4
   USTR1(\\x4, "abcd")
 
-.Ve
  ...it is worth pointing out that running with debugging turned on
  (USTR_CONF_USE_ASSERT) will complain if the length isn't encoded correctly, as in...
 
-.Vb 4
   USTR1(\\x3, "abcd")
 
-.Ve
  ...here ustr_assert_valid() will fail, which is called before most functions do
  anything in debugging mode. Note also that extra debugging (USTR_CONF_USE_EOS_MARK) will still catch cases like...
 
-.Vb 4
   USTR1(\\x3, "abc\\0d")
 
-.Ve
  ...at least using debugging is esp. important if you are putting UTF-8
  characters into the strings.
 .sp
@@ -1629,7 +1621,6 @@ Type\fB[1]\fR: size_t
 
 .br
   char buf[USTR_SIZE_FIXED(4)];
-.Ve
  ...to give you exactly 4 bytes as a maximum, this is esp. useful if you want
  a limited (ustr_limited() == USTR_TRUE) Ustr string.
 
@@ -1708,11 +1699,9 @@ Type\fB[3]\fR: size_t
 .br
   This does mean that the first argument must be the correct size, as far as sizeof() is concerned, as in...
 
-.Vb 4
  char buf_sz[1024];
  Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
 
-.Ve
  ...so passing pointers to memory from malloc() will probably just return NULL.
 
 
@@ -1750,11 +1739,9 @@ Type\fB[3]\fR: size_t
 .br
   This does mean that the first argument must be the correct size, as far as sizeof() is concerned, as in...
 
-.Vb 4
  char buf_sz[1024] = USTR_BEG_FIXED2 "abcd";
  Ustr *s1 = USTR_SC_INIT_AUTO_OSTR(buf_sz, USTR_FALSE, "abcd");
 
-.Ve
  ...so passing pointers to memory from malloc() will probably just return NULL.
 
 
@@ -7912,11 +7899,9 @@ Type\fB[6]\fR: size_t lim
   This function replaces a repeating sequence of characters with another repeating sequence of characters. 
   For example...
 
-.Vb 4
   Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
   ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
 
-.Ve
  ...would change data to be "yxByCxDyx".
 
 
@@ -7973,16 +7958,13 @@ Type\fB[6]\fR: unsigned int
 .br
   Parameter[5] is a a pointer to a Ustr where the return value will be placed. Passing a USTR_NULL to this parameter will cause the string to be allocated and \fBMUST\fR be freed \fBmanually\fR. If, however, you pass in a non-null Ustr to this parameter, each call to ustr_split_buf() will free what is in this pointer and place the new token there (when USTR_NULL is returned, nothing needs to be free'd).  For example, given...
 
-.Vb 4
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
   const char *sep = ",";
   size_t off = 0;
   unsigned int flags = USTR_FLAGS_SPLIT_DEF;
 
-.Ve
  ...there are two options...
-.Vb 4
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), tok, flags)))
   {
@@ -7991,9 +7973,7 @@ Type\fB[6]\fR: unsigned int
   }
   /* tok is now NULL again after the loop */
 
-.Ve
  ...or...
-.Vb 4
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), USTR_NULL, flags)))
   {
@@ -8002,7 +7982,6 @@ Type\fB[6]\fR: unsigned int
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
 
-.Ve
  ...the former of which being the safer option.
 
 .sp

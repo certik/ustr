@@ -35,7 +35,6 @@ ustr - ustr string library functions
 .in \\w'  'u
 #include "ustr.h"
 .sp
-.NH
 EOL
 
 my $man_consts_header = <<EOL;
@@ -46,12 +45,10 @@ ustr_const - ustr string library constants
 .in \\w'  'u
 #include "ustr.h"
 .sp
-.NH
 EOL
 
 my $man_funcs_desc = <<EOL;
 .ti
-.HY
 .SH "DESCRIPTION"
  A very simple overview is that you can use ustr_dup_cstr() to convert a C-style
 to a Ustr, and ustr_cstr() to convert it back. You can also use USTR1() to
@@ -65,7 +62,6 @@ EOL
 
 my $man_consts_desc = <<EOL;
 .ti
-.HY
 .SH "DESCRIPTION"
 EOL
 
