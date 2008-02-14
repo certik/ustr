@@ -389,15 +389,15 @@ install: all-shared ustr.pc ustr-debug.pc
 		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
 		$(LDCONFIG) -n $(DESTDIR)$(libdir)
-		install -m 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS)
-		install -m 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
-		install -m 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
-		install -m 644 -t $(DESTDIR)$(DOCSHRDIR) $(DOCS)
-		install -m 644 -t $(DESTDIR)$(EXAMDIR) $(EXAMPLES)
-		install -m 644 -t $(DESTDIR)$(mandir)/man1 $(MAN_PAGES_1)
-		install -m 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES_3)
+		install -pm 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS)
+		install -pm 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
+		install -pm 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
+		install -pm 644 -t $(DESTDIR)$(DOCSHRDIR) $(DOCS)
+		install -pm 644 -t $(DESTDIR)$(EXAMDIR) $(EXAMPLES)
+		install -pm 644 -t $(DESTDIR)$(mandir)/man1 $(MAN_PAGES_1)
+		install -pm 644 -t $(DESTDIR)$(mandir)/man3 $(MAN_PAGES_3)
 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
-		install -m 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
+		install -pm 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
 
 ustr-import-multilib: ustr-import-multilib.in
 		sed -e 's,@MBINDIR@,$(MBINDIR),g' < $< > $@
