@@ -1,3 +1,7 @@
+2008-02-13  James Antill  <james@and.org>
+
+	* ustr-fmt-code.h (ustr__retard_vfmt_ret): Fix use of bare va_copy.
+
 2008-01-14  James Antill  <james@and.org>
 
 	* NEWS: Release 1.0.3

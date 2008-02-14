@@ -21,7 +21,7 @@ int ustr__retard_vfmt_ret(const char *fmt, va_list ap)
   if (!(ptr = USTR_CONF_MALLOC(sz)))
     return (-1);
 
-  va_copy(nap, ap);
+  USTR__VA_COPY(nap, ap);
   while ((ret = vsnprintf(ptr, sz, fmt, nap)) == -1)
   {
     char *tmp = 0;
