@@ -1,5 +1,8 @@
 2008-02-13  James Antill  <james@and.org>
 
+	* ustr-set-code.h (ustr_set_subustr): Minor opt. for ustr_set_subustr()
+	in the delete everything case.
+
 	* ustr-fmt-code.h (ustr__retard_vfmt_ret): Fix use of bare va_copy.
 
 2008-01-14  James Antill  <james@and.org>
