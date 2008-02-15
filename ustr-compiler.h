@@ -70,6 +70,15 @@
 #endif
 #endif
 
+#ifndef USTR_CONF_HAVE_ATTR_SENTINEL
+#if defined(__GNUC__) && \
+    ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 1))) /*before? */
+#define USTR_CONF_HAVE_ATTR_SENTINEL 1
+#else
+#define USTR_CONF_HAVE_ATTR_SENTINEL 0
+#endif
+#endif
+
 #if USTR_CONF_COMPILE_USE_INLINE
 #define USTR__INLINE inline
 #else
@@ -177,5 +186,13 @@
 # define USTR__COMPILE_ATTR_DEPRECATED() __attribute__ ((__deprecated__))
 #else
 # define USTR__COMPILE_ATTR_DEPRECATED() /* nothing */
+#endif
+
+#if defined(__GNUC__) && !defined(__STRICT_ANSI__) && \
+    USTR_CONF_HAVE_ATTR_SENTINEL && USTR_CONF_COMPILE_USE_ATTRIBUTES
+# define USTR__COMPILE_ATTR_SENTINEL(x) \
+ __attribute__ ((__sentinel__ (x)))
+#else
+# define USTR__COMPILE_ATTR_SENTINEL(x) /* nothing */
 #endif
 
