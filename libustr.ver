@@ -616,3 +616,20 @@ USTR_1.0.3 {
   ustrp_sc_trim_cstr;
 
 };
+
+USTR_1.0.3 {
+    global:
+  ustr_sc_add_concat;
+  ustr_sc_add_vconcat;
+  ustr_sc_dup_concat;
+  ustr_sc_dup_vconcat;
+  ustr_sc_dupx_concat;
+  ustr_sc_dupx_vconcat;
+
+  ustrp_sc_add_concat;
+  ustrp_sc_add_vconcat;
+  ustrp_sc_dup_concat;
+  ustrp_sc_dup_vconcat;
+  ustrp_sc_dupx_concat;
+  ustrp_sc_dupx_vconcat;
+};

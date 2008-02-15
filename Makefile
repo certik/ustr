@@ -129,6 +129,8 @@ TST_STATIC_ALL =  tst_0_sizes  tst_0_manual   \
           otst_17_sub   \
            tst_18_split \
           otst_18_split \
+           tst_19_concat \
+          otst_19_concat \
            tst_98_pool  \
           otst_98_pool  \
            tst_99_enomem \
@@ -170,6 +172,8 @@ TST_ALL =  ctst_0_cntl \
           octst_17_sub \
            ctst_18_split \
           octst_18_split \
+           ctst_19_concat \
+          octst_19_concat \
            ctst_98_pool \
           octst_98_pool \
            ctst_99_enomem \

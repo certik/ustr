@@ -47,5 +47,20 @@ int ustrp__sc_trim_chrs(struct Ustr_pool *, struct Ustr **,
                         const char *, size_t)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
+USTR_CONF_e_PROTO
+int ustrp__sc_vconcat(struct Ustr_pool *p, struct Ustr **ps1,
+                      const struct Ustr *s2, int reduce, va_list ap)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+
+USTR_CONF_e_PROTO
+int ustrp__sc_add_vconcat(struct Ustr_pool *p,
+                          struct Ustr **ps1, const struct Ustr *s2, va_list ap)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_e_PROTO
+struct Ustr *ustrp__sc_dupx_vconcat(struct Ustr_pool *,
+                                    size_t, size_t, int, int,
+                                    const struct Ustr *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
+
 
 #endif

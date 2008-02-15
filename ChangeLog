@@ -1,3 +1,12 @@
+2008-02-15  James Antill  <james@and.org>
+
+	* ustr-sc-code.h (ustr_sc_add_vconcat): Added function.
+	(ustr_sc_add_concat): Added function.
+	(ustr_sc_dupx_vconcat): Added function.
+	(ustr_sc_dupx_concat): Added function.
+	(ustr_sc_dup_vconcat): Added function.
+	(ustr_sc_dup_concat): Added function.
+
 2008-02-13  James Antill  <james@and.org>
 
 	* ustr-set-code.h (ustr_set_subustr): Minor opt. for ustr_set_subustr()

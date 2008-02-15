@@ -55,6 +55,29 @@ USTR_CONF_EI_PROTO int ustr_sc_trim_cstr(struct Ustr **, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO
+int ustr_sc_add_vconcat(struct Ustr **, const struct Ustr *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 2));
+USTR_CONF_E_PROTO
+int ustr_sc_add_concat(struct Ustr **, const struct Ustr *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((1, 2)) USTR__COMPILE_ATTR_SENTINEL(0);
+USTR_CONF_E_PROTO
+struct Ustr *ustr_sc_dup_vconcat(const struct Ustr *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
+USTR_CONF_E_PROTO
+struct Ustr *ustr_sc_dup_concat(const struct Ustr *, ...)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1))
+    USTR__COMPILE_ATTR_SENTINEL(0);
+USTR_CONF_E_PROTO
+struct Ustr *ustr_sc_dupx_vconcat(size_t, size_t, int, int,
+                                  const struct Ustr *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((5));
+USTR_CONF_E_PROTO
+struct Ustr *ustr_sc_dupx_concat(size_t, size_t, int, int,
+                                 const struct Ustr *, ...)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((5))
+    USTR__COMPILE_ATTR_SENTINEL(0);
+
+USTR_CONF_E_PROTO
 struct Ustrp *ustrp_sc_dupx(struct Ustr_pool *, size_t, size_t, int, int,
                             struct Ustrp **)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
@@ -112,8 +135,34 @@ USTR_CONF_EI_PROTO int ustrp_sc_trim(struct Ustr_pool *, struct Ustrp **,
                                        const struct Ustrp *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 USTR_CONF_EI_PROTO
-int ustrp_sc_trim_cstr(struct Ustr_pool *p, struct Ustrp **, const char *)
+int ustrp_sc_trim_cstr(struct Ustr_pool *, struct Ustrp **, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+
+USTR_CONF_E_PROTO
+int ustrp_sc_add_vconcat(struct Ustr_pool *, struct Ustrp **,
+                         const struct Ustrp *, va_list)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
+USTR_CONF_E_PROTO
+int ustrp_sc_add_concat(struct Ustr_pool *, struct Ustrp **,
+                        const struct Ustrp *, ...)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3)) USTR__COMPILE_ATTR_SENTINEL(0);
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_sc_dup_vconcat(struct Ustr_pool *, const struct Ustrp *, 
+                                   va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_sc_dup_concat(struct Ustr_pool *, const struct Ustrp *, ...)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2))
+    USTR__COMPILE_ATTR_SENTINEL(0);
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_sc_dupx_vconcat(struct Ustr_pool *, size_t,size_t,int,int,
+                                    const struct Ustrp *, va_list)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
+USTR_CONF_E_PROTO
+struct Ustrp *ustrp_sc_dupx_concat(struct Ustr_pool *, size_t, size_t, int, int,
+                                   const struct Ustrp *, ...)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6))
+    USTR__COMPILE_ATTR_SENTINEL(0);
 
 #if USTR_CONF_INCLUDE_INTERNAL_HEADERS
 # include "ustr-sc-internal.h"

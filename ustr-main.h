@@ -24,7 +24,7 @@
 #include <limits.h> /* CHAR_BIT */
 
 #include <stdarg.h> /* va_list for *printf like functionality,
-                     * needed globally now due to cntl */
+                     * needed globally now due to cntl and concat */
 #include <stdio.h>  /* vsnprintf */
 
 #define USTR_FALSE 0
