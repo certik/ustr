@@ -48,6 +48,25 @@ int ustrp__sc_trim_chrs(struct Ustr_pool *, struct Ustr **,
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
 USTR_CONF_e_PROTO
+int ustrp__sc_vjoin(struct Ustr_pool *p, struct Ustr **ps1,
+                    const struct Ustr *sep,
+                    const struct Ustr *s2, const struct Ustr *s3,
+                    int reduce, va_list ap)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4, 5));
+USTR_CONF_i_PROTO
+int ustrp__sc_add_vjoin(struct Ustr_pool *p,
+                        struct Ustr **ps1, const struct Ustr *sep,
+                        const struct Ustr *s2,const struct Ustr *s3, va_list ap)
+    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4, 5));
+USTR_CONF_i_PROTO
+struct Ustr *ustrp__sc_dupx_vjoin(struct Ustr_pool *p,
+                                  size_t sz, size_t rbytes, int exact, int emem,
+                                  const struct Ustr *sep, const struct Ustr *s2,
+                                  const struct Ustr *s3, va_list ap)
+    USTR__COMPILE_ATTR_WARN_UNUSED_RET()
+    USTR__COMPILE_ATTR_NONNULL_L((6, 7, 8, 9));
+
+USTR_CONF_e_PROTO
 int ustrp__sc_vconcat(struct Ustr_pool *p, struct Ustr **ps1,
                       const struct Ustr *s2, int reduce, va_list ap)
     USTR__COMPILE_ATTR_NONNULL_L((2, 3));
