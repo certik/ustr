@@ -24,6 +24,11 @@ int tst(void)
   ASSERT(!ustrp_len(ptmp));
   ASSERT( ustrp_ro(ptmp));
 
+  ASSERT((ptmp = ustrp_sc_dupx_concat(pool, 1,1,1,1, USTRP(""),
+                                      USTRP(""),USTRP(""), USTRP_NULL)));
+  ASSERT(!ustrp_len(ptmp));
+  ASSERT(!ustrp_ro(ptmp));
+
   tmp = ustr_sc_dup_concat(USTR1(\4, "abcd"), USTR1(\4, "/xyz"), USTR(""),
                            USTR_NULL);
   ASSERT(tmp);
