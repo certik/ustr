@@ -369,11 +369,67 @@ int ustrp__sc_vjoin(struct Ustr_pool *p, struct Ustr **ps1,
                     int reduce, va_list ap)
 {
   size_t olen = ustr_len(*ps1);
+  const char *sptr = ustr_cstr(sep);
+  size_t slen = ustr_len(sep);
+  
+#if USTR_CONF_HAVE_VA_COPY /* do a single allocation */
+  size_t oneeded = 0;
+  size_t needed  = 0;
+  struct Ustr *tmp = USTR_NULL;
+  int sz_bad = USTR_FALSE;
+  va_list nap;
+
+  USTR_ASSERT(ustrp__assert_valid(!!p, sep));
+  
+  USTR__VA_COPY(nap, ap);
+
+  needed += ustr_len(s2);
+  sz_bad |= (needed < oneeded); oneeded = needed;
+
+  needed += slen;
+  sz_bad |= (needed < oneeded); oneeded = needed;
+
+  needed += ustr_len(s3);
+  sz_bad |= (needed < oneeded); oneeded = needed;
+  while ((tmp = va_arg(nap, struct Ustr *)))
+  {
+    needed += slen;
+    sz_bad |= (needed < oneeded); oneeded = needed;
+
+    needed += ustr_len(tmp);
+    sz_bad |= (needed < oneeded); oneeded = needed;
+  }
+  va_end(nap);
+
+  if (sz_bad || !ustrp__add_undef(p, ps1, needed))
+  {
+    ustr_setf_enomem_err(*ps1);
+    if (!reduce)
+      ustrp__sc_free(p, ps1);
+    return (USTR_FALSE);
+  }
+
+    ustr__memcpy(*ps1, olen, ustr_cstr(s2), ustr_len(s2)); olen += ustr_len(s2);
+  do
+  {
+    ustr__memcpy(*ps1, olen,          sptr,         slen); olen += slen;
+    ustr__memcpy(*ps1, olen, ustr_cstr(s3), ustr_len(s3)); olen += ustr_len(s3);
+  } while ((s3 = va_arg(ap, struct Ustr *)));
+#else
+  int err_reset = USTR_FALSE;
+  
+  USTR_ASSERT(ustrp__assert_valid(!!p, sep));
+  
+  if (ustr_enomem(*ps1))
+  {
+    err_reset = USTR_TRUE;
+    ustr_setf_enomem_clr(*ps1);
+  }
   
   ustrp__add(p, ps1, s2);
-  
+
   do {
-    ustrp__add(p, ps1, sep);
+    ustrp__add_buf(p, ps1, sptr, slen);
     ustrp__add(p, ps1, s3);
   } while ((s3 = va_arg(ap, struct Ustr *)));
 
@@ -386,7 +442,10 @@ int ustrp__sc_vjoin(struct Ustr_pool *p, struct Ustr **ps1,
     errno = USTR__ENOMEM;
     return (USTR_FALSE);
   }
-  
+
+  if (err_reset)
+    ustr_setf_enomem_err(*ps1);    
+#endif
   return (USTR_TRUE);
 }
 

@@ -6,18 +6,6 @@
 # error " You should include ustr-main.h before this file, or just ustr.h"
 #endif
 
-/* We assume this is enough,
- * C99 specifies that va_copy() exists and is a macro */
-#ifdef va_copy
-# define USTR_CONF_HAVE_VA_COPY 1
-# define USTR__VA_COPY(x, y)   va_copy(x, y)
-#elif __va_copy
-# define USTR_CONF_HAVE_VA_COPY 1
-# define USTR__VA_COPY(x, y) __va_copy(x, y)
-#else
-# define USTR_CONF_HAVE_VA_COPY 0
-#endif
-
 #if USTR_CONF_HAVE_VA_COPY
 USTR_CONF_E_PROTO
 int ustr_add_vfmt_lim(struct Ustr **, size_t, const char *, va_list)
