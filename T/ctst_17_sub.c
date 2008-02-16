@@ -23,7 +23,8 @@ int tst(void)
   const char *newstr;
   Ustr *ro = USTR1(\x4, "abcd"); 
   Ustr *haystack;
-        
+  size_t num = 0;
+  
   ASSERT(ustr_sub_fmt(&ro, 2, "%s%c", "x", 'x'));
   ASSERT(ustr_cmp_cstr_eq(ro, "axxd"));
   ustr_sc_free2(&ro, USTR1(\x7, "1234567"));
@@ -259,6 +260,53 @@ int tst(void)
   ASSERT(ustr_replace_rep_chr(&haystack, 'a', 1, 'x', 0, 0) == 4);
   ASSERT(!ustr_len(haystack));
   ASSERT(ustr_ro(haystack));
+
+  /*
+  ustr_sc_free2(&s2, USTR(""));
+  ASSERT(ustr_sub(&s2, 1, s2));
+  ASSERT(ustr_sub_subustr(&s2, 1, s2, 1, 0));
+  ASSERT(ustr_sc_sub(&s2, 1, 0, s2));
+  ASSERT(ustr_sc_sub_subustr(&s2, 1, 0, s2, 1, 0));
+  */
   
-  return EXIT_SUCCESS;
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  ASSERT(ustr_sub(&s1, 1, s1));
+  ASSERT_EQ(s1, USTR1(\1, "x"));
+  ASSERT(ustr_sub_subustr(&s1, 0, s1, 1, 0));
+  ASSERT_EQ(s1, USTR1(\1, "x"));
+  ASSERT(ustr_sub_subustr(&s1, 1, s1, 1, 1));
+  ASSERT_EQ(s1, USTR1(\1, "x"));
+  /* ASSERT(ustr_ro(s1)); */
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  ASSERT(ustr_sc_sub(&s1, 1, 0, s1));
+  ASSERT_EQ(s1, USTR1(\2, "xx"));
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 1, 0, s1, 1, 0));
+  ASSERT_EQ(s1, USTR1(\1, "x"));
+  ASSERT(ustr_ro(s1));
+
+  num = 0;
+  while (num++ < 8)
+    ASSERT(ustr_sub(&s1, (ustr_len(s1) + 1) / 2, s1));
+
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  num = 0;
+  while (num++ < 8)
+    ASSERT(ustr_sub_subustr(&s1, (ustr_len(s1) + 1) / 2,
+                            s1, 1,
+                            (ustr_len(s1) <= 1 ? 1 : ustr_len(s1))));
+
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  num = 0;
+  while (num++ < 8)
+    ASSERT(ustr_sc_sub(&s1, 1, (ustr_len(s1) + 1) / 2, s1));
+
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  num = 0;
+  while (num++ < 8)
+    ASSERT(ustr_sc_sub_subustr(&s1, 1, (ustr_len(s1) + 3) / 4,
+                               s1, 1,
+                               (ustr_len(s1) <= 1 ? 1 : ustr_len(s1))));
+
+  return (EXIT_SUCCESS);
 }

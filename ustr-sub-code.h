@@ -66,7 +66,10 @@ USTR_CONF_I_PROTO int ustrp_sub_buf(struct Ustr_pool *p, struct Ustrp **ps1,
 
 USTR_CONF_i_PROTO int ustrp__sub(struct Ustr_pool *p, struct Ustr **ps1,
                                  size_t pos, const struct Ustr *s2)
-{ /* opts needed? */
+{
+  if (*ps1 == s2)
+    return (ustrp__ins_subustr(p, ps1, pos - 1, s2, 1, pos - 1));
+  
   return (ustrp__sub_buf(p, ps1, pos, ustr_cstr(s2), ustr_len(s2)));
 }
 USTR_CONF_I_PROTO
@@ -90,6 +93,26 @@ int ustrp__sub_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
   
   if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
     return (USTR_FALSE);
+  
+  if ((*ps1 == s2) && ustr_owner(*ps1))
+  {
+    struct Ustr *tmp = USTR_NULL;
+    int ret = USTR_FALSE;
+
+    if (pos1 == pos2) /* delete from end */
+      return (ustrp__del(p, ps1, ((ustr_len(*ps1) - pos1) + 1) - len2));
+    
+    /* This is somewhat difficult to do "well". So punt. */
+    if (!(tmp = ustrp__dup_subustr(p, s2, pos2, len2)))
+      return (USTR_FALSE);
+
+    ret = ustrp__sub(p, ps1, pos1, tmp);
+    ustrp__free(p, tmp);
+    USTR_ASSERT(ret);
+    
+    return (ret);
+  }
+  
   --pos2;
   
   return (ustrp__sub_buf(p, ps1, pos1, ustr_cstr(s2) + pos2, len2));
@@ -190,6 +213,26 @@ USTR_CONF_i_PROTO
 int ustrp__sc_sub(struct Ustr_pool *p, struct Ustr **ps1,size_t pos,size_t olen,
                   const struct Ustr *s2)
 {
+  if ((*ps1 == s2) && ustr_owner(*ps1))
+  {
+    size_t clen = ustr_len(*ps1);
+    size_t epos = ( pos + olen) - 1;
+    size_t elen = (clen - epos) + 1;
+    
+    if (!ustrp__add_subustr(p, ps1, s2, epos, elen))
+      return (USTR_FALSE);
+
+    s2 = *ps1;
+    if (!ustrp__ins_subustr(p, ps1, 0, s2, 1, pos - 1))
+    {
+      ustrp__del(p, ps1, elen);
+      errno = USTR__ENOMEM;
+      return (USTR_FALSE);
+    }
+    
+    return (USTR_TRUE);
+  }
+  
   return (ustrp__sc_sub_buf(p, ps1, pos, olen, ustr_cstr(s2), ustr_len(s2)));
 }
 USTR_CONF_I_PROTO
@@ -216,6 +259,22 @@ int ustrp__sc_sub_subustr(struct Ustr_pool *p,
   
   if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
     return (USTR_FALSE);
+
+  if ((*ps1 == s2) && ustr_owner(*ps1))
+  {
+    struct Ustr *tmp = USTR_NULL;
+    int ret = USTR_FALSE;
+    
+    /* This is somewhat difficult to do "well". So punt. */
+    if (!(tmp = ustrp__dup_subustr(p, s2, pos2, len2)))
+      return (USTR_FALSE);
+
+    ret = ustrp__sc_sub(p, ps1, pos1, len1, tmp);
+    ustrp__free(p, tmp);
+    
+    return (ret);
+  }
+
   --pos2;
   
   return (ustrp__sc_sub_buf(p, ps1, pos1, len1, ustr_cstr(s2) + pos2, len2));

@@ -1,3 +1,12 @@
+2008-02-15  James Antill  <james@and.org>
+
+	* ustr-sub-code.h (ustr_sub): Make sure ustr_sub(&x, p, x) is valid.
+	(ustr_sub_subustr): Dito.
+	(ustr_sc_sub): Dito.
+	(ustr_sc_sub_subustr): Dito.
+
+	* ustr-spn-code.h (ustr_cspn_chr_rev): Fix for when using off > 0.
+
 2008-02-14  James Antill  <james@and.org>
 
 	* ustr-sc-code.h (ustr_sc_add_vconcat): Added function.
