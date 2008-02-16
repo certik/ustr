@@ -55,54 +55,39 @@ USTR_CONF_EI_PROTO int ustr_sc_trim_cstr(struct Ustr **, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_A();
 
 USTR_CONF_E_PROTO
-int ustr_sc_add_vjoin(struct Ustr **, const struct Ustr *,
-                      const struct Ustr *, const struct Ustr *, va_list)
-    USTR__COMPILE_ATTR_NONNULL_L((1, 2, 3, 4));
-USTR_CONF_E_PROTO
-int ustr_sc_add_join(struct Ustr **, const struct Ustr *,
-                     const struct Ustr *, const struct Ustr *, ...)
-    USTR__COMPILE_ATTR_NONNULL_L((1, 2, 3, 4)) USTR__COMPILE_ATTR_SENTINEL(0);
-USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dup_vjoin(const struct Ustr *, const struct Ustr *,
-                               const struct Ustr *, va_list)
+struct Ustr *ustr_sc_vjoin(const struct Ustr *, const struct Ustr *,
+                           const struct Ustr *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2,3));
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dup_join(const struct Ustr *, const struct Ustr *,
-                              const struct Ustr *, ...)
+struct Ustr *ustr_sc_join(const struct Ustr *, const struct Ustr *,
+                          const struct Ustr *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1, 2, 3))
     USTR__COMPILE_ATTR_SENTINEL(0);
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dupx_vjoin(size_t, size_t, int, int,
-                                const struct Ustr *, const struct Ustr *,
-                                const struct Ustr *, va_list)
+struct Ustr *ustr_sc_vjoinx(size_t, size_t, int, int,
+                            const struct Ustr *, const struct Ustr *,
+                            const struct Ustr *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((5, 6,7));
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dupx_join(size_t, size_t, int, int,
-                               const struct Ustr *, const struct Ustr *,
-                               const struct Ustr *, ...)
+struct Ustr *ustr_sc_joinx(size_t, size_t, int, int,
+                           const struct Ustr *, const struct Ustr *,
+                           const struct Ustr *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((5, 6, 7))
     USTR__COMPILE_ATTR_SENTINEL(0);
 
 USTR_CONF_E_PROTO
-int ustr_sc_add_vconcat(struct Ustr **, const struct Ustr *, va_list)
-    USTR__COMPILE_ATTR_NONNULL_L((1, 2));
-USTR_CONF_E_PROTO
-int ustr_sc_add_concat(struct Ustr **, const struct Ustr *, ...)
-    USTR__COMPILE_ATTR_NONNULL_L((1, 2)) USTR__COMPILE_ATTR_SENTINEL(0);
-USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dup_vconcat(const struct Ustr *, va_list)
+struct Ustr *ustr_sc_vconcat(const struct Ustr *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1));
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dup_concat(const struct Ustr *, ...)
+struct Ustr *ustr_sc_concat(const struct Ustr *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((1))
     USTR__COMPILE_ATTR_SENTINEL(0);
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dupx_vconcat(size_t, size_t, int, int,
-                                  const struct Ustr *, va_list)
+struct Ustr *ustr_sc_vconcatx(size_t, size_t, int, int,
+                              const struct Ustr *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((5));
 USTR_CONF_E_PROTO
-struct Ustr *ustr_sc_dupx_concat(size_t, size_t, int, int,
-                                 const struct Ustr *, ...)
+struct Ustr *ustr_sc_concatx(size_t, size_t, int, int, const struct Ustr *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((5))
     USTR__COMPILE_ATTR_SENTINEL(0);
 
@@ -168,60 +153,41 @@ int ustrp_sc_trim_cstr(struct Ustr_pool *, struct Ustrp **, const char *)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3));
 
 USTR_CONF_E_PROTO
-int ustrp_sc_add_vjoin(struct Ustr_pool *, struct Ustrp **,
-                       const struct Ustrp *, const struct Ustrp *,
-                       const struct Ustrp *, va_list)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4, 5));
-USTR_CONF_E_PROTO
-int ustrp_sc_add_join(struct Ustr_pool *, struct Ustrp **,
-                      const struct Ustrp *, const struct Ustrp *,
-                      const struct Ustrp *, ...)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4, 5)) USTR__COMPILE_ATTR_SENTINEL(0);
-USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dup_vjoin(struct Ustr_pool *, const struct Ustrp *,
-                                 const struct Ustrp *, const struct Ustrp *, 
-                                 va_list)
+struct Ustrp *ustrp_sc_vjoin(struct Ustr_pool *, const struct Ustrp *,
+                             const struct Ustrp *, const struct Ustrp *, 
+                             va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3,4));
 USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dup_join(struct Ustr_pool *, const struct Ustrp *,
-                                const struct Ustrp *, const struct Ustrp *, ...)
+struct Ustrp *ustrp_sc_join(struct Ustr_pool *, const struct Ustrp *,
+                            const struct Ustrp *, const struct Ustrp *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2, 3, 4))
     USTR__COMPILE_ATTR_SENTINEL(0);
 USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dupx_vjoin(struct Ustr_pool *, size_t,size_t,int,int,
-                                  const struct Ustrp *, const struct Ustrp *,
-                                  const struct Ustrp *, va_list)
+struct Ustrp *ustrp_sc_vjoinx(struct Ustr_pool *, size_t,size_t,int,int,
+                              const struct Ustrp *, const struct Ustrp *,
+                              const struct Ustrp *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6, 7,8));
 USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dupx_join(struct Ustr_pool *, size_t, size_t, int, int,
-                                 const struct Ustrp *, const struct Ustrp *,
-                                 const struct Ustrp *, ...)
+struct Ustrp *ustrp_sc_joinx(struct Ustr_pool *, size_t, size_t, int, int,
+                             const struct Ustrp *, const struct Ustrp *,
+                             const struct Ustrp *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6, 7, 8))
     USTR__COMPILE_ATTR_SENTINEL(0);
 
 USTR_CONF_E_PROTO
-int ustrp_sc_add_vconcat(struct Ustr_pool *, struct Ustrp **,
-                         const struct Ustrp *, va_list)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3));
-USTR_CONF_E_PROTO
-int ustrp_sc_add_concat(struct Ustr_pool *, struct Ustrp **,
-                        const struct Ustrp *, ...)
-    USTR__COMPILE_ATTR_NONNULL_L((2, 3)) USTR__COMPILE_ATTR_SENTINEL(0);
-USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dup_vconcat(struct Ustr_pool *, const struct Ustrp *, 
-                                   va_list)
+struct Ustrp *ustrp_sc_vconcat(struct Ustr_pool *, const struct Ustrp *,va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2));
 USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dup_concat(struct Ustr_pool *, const struct Ustrp *, ...)
+struct Ustrp *ustrp_sc_concat(struct Ustr_pool *, const struct Ustrp *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((2))
     USTR__COMPILE_ATTR_SENTINEL(0);
 USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dupx_vconcat(struct Ustr_pool *, size_t,size_t,int,int,
-                                    const struct Ustrp *, va_list)
+struct Ustrp *ustrp_sc_vconcatx(struct Ustr_pool *, size_t,size_t,int,int,
+                                const struct Ustrp *, va_list)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6));
 USTR_CONF_E_PROTO
-struct Ustrp *ustrp_sc_dupx_concat(struct Ustr_pool *, size_t, size_t, int, int,
-                                   const struct Ustrp *, ...)
+struct Ustrp *ustrp_sc_concatx(struct Ustr_pool *, size_t, size_t, int, int,
+                               const struct Ustrp *, ...)
     USTR__COMPILE_ATTR_WARN_UNUSED_RET() USTR__COMPILE_ATTR_NONNULL_L((6))
     USTR__COMPILE_ATTR_SENTINEL(0);
 

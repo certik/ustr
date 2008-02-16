@@ -620,31 +620,23 @@ USTR_1.0.3 {
 USTR_1.0.3 {
     global:
 
-  ustr_sc_add_join;
-  ustr_sc_add_vjoin;
-  ustr_sc_dup_join;
-  ustr_sc_dup_vjoin;
-  ustr_sc_dupx_join;
-  ustr_sc_dupx_vjoin;
+  ustr_sc_join;
+  ustr_sc_vjoin;
+  ustr_sc_joinx;
+  ustr_sc_vjoinx;
 
-  ustr_sc_add_concat;
-  ustr_sc_add_vconcat;
-  ustr_sc_dup_concat;
-  ustr_sc_dup_vconcat;
-  ustr_sc_dupx_concat;
-  ustr_sc_dupx_vconcat;
+  ustr_sc_concat;
+  ustr_sc_vconcat;
+  ustr_sc_concatx;
+  ustr_sc_vconcatx;
 
-  ustrp_sc_add_join;
-  ustrp_sc_add_vjoin;
-  ustrp_sc_dup_join;
-  ustrp_sc_dup_vjoin;
-  ustrp_sc_dupx_join;
-  ustrp_sc_dupx_vjoin;
+  ustrp_sc_join;
+  ustrp_sc_vjoin;
+  ustrp_sc_joinx;
+  ustrp_sc_vjoinx;
 
-  ustrp_sc_add_concat;
-  ustrp_sc_add_vconcat;
-  ustrp_sc_dup_concat;
-  ustrp_sc_dup_vconcat;
-  ustrp_sc_dupx_concat;
-  ustrp_sc_dupx_vconcat;
+  ustrp_sc_concat;
+  ustrp_sc_vconcat;
+  ustrp_sc_concatx;
+  ustrp_sc_vconcatx;
 };

@@ -363,238 +363,161 @@ int ustrp_sc_trim_chrs(struct Ustr_pool *p, struct Ustrp **ps1,
 }
 
 USTR_CONF_i_PROTO
-int ustrp__sc_vjoin(struct Ustr_pool *p, struct Ustr **ps1,
-                    const struct Ustr *sep,
-                    const struct Ustr *s2, const struct Ustr *s3,
-                    int reduce, va_list ap)
+struct Ustr *ustrp__sc_vjoinx(struct Ustr_pool *p,
+                              size_t sz, size_t rbytes, int exact, int emem,
+                              const struct Ustr *sep,
+                              const struct Ustr *s2, const struct Ustr *s3,
+                              va_list ap)
 {
-  size_t olen = ustr_len(*ps1);
+  struct Ustr *s1 = USTR_NULL;
   const char *sptr = ustr_cstr(sep);
   size_t slen = ustr_len(sep);
   
 #if USTR_CONF_HAVE_VA_COPY /* do a single allocation */
-  size_t oneeded = 0;
-  size_t needed  = 0;
+  size_t olen = 0;
+  size_t len  = 0;
   struct Ustr *tmp = USTR_NULL;
   int sz_bad = USTR_FALSE;
   va_list nap;
 
-  USTR_ASSERT(ustrp__assert_valid(!!p, sep));
+  USTR_ASSERT(ustrp__assert_valid(0, sep));
   
   USTR__VA_COPY(nap, ap);
 
-  needed += ustr_len(s2);
-  sz_bad |= (needed < oneeded); oneeded = needed;
+  len += ustr_len(s2);
+  sz_bad |= (len < olen); olen = len;
 
-  needed += slen;
-  sz_bad |= (needed < oneeded); oneeded = needed;
+  len += slen;
+  sz_bad |= (len < olen); olen = len;
 
-  needed += ustr_len(s3);
-  sz_bad |= (needed < oneeded); oneeded = needed;
+  len += ustr_len(s3);
+  sz_bad |= (len < olen); olen = len;
   while ((tmp = va_arg(nap, struct Ustr *)))
   {
-    needed += slen;
-    sz_bad |= (needed < oneeded); oneeded = needed;
+    len += slen;
+    sz_bad |= (len < olen); olen = len;
 
-    needed += ustr_len(tmp);
-    sz_bad |= (needed < oneeded); oneeded = needed;
+    len += ustr_len(tmp);
+    sz_bad |= (len < olen); olen = len;
   }
   va_end(nap);
 
-  if (sz_bad || !ustrp__add_undef(p, ps1, needed))
+  if (sz_bad || !(s1 = ustrp__dupx_undef(p, sz, rbytes, exact, emem, len)))
   {
-    ustr_setf_enomem_err(*ps1);
-    if (!reduce)
-      ustrp__sc_free(p, ps1);
-    return (USTR_FALSE);
+    errno = USTR__ENOMEM;
+    return (USTR_NULL);
   }
 
-    ustr__memcpy(*ps1, olen, ustr_cstr(s2), ustr_len(s2)); olen += ustr_len(s2);
+  len = 0;
+    ustr__memcpy(s1, len, ustr_cstr(s2), ustr_len(s2)); len += ustr_len(s2);
   do
   {
-    ustr__memcpy(*ps1, olen,          sptr,         slen); olen += slen;
-    ustr__memcpy(*ps1, olen, ustr_cstr(s3), ustr_len(s3)); olen += ustr_len(s3);
+    ustr__memcpy(s1, len,          sptr,         slen); len += slen;
+    ustr__memcpy(s1, len, ustr_cstr(s3), ustr_len(s3)); len += ustr_len(s3);
   } while ((s3 = va_arg(ap, struct Ustr *)));
+  USTR_ASSERT(olen == len);
 #else
-  int err_reset = USTR_FALSE;
   
-  USTR_ASSERT(ustrp__assert_valid(!!p, sep));
+  USTR_ASSERT(ustrp__assert_valid(0, sep));
   
-  if (ustr_enomem(*ps1))
-  {
-    err_reset = USTR_TRUE;
-    ustr_setf_enomem_clr(*ps1);
-  }
-  
-  ustrp__add(p, ps1, s2);
-
-  do {
-    ustrp__add_buf(p, ps1, sptr, slen);
-    ustrp__add(p, ps1, s3);
-  } while ((s3 = va_arg(ap, struct Ustr *)));
-
-  if (ustr_enomem(*ps1))
-  {
-    if (reduce)
-      ustrp__del(p, ps1, ustr_len(*ps1) - olen);
-    else
-      ustrp__sc_free(p, ps1);
-    errno = USTR__ENOMEM;
-    return (USTR_FALSE);
-  }
-
-  if (err_reset)
-    ustr_setf_enomem_err(*ps1);    
-#endif
-  return (USTR_TRUE);
-}
-
-USTR_CONF_i_PROTO
-int ustrp__sc_add_vjoin(struct Ustr_pool *p,
-                        struct Ustr **ps1, const struct Ustr *sep,
-                        const struct Ustr *s2,const struct Ustr *s3, va_list ap)
-{
-  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
-  return (ustrp__sc_vjoin(p, ps1, sep, s2, s3, USTR_TRUE, ap));
-}
-USTR_CONF_I_PROTO
-int ustr_sc_add_vjoin(struct Ustr **ps1, const struct Ustr *sep,
-                      const struct Ustr *s2, const struct Ustr *s3, va_list ap)
-{ return (ustrp__sc_add_vjoin(0, ps1, sep, s2, s3, ap)); }
-USTR_CONF_I_PROTO
-int ustrp_sc_add_vjoin(struct Ustr_pool *p,
-                       struct Ustrp **ps1, const struct Ustrp *sep,
-                       const struct Ustrp *s2, const struct Ustrp *s3,
-                       va_list ap)
-{
-  struct Ustr *tmp = &(*ps1)->s;
-  int ret = ustrp__sc_add_vjoin(p, &tmp, &sep->s, &s2->s, &s3->s, ap);
-  
-  *ps1 = USTRP(tmp);
-  return (ret);  
-}
-USTR_CONF_I_PROTO
-int ustr_sc_add_join(struct Ustr **ps1, const struct Ustr *sep,
-                     const struct Ustr *s2, const struct Ustr *s3, ...)
-{
-  int ret = USTR_FALSE;
-  va_list ap;
-  
-  va_start(ap, s3);
-  ret = ustr_sc_add_vjoin(ps1, sep, s2, s3, ap);
-  va_end(ap);
-  
-  return (ret);
-}
-USTR_CONF_I_PROTO
-int ustrp_sc_add_join(struct Ustr_pool *p,
-                      struct Ustrp **ps1, const struct Ustrp *sep,
-                      const struct Ustrp *s2, const struct Ustrp *s3, ...)
-{
-  int ret = USTR_FALSE;
-  va_list ap;
-  
-  va_start(ap, s3);
-  ret = ustrp_sc_add_vjoin(p, ps1, sep, s2, s3, ap);
-  va_end(ap);
-  
-  return (ret);
-}
-
-USTR_CONF_i_PROTO
-struct Ustr *ustrp__sc_dupx_vjoin(struct Ustr_pool *p,
-                                  size_t sz, size_t rbytes, int exact, int emem,
-                                  const struct Ustr *sep, const struct Ustr *s2,
-                                  const struct Ustr *s3, va_list ap)
-{
-  struct Ustr *s1 = USTR_NULL;
-
-  if (!(s1 = ustrp__dupx_undef(p, sz, rbytes, exact, USTR_FALSE, 0)))
+  if (!(s1 = ustrp__dupx(p, sz, rbytes, exact, USTR_FALSE, s2)))
     return (USTR_NULL);
 
-  if (ustrp__sc_vjoin(p, &s1, sep, s2, s3, USTR_FALSE, ap) && emem)
+  do {
+    ustrp__add_buf(p, &s1, sptr, slen);
+    ustrp__add(p, &s1, s3);
+  } while ((s3 = va_arg(ap, struct Ustr *)));
+
+  if (ustr_enomem(s1))
+  {
+    ustrp__sc_free(p, &s1);
+    errno = USTR__ENOMEM;
+    return (USTR_NULL);
+  }
+
+  if (emem)
     ustr_setf_enomem_err(s1);
-  
+#endif
+  USTR_ASSERT(ustrp__assert_valid(!!p, s1));
   return (s1);
 }
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dupx_vjoin(size_t sz, size_t rbytes, int exact, int emem,
-                                const struct Ustr *sep, const struct Ustr *s2,
-                                const struct Ustr *s3, va_list ap)
-{ return (ustrp__sc_dupx_vjoin(0, sz, rbytes, exact, emem, sep, s2, s3, ap)); }
+struct Ustr *ustr_sc_vjoinx(size_t sz, size_t rbytes, int exact, int emem,
+                            const struct Ustr *sep, const struct Ustr *s2,
+                            const struct Ustr *s3, va_list ap)
+{ return (ustrp__sc_vjoinx(0, sz, rbytes, exact, emem, sep, s2, s3, ap)); }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dupx_vjoin(struct Ustr_pool *p,
-                                  size_t sz, size_t rbytes, 
-                                  int exact, int emem,
-                                  const struct Ustrp *sp,const struct Ustrp *s2,
-                                  const struct Ustrp *s3, va_list ap)
-{ return (USTRP(ustrp__sc_dupx_vjoin(p, sz, rbytes, exact, emem,
-                                     &sp->s, &s2->s, &s3->s, ap))); }
+struct Ustrp *ustrp_sc_vjoinx(struct Ustr_pool *p,
+                              size_t sz, size_t rbytes, 
+                              int exact, int emem,
+                              const struct Ustrp *sp,const struct Ustrp *s2,
+                              const struct Ustrp *s3, va_list ap)
+{ return (USTRP(ustrp__sc_vjoinx(p, sz, rbytes, exact, emem,
+                                 &sp->s, &s2->s, &s3->s, ap))); }
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dupx_join(size_t sz, size_t rbytes, 
-                               int exact, int emem,
-                               const struct Ustr *sep, const struct Ustr *s2,
-                               const struct Ustr *s3, ...)
+struct Ustr *ustr_sc_joinx(size_t sz, size_t rbytes, 
+                           int exact, int emem,
+                           const struct Ustr *sep, const struct Ustr *s2,
+                           const struct Ustr *s3, ...)
 {
   struct Ustr *ret = USTR_NULL;
   va_list ap;
   
   va_start(ap, s3);
-  ret = ustr_sc_dupx_vjoin(sz, rbytes, exact, emem, sep, s2, s3, ap);
+  ret = ustr_sc_vjoinx(sz, rbytes, exact, emem, sep, s2, s3, ap);
   va_end(ap);
   
   return (ret);
 }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dupx_join(struct Ustr_pool *p,
-                                 size_t sz, size_t rbytes, 
-                                 int exact, int emem,
-                                 const struct Ustrp *sep,const struct Ustrp *s2,
-                                 const struct Ustrp *s3, ...)
+struct Ustrp *ustrp_sc_joinx(struct Ustr_pool *p,
+                             size_t sz, size_t rbytes, 
+                             int exact, int emem,
+                             const struct Ustrp *sep,const struct Ustrp *s2,
+                             const struct Ustrp *s3, ...)
 {
   struct Ustrp *ret = USTRP_NULL;
   va_list ap;
   
   va_start(ap, s3);
-  ret = ustrp_sc_dupx_vjoin(p, sz, rbytes, exact, emem, sep, s2, s3, ap);
+  ret = ustrp_sc_vjoinx(p, sz, rbytes, exact, emem, sep, s2, s3, ap);
   va_end(ap);
   
   return (ret);
 }
 
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dup_vjoin(const struct Ustr *sep, const struct Ustr *s2,
+struct Ustr *ustr_sc_vjoin(const struct Ustr *sep, const struct Ustr *s2,
                                const struct Ustr *s3, va_list ap)
-{ return (ustrp__sc_dupx_vjoin(0, USTR__DUPX_DEF, sep, s2, s3, ap)); }
+{ return (ustrp__sc_vjoinx(0, USTR__DUPX_DEF, sep, s2, s3, ap)); }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dup_vjoin(struct Ustr_pool *p, const struct Ustrp *sep,
+struct Ustrp *ustrp_sc_vjoin(struct Ustr_pool *p, const struct Ustrp *sep,
                                  const struct Ustrp *s2,const struct Ustrp *s3, 
                                  va_list ap)
-{ return (USTRP(ustrp__sc_dupx_vjoin(p, USTR__DUPX_DEF,
-                                     &sep->s, &s2->s, &s3->s, ap))); }
+{ return (USTRP(ustrp__sc_vjoinx(p,USTR__DUPX_DEF,&sep->s,&s2->s,&s3->s,ap))); }
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dup_join(const struct Ustr *sep, const struct Ustr *s2,
-                              const struct Ustr *s3, ...)
+struct Ustr *ustr_sc_join(const struct Ustr *sep, const struct Ustr *s2,
+                          const struct Ustr *s3, ...)
 {
   struct Ustr *ret = USTR_NULL;
   va_list ap;
   
   va_start(ap, s3);
-  ret = ustr_sc_dup_vjoin(sep, s2, s3, ap);
+  ret = ustr_sc_vjoin(sep, s2, s3, ap);
   va_end(ap);
   
   return (ret);
 }
 USTR_CONF_I_PROTO
 struct Ustrp *
-ustrp_sc_dup_join(struct Ustr_pool *p, const struct Ustrp *sep,
-                  const struct Ustrp *s2, const struct Ustrp *s3, ...)
+ustrp_sc_join(struct Ustr_pool *p, const struct Ustrp *sep,
+              const struct Ustrp *s2, const struct Ustrp *s3, ...)
 {
   struct Ustrp *ret = USTRP_NULL;
   va_list ap;
   
   va_start(ap, s3);
-  ret = ustrp_sc_dup_vjoin(p, sep, s2, s3, ap);
+  ret = ustrp_sc_vjoin(p, sep, s2, s3, ap);
   va_end(ap);
   
   return (ret);
@@ -603,142 +526,75 @@ ustrp_sc_dup_join(struct Ustr_pool *p, const struct Ustrp *sep,
 /* ---- concat ---- */
 
 USTR_CONF_i_PROTO
-int ustrp__sc_vconcat(struct Ustr_pool *p, struct Ustr **ps1,
-                      const struct Ustr *s2, int reduce, va_list ap)
-{ return (ustrp__sc_vjoin(p, ps1, USTR(""), USTR(""), s2, reduce, ap)); }
-
-USTR_CONF_i_PROTO
-int ustrp__sc_add_vconcat(struct Ustr_pool *p,
-                          struct Ustr **ps1, const struct Ustr *s2, va_list ap)
-{
-  USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
-  return (ustrp__sc_vconcat(p, ps1, s2, USTR_TRUE, ap));
-}
+struct Ustr *ustrp__sc_vconcatx(struct Ustr_pool *p,
+                                size_t sz, size_t rbytes, int exact, int emem,
+                                const struct Ustr *s2, va_list ap)
+{ return (ustrp__sc_vjoinx(p, sz,rbytes,exact,emem, USTR(""),USTR(""),s2,ap)); }
 USTR_CONF_I_PROTO
-int ustr_sc_add_vconcat(struct Ustr **ps1, const struct Ustr *s2, va_list ap)
-{ return (ustrp__sc_add_vconcat(0, ps1, s2, ap)); }
+struct Ustr *ustr_sc_vconcatx(size_t sz, size_t rbytes, int exact, int emem,
+                              const struct Ustr *s2, va_list ap)
+{ return (ustrp__sc_vconcatx(0, sz, rbytes, exact, emem, s2, ap)); }
 USTR_CONF_I_PROTO
-int ustrp_sc_add_vconcat(struct Ustr_pool *p,
-                         struct Ustrp **ps1, const struct Ustrp *s2, va_list ap)
-{
-  struct Ustr *tmp = &(*ps1)->s;
-  int ret = ustrp__sc_add_vconcat(p, &tmp, &s2->s, ap);
-  
-  *ps1 = USTRP(tmp);
-  return (ret);  
-}
+struct Ustrp *ustrp_sc_vconcatx(struct Ustr_pool *p,
+                                size_t sz, size_t rbytes, int exact, int emem,
+                                const struct Ustrp *s2, va_list ap)
+{ return (USTRP(ustrp__sc_vconcatx(p, sz,rbytes,exact,emem, &s2->s, ap))); }
 USTR_CONF_I_PROTO
-int ustr_sc_add_concat(struct Ustr **ps1, const struct Ustr *s2, ...)
-{
-  int ret = USTR_FALSE;
-  va_list ap;
-  
-  va_start(ap, s2);
-  ret = ustr_sc_add_vconcat(ps1, s2, ap);
-  va_end(ap);
-  
-  return (ret);
-}
-USTR_CONF_I_PROTO
-int ustrp_sc_add_concat(struct Ustr_pool *p,
-                        struct Ustrp **ps1, const struct Ustrp *s2, ...)
-{
-  int ret = USTR_FALSE;
-  va_list ap;
-  
-  va_start(ap, s2);
-  ret = ustrp_sc_add_vconcat(p, ps1, s2, ap);
-  va_end(ap);
-  
-  return (ret);
-}
-
-USTR_CONF_i_PROTO
-struct Ustr *ustrp__sc_dupx_vconcat(struct Ustr_pool *p,
-                                    size_t sz, size_t rbytes, 
-                                    int exact, int emem,
-                                    const struct Ustr *s2, va_list ap)
-{
-  struct Ustr *s1 = USTR_NULL;
-
-  if (!(s1 = ustrp__dupx_undef(p, sz, rbytes, exact, USTR_FALSE, 0)))
-    return (USTR_NULL);
-
-  if (ustrp__sc_vconcat(p, &s1, s2, USTR_FALSE, ap) && emem)
-    ustr_setf_enomem_err(s1);
-  
-  return (s1);
-}
-USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dupx_vconcat(size_t sz, size_t rbytes, 
-                                  int exact, int emem,
-                                  const struct Ustr *s2, va_list ap)
-{ return (ustrp__sc_dupx_vconcat(0, sz, rbytes, exact, emem, s2, ap)); }
-USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dupx_vconcat(struct Ustr_pool *p,
-                                    size_t sz, size_t rbytes, 
-                                    int exact, int emem,
-                                    const struct Ustrp *s2, va_list ap)
-{ return (USTRP(ustrp__sc_dupx_vconcat(p, sz,rbytes,exact,emem, &s2->s, ap))); }
-USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dupx_concat(size_t sz, size_t rbytes, 
-                                 int exact, int emem,
-                                 const struct Ustr *s2, ...)
+struct Ustr *ustr_sc_concatx(size_t sz, size_t rbytes, int exact, int emem,
+                             const struct Ustr *s2, ...)
 {
   struct Ustr *ret = USTR_NULL;
   va_list ap;
   
   va_start(ap, s2);
-  ret = ustr_sc_dupx_vconcat(sz, rbytes, exact, emem, s2, ap);
+  ret = ustr_sc_vconcatx(sz, rbytes, exact, emem, s2, ap);
   va_end(ap);
   
   return (ret);
 }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dupx_concat(struct Ustr_pool *p,
-                                   size_t sz, size_t rbytes, 
-                                   int exact, int emem,
-                                   const struct Ustrp *s2, ...)
+struct Ustrp *ustrp_sc_concatx(struct Ustr_pool *p,
+                               size_t sz, size_t rbytes, int exact, int emem,
+                               const struct Ustrp *s2, ...)
 {
   struct Ustrp *ret = USTRP_NULL;
   va_list ap;
   
   va_start(ap, s2);
-  ret = ustrp_sc_dupx_vconcat(p, sz, rbytes, exact, emem, s2, ap);
+  ret = ustrp_sc_vconcatx(p, sz, rbytes, exact, emem, s2, ap);
   va_end(ap);
   
   return (ret);
 }
 
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dup_vconcat(const struct Ustr *s2, va_list ap)
-{ return (ustrp__sc_dupx_vconcat(0, USTR__DUPX_DEF, s2, ap)); }
+struct Ustr *ustr_sc_vconcat(const struct Ustr *s2, va_list ap)
+{ return (ustrp__sc_vconcatx(0, USTR__DUPX_DEF, s2, ap)); }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dup_vconcat(struct Ustr_pool *p,
-                                   const struct Ustrp *s2, 
-                                   va_list ap)
-{ return (USTRP(ustrp__sc_dupx_vconcat(p, USTR__DUPX_DEF, &s2->s, ap))); }
+struct Ustrp *ustrp_sc_vconcat(struct Ustr_pool *p,
+                               const struct Ustrp *s2, va_list ap)
+{ return (USTRP(ustrp__sc_vconcatx(p, USTR__DUPX_DEF, &s2->s, ap))); }
 USTR_CONF_I_PROTO
-struct Ustr *ustr_sc_dup_concat(const struct Ustr *s2, ...)
+struct Ustr *ustr_sc_concat(const struct Ustr *s2, ...)
 {
   struct Ustr *ret = USTR_NULL;
   va_list ap;
   
   va_start(ap, s2);
-  ret = ustr_sc_dup_vconcat(s2, ap);
+  ret = ustr_sc_vconcat(s2, ap);
   va_end(ap);
   
   return (ret);
 }
 USTR_CONF_I_PROTO
-struct Ustrp *ustrp_sc_dup_concat(struct Ustr_pool *p,
-                                  const struct Ustrp *s2, ...)
+struct Ustrp *ustrp_sc_concat(struct Ustr_pool *p,
+                              const struct Ustrp *s2, ...)
 {
   struct Ustrp *ret = USTRP_NULL;
   va_list ap;
   
   va_start(ap, s2);
-  ret = ustrp_sc_dup_vconcat(p, s2, ap);
+  ret = ustrp_sc_vconcat(p, s2, ap);
   va_end(ap);
   
   return (ret);

@@ -15,18 +15,14 @@
 
 2008-02-14  James Antill  <james@and.org>
 
-	* ustr-sc-code.h (ustr_sc_add_vconcat): Added function.
-	(ustr_sc_add_concat): Added function.
-	(ustr_sc_dupx_vconcat): Added function.
-	(ustr_sc_dupx_concat): Added function.
-	(ustr_sc_dup_vconcat): Added function.
-	(ustr_sc_dup_concat): Added function.
-	(ustr_sc_add_vjoin): Added function.
-	(ustr_sc_add_join): Added function.
-	(ustr_sc_dupx_vjoin): Added function.
-	(ustr_sc_dupx_join): Added function.
-	(ustr_sc_dup_vjoin): Added function.
-	(ustr_sc_dup_join): Added function.
+	* ustr-sc-code.h (ustr_sc_vconcatx): Added function.
+	(ustr_sc_concatx): Added function.
+	(ustr_sc_vconcat): Added function.
+	(ustr_sc_concat): Added function.
+	(ustr_sc_vjoinx): Added function.
+	(ustr_sc_joinx): Added function.
+	(ustr_sc_vjoin): Added function.
+	(ustr_sc_join): Added function.
 
 2008-02-13  James Antill  <james@and.org>
 
