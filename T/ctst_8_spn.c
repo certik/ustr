@@ -55,6 +55,7 @@ int tst(void)
   ASSERT(ustr_spn_cstr_fwd(s4, 8, "abcdefg ") == 0);
   
   ASSERT(ustr_spn_cstr_rev(s3, 0, "z")  == 3);
+  ASSERT(ustr_spn_cstr_rev(s3, 4, "y")  == 4);
   ASSERT(ustr_spn_cstr_rev(s3, 0, "az") == 3);
   ASSERT(ustr_spn_cstr_rev(s3, 0, "ayz") == 3);
   ASSERT(ustr_spn_cstr_rev(s3, 0, "ayz ") == 18);
@@ -69,6 +70,46 @@ int tst(void)
   ASSERT(ustr_spn_cstr_rev(s3, 7, "y ") == 11);
   ASSERT(ustr_spn_cstr_rev(s3, 8, "y ") == 10);
   ASSERT(ustr_spn_cstr_rev(s3, 9, "y ") ==  9);
+  
+  ASSERT(ustr_cspn_cstr_fwd(s4, 0, "e") == 4);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 0, "!-") == 8);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 1, "!-") == 7);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 2, "!-") == 6);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 3, "!-") == 5);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 4, "!-") == 4);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 5, "!-") == 3);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 6, "!-") == 2);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 7, "!-") == 1);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 8, "!-") == 0);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 0, "!")  == 8);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 1, "!")  == 7);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 2, "!")  == 6);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 3, "!")  == 5);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 4, "!")  == 4);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 5, "!")  == 3);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 6, "!")  == 2);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 7, "!")  == 1);
+  ASSERT(ustr_cspn_cstr_fwd(s4, 8, "!")  == 0);
+  
+  ASSERT(ustr_cspn_cstr_rev(s4, 0, "e") == 3);
+  ASSERT(ustr_cspn_cstr_rev(s4, 0, "!-") == 8);
+  ASSERT(ustr_cspn_cstr_rev(s4, 1, "!-") == 7);
+  ASSERT(ustr_cspn_cstr_rev(s4, 2, "!-") == 6);
+  ASSERT(ustr_cspn_cstr_rev(s4, 3, "!-") == 5);
+  ASSERT(ustr_cspn_cstr_rev(s4, 4, "!-") == 4);
+  ASSERT(ustr_cspn_cstr_rev(s4, 5, "!-") == 3);
+  ASSERT(ustr_cspn_cstr_rev(s4, 6, "!-") == 2);
+  ASSERT(ustr_cspn_cstr_rev(s4, 7, "!-") == 1);
+  ASSERT(ustr_cspn_cstr_rev(s4, 8, "!-") == 0);
+  ASSERT(ustr_cspn_cstr_rev(s4, 0, "!")  == 8);
+  ASSERT(ustr_cspn_cstr_rev(s4, 1, "!")  == 7);
+  ASSERT(ustr_cspn_cstr_rev(s4, 2, "!")  == 6);
+  ASSERT(ustr_cspn_cstr_rev(s4, 3, "!")  == 5);
+  ASSERT(ustr_cspn_cstr_rev(s4, 4, "!")  == 4);
+  ASSERT(ustr_cspn_cstr_rev(s4, 5, "!")  == 3);
+  ASSERT(ustr_cspn_cstr_rev(s4, 6, "!")  == 2);
+  ASSERT(ustr_cspn_cstr_rev(s4, 7, "!")  == 1);
+  ASSERT(ustr_cspn_cstr_rev(s4, 8, "!")  == 0);
   
   ASSERT(ustr_cspn_cstr_rev(s3, 0, "34") == 18);
   ASSERT(ustr_cspn_cstr_rev(s3, 0, " ") == 3);

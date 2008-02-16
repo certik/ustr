@@ -153,9 +153,9 @@ size_t ustr_cspn_chr_rev(const struct Ustr *s1, size_t off, char chr)
   size_t f_pos = ustr_srch_chr_rev(s1, off, chr);
 
   if (!f_pos)
-    return (ustr_len(s1));
+    return (ustr_len(s1) - off);
     
-  return (ustr_len(s1) - f_pos);
+  return ((ustr_len(s1) - f_pos) - off);
 }
 
 USTR_CONF_I_PROTO size_t ustr_cspn_chrs_fwd(const struct Ustr *s1, size_t off,
