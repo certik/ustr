@@ -58,7 +58,7 @@ DEPS    =
 # This is a simple makefile for example programs...
 
 ALL = hello_world netstr hexdump nums mkdir_p fgrep txt2html custr \
-      linecat_buf linecat_sized
+      linecat_buf linecat_sized basename dirname
 
 DBG_LIB_STATIC      = libustr-debug.a
 OPT_LIB_STATIC      = libustr.a
@@ -144,6 +144,12 @@ linecat_buf: linecat.c
 
 linecat_sized: linecat.c
 		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS) -DCAT_TYPE=2
+
+basename: basename.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
+
+dirname: dirname.c
+		$(CC) $(PCFLAGS) -o $@ $< $(LDFLAGS)
 
 
 strip: $(ALL)

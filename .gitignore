@@ -30,6 +30,10 @@ examples/custr
 examples/custr-s
 examples/linecat_*
 examples/linecat*-s
+examples/basename
+examples/basename-s
+examples/dirname
+examples/dirname-s
 abcd
 T-installed/tst_*_norm
 T-installed/tst_*_dbg1
