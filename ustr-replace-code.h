@@ -157,12 +157,25 @@ size_t ustrp__replace(struct Ustr_pool *p, struct Ustr **ps1,
                       const struct Ustr *srch,
                       const struct Ustr *repl, size_t lim)
 {
+  struct Ustr *t1 = USTR_NULL;
+  struct Ustr *t2 = USTR_NULL;
+  size_t ret = 0;
+  
   USTR_ASSERT(ustrp__assert_valid(!!p, srch));
   USTR_ASSERT(ustrp__assert_valid(!!p, repl));
 
-  return (ustrp__replace_buf(p, ps1,
+  if (srch == *ps1) srch = t1 = ustrp__dup(p, *ps1);
+  if (repl == *ps1) repl = t2 = ustrp__dup(p, *ps1);
+
+  if (srch && repl)
+    ret = ustrp__replace_buf(p, ps1,
                              ustr_cstr(srch), ustr_len(srch),
-                             ustr_cstr(repl), ustr_len(repl), lim));
+                             ustr_cstr(repl), ustr_len(repl), lim);
+  
+  ustrp__free(p, t1);
+  ustrp__free(p, t2);
+  
+  return (ret);
 }
 USTR_CONF_I_PROTO
 size_t ustr_replace(struct Ustr **ps1, const struct Ustr *srch,
