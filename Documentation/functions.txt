@@ -1118,6 +1118,246 @@ Function: ustr_dupx_rep_chr()
  byte value to each position.
 
 
+Function: ustr_sc_vjoin()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Separator to go between Ustr strings
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: A pointer to the first constant Ustr string
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: A pointer to the second constant Ustr string
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: Variable argument list variable, from va_start()
+ Type[4]: va_list
+
+ Explanation:
+
+  This function works as if you called ustr_dup() on the first Ustr
+ string (Parameter[2]), and then ustr_add() on the separator (Parameter[1])
+ followed by ustr_add() on the second Ustr string (Parameter[3]). This process
+ then repeats for all the Ustr strings in the variable argument list
+ (Parameter[4]) until a USTR_NULL is reached.
+
+ Note:
+
+  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+Function: ustr_sc_join()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Separator to go between Ustr strings
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: A pointer to the first constant Ustr string
+ Type[2]: const struct Ustr *
+
+ Parameter[3]: A pointer to the second constant Ustr string
+ Type[3]: const struct Ustr *
+
+ Parameter[4]: Zero or more pointers to constant Ustr strings and then USTR_NULL
+ Type[4]: ...
+
+ Explanation:
+
+  This function calls va_start() to get a variable argument list and then calls
+ ustr_sc_vjoin().
+
+ Note:
+
+  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+Function: ustr_sc_vjoinx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Separator to go between Ustr strings
+ Type[5]: const struct Ustr *
+
+ Parameter[6]: A pointer to the first constant Ustr string
+ Type[6]: const struct Ustr *
+
+ Parameter[7]: A pointer to the second constant Ustr string
+ Type[7]: const struct Ustr *
+
+ Parameter[8]: Variable argument list variable, from va_start()
+ Type[8]: va_list
+
+ Explanation:
+
+  This function works as if you called ustr_dupx() on the first Ustr
+ string (Parameter[2]), and then ustr_add() on the separator (Parameter[1])
+ followed by ustr_add() on the second Ustr string (Parameter[3]). This process
+ then repeats for all the Ustr strings in the variable argument list
+ (Parameter[4]) until a USTR_NULL is reached.
+
+ Note:
+
+  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+Function: ustr_sc_joinx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: Separator to go between Ustr strings
+ Type[5]: const struct Ustr *
+
+ Parameter[6]: A pointer to the first constant Ustr string
+ Type[6]: const struct Ustr *
+
+ Parameter[7]: A pointer to the second constant Ustr string
+ Type[7]: const struct Ustr *
+
+ Parameter[8]: Zero or more pointers to constant Ustr strings and then USTR_NULL
+ Type[8]: ...
+
+ Explanation:
+
+  This function calls va_start() to get a variable argument list and then calls
+ ustr_sc_vjoinx().
+
+
+Function: ustr_sc_vconcat()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: A pointer to the first constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Variable argument list variable, from va_start()
+ Type[2]: va_list
+
+ Explanation:
+
+  This function works as if you called ustr_dup() on the first Ustr
+ string (Parameter[1]), and then ustr_add() on the second Ustr
+ string (Parameter[3]). This process then repeats for all the Ustr strings in
+ the variable argument list (Parameter[4]) until a USTR_NULL is reached.
+
+ Note:
+
+  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+Function: ustr_sc_concat()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: A pointer to the first constant Ustr string
+ Type[1]: const struct Ustr *
+
+ Parameter[2]: Zero or more pointers to constant Ustr strings and then USTR_NULL
+ Type[2]: ...
+
+ Explanation:
+
+  This function calls va_start() to get a variable argument list and then calls
+ ustr_sc_vconcat().
+
+
+Function: ustr_sc_vconcatx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: A pointer to the first constant Ustr string
+ Type[5]: const struct Ustr *
+
+ Parameter[6]: Variable argument list variable, from va_start()
+ Type[6]: va_list
+
+ Explanation:
+
+  This function works as if you called ustr_dupx() on the first Ustr
+ string (Parameter[1]), and then ustr_add() on the second Ustr
+ string (Parameter[3]). This process then repeats for all the Ustr strings in
+ the variable argument list (Parameter[4]) until a USTR_NULL is reached.
+
+ Note:
+
+  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+Function: ustr_sc_concatx()
+ Returns: Pointer to a Ustr string
+ Type: struct Ustr *
+
+ Parameter[1]: Size of allocated storage
+ Type[1]: size_t
+
+ Parameter[2]: Number of bytes to use for reference count
+ Type[2]: size_t
+
+ Parameter[3]: Exact memory allocations
+ Type[3]: int
+
+ Parameter[4]: ENOMEM, memory error flag
+ Type[4]: int
+
+ Parameter[5]: A pointer to the first constant Ustr string
+ Type[5]: const struct Ustr *
+
+ Parameter[6]: Zero or more pointers to constant Ustr strings and then USTR_NULL
+ Type[6]: ...
+
+ Explanation:
+
+  This function calls va_start() to get a variable argument list and then calls
+ ustr_sc_vconcatx().
+
+
 Section: Deleting a Ustr, or data within a Ustr
 Function: ustr_free()
  Returns: Nothing
@@ -1767,7 +2007,7 @@ Function: ustr_add_vfmt_lim()
  Parameter[3]: A pointer to a constant C-style string
  Type[3]: const char *
 
- Parameter[4]: Variable argument list variable
+ Parameter[4]: Variable argument list variable, from va_start()
  Type[4]: va_list
 
  Explanation:
@@ -4973,7 +5213,7 @@ Function: ustr_parse_uintmaxx()
  Parameter[5]: Absolute maximum value
  Type[5]: uintmax_t
 
- Parameter[6]: Thousands seperator
+ Parameter[6]: Thousands separator
  Type[6]: const char *
 
  Parameter[7]: Return length of parsed number
@@ -5014,7 +5254,7 @@ Function: ustr_parse_uintmax()
  Explanation:
 
   This function works like ustr_parse_uintmaxx() with the minimum and maximum
- values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
+ values taken as 0 and UINTMAX_MAX, and the thousands separator as "_".
 
  Note:
 
@@ -5043,7 +5283,7 @@ Function: ustr_parse_intmax()
  Explanation:
 
   This function works like ustr_parse_uintmaxx() with the minimum and maximum
- values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
+ values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands separator as "_".
 
  Note:
 
@@ -5069,7 +5309,7 @@ Function: ustr_parse_ulongx()
  Parameter[5]: Absolute maximum value
  Type[5]:  unsigned long
 
- Parameter[6]: Thousands seperator
+ Parameter[6]: Thousands separator
  Type[6]: const char *
 
  Parameter[7]: Return length of parsed number
@@ -5106,7 +5346,7 @@ Function: ustr_parse_ulong()
  Explanation:
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
- values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
+ values taken as 0 and ULONG_MAX, and the thousands separator as "_".
 
 
 Function: ustr_parse_long()
@@ -5131,7 +5371,7 @@ Function: ustr_parse_long()
  Explanation:
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
- values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
+ values taken as -LONG_MIN and LONG_MAX, and the thousands separator as "_".
 
 
 Function: ustr_parse_uint()
@@ -5156,7 +5396,7 @@ Function: ustr_parse_uint()
  Explanation:
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
- values taken as 0 and UINT_MAX, and the thousands seperator as "_".
+ values taken as 0 and UINT_MAX, and the thousands separator as "_".
 
 
 Function: ustr_parse_int()
@@ -5181,7 +5421,7 @@ Function: ustr_parse_int()
  Explanation:
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
- values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
+ values taken as -INT_MIN and INT_MAX, and the thousands separator as "_".
 
 
 Function: ustr_parse_ushort()
@@ -5206,7 +5446,7 @@ Function: ustr_parse_ushort()
  Explanation:
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
- values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
+ values taken as 0 and USHRT_MAX, and the thousands separator as "_".
 
 
 Function: ustr_parse_short()
@@ -5231,7 +5471,7 @@ Function: ustr_parse_short()
  Explanation:
 
   This function works like ustr_parse_ulongx() with the minimum and maximum
- values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
+ values taken as -SHRT_MIN and SHRT_MAX, and the thousands separator as "_".
 
 
 Section: Misc shortcut helper functions for Ustrs
