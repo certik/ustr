@@ -1,4 +1,4 @@
-.TH ustr 3 "05-Jan-2008" "Ustr 1.0.3" "Ustr String Library"
+.TH ustr 3 "16-Feb-2008" "Ustr 1.0.3" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -209,6 +209,38 @@ struct Ustr *\fBustr_dup_rep_chr\fR(char, size_t);
 .in \w'  struct Ustr *\fBustr_dupx_rep_chr\fR('u
 .ti \w'  'u
 struct Ustr *\fBustr_dupx_rep_chr\fR(size_t, size_t, int, int, char, size_t);
+.br
+.in \w'  struct Ustr *\fBustr_sc_vjoin\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_vjoin\fR(const struct Ustr *, const struct Ustr *, const struct Ustr *, va_list);
+.br
+.in \w'  struct Ustr *\fBustr_sc_join\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_join\fR(const struct Ustr *, const struct Ustr *, const struct Ustr *, ...);
+.br
+.in \w'  struct Ustr *\fBustr_sc_vjoinx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_vjoinx\fR(size_t, size_t, int, int, const struct Ustr *, const struct Ustr *, const struct Ustr *, va_list);
+.br
+.in \w'  struct Ustr *\fBustr_sc_joinx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_joinx\fR(size_t, size_t, int, int, const struct Ustr *, const struct Ustr *, const struct Ustr *, ...);
+.br
+.in \w'  struct Ustr *\fBustr_sc_vconcat\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_vconcat\fR(const struct Ustr *, va_list);
+.br
+.in \w'  struct Ustr *\fBustr_sc_concat\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_concat\fR(const struct Ustr *, ...);
+.br
+.in \w'  struct Ustr *\fBustr_sc_vconcatx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_vconcatx\fR(size_t, size_t, int, int, const struct Ustr *, va_list);
+.br
+.in \w'  struct Ustr *\fBustr_sc_concatx\fR('u
+.ti \w'  'u
+struct Ustr *\fBustr_sc_concatx\fR(size_t, size_t, int, int, const struct Ustr *, ...);
 .sp
 .br
 .in \w'  void  \fBustr_free\fR('u
@@ -1213,18 +1245,24 @@ Type\fB[2]\fR: const char[]
 .br
   This macro function simplifies the creation of read-only Ustr string's. And is normally used like...
 
+.Vb 4
   USTR1(\\x4, "abcd")
 
+.Ve
  ...it is worth pointing out that running with debugging turned on
  (USTR_CONF_USE_ASSERT) will complain if the length isn't encoded correctly, as in...
 
+.Vb 4
   USTR1(\\x3, "abcd")
 
+.Ve
  ...here ustr_assert_valid() will fail, which is called before most functions do
  anything in debugging mode. Note also that extra debugging (USTR_CONF_USE_EOS_MARK) will still catch cases like...
 
+.Vb 4
   USTR1(\\x3, "abc\\0d")
 
+.Ve
  ...at least using debugging is esp. important if you are putting UTF-8
  characters into the strings.
 .sp
@@ -1621,6 +1659,7 @@ Type\fB[1]\fR: size_t
 
 .br
   char buf[USTR_SIZE_FIXED(4)];
+.Ve
  ...to give you exactly 4 bytes as a maximum, this is esp. useful if you want
  a limited (ustr_limited() == USTR_TRUE) Ustr string.
 
@@ -1699,9 +1738,11 @@ Type\fB[3]\fR: size_t
 .br
   This does mean that the first argument must be the correct size, as far as sizeof() is concerned, as in...
 
+.Vb 4
  char buf_sz[1024];
  Ustr *s1 = USTR_SC_INIT_AUTO(buf_sz, USTR_FALSE, 0);
 
+.Ve
  ...so passing pointers to memory from malloc() will probably just return NULL.
 
 
@@ -1739,9 +1780,11 @@ Type\fB[3]\fR: size_t
 .br
   This does mean that the first argument must be the correct size, as far as sizeof() is concerned, as in...
 
+.Vb 4
  char buf_sz[1024] = USTR_BEG_FIXED2 "abcd";
  Ustr *s1 = USTR_SC_INIT_AUTO_OSTR(buf_sz, USTR_FALSE, "abcd");
 
+.Ve
  ...so passing pointers to memory from malloc() will probably just return NULL.
 
 
@@ -2713,6 +2756,343 @@ Type\fB[6]\fR: size_t
 .br
   This function works as if you had called ustr_dupx_undef() and then copied the byte value to each position.
 
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_vjoin()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Separator to go between Ustr strings
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: A pointer to the second constant Ustr string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[4]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you called ustr_dup() on the first Ustr string (Parameter[2]), and then ustr_add() on the separator (Parameter[1]) followed by ustr_add() on the second Ustr string (Parameter[3]). This process then repeats for all the Ustr strings in the variable argument list (Parameter[4]) until a USTR_NULL is reached.
+.sp
+\fBNote:\fR
+
+.br
+  This function doesn't guarantee to just take a reference to one of the passed Ustr strings, even if that is what would happen if you called the above manually.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_join()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Separator to go between Ustr strings
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[2]\fR: const struct Ustr *
+
+.br
+Parameter\fB[3]\fR: A pointer to the second constant Ustr string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR: Zero or more pointers to constant Ustr strings and then USTR_NULL
+.br
+Type\fB[4]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calls va_start() to get a variable argument list and then calls ustr_sc_vjoin().
+.sp
+\fBNote:\fR
+
+.br
+  This function doesn't guarantee to just take a reference to one of the passed Ustr strings, even if that is what would happen if you called the above manually.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_vjoinx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Separator to go between Ustr strings
+.br
+Type\fB[5]\fR: const struct Ustr *
+
+.br
+Parameter\fB[6]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[6]\fR: const struct Ustr *
+
+.br
+Parameter\fB[7]\fR: A pointer to the second constant Ustr string
+.br
+Type\fB[7]\fR: const struct Ustr *
+
+.br
+Parameter\fB[8]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[8]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you called ustr_dupx() on the first Ustr string (Parameter[2]), and then ustr_add() on the separator (Parameter[1]) followed by ustr_add() on the second Ustr string (Parameter[3]). This process then repeats for all the Ustr strings in the variable argument list (Parameter[4]) until a USTR_NULL is reached.
+.sp
+\fBNote:\fR
+
+.br
+  This function doesn't guarantee to just take a reference to one of the passed Ustr strings, even if that is what would happen if you called the above manually.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_joinx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: Separator to go between Ustr strings
+.br
+Type\fB[5]\fR: const struct Ustr *
+
+.br
+Parameter\fB[6]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[6]\fR: const struct Ustr *
+
+.br
+Parameter\fB[7]\fR: A pointer to the second constant Ustr string
+.br
+Type\fB[7]\fR: const struct Ustr *
+
+.br
+Parameter\fB[8]\fR: Zero or more pointers to constant Ustr strings and then USTR_NULL
+.br
+Type\fB[8]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calls va_start() to get a variable argument list and then calls ustr_sc_vjoinx().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_vconcat()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[2]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you called ustr_dup() on the first Ustr string (Parameter[1]), and then ustr_add() on the second Ustr string (Parameter[3]). This process then repeats for all the Ustr strings in the variable argument list (Parameter[4]) until a USTR_NULL is reached.
+.sp
+\fBNote:\fR
+
+.br
+  This function doesn't guarantee to just take a reference to one of the passed Ustr strings, even if that is what would happen if you called the above manually.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_concat()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[1]\fR: const struct Ustr *
+
+.br
+Parameter\fB[2]\fR: Zero or more pointers to constant Ustr strings and then USTR_NULL
+.br
+Type\fB[2]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calls va_start() to get a variable argument list and then calls ustr_sc_vconcat().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_vconcatx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[5]\fR: const struct Ustr *
+
+.br
+Parameter\fB[6]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[6]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you called ustr_dupx() on the first Ustr string (Parameter[1]), and then ustr_add() on the second Ustr string (Parameter[3]). This process then repeats for all the Ustr strings in the variable argument list (Parameter[4]) until a USTR_NULL is reached.
+.sp
+\fBNote:\fR
+
+.br
+  This function doesn't guarantee to just take a reference to one of the passed Ustr strings, even if that is what would happen if you called the above manually.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_concatx()
+.br
+Returns: Pointer to a Ustr string
+.br
+Type: struct Ustr *
+
+.br
+Parameter\fB[1]\fR: Size of allocated storage
+.br
+Type\fB[1]\fR: size_t
+
+.br
+Parameter\fB[2]\fR: Number of bytes to use for reference count
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Exact memory allocations
+.br
+Type\fB[3]\fR: int
+
+.br
+Parameter\fB[4]\fR: ENOMEM, memory error flag
+.br
+Type\fB[4]\fR: int
+
+.br
+Parameter\fB[5]\fR: A pointer to the first constant Ustr string
+.br
+Type\fB[5]\fR: const struct Ustr *
+
+.br
+Parameter\fB[6]\fR: Zero or more pointers to constant Ustr strings and then USTR_NULL
+.br
+Type\fB[6]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function calls va_start() to get a variable argument list and then calls ustr_sc_vconcatx().
+
 .SH Deleting a Ustr, or data within a Ustr
 .ti -2
 .br
@@ -3663,7 +4043,7 @@ Parameter\fB[3]\fR: A pointer to a constant C-style string
 Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR: Variable argument list variable
+Parameter\fB[4]\fR: Variable argument list variable, from va_start()
 .br
 Type\fB[4]\fR: va_list
 
@@ -7899,9 +8279,11 @@ Type\fB[6]\fR: size_t lim
   This function replaces a repeating sequence of characters with another repeating sequence of characters. 
   For example...
 
+.Vb 4
   Ustr *data = ustr_dup_cstr("xxxBxxCxDxxx");
   ustr_replace_rep_chr(&data,'x',2,'y',1, 0)
 
+.Ve
  ...would change data to be "yxByCxDyx".
 
 
@@ -7958,13 +8340,16 @@ Type\fB[6]\fR: unsigned int
 .br
   Parameter[5] is a a pointer to a Ustr where the return value will be placed. Passing a USTR_NULL to this parameter will cause the string to be allocated and \fBMUST\fR be freed \fBmanually\fR. If, however, you pass in a non-null Ustr to this parameter, each call to ustr_split_buf() will free what is in this pointer and place the new token there (when USTR_NULL is returned, nothing needs to be free'd).  For example, given...
 
+.Vb 4
   Ustr *data = ...;
   Ustr *tok = USTR_NULL;
   const char *sep = ",";
   size_t off = 0;
   unsigned int flags = USTR_FLAGS_SPLIT_DEF;
 
+.Ve
  ...there are two options...
+.Vb 4
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), tok, flags)))
   {
@@ -7973,7 +8358,9 @@ Type\fB[6]\fR: unsigned int
   }
   /* tok is now NULL again after the loop */
 
+.Ve
  ...or...
+.Vb 4
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), USTR_NULL, flags)))
   {
@@ -7982,6 +8369,7 @@ Type\fB[6]\fR: unsigned int
       ustr_free(tok); /* have to free to avoid mem leaks */
   }
 
+.Ve
  ...the former of which being the safer option.
 
 .sp
@@ -8389,7 +8777,7 @@ Parameter\fB[5]\fR: Absolute maximum value
 Type\fB[5]\fR: uintmax_t
 
 .br
-Parameter\fB[6]\fR: Thousands seperator
+Parameter\fB[6]\fR: Thousands separator
 .br
 Type\fB[6]\fR: const char *
 
@@ -8451,7 +8839,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as 0 and UINTMAX_MAX, and the thousands separator as "_".
 .sp
 \fBNote:\fR
 
@@ -8495,7 +8883,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands separator as "_".
 .sp
 \fBNote:\fR
 
@@ -8536,7 +8924,7 @@ Parameter\fB[5]\fR: Absolute maximum value
 Type\fB[5]\fR:  unsigned long
 
 .br
-Parameter\fB[6]\fR: Thousands seperator
+Parameter\fB[6]\fR: Thousands separator
 .br
 Type\fB[6]\fR: const char *
 
@@ -8593,7 +8981,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and ULONG_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -8632,7 +9020,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -LONG_MIN and LONG_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -8671,7 +9059,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and UINT_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and UINT_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -8710,7 +9098,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -INT_MIN and INT_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -8749,7 +9137,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as 0 and USHRT_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -8788,7 +9176,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -SHRT_MIN and SHRT_MAX, and the thousands separator as "_".
 
 .SH Misc shortcut helper functions for Ustrs
 .ti -2

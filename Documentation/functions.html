@@ -25,14 +25,14 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.3 reference documentation -- functions (275)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.3 reference documentation -- functions (283)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
 <li><a href="#indx-Creating_readonly_Ustr_functions">Creating read-only Ustr functions (14)</a>
 <li><a href="#indx-Creating_fixed_Ustr_functions">Creating fixed Ustr functions (4)</a>
 <li><a href="#indx-Debugging_functions">Debugging functions (12)</a>
-<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (20)</a>
+<li><a href="#indx-Creating_allocated_Ustr_functions">Creating allocated Ustr functions (28)</a>
 <li><a href="#indx-Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr (8)</a>
 <li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (8)</a>
 <li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (9)</a>
@@ -113,6 +113,14 @@
 <li class="obj"><a href="#ustr_dupx_subustr">ustr_dupx_subustr()</a>
 <li class="obj"><a href="#ustr_dup_rep_chr">ustr_dup_rep_chr()</a>
 <li class="obj"><a href="#ustr_dupx_rep_chr">ustr_dupx_rep_chr()</a>
+<li class="obj"><a href="#ustr_sc_vjoin">ustr_sc_vjoin()</a>
+<li class="obj"><a href="#ustr_sc_join">ustr_sc_join()</a>
+<li class="obj"><a href="#ustr_sc_vjoinx">ustr_sc_vjoinx()</a>
+<li class="obj"><a href="#ustr_sc_joinx">ustr_sc_joinx()</a>
+<li class="obj"><a href="#ustr_sc_vconcat">ustr_sc_vconcat()</a>
+<li class="obj"><a href="#ustr_sc_concat">ustr_sc_concat()</a>
+<li class="obj"><a href="#ustr_sc_vconcatx">ustr_sc_vconcatx()</a>
+<li class="obj"><a href="#ustr_sc_concatx">ustr_sc_concatx()</a>
 </ul><li><a id="indx-Deleting_a_Ustr_or_data_within_a_Ustr" href="#Deleting_a_Ustr_or_data_within_a_Ustr">Deleting a Ustr, or data within a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_free">ustr_free()</a>
@@ -1100,6 +1108,145 @@
  byte value to each position.
 
 
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_vjoin">ustr_sc_vjoin()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Separator to go between Ustr strings<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to the second constant <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[4]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you called <a href="functions#ustr_dup">ustr_dup()</a> on the first Ustr
+ string (Parameter[2]), and then <a href="functions#ustr_add">ustr_add()</a> on the separator (Parameter[1])
+ followed by <a href="functions#ustr_add">ustr_add()</a> on the second <a href="design">Ustr string</a> (Parameter[3]). This process
+ then repeats for all the Ustr strings in the variable argument list
+ (Parameter[4]) until a <a href="constants#USTR_NULL">USTR_NULL</a> is reached.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_join">ustr_sc_join()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Separator to go between Ustr strings<br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[2]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to the second constant <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Zero or more pointers to constant Ustr strings and then USTR_NULL<br>Type<strong>[4]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function calls va_start() to get a variable argument list and then calls
+ <a href="functions#ustr_sc_vjoin">ustr_sc_vjoin()</a>.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_vjoinx">ustr_sc_vjoinx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Separator to go between Ustr strings<br>Type<strong>[5]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[6]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[7]</strong>: A pointer to the second constant <a href="design">Ustr string</a><br>Type<strong>[7]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[8]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[8]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you called <a href="functions#ustr_dupx">ustr_dupx()</a> on the first Ustr
+ string (Parameter[2]), and then <a href="functions#ustr_add">ustr_add()</a> on the separator (Parameter[1])
+ followed by <a href="functions#ustr_add">ustr_add()</a> on the second <a href="design">Ustr string</a> (Parameter[3]). This process
+ then repeats for all the Ustr strings in the variable argument list
+ (Parameter[4]) until a <a href="constants#USTR_NULL">USTR_NULL</a> is reached.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_joinx">ustr_sc_joinx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Separator to go between Ustr strings<br>Type<strong>[5]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[6]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[7]</strong>: A pointer to the second constant <a href="design">Ustr string</a><br>Type<strong>[7]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[8]</strong>: Zero or more pointers to constant Ustr strings and then USTR_NULL<br>Type<strong>[8]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function calls va_start() to get a variable argument list and then calls
+ <a href="functions#ustr_sc_vjoinx">ustr_sc_vjoinx()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_vconcat">ustr_sc_vconcat()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[2]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you called <a href="functions#ustr_dup">ustr_dup()</a> on the first Ustr
+ string (Parameter[1]), and then <a href="functions#ustr_add">ustr_add()</a> on the second Ustr
+ string (Parameter[3]). This process then repeats for all the Ustr strings in
+ the variable argument list (Parameter[4]) until a <a href="constants#USTR_NULL">USTR_NULL</a> is reached.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_concat">ustr_sc_concat()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Zero or more pointers to constant Ustr strings and then USTR_NULL<br>Type<strong>[2]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function calls va_start() to get a variable argument list and then calls
+ <a href="functions#ustr_sc_vconcat">ustr_sc_vconcat()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_vconcatx">ustr_sc_vconcatx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[6]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you called <a href="functions#ustr_dupx">ustr_dupx()</a> on the first Ustr
+ string (Parameter[1]), and then <a href="functions#ustr_add">ustr_add()</a> on the second Ustr
+ string (Parameter[3]). This process then repeats for all the Ustr strings in
+ the variable argument list (Parameter[4]) until a <a href="constants#USTR_NULL">USTR_NULL</a> is reached.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function doesn't guarantee to just take a reference to one of the passed
+ Ustr strings, even if that is what would happen if you called the above
+ manually.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_concatx">ustr_sc_concatx()</a>
+<br>Returns: Pointer to a <a href="design">Ustr string</a><br>Type: struct Ustr *
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Size of allocated storage<br>Type<strong>[1]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Number of bytes to use for reference count<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Exact memory allocations<br>Type<strong>[3]</strong>: int
+</td></tr><tr><td>Parameter<strong>[4]</strong>: ENOMEM, memory error flag<br>Type<strong>[4]</strong>: int
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to the first constant <a href="design">Ustr string</a><br>Type<strong>[5]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Zero or more pointers to constant Ustr strings and then USTR_NULL<br>Type<strong>[6]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function calls va_start() to get a variable argument list and then calls
+ <a href="functions#ustr_sc_vconcatx">ustr_sc_vconcatx()</a>.
+
+
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Deleting%20a%20Ustr%2c%20or%20data%20within%20a%20Ustr">Deleting a Ustr, or data within a Ustr</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_free">ustr_free()</a>
@@ -1502,7 +1649,7 @@
 </td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Limit of data to add<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable<br>Type<strong>[4]</strong>: va_list
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[4]</strong>: va_list
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like calling the system vsnprintf() with the limit
  (Parameter[2]) as the limit to vsnprintf() and then calling <a href="functions#ustr_add_buf">ustr_add_buf()</a>.
@@ -3440,7 +3587,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_<br>Type<strong>[3]</strong>: unsigned int
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Absolute minimum value<br>Type<strong>[4]</strong>: uintmax_t
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Absolute maximum value<br>Type<strong>[5]</strong>: uintmax_t
-</td></tr><tr><td>Parameter<strong>[6]</strong>: Thousands seperator<br>Type<strong>[6]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Thousands separator<br>Type<strong>[6]</strong>: const char *
 </td></tr><tr><td>Parameter<strong>[7]</strong>: Return length of parsed number<br>Type<strong>[7]</strong>: size_t *
 </td></tr><tr><td>Parameter<strong>[8]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[8]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
@@ -3461,7 +3608,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> with the minimum and maximum
- values taken as 0 and UINTMAX_MAX, and the thousands seperator as "_".
+ values taken as 0 and UINTMAX_MAX, and the thousands separator as "_".
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  If stdint.h isn't available this function won't be available.
@@ -3477,7 +3624,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_uintmaxx">ustr_parse_uintmaxx()</a> with the minimum and maximum
- values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands seperator as "_".
+ values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands separator as "_".
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  If stdint.h isn't available this function won't be available.
@@ -3491,7 +3638,7 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_<br>Type<strong>[3]</strong>:  unsigned int
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Absolute minimum value<br>Type<strong>[4]</strong>:  unsigned long
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Absolute maximum value<br>Type<strong>[5]</strong>:  unsigned long
-</td></tr><tr><td>Parameter<strong>[6]</strong>: Thousands seperator<br>Type<strong>[6]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Thousands separator<br>Type<strong>[6]</strong>: const char *
 </td></tr><tr><td>Parameter<strong>[7]</strong>: Return length of parsed number<br>Type<strong>[7]</strong>:  size_t *
 </td></tr><tr><td>Parameter<strong>[8]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[8]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
@@ -3509,7 +3656,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
- values taken as 0 and ULONG_MAX, and the thousands seperator as "_".
+ values taken as 0 and ULONG_MAX, and the thousands separator as "_".
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3522,7 +3669,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
- values taken as -LONG_MIN and LONG_MAX, and the thousands seperator as "_".
+ values taken as -LONG_MIN and LONG_MAX, and the thousands separator as "_".
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3535,7 +3682,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
- values taken as 0 and UINT_MAX, and the thousands seperator as "_".
+ values taken as 0 and UINT_MAX, and the thousands separator as "_".
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3548,7 +3695,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
- values taken as -INT_MIN and INT_MAX, and the thousands seperator as "_".
+ values taken as -INT_MIN and INT_MAX, and the thousands separator as "_".
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3561,7 +3708,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
- values taken as 0 and USHRT_MAX, and the thousands seperator as "_".
+ values taken as 0 and USHRT_MAX, and the thousands separator as "_".
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3574,7 +3721,7 @@
 </td></tr><tr><td>Parameter<strong>[5]</strong>: Return error code, starting with USTR_TYPE_PARSE_NUM_ERR_<br>Type<strong>[5]</strong>: unsigned int *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_parse_ulongx">ustr_parse_ulongx()</a> with the minimum and maximum
- values taken as -SHRT_MIN and SHRT_MAX, and the thousands seperator as "_".
+ values taken as -SHRT_MIN and SHRT_MAX, and the thousands separator as "_".
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Misc%20shortcut%20helper%20functions%20for%20Ustrs">Misc shortcut helper functions for Ustrs</a></h2>
