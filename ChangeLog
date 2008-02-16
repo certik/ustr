@@ -1,5 +1,8 @@
 2008-02-15  James Antill  <james@and.org>
 
+	* ustr-ins-code.h (ustr_ins): Make sure ustr_ins(&x, p, x) is valid.
+	(ustr_ins_subustr): Dito.
+
 	* ustr-replace-code.h (ustr_replace): Make sure ustr_replace(&x, x, x,0)
 	is valid.
 

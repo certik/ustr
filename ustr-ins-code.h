@@ -101,7 +101,22 @@ USTR_CONF_I_PROTO int ustrp_ins_buf(struct Ustr_pool *p, struct Ustrp **ps1,
 
 USTR_CONF_i_PROTO int ustrp__ins(struct Ustr_pool *p, struct Ustr **ps1,
                                  size_t pos, const struct Ustr *s2)
-{ /* opts needed? */
+{
+  if ((*ps1 == s2) && ustr_owner(*ps1))
+  {
+    struct Ustr *tmp = USTR_NULL;
+    int ret = USTR_FALSE;
+    
+    /* This is somewhat difficult to do "well". So punt. */
+    if (!(tmp = ustrp__dup(p, s2)))
+      return (USTR_FALSE);
+    
+    ret = ustrp__ins(p, ps1, pos, tmp);
+    ustrp__free(p, tmp);
+    
+    return (ret);
+  }
+
   return (ustrp__ins_buf(p, ps1, pos, ustr_cstr(s2), ustr_len(s2)));
 }
 USTR_CONF_I_PROTO
@@ -122,8 +137,36 @@ int ustrp__ins_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
 {
   if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
     return (USTR_FALSE);
-  --pos2;
-  
+
+  if ((*ps1 == s2) && ustr_owner(*ps1))
+  {
+    struct Ustr *tmp = USTR_NULL;
+    int ret = USTR_FALSE;
+
+    if (((pos1 + len2 - 1) < pos2) || ((pos2 + len2 - 1) < pos1))
+    { /* they don't overlap */
+      if (!ustrp__ins_undef(p, ps1, pos1, len2))
+        return (USTR_FALSE);
+      s2 = *ps1;
+
+      if (pos1 < pos2)
+        pos2 += len2;
+      ustr__memcpy(*ps1, pos1, ustr_cstr(s2) + pos2, len2);
+    
+      return (USTR_TRUE);
+    }
+    
+    /* This is somewhat difficult to do "well". So punt. */
+    if (!(tmp = ustrp__dup_subustr(p, s2, pos2, len2)))
+      return (USTR_FALSE);
+    
+    ret = ustrp__ins(p, ps1, pos1, tmp);
+    ustrp__free(p, tmp);
+    
+    return (ret);
+  }
+
+  --pos2;  
   return (ustrp__ins_buf(p, ps1, pos1, ustr_cstr(s2) + pos2, len2));
 }
 USTR_CONF_I_PROTO
