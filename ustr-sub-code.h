@@ -88,11 +88,16 @@ USTR_CONF_i_PROTO
 int ustrp__sub_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
                        const struct Ustr *s2, size_t pos2, size_t len2)
 {
+  size_t clen2 = 0;
+  
   if (!len2)
     return (USTR_TRUE);
   
-  if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
+  if (!(clen2 = ustrp__assert_valid_subustr(!!p, s2, pos2, len2)))
     return (USTR_FALSE);
+
+  if (clen2 == len2)
+    return (ustrp__sub(p, ps1, pos1, s2));
   
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
@@ -254,12 +259,17 @@ int ustrp__sc_sub_subustr(struct Ustr_pool *p,
                           struct Ustr **ps1, size_t pos1, size_t len1,
                           const struct Ustr *s2, size_t pos2, size_t len2)
 {
+  size_t clen2 = 0;
+  
   if (!len2)
     return (ustrp__del_subustr(p, ps1, pos1, len1));
   
-  if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
+  if (!(clen2 = ustrp__assert_valid_subustr(!!p, s2, pos2, len2)))
     return (USTR_FALSE);
 
+  if (clen2 == len2)
+    return (ustrp__sc_sub(p, ps1, pos1, len1, s2));
+  
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
     struct Ustr *tmp = USTR_NULL;

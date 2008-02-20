@@ -1,3 +1,10 @@
+2008-02-19  James Antill  <james@and.org>
+
+	* ustr-sub-code.h (ustr_sub_subustr): Speedup when subustr == ustr.
+	(ustr_sc_sub_subustr): Speedup when subustr == ustr.
+
+	* ustr-ins-code.h (ustr_ins_subustr): Speedup when subustr == ustr.
+
 2008-02-15  James Antill  <james@and.org>
 
 	* ustr-ins-code.h (ustr_ins): Make sure ustr_ins(&x, p, x) is valid.

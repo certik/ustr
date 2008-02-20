@@ -292,9 +292,18 @@ int tst(void)
   ustr_sc_free2(&s1, USTR1(\1, "x"));
   num = 0;
   while (num++ < 8)
-    ASSERT(ustr_sub_subustr(&s1, (ustr_len(s1) + 1) / 2,
-                            s1, 1,
-                            (ustr_len(s1) <= 1 ? 1 : ustr_len(s1))));
+  {
+    size_t spos = 1;
+    size_t slen = ustr_len(s1);
+
+    if (slen > 1)
+    {
+      ++spos;
+      --slen;
+    }
+    
+    ASSERT(ustr_sub_subustr(&s1, (ustr_len(s1) + 1) / 2, s1, spos, slen));
+  }
 
   ustr_sc_free2(&s1, USTR1(\1, "x"));
   num = 0;
@@ -304,9 +313,18 @@ int tst(void)
   ustr_sc_free2(&s1, USTR1(\1, "x"));
   num = 0;
   while (num++ < 8)
-    ASSERT(ustr_sc_sub_subustr(&s1, 1, (ustr_len(s1) + 3) / 4,
-                               s1, 1,
-                               (ustr_len(s1) <= 1 ? 1 : ustr_len(s1))));
+  {
+    size_t spos = 1;
+    size_t slen = ustr_len(s1);
 
+    if (slen > 1)
+    {
+      ++spos;
+      --slen;
+    }
+
+    ASSERT(ustr_sc_sub_subustr(&s1, 1, (ustr_len(s1) + 3) / 4, s1, spos, slen));
+  }
+  
   return (EXIT_SUCCESS);
 }

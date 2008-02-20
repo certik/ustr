@@ -135,9 +135,14 @@ USTR_CONF_i_PROTO
 int ustrp__ins_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
                        const struct Ustr *s2, size_t pos2, size_t len2)
 {
-  if (!ustrp__assert_valid_subustr(!!p, s2, pos2, len2))
+  size_t clen2 = 0;
+  
+  if (!(clen2 = ustrp__assert_valid_subustr(!!p, s2, pos2, len2)))
     return (USTR_FALSE);
 
+  if (clen2 == len2)
+    return (ustrp__ins(p, ps1, pos1, s2));
+  
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
     struct Ustr *tmp = USTR_NULL;
