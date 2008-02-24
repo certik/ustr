@@ -15,10 +15,24 @@
         abort(); }                                                      \
     } while (FALSE)
 
-#define ASSERT_EQ(x, y) ASSERT(ustr_cmp_eq(x, y))
-#define assert_eq(x, y) ASSERT(ustr_cmp_eq(x, y))
-#define ASSERT_PEQ(x, y) ASSERT(ustrp_cmp_eq(x, y))
-#define assert_peq(x, y) ASSERT(ustrp_cmp_eq(x, y))
+#define ASSERT_EQ(x, y) do {                                            \
+      if (ustr_cmp_eq(x, y)) {} else {                                  \
+        fprintf(stderr, " -=> ASSERT_EQ (%zu:\"%s\", %zu:\"%s\") failed " \
+                "in (%s) from %d %s.\n",                                \
+                ustr_len(x), ustr_cstr(x), ustr_len(y), ustr_cstr(y),   \
+                __func__, __LINE__, __FILE__);                          \
+        abort(); }                                                      \
+    } while (FALSE)
+#define assert_eq(x, y) ASSERT_EQ(x, y)
+#define ASSERT_PEQ(x, y) do {                                           \
+      if (ustrp_cmp_eq(x, y)) {} else {                                 \
+        fprintf(stderr, " -=> ASSERT_PEQ (%zu:\"%s\", %zu:\"%s\") failed " \
+                "in (%s) from %d %s.\n",                                \
+                ustrp_len(x), ustrp_cstr(x), ustrp_len(y), ustrp_cstr(y), \
+                __func__, __LINE__, __FILE__);                          \
+        abort(); }                                                      \
+    } while (FALSE)
+#define assert_peq(x, y) ASSERT_PEQ(x, y)
 
 #if !defined(USTR_DEBUG) || USTR_DEBUG
 # define ustr_assert(x)        assert(x)
