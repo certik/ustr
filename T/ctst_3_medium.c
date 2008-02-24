@@ -185,13 +185,16 @@ int tst(void)
   ASSERT( ustr_setf_owner(s2));
   ASSERT( ustr_add(&s2, USTR("")));
 #ifdef __linux__
+  {
+    wchar_t *wt = (wchar_t *)"\xFF\xFF\xFF\xFF";
   /* test multi-byte conversion failure */
-  ASSERT(!ustr_add_fmt(&s2, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_dup_fmt(     "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_set_fmt(&s2, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_ins_fmt(&s2, 1, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_sub_fmt(&s2, 1, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
-  ASSERT(!ustr_sc_sub_fmt(&s2, 1, 2, "%ls", (wchar_t *)"\xFF\xFF\xFF\xFF"));
+  ASSERT(!ustr_add_fmt(&s2, "%ls", wt));
+  ASSERT(!ustr_dup_fmt(     "%ls", wt));
+  ASSERT(!ustr_set_fmt(&s2, "%ls", wt));
+  ASSERT(!ustr_ins_fmt(&s2, 1, "%ls", wt));
+  ASSERT(!ustr_sub_fmt(&s2, 1, "%ls", wt));
+  ASSERT(!ustr_sc_sub_fmt(&s2, 1, 2, "%ls", wt));
+  }
 #endif
 #endif
   ustr_sc_free2(&s2, ustr_dupx(1, 0, 0, 0, s2));
