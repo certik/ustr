@@ -311,7 +311,6 @@ int tst(void)
     ASSERT(ustr_sc_utf8_reverse(&st));
   }
   ASSERT_PEQ(sp2, USTRP1(\x28," ¡¢£¤¥¦§¨©ª«¬­®0123456789"));
-  }
   
   ustr_pool_free(pool);
 
