@@ -306,9 +306,13 @@ int tst(void)
   ASSERT(ustrp_sc_utf8_reverse(pool, &sp2));
   ASSERT_PEQ(sp2, USTRP1(\x28,"9876543210®­¬«ª©¨§¦¥¤£¢¡ "));
   ASSERT(ustrp_owner(sp2));
-  ASSERT(ustr_sc_utf8_reverse((Ustr **)&sp2)); /* hack */
+  {
+    Ustr *st = &sp2->s;
+    ASSERT(ustr_sc_utf8_reverse(&st));
+  }
   ASSERT_PEQ(sp2, USTRP1(\x28," ¡¢£¤¥¦§¨©ª«¬­®0123456789"));
-
+  }
+  
   ustr_pool_free(pool);
 
 #ifdef USTR__UTF8_WCHAR /* internal testing for utf8 functions */
