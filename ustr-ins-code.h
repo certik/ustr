@@ -104,17 +104,23 @@ USTR_CONF_i_PROTO int ustrp__ins(struct Ustr_pool *p, struct Ustr **ps1,
 {
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
-    struct Ustr *tmp = USTR_NULL;
-    int ret = USTR_FALSE;
+    size_t len = ustr_len(s2);
+    size_t blen = 0;
+    size_t pos2 = 0;
     
-    /* This is somewhat difficult to do "well". So punt. */
-    if (!(tmp = ustrp__dup(p, s2)))
+    if (!ustrp__ins_undef(p, ps1, pos, len))
       return (USTR_FALSE);
+
+    blen = pos;
+    ustr__memcpy(*ps1, pos, ustr_cstr(*ps1), blen);
+    pos  += blen;
+    pos2 +=  len;
+    pos2 += blen;
+    len  -= blen;
+    ustr__memcpy(*ps1, pos, ustr_cstr(*ps1) + pos2, len);
+    USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
     
-    ret = ustrp__ins(p, ps1, pos, tmp);
-    ustrp__free(p, tmp);
-    
-    return (ret);
+    return (USTR_TRUE);
   }
 
   return (ustrp__ins_buf(p, ps1, pos, ustr_cstr(s2), ustr_len(s2)));
@@ -145,30 +151,25 @@ int ustrp__ins_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
   
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
-    struct Ustr *tmp = USTR_NULL;
-    int ret = USTR_FALSE;
-
-    if (((pos1 + len2 - 1) < pos2) || ((pos2 + len2 - 1) < pos1))
-    { /* they don't overlap */
-      if (!ustrp__ins_undef(p, ps1, pos1, len2))
-        return (USTR_FALSE);
-      s2 = *ps1;
-
-      if (pos1 < pos2)
-        pos2 += len2;
-      ustr__memcpy(*ps1, pos1, ustr_cstr(s2) + pos2, len2);
-    
-      return (USTR_TRUE);
-    }
-    
-    /* This is somewhat difficult to do "well". So punt. */
-    if (!(tmp = ustrp__dup_subustr(p, s2, pos2, len2)))
+    if (!ustrp__ins_undef(p, ps1, pos1, len2))
       return (USTR_FALSE);
-    
-    ret = ustrp__ins(p, ps1, pos1, tmp);
-    ustrp__free(p, tmp);
-    
-    return (ret);
+
+    if (pos2 > pos1)
+      pos2 += len2;
+    else
+    {
+      size_t blen = (pos1 - pos2) + 1;
+
+      ustr__memcpy(*ps1, pos1, ustr_cstr(*ps1) + pos2 - 1, blen);
+      pos1 += blen;
+      pos2 += len2;
+      pos2 += blen;
+      len2 -= blen;
+    }
+      ustr__memcpy(*ps1, pos1, ustr_cstr(*ps1) + pos2 - 1, len2);
+      
+      USTR_ASSERT(ustrp__assert_valid(!!p, *ps1));
+    return (USTR_TRUE);
   }
 
   --pos2;  
