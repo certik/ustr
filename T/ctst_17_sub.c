@@ -286,38 +286,42 @@ int tst(void)
   ASSERT(ustr_ro(s1));
 
   num = 0;
-  while (num++ < 8)
-    ASSERT(ustr_sub(&s1, (ustr_len(s1) + 1) / 2, s1));
-
-  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  ustr_sc_free2(&s1, USTR1(\2, "xy"));
+  while (num++ < 6)
+    ASSERT(ustr_sub(&s1, (ustr_len(s1) / 2) + 1, s1));
+  ASSERT_EQ(s1, USTR1(\x13, "xxxxxxxxxxxxxxxxxxy"));
+  
+  ustr_sc_free2(&s1, USTR1(\2, "xy"));
   num = 0;
-  while (num++ < 8)
+  while (num++ < 7)
   {
     size_t spos = 1;
     size_t slen = ustr_len(s1);
 
-    if (slen > 1)
+    if (slen > 4)
     {
       ++spos;
       --slen;
     }
     
-    ASSERT(ustr_sub_subustr(&s1, (ustr_len(s1) + 1) / 2, s1, spos, slen));
+    ASSERT(ustr_sub_subustr(&s1, (ustr_len(s1) / 2) + 1, s1, spos, slen));
   }
+  ASSERT_EQ(s1, USTR1(\x15, "xxxxxxxxxxxxxxxxxxxxy"));
 
-  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  ustr_sc_free2(&s1, USTR1(\2, "xy"));
   num = 0;
-  while (num++ < 8)
-    ASSERT(ustr_sc_sub(&s1, 1, (ustr_len(s1) + 1) / 2, s1));
+  while (num++ < 6)
+    ASSERT(ustr_sc_sub(&s1, 1, (ustr_len(s1) / 2) + 1, s1));
+  ASSERT_EQ(s1, USTR1(\x12, "xyyyyyyyyyyyyyyyyy"));
 
-  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  ustr_sc_free2(&s1, USTR1(\2, "xy"));
   num = 0;
-  while (num++ < 8)
+  while (num++ < 6)
   {
     size_t spos = 1;
     size_t slen = ustr_len(s1);
 
-    if (slen > 1)
+    if (slen > 4)
     {
       ++spos;
       --slen;
@@ -325,6 +329,20 @@ int tst(void)
 
     ASSERT(ustr_sc_sub_subustr(&s1, 1, (ustr_len(s1) + 3) / 4, s1, spos, slen));
   }
+  ASSERT_EQ(s1, USTR1(\x27, "yyyxyyyyyxyyyxyyyyyxyyyyyyxyyyxyyyyyxyy"));
+
+  ustr_set_cstr(&s1, "123456789 ");
+  ASSERT(ustr_sub_subustr(&s1, 8, s1, 6, 5));
+  ASSERT_EQ(s1, USTR1(\xc, "12345676789 "));
+
+  ustr_set_cstr(&s1, "123456789 ");
+  ASSERT(ustr_sub_subustr(&s1, 4, s1, 4, 4));
+  ASSERT_EQ(s1, USTR1(\7, "1234567"));
+
+  ustr_set_cstr(&s1, "123456789 abcdefghijklmnopqrstuvqxyz");
+  ASSERT(ustr_sc_sub_subustr(&s1, 4, 8, s1, 6, 12));
+  ASSERT_EQ(s1, USTR1(\x28, "1236789 abcdefgbcdefghijklmnopqrstuvqxyz"));
+
   
   return (EXIT_SUCCESS);
 }

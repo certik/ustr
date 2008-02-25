@@ -4,6 +4,8 @@ static const char *rf = __FILE__;
 
 int tst(void)
 {
+  size_t num = 0;
+  
   ASSERT(ustr_ins_fmt(&s1, 0, "abcd %.4d xyz", 4));
   ASSERT_EQ(s1, USTR1(\xd, "abcd 0004 xyz"));
   ASSERT(ustr_ins_fmt(&s2, 1, "abcd %.4d xyz", 4));
@@ -37,5 +39,29 @@ int tst(void)
   if (!USTR_DEBUG)
   ASSERT(!ustr_ins_subustr(&s1, 2, USTR1(\4, "1248"), 5, 1));
   
+  ustr_sc_free2(&s1, USTR1(\1, "x"));
+  num = 0;
+  while (num++ < 5)
+    ASSERT(ustr_ins_subustr(&s1, 1, s1, 1, ustr_len(s1)));
+  ASSERT_EQ(s1, USTR1(\x20, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
+  
+  ustr_sc_free2(&s1, USTR1(\2, "xy"));
+  num = 0;
+  while (num++ < 6)
+  {
+    size_t slen = ustr_len(s1);
+    
+    ASSERT(ustr_ins_subustr(&s1, slen / 2, s1, 1, slen / 2));
+  }
+  ASSERT_EQ(s1, USTR1(\x13, "xxxxxxxxxxxxxxxxxxy"));
+  
+  ustr_set_cstr(&s1, "123456789 ");
+  ASSERT(ustr_ins(&s1, 4, s1));
+  ASSERT_EQ(s1, USTR1(\x14, "1234123456789 56789 "));
+
+  ustr_set_cstr(&s1, "123456789 ");
+  ASSERT(ustr_ins_subustr(&s1, 8, s1, 6, 4));
+  ASSERT_EQ(s1, USTR1(\xe, "1234567867899 "));
+
   return (EXIT_SUCCESS);
 }
