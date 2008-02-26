@@ -29,7 +29,8 @@ static int big_tst(size_t fsz, size_t usz, int hack, int tst_add)
   
   if (ftruncate(fd, fsz) == -1)
     goto fail_ftrunc;
-  if (!(ptr = mmap(0, fsz, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)))
+  ptr = mmap(0, fsz, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  if (ptr == MAP_FAILED)
     goto fail_mmap;
   memset(ptr, '-', ((fsz < 32) ? fsz : 32));
   
