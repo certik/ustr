@@ -221,7 +221,7 @@ int ustrp__sc_sub(struct Ustr_pool *p, struct Ustr **ps1,size_t pos,size_t olen,
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
     size_t clen = ustr_len(*ps1);
-    size_t epos = ( pos + olen) - 1;
+    size_t epos = ( pos + olen);
     size_t elen = (clen - epos) + 1;
     
     if (!ustrp__add_subustr(p, ps1, s2, epos, elen))
