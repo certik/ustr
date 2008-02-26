@@ -1,4 +1,5 @@
 #include "tst.h"
+#include <errno.h>
 
 static const char *rf = __FILE__;
 
@@ -871,6 +872,60 @@ int tst(void)
   assert(USTR_CNTL_MALLOC_CHECK_MEM_SZ(sp2, ustrp_size_alloc(sp2)));
 
   ustr_pool_free(pool);
+
+  ustr_sc_free2(&s1, USTR(""));
+  ASSERT(ustr_add(&s1, USTR1(\2, "ad")));
+  ASSERT_EQ(s1, USTR1(\2, "ad"));
+  TST_MC_SET_NUM(1); errno = 0;
+  ASSERT(!ustr_ins(&s1, 1, s1));
+  ASSERT(errno == ENOMEM);
+  ASSERT_EQ(s1, USTR1(\2, "ad"));
+  ASSERT( ustr_ins(&s1, 1, s1));
+  ASSERT_EQ(s1, USTR1(\4, "aadd"));
+
+  ASSERT(ustr_set_cstr(&s1, "1234567"));
+  ASSERT_EQ(s1, USTR1(\7, "1234567"));
+  TST_MC_SET_NUM(1); errno = 0;
+  ASSERT(!ustr_ins_subustr(&s1, 2, s1, 2, 5));
+  ASSERT(errno == ENOMEM);
+  ASSERT_EQ(s1, USTR1(\7, "1234567"));
+  ASSERT( ustr_ins_subustr(&s1, 2, s1, 2, 5));
+  ASSERT_EQ(s1, USTR1(\xC, "122345634567"));
+
+  ustr_free(s1);
+  
+  TST_MC_SET_NUM(1); errno = 0;
+  ASSERT(!(s1 = ustr_sc_concat(USTR1(\2, "ab"), USTR1(\2, "cd"), USTR_NULL)));
+  ASSERT(errno == ENOMEM);
+  ASSERT( (s1 = ustr_sc_concat(USTR1(\2, "ab"), USTR1(\2, "cd"), USTR_NULL)));
+  ASSERT_EQ(s1, USTR1(\4, "abcd"));
+
+  ustr_free(s1);
+
+  TST_MC_SET_NUM(1); errno = 0;
+  ASSERT(!(s1 = ustr_sc_join(USTR1(\1, ","), USTR1(\1, "1"), USTR(""), USTR(""),
+                             USTR1(\1, "4"), USTR1(\1, "5"), USTR_NULL)));
+  ASSERT(errno == ENOMEM);
+  ASSERT( (s1 = ustr_sc_join(USTR1(\1, ","), USTR1(\1, "1"), USTR(""), USTR(""),
+                             USTR1(\1, "4"), USTR1(\1, "5"), USTR_NULL)));
+  ASSERT_EQ(s1, USTR1(\7, "1,,,4,5"));
+
+  TST_MC_SET_NUM(1); errno = 0;
+  ASSERT(!ustr_sc_sub_subustr(&s1, 3, 3, s1, 5, 1));
+  ASSERT(errno == ENOMEM);
+  ASSERT_EQ(s1, USTR1(\7, "1,,,4,5"));
+  ASSERT( ustr_sc_sub_subustr(&s1, 3, 3, s1, 5, 1));
+  ASSERT_EQ(s1, USTR1(\5, "1,4,5"));
+
+  ASSERT(ustr_add_rep_chr(&s1, '-', 2));
+  ASSERT(ustr_ins_rep_chr(&s1, 0, '-', 2));
+  ASSERT_EQ(s1, USTR1(\x9, "--1,4,5--"));
+  TST_MC_SET_NUM(1); errno = 0;
+  ASSERT(!ustr_sc_sub(&s1, 5, 1, s1));
+  ASSERT(errno == ENOMEM);
+  ASSERT_EQ(s1, USTR1(\x9, "--1,4,5--"));
+  ASSERT( ustr_sc_sub(&s1, 5, 1, s1));
+  ASSERT_EQ(s1, USTR1(\x11, "--1,--1,4,5--,5--"));
   
   return (EXIT_SUCCESS);
 }

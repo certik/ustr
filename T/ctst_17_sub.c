@@ -309,27 +309,36 @@ int tst(void)
   ASSERT_EQ(s1, USTR1(\x15, "xxxxxxxxxxxxxxxxxxxxy"));
 
   ustr_sc_free2(&s1, USTR1(\2, "xy"));
-  num = 0;
-  while (num++ < 6)
-    ASSERT(ustr_sc_sub(&s1, 1, (ustr_len(s1) / 2) + 1, s1));
-  ASSERT_EQ(s1, USTR1(\x12, "xyyyyyyyyyyyyyyyyy"));
-
-  ustr_sc_free2(&s1, USTR1(\2, "xy"));
-  num = 0;
-  while (num++ < 6)
-  {
-    size_t spos = 1;
-    size_t slen = ustr_len(s1);
-
-    if (slen > 4)
-    {
-      ++spos;
-      --slen;
-    }
-
-    ASSERT(ustr_sc_sub_subustr(&s1, 1, (ustr_len(s1) + 3) / 4, s1, spos, slen));
-  }
-  ASSERT_EQ(s1, USTR1(\x27, "yyyxyyyyyxyyyxyyyyyxyyyyyyxyyyxyyyyyxyy"));
+  ASSERT(ustr_sc_sub(&s1, 1, 1, s1));
+  ASSERT_EQ(s1, USTR1(\3, "xyy"));
+  ASSERT(ustr_sc_sub(&s1, 1, 2, s1));
+  ASSERT_EQ(s1, USTR1(\4, "xyyy"));
+  ASSERT(ustr_sc_sub(&s1, 4, 1, s1));
+  ASSERT_EQ(s1, USTR1(\7, "xyyxyyy"));
+  ASSERT(ustr_sc_sub(&s1, 6, 2, s1));
+  ASSERT_EQ(s1, USTR1(\xC, "xyyxyxyyxyyy"));
+  ASSERT(ustr_sc_sub(&s1, 4, 5, s1));
+  ASSERT_EQ(s1, USTR1(\x13, "xyyxyyxyxyyxyyyxyyy"));
+  
+  ustr_sc_free2(&s1, USTR1(\5, "1234-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 1, 1, s1, 1, 2));
+  ASSERT_EQ(s1, USTR1(\6, "12234-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 3, 1, s1, 5, 2));
+  ASSERT_EQ(s1, USTR1(\7, "124-34-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 3, 2, s1, 4, 1));
+  ASSERT_EQ(s1, USTR1(\6, "12-34-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 2, 3, s1, 1, 5));
+  ASSERT_EQ(s1, USTR1(\x8, "112-344-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 1, 2, s1, 2, 3));
+  ASSERT_EQ(s1, USTR1(\x9, "12-2-344-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 2, 2, s1, 5, 2));
+  ASSERT_EQ(s1, USTR1(\x9, "1-32-344-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 3, 3, s1, 4, 2));
+  ASSERT_EQ(s1, USTR1(\x8, "1-2-344-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 6, 1, s1, 2, 1));
+  ASSERT_EQ(s1, USTR1(\x8, "1-2-3-4-"));
+  ASSERT(ustr_sc_sub_subustr(&s1, 1, 8, s1, 1, 7));
+  ASSERT_EQ(s1, USTR1(\7, "1-2-3-4"));
 
   ustr_set_cstr(&s1, "123456789 ");
   ASSERT(ustr_sub_subustr(&s1, 8, s1, 6, 5));
