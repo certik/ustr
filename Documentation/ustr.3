@@ -1,4 +1,4 @@
-.TH ustr 3 "16-Feb-2008" "Ustr 1.0.3" "Ustr String Library"
+.TH ustr 3 "26-Feb-2008" "Ustr 1.0.3" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -3112,6 +3112,12 @@ Type\fB[1]\fR: struct Ustr *
 
 .br
   This function decrements the reference count on a Ustr, if there is one, and free's it if it is allocated and the reference count becomes zero.
+.sp
+\fBNote:\fR
+
+.br
+  This function does nothing if passed USTR_NULL.
+
 .ti -2
 .br
 \fBFunction: \fR ustrp_free()
@@ -3134,7 +3140,7 @@ Type\fB[2]\fR: struct Ustrp *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_free() but calls the pool_free member function of the Ustr_pool (Parameter[1]) instead of the system free.
+  This function works like ustr_free() but calls the pool_free member function of the Ustr_pool (Parameter[1]) instead of the ustr system free.
 
 .ti -2
 .br
@@ -3154,6 +3160,11 @@ Type\fB[1]\fR: struct Ustr **
 
 .br
   This function calls ustr_free() and then sets the pointer (Parameter[1]) to USTR_NULL, which is a noop when passed to ustr_free(). This can be used to help prevent "double free" errors.
+.sp
+\fBNote:\fR
+
+.br
+  While the point to the pointer must be non-NULL, this function also accepts a NULL ustr and does nothing. So you can pass the same pointer to this function multiple times and only the first one will do anything.
 
 .ti -2
 .br
@@ -3182,7 +3193,9 @@ Type\fB[2]\fR: struct Ustr *
 \fBNote:\fR
 
 .br
-  The passed value shouldn't be USTR_NULL, and in debugging mode the function will assert() that it isn't.
+  While the point to the pointer must be non-NULL, this function also accepts a NULL ustr to be free'd and does nothing. So you can pass the same pointer to ustr_sc_free() and then this function safely.
+.br
+  The passed value (Parameter[2]) shouldn't be USTR_NULL, and in debugging mode the function will assert() that it isn't.
 
 .ti -2
 .br
@@ -3477,7 +3490,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly works as if you had called ustr_add_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+  This function mostly works as if you had called ustr_add_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added. The exception being if you add a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr, but this function just works.
 .sp
 \fBNote:\fR
 
@@ -3719,7 +3732,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_del() for the entire string and the ustr_add_subustr().
+  This function works as if you had called ustr_del() for the entire string and the ustr_add_subustr(). The exception being if you set a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
 
 .ti -2
 .br
@@ -3934,11 +3947,6 @@ Type\fB[3]\fR: const struct Ustr *
 
 .br
   This function works as if you had called ustr_ins_buf() with the ustr_cstr() and ustr_len() values of the Ustr string to be added.
-.sp
-\fBNote:\fR
-
-.br
-  While the ustr_add() function may add references, this function never does even when it is sematically the same as ustr_add().
 
 .ti -2
 .br
@@ -3977,12 +3985,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly as if you had called ustr_ins_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed.
-.sp
-\fBNote:\fR
-
-.br
-  Again while ustr_add_subustr() has certain optimizations, this version does not.
+  This function mostly as if you had called ustr_ins_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
 
 .ti -2
 .br
@@ -8008,7 +8011,7 @@ Type\fB[3]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_sub_buf() with the ustr_cstr() and ustr_len() values of the Ustr string to be added.
+  This function works as if you had called ustr_sub_buf() with the ustr_cstr() and ustr_len() values of the Ustr string to be added. The exception being if you substitute a ustr into itself, while only having a single reference count, the simple method could access a free'd ustr data, but this function just works.
 
 .ti -2
 .br
@@ -8042,7 +8045,7 @@ Type\fB[4]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  Substitutes a specified number of characters starting at the given position with the characters from the given Ustr. 
+  This function works as if you had called ustr_sc_sub_buf() with the ustr_cstr() and ustr_len() values of the Ustr string to be added. The exception being if you substitute a ustr into itself, while only having a single reference count, the simple method could access a free'd ustr data, but this function just works.
 
 .ti -2
 .br

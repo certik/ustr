@@ -1256,6 +1256,10 @@
 </p><p>  This function decrements the reference count on a Ustr, if there is one, and
  free's it if it is allocated and the reference count becomes zero.
 
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  This function does nothing if passed <a href="constants#USTR_NULL">USTR_NULL</a>.
+
+
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustrp_free">ustrp_free()</a>
 <br>Returns: Nothing<br>Type: void 
@@ -1263,7 +1267,7 @@
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Pointer to a Ustrp (pool allocated Ustr)<br>Type<strong>[2]</strong>: struct Ustrp *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like <a href="functions#ustr_free">ustr_free()</a> but calls the pool_free member function
- of the Ustr_pool (Parameter[1]) instead of the system free.
+ of the Ustr_pool (Parameter[1]) instead of the ustr system free.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1274,6 +1278,11 @@
 </p><p>  This function calls <a href="functions#ustr_free">ustr_free()</a> and then sets the pointer (Parameter[1]) to
  <a href="constants#USTR_NULL">USTR_NULL</a>, which is a noop when passed to <a href="functions#ustr_free">ustr_free()</a>. This can be used to
  help prevent "double free" errors.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  While the point to the pointer must be non-NULL, this function also accepts
+ a NULL ustr and does nothing. So you can pass the same pointer to this function
+ multiple times and only the first one will do anything.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1287,8 +1296,11 @@
  string (Parameter[2]).
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The passed value shouldn't be <a href="constants#USTR_NULL">USTR_NULL</a>, and in debugging mode the function
- will assert() that it isn't.
+</p><p>  While the point to the pointer must be non-NULL, this function also accepts
+ a NULL ustr to be free'd and does nothing. So you can pass the same pointer to
+ <a href="functions#ustr_sc_free">ustr_sc_free()</a> and then this function safely.
+</p><p>  The passed value (Parameter[2]) shouldn't be <a href="constants#USTR_NULL">USTR_NULL</a>, and in debugging mode
+ the function will assert() that it isn't.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1422,6 +1434,9 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function mostly works as if you had called <a href="functions#ustr_add_buf">ustr_add_buf()</a> with the
  <a href="functions#ustr_cstr">ustr_cstr()</a> + position - 1 and length values of the <a href="design">Ustr string</a> to be added.
+ The exception being if you add a ustr to itself, while only having a single
+ reference count, the simple method would access a free'd ustr, but this
+ function just works.
 
 </td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
 </p><p>  If the position is 1 and the length is the length of the <a href="design">Ustr string</a> then it
@@ -1522,7 +1537,9 @@
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length to set from the Ustr<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_del">ustr_del()</a> for the entire string and
- the <a href="functions#ustr_add_subustr">ustr_add_subustr()</a>.
+ the <a href="functions#ustr_add_subustr">ustr_add_subustr()</a>. The exception being if you set a ustr to itself, while
+ only having a single reference count, the simple method would access a
+ free'd ustr data, but this function just works.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1608,10 +1625,6 @@
 </p><p>  This function works as if you had called <a href="functions#ustr_ins_buf">ustr_ins_buf()</a> with the
  <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> values of the <a href="design">Ustr string</a> to be added.
 
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  While the <a href="functions#ustr_add">ustr_add()</a> function may add references, this function never does
- even when it is sematically the same as <a href="functions#ustr_add">ustr_add()</a>.
-
 
 </td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_ins_subustr">ustr_ins_subustr()</a>
@@ -1624,10 +1637,9 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function mostly as if you had called <a href="functions#ustr_ins_buf">ustr_ins_buf()</a> with the
  <a href="functions#ustr_cstr">ustr_cstr()</a> + position - 1 and length values of the <a href="design">Ustr string</a> to be insed.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  Again while <a href="functions#ustr_add_subustr">ustr_add_subustr()</a> has certain optimizations, this version does
- not.
+ The exception being if you insert a ustr to itself, while only having a single
+ reference count, the simple method would access a free'd ustr data, but this
+ function just works.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3271,6 +3283,9 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works as if you had called <a href="functions#ustr_sub_buf">ustr_sub_buf()</a> with the
  <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> values of the <a href="design">Ustr string</a> to be added.
+ The exception being if you substitute a ustr into itself, while only having a
+ single reference count, the simple method could access a free'd ustr data, but
+ this function just works.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3281,8 +3296,11 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Pointer to a Ustr containing the substitute string<br>Type<strong>[4]</strong>: const struct Ustr *
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  Substitutes a specified number of characters starting at the given position
- with the characters from the given Ustr. 
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> with the
+ <a href="functions#ustr_cstr">ustr_cstr()</a> and <a href="functions#ustr_len">ustr_len()</a> values of the <a href="design">Ustr string</a> to be added.
+ The exception being if you substitute a ustr into itself, while only having a
+ single reference count, the simple method could access a free'd ustr data, but
+ this function just works.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
