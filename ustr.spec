@@ -26,7 +26,7 @@
 
 
 Name: ustr
-Version: 1.0.3
+Version: 1.0.4
 Release: 1%{?dist}
 Summary: String library, very low memory overhead, simple to import
 Group: System Environment/Libraries

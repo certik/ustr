@@ -3,10 +3,10 @@
 #   ustr*.pc, ustr.spec, Documentation/*.pl, Documentation/ustr-import.1,
 #   ./scripts/rpms-create-james.sh
 VERS=1.0
-VERS_FULL=$(VERS).3
+VERS_FULL=$(VERS).4
 VERS_BSO =1.0
 VERS_ESONAME =1
-VERS_ESO     =$(VERS_ESONAME).0.3
+VERS_ESO     =$(VERS_ESONAME).0.4
 
 DESTDIR =
 prefix=/usr

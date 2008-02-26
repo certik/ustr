@@ -25,7 +25,7 @@ my $hdr_date = `date '+%d-%b-%Y'`;
 chomp($hdr_date);
 
 # FIXME: More C&P of VERSION
-my $hdr_ver = "1.0.3";
+my $hdr_ver = "1.0.4";
 
 my $man_funcs_header = <<EOL;
 .TH ustr 3 "$hdr_date" "Ustr $hdr_ver" "Ustr String Library"
