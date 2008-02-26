@@ -110,6 +110,8 @@ int tst(void)
   /* invalid position */
   if (!USTR_DEBUG)
   ASSERT(!ustr_sc_sub(&c,1500,3,repl));
+  if (!USTR_DEBUG)
+  ASSERT(!ustr_sc_sub(&c,1500,3,c));
   PRINT_RESULT(c);
   ASSERT(ustr_cmp_cstr_eq(c,str));
   

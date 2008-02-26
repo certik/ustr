@@ -1371,6 +1371,11 @@ Function: ustr_free()
   This function decrements the reference count on a Ustr, if there is one, and
  free's it if it is allocated and the reference count becomes zero.
 
+ Note:
+
+  This function does nothing if passed USTR_NULL.
+
+
 Function: ustrp_free()
  Returns: Nothing
  Type: void 
@@ -1384,7 +1389,7 @@ Function: ustrp_free()
  Explanation:
 
   This function works like ustr_free() but calls the pool_free member function
- of the Ustr_pool (Parameter[1]) instead of the system free.
+ of the Ustr_pool (Parameter[1]) instead of the ustr system free.
 
 
 Function: ustr_sc_free()
@@ -1399,6 +1404,12 @@ Function: ustr_sc_free()
   This function calls ustr_free() and then sets the pointer (Parameter[1]) to
  USTR_NULL, which is a noop when passed to ustr_free(). This can be used to
  help prevent "double free" errors.
+
+ Note:
+
+  While the point to the pointer must be non-NULL, this function also accepts
+ a NULL ustr and does nothing. So you can pass the same pointer to this function
+ multiple times and only the first one will do anything.
 
 
 Function: ustr_sc_free2()
@@ -1419,8 +1430,11 @@ Function: ustr_sc_free2()
 
  Note:
 
-  The passed value shouldn't be USTR_NULL, and in debugging mode the function
- will assert() that it isn't.
+  While the point to the pointer must be non-NULL, this function also accepts
+ a NULL ustr to be free'd and does nothing. So you can pass the same pointer to
+ ustr_sc_free() and then this function safely.
+  The passed value (Parameter[2]) shouldn't be USTR_NULL, and in debugging mode
+ the function will assert() that it isn't.
 
 
 Function: ustr_sc_free_shared()
@@ -1628,6 +1642,9 @@ Function: ustr_add_subustr()
 
   This function mostly works as if you had called ustr_add_buf() with the
  ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+ The exception being if you add a ustr to itself, while only having a single
+ reference count, the simple method would access a free'd ustr, but this
+ function just works.
 
  Note:
 
@@ -1790,7 +1807,9 @@ Function: ustr_set_subustr()
  Explanation:
 
   This function works as if you had called ustr_del() for the entire string and
- the ustr_add_subustr().
+ the ustr_add_subustr(). The exception being if you set a ustr to itself, while
+ only having a single reference count, the simple method would access a
+ free'd ustr data, but this function just works.
 
 
 Function: ustr_set_rep_chr()
@@ -1935,11 +1954,6 @@ Function: ustr_ins()
   This function works as if you had called ustr_ins_buf() with the
  ustr_cstr() and ustr_len() values of the Ustr string to be added.
 
- Note:
-
-  While the ustr_add() function may add references, this function never does
- even when it is sematically the same as ustr_add().
-
 
 Function: ustr_ins_subustr()
  Returns: Success or failure
@@ -1964,11 +1978,9 @@ Function: ustr_ins_subustr()
 
   This function mostly as if you had called ustr_ins_buf() with the
  ustr_cstr() + position - 1 and length values of the Ustr string to be insed.
-
- Note:
-
-  Again while ustr_add_subustr() has certain optimizations, this version does
- not.
+ The exception being if you insert a ustr to itself, while only having a single
+ reference count, the simple method would access a free'd ustr data, but this
+ function just works.
 
 
 Function: ustr_ins_rep_chr()
@@ -4688,6 +4700,9 @@ Function: ustr_sub()
 
   This function works as if you had called ustr_sub_buf() with the
  ustr_cstr() and ustr_len() values of the Ustr string to be added.
+ The exception being if you substitute a ustr into itself, while only having a
+ single reference count, the simple method could access a free'd ustr data, but
+ this function just works.
 
 
 Function: ustr_sc_sub()
@@ -4708,8 +4723,11 @@ Function: ustr_sc_sub()
 
  Explanation:
 
-  Substitutes a specified number of characters starting at the given position
- with the characters from the given Ustr. 
+  This function works as if you had called ustr_sc_sub_buf() with the
+ ustr_cstr() and ustr_len() values of the Ustr string to be added.
+ The exception being if you substitute a ustr into itself, while only having a
+ single reference count, the simple method could access a free'd ustr data, but
+ this function just works.
 
 
 Function: ustr_sc_sub_buf()

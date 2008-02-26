@@ -102,9 +102,12 @@ USTR_CONF_I_PROTO int ustrp_ins_buf(struct Ustr_pool *p, struct Ustrp **ps1,
 USTR_CONF_i_PROTO int ustrp__ins(struct Ustr_pool *p, struct Ustr **ps1,
                                  size_t pos, const struct Ustr *s2)
 {
+  if (pos == ustr_len(*ps1))
+    return (ustrp__add(p, ps1, s2));
+  
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
-    size_t len = ustr_len(s2);
+    size_t len = ustr_len(*ps1);
     size_t blen = 0;
     size_t pos2 = 0;
     
@@ -142,12 +145,18 @@ int ustrp__ins_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
                        const struct Ustr *s2, size_t pos2, size_t len2)
 {
   size_t clen2 = 0;
+
+  if (!len2)
+    return (USTR_TRUE);
   
   if (!(clen2 = ustrp__assert_valid_subustr(!!p, s2, pos2, len2)))
     return (USTR_FALSE);
 
   if (clen2 == len2)
     return (ustrp__ins(p, ps1, pos1, s2));
+
+  if (pos1 == clen2)
+    return (ustrp__add_subustr(p, ps1, s2, pos2, len2));
   
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
@@ -156,7 +165,7 @@ int ustrp__ins_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
 
     if (pos2 > pos1)
       pos2 += len2;
-    else
+    else if ((pos2 + len2 - 1) > pos1)
     {
       size_t blen = (pos1 - pos2) + 1;
 

@@ -113,7 +113,6 @@ int ustrp__sub_subustr(struct Ustr_pool *p, struct Ustr **ps1, size_t pos1,
 
     ret = ustrp__sub(p, ps1, pos1, tmp);
     ustrp__free(p, tmp);
-    USTR_ASSERT(ret);
     
     return (ret);
   }
@@ -218,23 +217,44 @@ USTR_CONF_i_PROTO
 int ustrp__sc_sub(struct Ustr_pool *p, struct Ustr **ps1,size_t pos,size_t olen,
                   const struct Ustr *s2)
 {
+  if (!olen)
+    return (ustrp__ins(p, ps1, pos - 1, s2));
+    
   if ((*ps1 == s2) && ustr_owner(*ps1))
   {
-    size_t clen = ustr_len(*ps1);
+    size_t clen = ustrp__assert_valid_subustr(!!p, *ps1, pos, olen);
+    size_t alen = (clen - olen);
     size_t epos = ( pos + olen);
     size_t elen = (clen - epos) + 1;
+    char *ptr;
+
+    if (!clen)
+      return (USTR_FALSE);
     
-    if (!ustrp__add_subustr(p, ps1, s2, epos, elen))
+    /*
+      abcd/1.2 => abcdcd
+      abcd/2.2 => aabcdd
+      abcd/3.2 => ababcd
+    */
+    
+    if (!ustrp__add_undef(p, ps1, alen))
       return (USTR_FALSE);
 
-    s2 = *ps1;
-    if (!ustrp__ins_subustr(p, ps1, 0, s2, 1, pos - 1))
+    ptr = ustr_wstr(*ps1);
+    if (pos != 1)
     {
-      ustrp__del(p, ps1, elen);
-      errno = USTR__ENOMEM;
-      return (USTR_FALSE);
+      size_t bpos = pos - 1;
+      size_t blen = bpos;
+
+      /* move current data, to make room */
+      memmove(ptr + bpos, ptr, clen);
+      memcpy(ptr, ptr + bpos, blen);
+      epos += blen;
+      clen += blen;
     }
-    
+    ustr__memcpy(*ps1, clen, ptr + epos - 1, elen);
+
+    USTR_ASSERT(ps1 && ustrp__assert_valid(!!p, *ps1));
     return (USTR_TRUE);
   }
   
