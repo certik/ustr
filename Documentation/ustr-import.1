@@ -5,7 +5,7 @@ ustr-import - ustr string library import tool
 .ad l
 .hy 0
 .HP 5
-\fBustr-import\fR [-d] [-d] [-c] [-b] [-e] [-s] < "all" | section | ... >
+\fBustr-import\fR [--32|--64] [-d][d] [-c] [-b x] [-e 1|0] [-s 1|0] section
 .sp
 .ti
 .SH "DESCRIPTION"
@@ -13,12 +13,20 @@ ustr-import - ustr string library import tool
 .SH "OPTIONS"
 
 .TP
+\--32
+If you installed with multilib, this runs the 32 bit varient\&.
+
+.TP
+\--64
+If you installed with multilib, this runs the 64 bit varient\&.
+
+.TP
 \-d
 Turn debugging on, USTR_ASSERT() now runs code etc\&.
 
 .TP
 \-d
-Turn extra debugging on, including End of String (EOS) markers that takeup space
+Turn extra debugging on, including End of String (EOS) markers that takeup space\&. Note that you can do \-dd to add both at once\&.
 
 .TP
 \-c

@@ -2,8 +2,20 @@
 
 MBINDIR=@MBINDIR@
 
+# one is the "prefered", two is the fallback ... ppc/etc. probably want to
+# swap these somehow
 one=64
 two=32
+
+if [ "x$1" = "x--32" ]; then
+  shift
+  exec "$MBINDIR/ustr-import-32" "$@"
+fi
+
+if [ "x$1" = "x--64" ]; then
+  shift
+  exec "$MBINDIR/ustr-import-64" "$@"
+fi
 
 if [ -f "$MBINDIR/ustr-import-$one" ]; then
   exec "$MBINDIR/ustr-import-$one" "$@"

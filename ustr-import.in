@@ -18,39 +18,48 @@ cmdname="`basename $0`"
 
 usage()
 {
-  echo " Format: $cmdname [-d] [-d] [-c] [-b x] [-s] [-e] gdb | all | <section> ..." 1>&2
-  echo "     List of options:" 1>&2
-  echo "         -d    = Turn debugging on, assert() trigger etc." 1>&2
-  echo "         -d    = Turn extra debugging on" 1>&2
-  echo "         -c    = Import/use .c files, instead of headers only" 1>&2
-  echo "         -b    = Specify default ref. bytes size: 0, 1, 2, 4 or 8" 1>&2
-  echo "         -e    = Exact allocations used by default" 1>&2
-  echo "         -s    = Sized value included by default" 1>&2
-  echo "     List of sections:" 1>&2
-  echo "         all   = All of the following" 1>&2
-  echo "         b     = Working with binary numbers in NBO format" 1>&2
-  echo "         cmp   = Comparing, strcmp() for Ustr's" 1>&2
-  echo "         cntl  = Control options dynamically" 1>&2
-  echo "         fmt   = Formatted output, sprintf() for Ustr's" 1>&2
-  echo "         gdb   = Copy just the .gdbinit file to the local dir" 1>&2
-  echo "         ins   = Inserting data" 1>&2
-  echo "         io    = Input Output" 1>&2
-  echo "         main  = The core, strcat() and delete for Ustr's" 1>&2
-  echo "         parse = Parsing integers, Ie. Nice versions of strtol()" 1>&2
-  echo "         pool  = A bundled memory pool API" 1>&2
-  echo "         replace = Replacing all occurances of data" 1>&2
-  echo "         sc    = Shortcut functions for Ustr's" 1>&2
-  echo "         set   = Setting data, strcpy() for Ustr's" 1>&2
-  echo "         split = Slit the data, strtok() / strsep() for Ustr's" 1>&2
-  echo "         spn   = Spanning, strspn() / strcspn() for Ustr's" 1>&2
-  echo "         srch  = Searching, strchr() / strstr() for Ustr's" 1>&2
-  echo "         sub   = Substituting data" 1>&2
-  echo "         utf8  = Working with UTF8" 1>&2
-  echo "" 1>&2
-  echo "     Ustr Version: $VERS_FULL" 1>&2
-  exit 1
+  echo " Format: $cmdname [-d][d] [-c] [-b b] [-e 1|0] [-s 1|0] gdb|all|<section> ..."
+  echo "     List of options:"
+  echo "         -d    = Turn debugging on, assert() trigger etc."
+  echo "         -d    = Turn extra debugging on"
+  echo "         -c    = Import/use .c files, instead of headers only"
+  echo "         -b    = Specify default ref. bytes size: 0, 1, 2, 4 or 8"
+  echo "         -e    = Exact allocations used by default"
+  echo "         -s    = Sized value included by default"
+  echo "     List of sections:"
+  echo "         all   = All of the following"
+  echo "         b     = Working with binary numbers in NBO format"
+  echo "         cmp   = Comparing, strcmp() for Ustr's"
+  echo "         cntl  = Control options dynamically"
+  echo "         fmt   = Formatted output, sprintf() for Ustr's"
+  echo "         gdb   = Copy just the .gdbinit file to the local dir"
+  echo "         ins   = Inserting data"
+  echo "         io    = Input Output"
+  echo "         main  = The core, strcat() and delete for Ustr's"
+  echo "         parse = Parsing integers, Ie. Nice versions of strtol()"
+  echo "         pool  = A bundled memory pool API"
+  echo "         replace = Replacing all occurances of data"
+  echo "         sc    = Shortcut functions for Ustr's"
+  echo "         set   = Setting data, strcpy() for Ustr's"
+  echo "         split = Slit the data, strtok() / strsep() for Ustr's"
+  echo "         spn   = Spanning, strspn() / strcspn() for Ustr's"
+  echo "         srch  = Searching, strchr() / strstr() for Ustr's"
+  echo "         sub   = Substituting data"
+  echo "         utf8  = Working with UTF8"
+  echo ""
+  echo "     Ustr Version: $VERS_FULL"
+  exit $1
 }
 
+if [ "x$1" = "x--help" ]; then
+  usage 0
+fi
+
+if [ "x$1" = "x-dd" ]; then
+  dbg=true
+  fulldbg=true
+  shift
+else
 if [ "x$1" = "x-d" ]; then
   dbg=true
   shift
@@ -59,6 +68,7 @@ fi
 if [ "x$1" = "x-d" ]; then
   fulldbg=true
   shift
+fi
 fi
 
 if [ "x$1" = "x-c" ]; then
@@ -75,6 +85,12 @@ fi
 if [ "x$1" = "x-e" ]; then
   shift
   exact="$1"
+  shift
+fi
+
+if [ "x$1" = "x-s" ]; then
+  shift
+  usesz="$1"
   shift
 fi
 
@@ -121,7 +137,8 @@ for i in $@; do
     sub)     sub=true;   main=true ;;
     utf8)    utf8=true;  main=true ;;
     *)
-      usage
+      exec 1>&2
+      usage 1
       ;;
   esac
 done
@@ -194,7 +211,8 @@ if $gdb; then
   fi
 else
   if ! $main; then
-    usage
+    exec 1>&2
+    usage 1
   fi
   cp "$SHRDIR/.gdbinit" .
 fi
