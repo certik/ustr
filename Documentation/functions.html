@@ -25,7 +25,7 @@
 
   </head>
   <body>
-<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.4 reference documentation -- functions (283)</h1>
+<table width="100%"><tr><td class="title"><h1>Ustr - 1.0.4 reference documentation -- functions (301)</h1>
 </td></tr></table><table width="90%"><tr><td>
 <h2 class="ind">Index of sections</h2>
 <ul>
@@ -37,14 +37,14 @@
 <li><a href="#indx-Adding_data_to_a_Ustr">Adding data to a Ustr (8)</a>
 <li><a href="#indx-Setting_a_Ustr_to_some_data">Setting a Ustr to some data (9)</a>
 <li><a href="#indx-Inserting_data_into_a_Ustr">Inserting data into a Ustr (8)</a>
-<li><a href="#indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr (14)</a>
+<li><a href="#indx-Adding_duplicating_and_setting_formatted_data_to_a_Ustr">Adding, duplicating and setting formatted data to a Ustr (26)</a>
 <li><a href="#indx-Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr (16)</a>
 <li><a href="#indx-Setting_the_flags_of_a_Ustr">Setting the "flags" of a Ustr (4)</a>
 <li><a href="#indx-Comparing_data_in_a_Ustr">Comparing data in a Ustr (36)</a>
 <li><a href="#indx-Searching_for_data_in_a_Ustr">Searching for data in a Ustr (20)</a>
 <li><a href="#indx-Span_lengths_of_data_in_a_Ustr">Span lengths of data in a Ustr (28)</a>
 <li><a href="#indx-Doing_IO_from_or_to_a_Ustr">Doing IO from or to a Ustr (10)</a>
-<li><a href="#indx-String_substitutionreplacement">String substitution/replacement (12)</a>
+<li><a href="#indx-String_substitutionreplacement">String substitution/replacement (18)</a>
 <li><a href="#indx-Splitting_a_Ustr">Splitting a Ustr (6)</a>
 <li><a href="#indx-Dealing_with_UTF8_in_a_Ustr">Dealing with UTF-8 in a Ustr (6)</a>
 <li><a href="#indx-Parsing_ASCII_integer_numbers_from_a_Ustr">Parsing ASCII integer numbers from a Ustr (10)</a>
@@ -178,6 +178,18 @@
 <li class="obj"><a href="#ustr_set_vfmt">ustr_set_vfmt()</a>
 <li class="obj"><a href="#ustr_set_fmt_lim">ustr_set_fmt_lim()</a>
 <li class="obj"><a href="#ustr_set_fmt">ustr_set_fmt()</a>
+<li class="obj"><a href="#ustr_ins_vfmt_lim">ustr_ins_vfmt_lim()</a>
+<li class="obj"><a href="#ustr_ins_vfmt">ustr_ins_vfmt()</a>
+<li class="obj"><a href="#ustr_ins_fmt_lim">ustr_ins_fmt_lim()</a>
+<li class="obj"><a href="#ustr_ins_fmt">ustr_ins_fmt()</a>
+<li class="obj"><a href="#ustr_sub_vfmt_lim">ustr_sub_vfmt_lim()</a>
+<li class="obj"><a href="#ustr_sub_vfmt">ustr_sub_vfmt()</a>
+<li class="obj"><a href="#ustr_sub_fmt_lim">ustr_sub_fmt_lim()</a>
+<li class="obj"><a href="#ustr_sub_fmt">ustr_sub_fmt()</a>
+<li class="obj"><a href="#ustr_sc_sub_vfmt_lim">ustr_sc_sub_vfmt_lim()</a>
+<li class="obj"><a href="#ustr_sc_sub_vfmt">ustr_sc_sub_vfmt()</a>
+<li class="obj"><a href="#ustr_sc_sub_fmt_lim">ustr_sc_sub_fmt_lim()</a>
+<li class="obj"><a href="#ustr_sc_sub_fmt">ustr_sc_sub_fmt()</a>
 </ul><li><a id="indx-Accessing_the_variables_of_a_Ustr" href="#Accessing_the_variables_of_a_Ustr">Accessing the "variables" of a Ustr</a>
 <ul>
 <li class="obj"><a href="#ustr_len">ustr_len()</a>
@@ -306,14 +318,20 @@
 <li class="obj"><a href="#ustr_io_putfilename">ustr_io_putfilename()</a>
 </ul><li><a id="indx-String_substitutionreplacement" href="#String_substitutionreplacement">String substitution/replacement</a>
 <ul>
+<li class="obj"><a href="#ustr_sub_undef">ustr_sub_undef()</a>
 <li class="obj"><a href="#ustr_sub_buf">ustr_sub_buf()</a>
 <li class="obj"><a href="#ustr_sub_cstr">ustr_sub_cstr()</a>
 <li class="obj"><a href="#USTR_SUB_OSTR">USTR_SUB_OSTR()</a>
 <li class="obj"><a href="#USTR_SUB_OBJ">USTR_SUB_OBJ()</a>
 <li class="obj"><a href="#ustr_sub">ustr_sub()</a>
-<li class="obj"><a href="#ustr_sc_sub">ustr_sc_sub()</a>
+<li class="obj"><a href="#ustr_sub_subustr">ustr_sub_subustr()</a>
+<li class="obj"><a href="#ustr_sc_sub_undef">ustr_sc_sub_undef()</a>
 <li class="obj"><a href="#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
 <li class="obj"><a href="#ustr_sc_sub_cstr">ustr_sc_sub_cstr()</a>
+<li class="obj"><a href="#ustr_sc_sub">ustr_sc_sub()</a>
+<li class="obj"><a href="#ustr_sc_sub_subustr">ustr_sc_sub_subustr()</a>
+<li class="obj"><a href="#USTR_SC_SUB_OSTR">USTR_SC_SUB_OSTR()</a>
+<li class="obj"><a href="#USTR_SC_SUB_OBJ">USTR_SC_SUB_OBJ()</a>
 <li class="obj"><a href="#ustr_replace_buf">ustr_replace_buf()</a>
 <li class="obj"><a href="#ustr_replace_cstr">ustr_replace_cstr()</a>
 <li class="obj"><a href="#ustr_replace">ustr_replace()</a>
@@ -1562,9 +1580,10 @@
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Length of new undefined data<br>Type<strong>[3]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  The <a href="design">Ustr string</a> is expanded (possibly reallocated) so that it can contain
- length (Parameter[2]) extra data, if the length is not zero the Ustr will
- be writable. Or it'll return <a href="constants#USTR_FALSE">USTR_FALSE</a> (zero) on failure. The data in the Ustr
- is moved as needed to put the new data at position (Parameter[2]) + 1.
+ length (Parameter[2]) extra data, from after the required position. If the
+ length is not zero the Ustr will be writable. Or it'll return
+ <a href="constants#USTR_FALSE">USTR_FALSE</a> (zero) on failure. The data in the Ustr is moved as needed to put
+ the new data at position (Parameter[2]) + 1.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -1817,6 +1836,160 @@
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
 </p><p>  This function works like calling <a href="functions#ustr_del">ustr_del()</a> for all the data and then
  <a href="functions#ustr_add_fmt">ustr_add_fmt()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_ins_vfmt_lim">ustr_ins_vfmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position after which the data should be added<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Limit of data to insert<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[5]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system vsnprintf() with the limit
+ (Parameter[3]) as the limit to vsnprintf() and then calling <a href="functions#ustr_ins_buf">ustr_ins_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_ins_vfmt">ustr_ins_vfmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position after which the data should be added<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[4]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system vsnprintf() and then calling
+ <a href="functions#ustr_ins_buf">ustr_ins_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_ins_fmt_lim">ustr_ins_fmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position after which the data should be added<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Limit of data to insert<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Options depending on value of Parameter[4]<br>Type<strong>[5]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() with the limit
+ (Parameter[3]) as the limit to snprintf() and then calling <a href="functions#ustr_ins_buf">ustr_ins_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_ins_fmt">ustr_ins_fmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position after which the data should be added<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Options depending on value of Parameter[3]<br>Type<strong>[4]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() and then calling
+ <a href="functions#ustr_ins_buf">ustr_ins_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_vfmt_lim">ustr_sub_vfmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Limit of data to substitute<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[5]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system vsnprintf() with the limit
+ (Parameter[3]) as the limit to vsnprintf() and then calling <a href="functions#ustr_sub_buf">ustr_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_vfmt">ustr_sub_vfmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[4]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system vsnprintf() and then calling
+ <a href="functions#ustr_sub_buf">ustr_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_fmt_lim">ustr_sub_fmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Limit of data to substitute<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Options depending on value of Parameter[4]<br>Type<strong>[5]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() with the limit
+ (Parameter[3]) as the limit to snprintf() and then calling <a href="functions#ustr_sub_buf">ustr_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_fmt">ustr_sub_fmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant C-style string<br>Type<strong>[3]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Options depending on value of Parameter[3]<br>Type<strong>[4]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() and then calling
+ <a href="functions#ustr_sub_buf">ustr_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_vfmt_lim">ustr_sc_sub_vfmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Limit of data to substitute<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to a constant C-style string<br>Type<strong>[5]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[6]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system vsnprintf() with the limit
+ (Parameter[4]) as the limit to vsnprintf() and then calling <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_vfmt">ustr_sc_sub_vfmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Variable argument list variable, from va_start()<br>Type<strong>[5]</strong>: va_list
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system vsnprintf() and then calling
+ <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_fmt_lim">ustr_sc_sub_fmt_lim()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Limit of data to substitute<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: A pointer to a constant C-style string<br>Type<strong>[5]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Options depending on value of Parameter[5]<br>Type<strong>[6]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() with the limit
+ (Parameter[3]) as the limit to snprintf() and then calling <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_fmt">ustr_sc_sub_fmt()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: A pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Options depending on value of Parameter[5]<br>Type<strong>[5]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like calling the system snprintf() and then calling
+ <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a>.
 
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="Accessing%20the%20%22variables%22%20of%20a%20Ustr">Accessing the "variables" of a Ustr</a></h2>
@@ -3224,18 +3397,33 @@
 
 </td></tr></table><table width="90%"><tr><td class="sect"><h2><a id="String%20substitution%2freplacement">String substitution/replacement</a></h2>
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_undef">ustr_sub_undef()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of undefined data<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  The <a href="design">Ustr string</a> is expanded as required (possibly reallocated) so that it can
+ contain length (Parameter[2]) data, from the required position. If the length
+ is not zero the Ustr will be writable. Or it'll return <a href="constants#USTR_FALSE">USTR_FALSE</a> (zero) on
+ failure.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  You can think of the operation as two seperate tasks, one which makes the
+ current data in the Ustr undefined and the second which adds undefined data
+ to the ustr to accomodate the desired length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sub_buf">ustr_sub_buf()</a>
-<br>Returns: success or failure <br>Type: int 
+<br>Returns: Success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
 </td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
 </td></tr><tr><td>Parameter<strong>[3]</strong>: Buffer containing substitution string <br>Type<strong>[3]</strong>: const void *
 </td></tr><tr><td>Parameter<strong>[4]</strong>: Length of buffer<br>Type<strong>[4]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function will substitute the characters in the Ustr starting at the
- specified position using data from the buffer.
-
-</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
-</p><p>  The Ustr will be automatically be resized to be big enough, if necessary.
+</p><p>  This function works as if you had called <a href="functions#ustr_sub_undef">ustr_sub_undef()</a> and then copied the
+ data into the new undefined space.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
@@ -3289,6 +3477,60 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sub_subustr">ustr_sub_subustr()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[3]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Position in the Ustr<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length to substitute from the Ustr<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function mostly as if you had called <a href="functions#ustr_sub_buf">ustr_sub_buf()</a> with the
+ <a href="functions#ustr_cstr">ustr_cstr()</a> + position - 1 and length values of the <a href="design">Ustr string</a> to be insed.
+ The exception being if you insert a ustr to itself, while only having a single
+ reference count, the simple method would access a free'd ustr data, but this
+ function just works.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_undef">ustr_sc_sub_undef()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Length of undefined data<br>Type<strong>[4]</strong>: size_t
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had done <a href="functions#ustr_del_subustr">ustr_del_subustr()</a> followed by
+ <a href="functions#ustr_ins_undef">ustr_ins_undef()</a>, however it is significantly more efficient.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
+<br>Returns: Success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t 
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t 
+</td></tr><tr><td>Parameter<strong>[4]</strong>: Buffer containting substitute data<br>Type<strong>[4]</strong>: const void *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of Buffer<br>Type<strong>[5]</strong>: size_t 
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function will substitute a specific number of characters in a Ustr with
+ the data from a buffer, this function does the job of one or more of
+ <a href="functions#ustr_add_buf">ustr_add_buf()</a>, <a href="functions#ustr_sub_buf">ustr_sub_buf()</a> and <a href="functions#ustr_del">ustr_del()</a>.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="ustr_sc_sub_cstr">ustr_sc_sub_cstr()</a>
+<br>Returns: Success or failure <br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement <br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[4]</strong>: const char *
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works like <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> but the length is worked out
+ automatically by strlen().
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
 <strong>Function: </strong> <a id="ustr_sc_sub">ustr_sc_sub()</a>
 <br>Returns: success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
@@ -3304,29 +3546,47 @@
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_sub_buf">ustr_sc_sub_buf()</a>
+<strong>Function: </strong> <a id="ustr_sc_sub_subustr">ustr_sc_sub_subustr()</a>
 <br>Returns: Success or failure <br>Type: int 
 </td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t 
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitute<br>Type<strong>[3]</strong>: size_t 
-</td></tr><tr><td>Parameter<strong>[4]</strong>: Buffer containting substitute data<br>Type<strong>[4]</strong>: const void *
-</td></tr><tr><td>Parameter<strong>[5]</strong>: Length of Buffer<br>Type<strong>[5]</strong>: size_t 
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant <a href="design">Ustr string</a><br>Type<strong>[4]</strong>: const struct Ustr *
+</td></tr><tr><td>Parameter<strong>[5]</strong>: Position in the Ustr<br>Type<strong>[5]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[6]</strong>: Length to substitute from the Ustr<br>Type<strong>[6]</strong>: size_t
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function will replace a specific number of characters in a Ustr with
- the data from a buffer, this function does the job of one or more of
- <a href="functions#ustr_add_buf">ustr_add_buf()</a>, <a href="functions#ustr_sub_buf">ustr_sub_buf()</a> and <a href="functions#ustr_del">ustr_del()</a>.
+</p><p>  This function mostly as if you had called <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> with the
+ <a href="functions#ustr_cstr">ustr_cstr()</a> + position - 1 and length values of the <a href="design">Ustr string</a> to be insed.
+ The exception being if you insert a ustr to itself, while only having a single
+ reference count, the simple method would access a free'd ustr data, but this
+ function just works.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">
-<strong>Function: </strong> <a id="ustr_sc_sub_cstr">ustr_sc_sub_cstr()</a>
-<br>Returns: Success or failure <br>Type: int 
-</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a Ustr<br>Type<strong>[1]</strong>: struct Ustr **
-</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start replacement <br>Type<strong>[2]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of replacement<br>Type<strong>[3]</strong>: size_t
-</td></tr><tr><td>Parameter<strong>[4]</strong>: A pointer to a constant C-style string, containing spanning bytes<br>Type<strong>[4]</strong>: const char *
+<strong>Function: </strong> <a id="USTR_SC_SUB_OSTR">USTR_SC_SUB_OSTR()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A constant C-style string<br>Type<strong>[4]</strong>: const char []
 </td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
-</p><p>  This function works like <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> but the length is worked out
- automatically by strlen().
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> and passed
+ sizeof() - 1 as the length.
+
+
+</td></tr></table><table width="80%"><tr><td class="obj">
+<strong>Function: </strong> <a id="USTR_SC_SUB_OBJ">USTR_SC_SUB_OBJ()</a>
+<br>Returns: Success or failure<br>Type: int 
+</td></tr><tr><td>Parameter<strong>[1]</strong>: Pointer to a pointer to a <a href="design">Ustr string</a><br>Type<strong>[1]</strong>: struct Ustr **
+</td></tr><tr><td>Parameter<strong>[2]</strong>: Position where to start substitution<br>Type<strong>[2]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[3]</strong>: Length of substitution<br>Type<strong>[3]</strong>: size_t
+</td></tr><tr><td>Parameter<strong>[4]</strong>: A symbol<br>Type<strong>[4]</strong>: ...
+</td></tr><tr><td><strong>Explanation:</strong></td></tr><tr><td><p>
+</p><p>  This function works as if you had called <a href="functions#ustr_sc_sub_buf">ustr_sc_sub_buf()</a> and passed
+ sizeof() as the length.
+
+</td></tr><tr><td><strong>Note:</strong></td></tr><tr><td><p>
+</p><p>  In most cases you'll want to use <a href="functions#USTR_SUB_OSTR">USTR_SUB_OSTR()</a>.
 
 
 </td></tr></table><table width="80%"><tr><td class="obj">

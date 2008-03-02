@@ -1,4 +1,4 @@
-.TH ustr 3 "26-Feb-2008" "Ustr 1.0.4" "Ustr String Library"
+.TH ustr 3 "02-Mar-2008" "Ustr 1.0.4" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -434,6 +434,54 @@ int  \fBustr_set_fmt_lim\fR(struct Ustr **, size_t, const char *, ...);
 .in \w'  int  \fBustr_set_fmt\fR('u
 .ti \w'  'u
 int  \fBustr_set_fmt\fR(struct Ustr **, const char *, ...);
+.br
+.in \w'  int  \fBustr_ins_vfmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_ins_vfmt_lim\fR(struct Ustr **, size_t, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_ins_vfmt\fR('u
+.ti \w'  'u
+int  \fBustr_ins_vfmt\fR(struct Ustr **, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_ins_fmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_ins_fmt_lim\fR(struct Ustr **, size_t, size_t, const char *, ...);
+.br
+.in \w'  int  \fBustr_ins_fmt\fR('u
+.ti \w'  'u
+int  \fBustr_ins_fmt\fR(struct Ustr **, size_t, const char *, ...);
+.br
+.in \w'  int  \fBustr_sub_vfmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_sub_vfmt_lim\fR(struct Ustr **, size_t, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_sub_vfmt\fR('u
+.ti \w'  'u
+int  \fBustr_sub_vfmt\fR(struct Ustr **, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_sub_fmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_sub_fmt_lim\fR(struct Ustr **, size_t, size_t, const char *, ...);
+.br
+.in \w'  int  \fBustr_sub_fmt\fR('u
+.ti \w'  'u
+int  \fBustr_sub_fmt\fR(struct Ustr **, size_t, const char *, ...);
+.br
+.in \w'  int  \fBustr_sc_sub_vfmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_vfmt_lim\fR(struct Ustr **, size_t, size_t, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_sc_sub_vfmt\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_vfmt\fR(struct Ustr **, size_t, size_t, const char *, va_list);
+.br
+.in \w'  int  \fBustr_sc_sub_fmt_lim\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_fmt_lim\fR(struct Ustr **, size_t, size_t, size_t, const char *, ...);
+.br
+.in \w'  int  \fBustr_sc_sub_fmt\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_fmt\fR(struct Ustr **, size_t, size_t, const char *, ...);
 .sp
 .br
 .in \w'  size_t  \fBustr_len\fR('u
@@ -898,6 +946,10 @@ int  \fBustr_io_putfileline\fR(struct Ustr **, FILE *);
 int  \fBustr_io_putfilename\fR(struct Ustr **, const char *, const char *);
 .sp
 .br
+.in \w'  int  \fBustr_sub_undef\fR('u
+.ti \w'  'u
+int  \fBustr_sub_undef\fR(struct Ustr **, size_t, size_t);
+.br
 .in \w'  int  \fBustr_sub_buf\fR('u
 .ti \w'  'u
 int  \fBustr_sub_buf\fR(struct Ustr **, size_t, const void *, size_t);
@@ -918,9 +970,13 @@ int  \fBUSTR_SUB_OBJ\fR(struct Ustr **, size_t, ...);
 .ti \w'  'u
 int  \fBustr_sub\fR(struct Ustr **, size_t, const struct Ustr *);
 .br
-.in \w'  int  \fBustr_sc_sub\fR('u
+.in \w'  int  \fBustr_sub_subustr\fR('u
 .ti \w'  'u
-int  \fBustr_sc_sub\fR(struct Ustr **, size_t, size_t, const struct Ustr *);
+int  \fBustr_sub_subustr\fR(struct Ustr **, size_t, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBustr_sc_sub_undef\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_undef\fR(struct Ustr **, size_t, size_t, size_t);
 .br
 .in \w'  int  \fBustr_sc_sub_buf\fR('u
 .ti \w'  'u
@@ -929,6 +985,22 @@ int  \fBustr_sc_sub_buf\fR(struct Ustr **, size_t , size_t , const void *, size_
 .in \w'  int  \fBustr_sc_sub_cstr\fR('u
 .ti \w'  'u
 int  \fBustr_sc_sub_cstr\fR(struct Ustr **, size_t, size_t, const char *);
+.br
+.in \w'  int  \fBustr_sc_sub\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub\fR(struct Ustr **, size_t, size_t, const struct Ustr *);
+.br
+.in \w'  int  \fBustr_sc_sub_subustr\fR('u
+.ti \w'  'u
+int  \fBustr_sc_sub_subustr\fR(struct Ustr **, size_t, size_t, const struct Ustr *, size_t, size_t);
+.br
+.in \w'  int  \fBUSTR_SC_SUB_OSTR\fR('u
+.ti \w'  'u
+int  \fBUSTR_SC_SUB_OSTR\fR(struct Ustr **, size_t, size_t, const char []);
+.br
+.in \w'  int  \fBUSTR_SC_SUB_OBJ\fR('u
+.ti \w'  'u
+int  \fBUSTR_SC_SUB_OBJ\fR(struct Ustr **, size_t, size_t, ...);
 .br
 .in \w'  size_t  \fBustr_replace_buf\fR('u
 .ti \w'  'u
@@ -3791,7 +3863,7 @@ Type\fB[3]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  The Ustr string is expanded (possibly reallocated) so that it can contain length (Parameter[2]) extra data, if the length is not zero the Ustr will be writable. Or it'll return USTR_FALSE (zero) on failure. The data in the Ustr is moved as needed to put the new data at position (Parameter[2]) + 1.
+  The Ustr string is expanded (possibly reallocated) so that it can contain length (Parameter[2]) extra data, from after the required position. If the length is not zero the Ustr will be writable. Or it'll return USTR_FALSE (zero) on failure. The data in the Ustr is moved as needed to put the new data at position (Parameter[2]) + 1.
 
 .ti -2
 .br
@@ -4477,6 +4549,464 @@ Type\fB[3]\fR: ...
 
 .br
   This function works like calling ustr_del() for all the data and then ustr_add_fmt().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_ins_vfmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position after which the data should be added
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Limit of data to insert
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string
+.br
+Type\fB[4]\fR: const char *
+
+.br
+Parameter\fB[5]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[5]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system vsnprintf() with the limit (Parameter[3]) as the limit to vsnprintf() and then calling ustr_ins_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_ins_vfmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position after which the data should be added
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[4]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system vsnprintf() and then calling ustr_ins_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_ins_fmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position after which the data should be added
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Limit of data to insert
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string
+.br
+Type\fB[4]\fR: const char *
+
+.br
+Parameter\fB[5]\fR: Options depending on value of Parameter[4]
+.br
+Type\fB[5]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() with the limit (Parameter[3]) as the limit to snprintf() and then calling ustr_ins_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_ins_fmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position after which the data should be added
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Options depending on value of Parameter[3]
+.br
+Type\fB[4]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() and then calling ustr_ins_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sub_vfmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Limit of data to substitute
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string
+.br
+Type\fB[4]\fR: const char *
+
+.br
+Parameter\fB[5]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[5]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system vsnprintf() with the limit (Parameter[3]) as the limit to vsnprintf() and then calling ustr_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sub_vfmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[4]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system vsnprintf() and then calling ustr_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sub_fmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Limit of data to substitute
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string
+.br
+Type\fB[4]\fR: const char *
+
+.br
+Parameter\fB[5]\fR: Options depending on value of Parameter[4]
+.br
+Type\fB[5]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() with the limit (Parameter[3]) as the limit to snprintf() and then calling ustr_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sub_fmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant C-style string
+.br
+Type\fB[3]\fR: const char *
+
+.br
+Parameter\fB[4]\fR: Options depending on value of Parameter[3]
+.br
+Type\fB[4]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() and then calling ustr_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_vfmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Limit of data to substitute
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: A pointer to a constant C-style string
+.br
+Type\fB[5]\fR: const char *
+
+.br
+Parameter\fB[6]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[6]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system vsnprintf() with the limit (Parameter[4]) as the limit to vsnprintf() and then calling ustr_sc_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_vfmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string
+.br
+Type\fB[4]\fR: const char *
+
+.br
+Parameter\fB[5]\fR: Variable argument list variable, from va_start()
+.br
+Type\fB[5]\fR: va_list
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system vsnprintf() and then calling ustr_sc_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_fmt_lim()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Limit of data to substitute
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: A pointer to a constant C-style string
+.br
+Type\fB[5]\fR: const char *
+
+.br
+Parameter\fB[6]\fR: Options depending on value of Parameter[5]
+.br
+Type\fB[6]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() with the limit (Parameter[3]) as the limit to snprintf() and then calling ustr_sc_sub_buf().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_fmt()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string
+.br
+Type\fB[4]\fR: const char *
+
+.br
+Parameter\fB[5]\fR: Options depending on value of Parameter[5]
+.br
+Type\fB[5]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like calling the system snprintf() and then calling ustr_sc_sub_buf().
 
 .SH Accessing the "variables" of a Ustr
 .ti -2
@@ -7855,9 +8385,43 @@ Type\fB[3]\fR: const char *
 .SH String substitution/replacement
 .ti -2
 .br
+\fBFunction: \fR ustr_sub_undef()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of undefined data
+.br
+Type\fB[3]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  The Ustr string is expanded as required (possibly reallocated) so that it can contain length (Parameter[2]) data, from the required position. If the length is not zero the Ustr will be writable. Or it'll return USTR_FALSE (zero) on failure.
+.sp
+\fBNote:\fR
+
+.br
+  You can think of the operation as two seperate tasks, one which makes the current data in the Ustr undefined and the second which adds undefined data to the ustr to accomodate the desired length.
+
+.ti -2
+.br
 \fBFunction: \fR ustr_sub_buf()
 .br
-Returns: success or failure 
+Returns: Success or failure 
 .br
 Type: int 
 
@@ -7885,12 +8449,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function will substitute the characters in the Ustr starting at the specified position using data from the buffer.
-.sp
-\fBNote:\fR
-
-.br
-  The Ustr will be automatically be resized to be big enough, if necessary.
+  This function works as if you had called ustr_sub_undef() and then copied the data into the new undefined space.
 
 .ti -2
 .br
@@ -8015,6 +8574,152 @@ Type\fB[3]\fR: const struct Ustr *
 
 .ti -2
 .br
+\fBFunction: \fR ustr_sub_subustr()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: A pointer to a constant Ustr string
+.br
+Type\fB[3]\fR: const struct Ustr *
+
+.br
+Parameter\fB[4]\fR: Position in the Ustr
+.br
+Type\fB[4]\fR: size_t
+
+.br
+Parameter\fB[5]\fR: Length to substitute from the Ustr
+.br
+Type\fB[5]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function mostly as if you had called ustr_sub_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_undef()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: Length of undefined data
+.br
+Type\fB[4]\fR: size_t
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had done ustr_del_subustr() followed by ustr_ins_undef(), however it is significantly more efficient.
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_buf()
+.br
+Returns: Success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t 
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t 
+
+.br
+Parameter\fB[4]\fR: Buffer containting substitute data
+.br
+Type\fB[4]\fR: const void *
+
+.br
+Parameter\fB[5]\fR: Length of Buffer
+.br
+Type\fB[5]\fR: size_t 
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function will substitute a specific number of characters in a Ustr with the data from a buffer, this function does the job of one or more of ustr_add_buf(), ustr_sub_buf() and ustr_del().
+
+.ti -2
+.br
+\fBFunction: \fR ustr_sc_sub_cstr()
+.br
+Returns: Success or failure 
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start replacement 
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A pointer to a constant C-style string, containing spanning bytes
+.br
+Type\fB[4]\fR: const char *
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works like ustr_sc_sub_buf() but the length is worked out automatically by strlen().
+
+.ti -2
+.br
 \fBFunction: \fR ustr_sc_sub()
 .br
 Returns: success or failure 
@@ -8049,7 +8754,7 @@ Type\fB[4]\fR: const struct Ustr *
 
 .ti -2
 .br
-\fBFunction: \fR ustr_sc_sub_buf()
+\fBFunction: \fR ustr_sc_sub_subustr()
 .br
 Returns: Success or failure 
 .br
@@ -8063,62 +8768,106 @@ Type\fB[1]\fR: struct Ustr **
 .br
 Parameter\fB[2]\fR: Position where to start substitution
 .br
-Type\fB[2]\fR: size_t 
-
-.br
-Parameter\fB[3]\fR: Length of substitute
-.br
-Type\fB[3]\fR: size_t 
-
-.br
-Parameter\fB[4]\fR: Buffer containting substitute data
-.br
-Type\fB[4]\fR: const void *
-
-.br
-Parameter\fB[5]\fR: Length of Buffer
-.br
-Type\fB[5]\fR: size_t 
-
-.br
-\fBExplanation:\fR
-
-.br
-  This function will replace a specific number of characters in a Ustr with the data from a buffer, this function does the job of one or more of ustr_add_buf(), ustr_sub_buf() and ustr_del().
-
-.ti -2
-.br
-\fBFunction: \fR ustr_sc_sub_cstr()
-.br
-Returns: Success or failure 
-.br
-Type: int 
-
-.br
-Parameter\fB[1]\fR: Pointer to a pointer to a Ustr
-.br
-Type\fB[1]\fR: struct Ustr **
-
-.br
-Parameter\fB[2]\fR: Position where to start replacement 
-.br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Length of replacement
+Parameter\fB[3]\fR: Length of substitution
 .br
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string, containing spanning bytes
+Parameter\fB[4]\fR: A pointer to a constant Ustr string
 .br
-Type\fB[4]\fR: const char *
+Type\fB[4]\fR: const struct Ustr *
+
+.br
+Parameter\fB[5]\fR: Position in the Ustr
+.br
+Type\fB[5]\fR: size_t
+
+.br
+Parameter\fB[6]\fR: Length to substitute from the Ustr
+.br
+Type\fB[6]\fR: size_t
 
 .br
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_sc_sub_buf() but the length is worked out automatically by strlen().
+  This function mostly as if you had called ustr_sc_sub_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
+
+.ti -2
+.br
+\fBFunction: \fR USTR_SC_SUB_OSTR()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A constant C-style string
+.br
+Type\fB[4]\fR: const char []
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_sub_buf() and passed sizeof() - 1 as the length.
+
+.ti -2
+.br
+\fBFunction: \fR USTR_SC_SUB_OBJ()
+.br
+Returns: Success or failure
+.br
+Type: int 
+
+.br
+Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
+.br
+Type\fB[1]\fR: struct Ustr **
+
+.br
+Parameter\fB[2]\fR: Position where to start substitution
+.br
+Type\fB[2]\fR: size_t
+
+.br
+Parameter\fB[3]\fR: Length of substitution
+.br
+Type\fB[3]\fR: size_t
+
+.br
+Parameter\fB[4]\fR: A symbol
+.br
+Type\fB[4]\fR: ...
+
+.br
+\fBExplanation:\fR
+
+.br
+  This function works as if you had called ustr_sc_sub_buf() and passed sizeof() as the length.
+.sp
+\fBNote:\fR
+
+.br
+  In most cases you'll want to use USTR_SUB_OSTR().
 
 .ti -2
 .br
