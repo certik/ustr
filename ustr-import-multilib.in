@@ -1,24 +1,47 @@
 #! /bin/sh -e
 
+INCDIR=@INCLUDEDIR@
 MBINDIR=@MBINDIR@
 
-# one is the "prefered", two is the fallback ... ppc/etc. probably want to
-# swap these somehow
-one=64
-two=32
+inst32()
+{
+  if [ -f "$MBINDIR/ustr-import-32" ]; then
+    "$MBINDIR/ustr-import-32" "$@"
+  
+    # This assume an installed multilib ustr-conf.h
+    [ $RETVAL -eq 0 ] && mv ustr-conf.h ustr-conf-32.h
+    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf.h" .
+    [ $RETVAL -eq 0 ] && mv ustr-conf-debug.h ustr-conf-debug-32.h
+    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf-debug.h" .
+    exit $RETVAL
+  fi
+}
+
+inst64()
+{
+  if [ -f "$MBINDIR/ustr-import-64" ]; then
+    "$MBINDIR/ustr-import-64" "$@"
+    RETVAL=$?
+    # This assume an installed multilib ustr-conf.h
+    [ $RETVAL -eq 0 ] && mv ustr-conf.h ustr-conf-64.h
+    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf.h" .
+    [ $RETVAL -eq 0 ] && mv ustr-conf-debug.h ustr-conf-debug-64.h
+    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf-debug.h" .
+    exit $RETVAL
+  fi
+}
 
 if [ "x$1" = "x--32" ]; then
   shift
-  exec "$MBINDIR/ustr-import-32" "$@"
+  inst32 $@
 fi
 
 if [ "x$1" = "x--64" ]; then
   shift
-  exec "$MBINDIR/ustr-import-64" "$@"
+  inst64 $@
 fi
 
-if [ -f "$MBINDIR/ustr-import-$one" ]; then
-  exec "$MBINDIR/ustr-import-$one" "$@"
-fi
+inst64 $@
+inst32 $@
 
-exec "$MBINDIR/ustr-import-$two" "$@"
+exit 1
