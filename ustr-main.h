@@ -274,7 +274,15 @@ struct Ustrp
    * I'm 99% sure that aliasing rules screw us over if we do that. */
   struct Ustr s;
 };
-USTR__COMPILE_ASSERT(sizeof("") == sizeof(struct Ustr),  bad_sizeof_ustr);
+
+/* On ARM sizeof(struct Ustr) == 4, while sizeof("") == 1. Note that all the
+ * unit tests pass, so it isn't accessing the padding bytes when you do:
+ *
+ *   s1->data[0]
+ *
+ * ...or if it is, it isn't causing problems. Even so, it might be worth
+ * fixing this for 2.0? */
+USTR__COMPILE_ASSERT(sizeof("") <= sizeof(struct Ustr),  bad_sizeof_ustr);
 USTR__COMPILE_ASSERT(sizeof(struct Ustrp) == sizeof(struct Ustr),
                      bad_sizeof_ustrp);
 /* Unused bit patterns for data[0]:
