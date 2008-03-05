@@ -30,7 +30,7 @@ my $hdr_ver = "1.0.4";
 my $man_funcs_header = <<EOL;
 .TH ustr 3 "$hdr_date" "Ustr $hdr_ver" "Ustr String Library"
 .SH "NAME"
-ustr - ustr string library functions
+ustr \\- ustr string library functions
 .SH "SYNOPSIS"
 .in \\w'  'u
 #include "ustr.h"
@@ -40,7 +40,7 @@ EOL
 my $man_consts_header = <<EOL;
 .TH ustr_const 3 "$hdr_date" "Ustr $hdr_ver" "Ustr String Library"
 .SH "NAME"
-ustr_const - ustr string library constants
+ustr_const \\- ustr string library constants
 .SH "SYNOPSIS"
 .in \\w'  'u
 #include "ustr.h"
@@ -50,9 +50,9 @@ EOL
 my $man_funcs_desc = <<EOL;
 .ti
 .SH "DESCRIPTION"
- A very simple overview is that you can use ustr_dup_cstr() to convert a C\-style
+ A very simple overview is that you can use ustr_dup_cstr() to convert a C\\-style
 to a Ustr, and ustr_cstr() to convert it back. You can also use USTR1() to
-create constant/read\-only strings, and USTR_SC_INIT_AUTO() to create strings
+create constant/read\\-only strings, and USTR_SC_INIT_AUTO() to create strings
 that use stack space upto a certain amount.
  Use is somewhat unique in that, by default, it has an average overhead of only
 55% overhead over strdup(), for strings in the range of 0 to 20 bytes. Or, to
