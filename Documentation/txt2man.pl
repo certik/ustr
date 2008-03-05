@@ -162,7 +162,7 @@ sub conv_A_refs
     my $raw    = shift;
 
     s/\\/\\\\/g if (!$raw);
-    s/-/\\-/g   if (!$raw);
+    s/-/\\-/g   ;
     s![*]{2}([^*]+)[*]{2}!\\fB$1\\fR!g if ($markup);
   }
 
@@ -188,6 +188,8 @@ sub convert()
 	    s!^Section:\s*(.*)$!.SH $1! ||
 	    0)
 	  {
+	    s/-/\\-/g  ;
+
 	    if (defined ($1) && ($1 eq "Function"))
               {
 	        $_ = ".ti -2\n" . $_;
