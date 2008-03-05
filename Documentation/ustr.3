@@ -1,4 +1,4 @@
-.TH ustr 3 "02-Mar-2008" "Ustr 1.0.4" "Ustr String Library"
+.TH ustr 3 "05-Mar-2008" "Ustr 1.0.4" "Ustr String Library"
 .SH "NAME"
 ustr - ustr string library functions
 .SH "SYNOPSIS"
@@ -1315,7 +1315,7 @@ Type\fB[2]\fR: const char[]
 \fBExplanation:\fR
 
 .br
-  This macro function simplifies the creation of read-only Ustr string's. And is normally used like...
+  This macro function simplifies the creation of read\-only Ustr string's. And is normally used like...
 
 .Vb 4
   USTR1(\\x4, "abcd")
@@ -1335,7 +1335,7 @@ Type\fB[2]\fR: const char[]
   USTR1(\\x3, "abc\\0d")
 
 .Ve
- ...at least using debugging is esp. important if you are putting UTF-8
+ ...at least using debugging is esp. important if you are putting UTF\-8
  characters into the strings.
 .sp
 \fBNote:\fR
@@ -1372,7 +1372,7 @@ Type\fB[3]\fR: const char[]
 \fBExplanation:\fR
 
 .br
-  This function works in the same way as USTR1() but takes two length bytes, so the read-only string can be upto 65,535 (2**16 - 1) bytes in length.
+  This function works in the same way as USTR1() but takes two length bytes, so the read\-only string can be upto 65,535 (2**16 \- 1) bytes in length.
 
 .ti -2
 .br
@@ -1411,7 +1411,7 @@ Type\fB[5]\fR: const char[]
 \fBExplanation:\fR
 
 .br
-  This function works in the same way as USTR1() but takes four length bytes, so the read-only string can be upto 2**32 - 1 bytes in length.
+  This function works in the same way as USTR1() but takes four length bytes, so the read\-only string can be upto 2**32 \- 1 bytes in length.
 
 .ti -2
 .br
@@ -1435,7 +1435,7 @@ Type\fB[2]\fR: const char[]
 \fBExplanation:\fR
 
 .br
-  This function works in the same way as USTR1() but it does a check against the length of (Parameter[2]) using sizeof() - 1.
+  This function works in the same way as USTR1() but it does a check against the length of (Parameter[2]) using sizeof() \- 1.
 .sp
 \fBNote:\fR
 
@@ -1469,7 +1469,7 @@ Type\fB[3]\fR: const char[]
 \fBExplanation:\fR
 
 .br
-  This function works in the same way as USTR2() but it does a check against the length of (Parameter[2]) using sizeof() - 1.
+  This function works in the same way as USTR2() but it does a check against the length of (Parameter[2]) using sizeof() \- 1.
 .sp
 \fBNote:\fR
 
@@ -1513,7 +1513,7 @@ Type\fB[5]\fR: const char[]
 \fBExplanation:\fR
 
 .br
-  This function works in the same way as USTR4() but it does a check against the length of (Parameter[2]) using sizeof() - 1.
+  This function works in the same way as USTR4() but it does a check against the length of (Parameter[2]) using sizeof() \- 1.
 .sp
 \fBNote:\fR
 
@@ -2646,7 +2646,7 @@ Type\fB[1]\fR: const char []
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_dup_buf() and passed sizeof() - 1 as the length.
+  This function works as if you had called ustr_dup_buf() and passed sizeof() \- 1 as the length.
 
 .ti -2
 .br
@@ -2699,7 +2699,7 @@ Type\fB[3]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly works as if you had called ustr_dup_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+  This function mostly works as if you had called ustr_dup_buf() with the ustr_cstr() + position \- 1 and length values of the Ustr string to be added.
 .sp
 \fBNote:\fR
 
@@ -2753,7 +2753,7 @@ Type\fB[7]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly works as if you had called ustr_dupx_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added.
+  This function mostly works as if you had called ustr_dupx_buf() with the ustr_cstr() + position \- 1 and length values of the Ustr string to be added.
 .sp
 \fBNote:\fR
 
@@ -3236,7 +3236,7 @@ Type\fB[1]\fR: struct Ustr **
 \fBNote:\fR
 
 .br
-  While the point to the pointer must be non-NULL, this function also accepts a NULL ustr and does nothing. So you can pass the same pointer to this function multiple times and only the first one will do anything.
+  While the point to the pointer must be non\-NULL, this function also accepts a NULL ustr and does nothing. So you can pass the same pointer to this function multiple times and only the first one will do anything.
 
 .ti -2
 .br
@@ -3265,7 +3265,7 @@ Type\fB[2]\fR: struct Ustr *
 \fBNote:\fR
 
 .br
-  While the point to the pointer must be non-NULL, this function also accepts a NULL ustr to be free'd and does nothing. So you can pass the same pointer to ustr_sc_free() and then this function safely.
+  While the point to the pointer must be non\-NULL, this function also accepts a NULL ustr to be free'd and does nothing. So you can pass the same pointer to ustr_sc_free() and then this function safely.
 .br
   The passed value (Parameter[2]) shouldn't be USTR_NULL, and in debugging mode the function will assert() that it isn't.
 
@@ -3310,12 +3310,12 @@ Type\fB[2]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function deletes data from the end of Ustr, possibly re-sizing the Ustr at the same time.
+  This function deletes data from the end of Ustr, possibly re\-sizing the Ustr at the same time.
 .sp
 \fBNote:\fR
 
 .br
-  The Ustr is never re-sized when the size is stored explicitly, so the pointer never changes.
+  The Ustr is never re\-sized when the size is stored explicitly, so the pointer never changes.
 
 .ti -2
 .br
@@ -3368,7 +3368,7 @@ Type\fB[1]\fR: struct Ustr **
 \fBNote:\fR
 
 .br
-  While the benifit is that you don't have to check for memory failure errors, if there is a memory failure and you have a non-default configuration the configuration will revert back to the default.
+  While the benifit is that you don't have to check for memory failure errors, if there is a memory failure and you have a non\-default configuration the configuration will revert back to the default.
 
 .SH Adding data to a Ustr
 .ti -2
@@ -3470,7 +3470,7 @@ Type\fB[2]\fR: const char []
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_add_buf() and passed sizeof() - 1 as the length.
+  This function works as if you had called ustr_add_buf() and passed sizeof() \- 1 as the length.
 
 .ti -2
 .br
@@ -3528,7 +3528,7 @@ Type\fB[2]\fR: const struct Ustr *
 \fBNote:\fR
 
 .br
-  If the Ustr string is zero length and isn't writable this function may just add a reference, this is fine for Ustr strings that are "constant" because if the Ustr is read-only then the memory will not be written to.
+  If the Ustr string is zero length and isn't writable this function may just add a reference, this is fine for Ustr strings that are "constant" because if the Ustr is read\-only then the memory will not be written to.
 
 .ti -2
 .br
@@ -3562,7 +3562,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly works as if you had called ustr_add_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be added. The exception being if you add a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr, but this function just works.
+  This function mostly works as if you had called ustr_add_buf() with the ustr_cstr() + position \- 1 and length values of the Ustr string to be added. The exception being if you add a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr, but this function just works.
 .sp
 \fBNote:\fR
 
@@ -3955,7 +3955,7 @@ Type\fB[3]\fR: const char []
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_ins_buf() and passed sizeof() - 1 as the length.
+  This function works as if you had called ustr_ins_buf() and passed sizeof() \- 1 as the length.
 
 .ti -2
 .br
@@ -4057,7 +4057,7 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly as if you had called ustr_ins_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
+  This function mostly as if you had called ustr_ins_buf() with the ustr_cstr() + position \- 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
 
 .ti -2
 .br
@@ -5045,7 +5045,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function returns a read-only pointer to the start of the data of the Ustr string. Due to there always being a terminating NIL byte in a Ustr, this is also a valid C-style string.
+  This function returns a read\-only pointer to the start of the data of the Ustr string. Due to there always being a terminating NIL byte in a Ustr, this is also a valid C\-style string.
 
 .ti -2
 .br
@@ -5064,9 +5064,9 @@ Type\fB[1]\fR: struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function returns a writable pointer to the start of the data of the Ustr string. Due to there always being a terminating NIL byte in a Ustr, this is also a valid C-style string.
+  This function returns a writable pointer to the start of the data of the Ustr string. Due to there always being a terminating NIL byte in a Ustr, this is also a valid C\-style string.
 .br
-  If the ustr is read-only (ustr_ro() == USTR_TRUE) then this function will return NULL.
+  If the ustr is read\-only (ustr_ro() == USTR_TRUE) then this function will return NULL.
 .sp
 \fBNote:\fR
 
@@ -5114,7 +5114,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBNote:\fR
 
 .br
-  This will always be USTR_FALSE for read-only Ustr strings (ustr_ro() == USTR_TRUE), even though the default may be to used exact sized allocations when  adding data to them etc.
+  This will always be USTR_FALSE for read\-only Ustr strings (ustr_ro() == USTR_TRUE), even though the default may be to used exact sized allocations when  adding data to them etc.
 
 .ti -2
 .br
@@ -5152,9 +5152,9 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function says if the Ustr is current in read-only storage.
+  This function says if the Ustr is current in read\-only storage.
 .br
-  Read-only storage is not writable but can be referenced via. ustr_dup() an infinite amount of times.
+  Read\-only storage is not writable but can be referenced via. ustr_dup() an infinite amount of times.
 
 .ti -2
 .br
@@ -5208,7 +5208,7 @@ Type\fB[1]\fR: const struct Ustr *
 .br
   If a Ustr is referenced multiple times, ustr_setf_enomem_err() will fail.
 .br
-  This always fails for Ustr's in read-only storage.
+  This always fails for Ustr's in read\-only storage.
 
 .ti -2
 .br
@@ -5234,7 +5234,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBNote:\fR
 
 .br
-  This always succeeds for Ustr's in read-only storage.
+  This always succeeds for Ustr's in read\-only storage.
 .br
   This always fails for Ustr's in fixed size storage.
 
@@ -5262,7 +5262,7 @@ Type\fB[1]\fR: const struct Ustr *
 .br
   This always fails for Ustr's in allocated storage.
 .br
-  This always fails for Ustr's in read-only storage.
+  This always fails for Ustr's in read\-only storage.
 
 .ti -2
 .br
@@ -5286,7 +5286,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBNote:\fR
 
 .br
-  This always fails for Ustr's in read-only storage.
+  This always fails for Ustr's in read\-only storage.
 .br
   This always succeeds for Ustr's in fixed size storage.
 
@@ -5307,7 +5307,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function calculates the maximum amount of data that could be stored (Ie. the max ustr_len()) without having to re-size the Ustr string.
+  This function calculates the maximum amount of data that could be stored (Ie. the max ustr_len()) without having to re\-size the Ustr string.
 
 .ti -2
 .br
@@ -5345,7 +5345,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function returns the difference between the size of the storage and the maximum amount of data that could be stored without having to re-size the Ustr string.
+  This function returns the difference between the size of the storage and the maximum amount of data that could be stored without having to re\-size the Ustr string.
 
 .ti -2
 .br
@@ -5396,7 +5396,7 @@ Type\fB[5]\fR: size_t *
 .br
   This function differs from calling the ustr_exact() etc. functions in that it returns the global options if this Ustr isn't allocated, thus telling you what the configuration would be if the Ustr was turned into an allocated Ustr by adding data etc.
 .br
-  Zero references for an allocated Ustr with a non-zero number of bytes for a reference count means it's in "shared" mode).
+  Zero references for an allocated Ustr with a non\-zero number of bytes for a reference count means it's in "shared" mode).
 
 .SH Setting the "flags" of a Ustr
 .ti -2
@@ -7688,12 +7688,12 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_spn_chrs_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_spn_chrs_fwd() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_chrs_fwd() but given "xy" as a multi\-byte UTF\-8 character it understands that the span over "xyxz" is 1 UTF\-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -7727,12 +7727,12 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_spn_chrs_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_spn_chrs_rev() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_chrs_rev() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_chrs_rev() but given "xy" as a multi\-byte UTF\-8 character it understands that the span over "xyxz" is 1 UTF\-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -7761,12 +7761,12 @@ Type\fB[3]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_spn_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_spn_fwd() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_fwd() but given "xy" as a multi\-byte UTF\-8 character it understands that the span over "xyxz" is 1 UTF\-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -7795,12 +7795,12 @@ Type\fB[3]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_spn_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_spn_rev() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_rev() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_rev() but given "xy" as a multi\-byte UTF\-8 character it understands that the span over "xyxz" is 1 UTF\-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -7829,12 +7829,12 @@ Type\fB[3]\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_spn_cstr_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_spn_cstr_fwd() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_cstr_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_cstr_fwd() but given "xy" as a multi\-byte UTF\-8 character it understands that the span over "xyxz" is 1 UTF\-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -7863,12 +7863,12 @@ Type\fB[3]\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_spn_cstr_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_spn_cstr_rev() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi-byte UTF-8 character it understands that the span over "xyxz" is 1 UTF-8 character and not 3 bytes.
+  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi\-byte UTF\-8 character it understands that the span over "xyxz" is 1 UTF\-8 character and not 3 bytes.
 
 .ti -2
 .br
@@ -7902,12 +7902,12 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_cspn_chrs_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_cspn_chrs_fwd() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_cspn_chrs_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_chrs_fwd() but given "xy" as a multi\-byte UTF\-8 character it understands that the compliment span over "xzxy" is 1 UTF\-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -7941,12 +7941,12 @@ Type\fB[4]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_cspn_chrs_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_cspn_chrs_rev() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_cspn_chrs_rev() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_chrs_rev() but given "xy" as a multi\-byte UTF\-8 character it understands that the compliment span over "xzxy" is 1 UTF\-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -7975,12 +7975,12 @@ Type\fB[3]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_cspn_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_cspn_fwd() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_cspn_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_fwd() but given "xy" as a multi\-byte UTF\-8 character it understands that the compliment span over "xzxy" is 1 UTF\-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -8009,12 +8009,12 @@ Type\fB[3]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_cspn_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_cspn_rev() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_cspn_rev() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_rev() but given "xy" as a multi\-byte UTF\-8 character it understands that the compliment span over "xzxy" is 1 UTF\-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -8043,12 +8043,12 @@ Type\fB[3]\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_cspn_cstr_fwd() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_cspn_cstr_fwd() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_cspn_cstr_fwd() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_cspn_cstr_fwd() but given "xy" as a multi\-byte UTF\-8 character it understands that the compliment span over "xzxy" is 1 UTF\-8 character and not 0 bytes.
 
 .ti -2
 .br
@@ -8077,12 +8077,12 @@ Type\fB[3]\fR: const char *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_cspn_cstr_rev() but the return value, offset, and length all use UTF-8 characters and not bytes.
+  This function works like ustr_cspn_cstr_rev() but the return value, offset, and length all use UTF\-8 characters and not bytes.
 .sp
 \fBNote:\fR
 
 .br
-  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi-byte UTF-8 character it understands that the compliment span over "xzxy" is 1 UTF-8 character and not 0 bytes.
+  This is much slower than ustr_spn_cstr_rev() but given "xy" as a multi\-byte UTF\-8 character it understands that the compliment span over "xzxy" is 1 UTF\-8 character and not 0 bytes.
 
 .SH Doing IO from or to a Ustr
 .ti -2
@@ -8507,7 +8507,7 @@ Type\fB[3]\fR: const char []
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_sub_buf() and passed sizeof() - 1 as the length.
+  This function works as if you had called ustr_sub_buf() and passed sizeof() \- 1 as the length.
 
 .ti -2
 .br
@@ -8609,7 +8609,7 @@ Type\fB[5]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly as if you had called ustr_sub_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
+  This function mostly as if you had called ustr_sub_buf() with the ustr_cstr() + position \- 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
 
 .ti -2
 .br
@@ -8794,7 +8794,7 @@ Type\fB[6]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function mostly as if you had called ustr_sc_sub_buf() with the ustr_cstr() + position - 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
+  This function mostly as if you had called ustr_sc_sub_buf() with the ustr_cstr() + position \- 1 and length values of the Ustr string to be insed. The exception being if you insert a ustr to itself, while only having a single reference count, the simple method would access a free'd ustr data, but this function just works.
 
 .ti -2
 .br
@@ -8828,7 +8828,7 @@ Type\fB[4]\fR: const char []
 \fBExplanation:\fR
 
 .br
-  This function works as if you had called ustr_sc_sub_buf() and passed sizeof() - 1 as the length.
+  This function works as if you had called ustr_sc_sub_buf() and passed sizeof() \- 1 as the length.
 
 .ti -2
 .br
@@ -9043,7 +9043,7 @@ Type\fB[6]\fR: size_t lim
 \fBNote:\fR
 
 .br
-  Changing the same letter the same number of times is considered a No-op since it is a vast performance improvement this way. So passing in  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be unchanged.
+  Changing the same letter the same number of times is considered a No\-op since it is a vast performance improvement this way. So passing in  (&data,'y',2,'y',2 ,0) will have a return value of 0 and the string will be unchanged.
 
 .SH Splitting a Ustr
 .ti -2
@@ -9090,7 +9090,7 @@ Type\fB[6]\fR: unsigned int
 .br
   This function works in a manner similar to strtok(). Each time the function is called, the string inside of the buffer (Parameter[3]) is used as a search pattern at which to split. If the pattern is not found, the entire string will be returned. A USTR_NULL return value indicates there are no more tokens remaining.
 .br
-  Parameter[5] is a a pointer to a Ustr where the return value will be placed. Passing a USTR_NULL to this parameter will cause the string to be allocated and \fBMUST\fR be freed \fBmanually\fR. If, however, you pass in a non-null Ustr to this parameter, each call to ustr_split_buf() will free what is in this pointer and place the new token there (when USTR_NULL is returned, nothing needs to be free'd).  For example, given...
+  Parameter[5] is a a pointer to a Ustr where the return value will be placed. Passing a USTR_NULL to this parameter will cause the string to be allocated and \fBMUST\fR be freed \fBmanually\fR. If, however, you pass in a non\-null Ustr to this parameter, each call to ustr_split_buf() will free what is in this pointer and place the new token there (when USTR_NULL is returned, nothing needs to be free'd).  For example, given...
 
 .Vb 4
   Ustr *data = ...;
@@ -9105,7 +9105,7 @@ Type\fB[6]\fR: unsigned int
 
   while ((tok = ustr_split_buf(data, &off, sep, strlen(sep), tok, flags)))
   {
-    /* Do something with tok -- but next iteration of the loop will free
+    /* Do something with tok \-\- but next iteration of the loop will free
      * and overwrite tok, so you must ustr_dup() if you want to keep it */
   }
   /* tok is now NULL again after the loop */
@@ -9357,7 +9357,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function tries it's best to find out if the string is a valid utf-8 string.
+  This function tries it's best to find out if the string is a valid utf\-8 string.
 
 .ti -2
 .br
@@ -9376,12 +9376,12 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function counts the number of utf-8 characters inn the Ustr.
+  This function counts the number of utf\-8 characters inn the Ustr.
 .sp
 \fBNote:\fR
 
 .br
-  This function gives undefined answers on strings that aren't utf-8 valid.
+  This function gives undefined answers on strings that aren't utf\-8 valid.
 
 .ti -2
 .br
@@ -9400,7 +9400,7 @@ Type\fB[1]\fR: const struct Ustr *
 \fBExplanation:\fR
 
 .br
-  This function returns the visible width of the string, assuming it is a valid utf-8 string. This is like converting to wide characters and using wcwidth().
+  This function returns the visible width of the string, assuming it is a valid utf\-8 string. This is like converting to wide characters and using wcwidth().
 
 .ti -2
 .br
@@ -9434,7 +9434,7 @@ Type\fB[4]\fR: size_t *
 \fBExplanation:\fR
 
 .br
-  This function converts a span, in utf-8 characters, to the same span in bytes.
+  This function converts a span, in utf\-8 characters, to the same span in bytes.
 
 .ti -2
 .br
@@ -9468,12 +9468,12 @@ Type\fB[4]\fR: size_t *
 \fBExplanation:\fR
 
 .br
-  This function converts a span, in bytes, to the same span in utf-8 characters.
+  This function converts a span, in bytes, to the same span in utf\-8 characters.
 .sp
 \fBNote:\fR
 
 .br
-  Because a byte span can start or end within a utf-8 character, converting the return values back into bytes via. ustr_utf8_chars2bytes() may make the span be slightly bigger (position slightly earlier, and the length slightly longer).
+  Because a byte span can start or end within a utf\-8 character, converting the return values back into bytes via. ustr_utf8_chars2bytes() may make the span be slightly bigger (position slightly earlier, and the length slightly longer).
 
 .ti -2
 .br
@@ -9492,7 +9492,7 @@ Type\fB[1]\fR: struct Ustr **
 \fBExplanation:\fR
 
 .br
-  This function reverses the utf-8 characters in the Ustr string, assuming it is a valid utf-8 string, so the last one becomes the first and the second to last becomes the second etc.
+  This function reverses the utf\-8 characters in the Ustr string, assuming it is a valid utf\-8 string, so the last one becomes the first and the second to last becomes the second etc.
 
 .SH Parsing ASCII integer numbers from a Ustr
 .ti -2
@@ -9635,7 +9635,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as -INTMAX_MIN and INTMAX_MAX, and the thousands separator as "_".
+  This function works like ustr_parse_uintmaxx() with the minimum and maximum values taken as \-INTMAX_MIN and INTMAX_MAX, and the thousands separator as "_".
 .sp
 \fBNote:\fR
 
@@ -9772,7 +9772,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -LONG_MIN and LONG_MAX, and the thousands separator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as \-LONG_MIN and LONG_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -9850,7 +9850,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -INT_MIN and INT_MAX, and the thousands separator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as \-INT_MIN and INT_MAX, and the thousands separator as "_".
 
 .ti -2
 .br
@@ -9928,7 +9928,7 @@ Type\fB[5]\fR: unsigned int *
 \fBExplanation:\fR
 
 .br
-  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as -SHRT_MIN and SHRT_MAX, and the thousands separator as "_".
+  This function works like ustr_parse_ulongx() with the minimum and maximum values taken as \-SHRT_MIN and SHRT_MAX, and the thousands separator as "_".
 
 .SH Misc shortcut helper functions for Ustrs
 .ti -2
@@ -10557,7 +10557,7 @@ Type\fB[2]\fR: size_t
 \fBExplanation:\fR
 
 .br
-  This function is re-sizes the Ustr to the specified size (Parameter[2]).
+  This function is re\-sizes the Ustr to the specified size (Parameter[2]).
 .br
   This is mostly used to shrink a sized Ustr that is now significantly smaller than it once was. Although this function can also grow a Ustr.
 .sp
@@ -10646,12 +10646,12 @@ Type\fB[1]\fR: struct Ustr_pool *
 \fBExplanation:\fR
 
 .br
-  This deallocates a pool, and all sub-pools.
+  This deallocates a pool, and all sub\-pools.
 .sp
 \fBNote:\fR
 
 .br
-  This also operates on all sub-pools.
+  This also operates on all sub\-pools.
 
 .ti -2
 .br
@@ -10675,6 +10675,6 @@ Type\fB[1]\fR: struct Ustr_pool *
 \fBNote:\fR
 
 .br
-  This also operates on all sub-pools.
+  This also operates on all sub\-pools.
 .SH "SEE ALSO"
 .BR ustr_const (3)

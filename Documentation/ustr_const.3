@@ -1,4 +1,4 @@
-.TH ustr_const 3 "02-Mar-2008" "Ustr 1.0.4" "Ustr String Library"
+.TH ustr_const 3 "05-Mar-2008" "Ustr 1.0.4" "Ustr String Library"
 .SH "NAME"
 ustr_const - ustr string library constants
 .SH "SYNOPSIS"
@@ -204,7 +204,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This switch controls whether all the code will be included as inline functions. Having this be non-zero means that you don't have to link against the library.
+  This switch controls whether all the code will be included as inline functions. Having this be non\-zero means that you don't have to link against the library.
 
 .br
 \fBConstant: \fR USTR_CONF_USE_EOS_MARK
@@ -218,7 +218,7 @@ ustr_const - ustr string library constants
 \fBNote:\fR
 
 .br
-  Changing this will not do anything useful unless USTR_CONF_INCLUDE_CODEONLY_HEADERS is non-zero.
+  Changing this will not do anything useful unless USTR_CONF_INCLUDE_CODEONLY_HEADERS is non\-zero.
 
 .br
 \fBConstant: \fR USTR_CONF_USE_ASSERT
@@ -232,7 +232,7 @@ ustr_const - ustr string library constants
 \fBNote:\fR
 
 .br
-  Changing this will not do anything useful unless USTR_CONF_INCLUDE_CODEONLY_HEADERS is non-zero.
+  Changing this will not do anything useful unless USTR_CONF_INCLUDE_CODEONLY_HEADERS is non\-zero.
 
 .br
 \fBConstant: \fR USTR_CONF_COMPILE_USE_ATTRIBUTES
@@ -250,7 +250,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This switch controls whether typedef will be used for the structs in the public headers for the library. If the value is 1 then they will be used, if the value is 0 they won't be used at all (and your code will have to use struct tags instead -- note all libraries using ustr should compile without this option set).
+  This switch controls whether typedef will be used for the structs in the public headers for the library. If the value is 1 then they will be used, if the value is 0 they won't be used at all (and your code will have to use struct tags instead \-\- note all libraries using ustr should compile without this option set).
 .br
 \fBConstant: \fR USTR_CONF_COMPILE_USE_INLINE
 
@@ -273,7 +273,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a constant/read-only Ustr that has a length in the range 0-255.
+  This macro is a constant C\-style string of the first byte of a constant/read\-only Ustr that has a length in the range 0\-255.
 
 .br
 \fBConstant: \fR USTR_BEG_CONST2
@@ -282,7 +282,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a constant/read-only Ustr that has a length in the range 0-65535.
+  This macro is a constant C\-style string of the first byte of a constant/read\-only Ustr that has a length in the range 0\-65535.
 
 .br
 \fBConstant: \fR USTR_BEG_CONST4
@@ -291,7 +291,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a constant/read-only Ustr that has a length in the range 0-4294967295.
+  This macro is a constant C\-style string of the first byte of a constant/read\-only Ustr that has a length in the range 0\-4294967295.
 
 .br
 \fBConstant: \fR USTR_BEG_FIXED1
@@ -300,7 +300,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-255.
+  This macro is a constant C\-style string of the first byte of a fixed Ustr that has a length in the range 0\-255.
 
 .br
 \fBConstant: \fR USTR_BEG_FIXED2
@@ -309,7 +309,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-65535.
+  This macro is a constant C\-style string of the first byte of a fixed Ustr that has a length in the range 0\-65535.
 
 .br
 \fBConstant: \fR USTR_BEG_FIXED4
@@ -318,7 +318,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-4294967295.
+  This macro is a constant C\-style string of the first byte of a fixed Ustr that has a length in the range 0\-4294967295.
 
 .br
 \fBConstant: \fR USTR_BEG_FIXED8
@@ -327,7 +327,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the first byte of a fixed Ustr that has a length in the range 0-18446744073709551615.
+  This macro is a constant C\-style string of the first byte of a fixed Ustr that has a length in the range 0\-18446744073709551615.
 .sp
 \fBNote:\fR
 
@@ -341,12 +341,12 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the last bytes of an allocated Ustr.
+  This macro is a constant C\-style string of the last bytes of an allocated Ustr.
 .sp
 \fBNote:\fR
 
 .br
-  Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
+  Unless USTR_CONF_USE_EOS_MARK is non\-zero, this is just the NIL byte.
 
 .br
 \fBConstant: \fR USTR_END_CONSTx
@@ -355,12 +355,12 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the last bytes of a constant/read-only Ustr.
+  This macro is a constant C\-style string of the last bytes of a constant/read\-only Ustr.
 .sp
 \fBNote:\fR
 
 .br
-  Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
+  Unless USTR_CONF_USE_EOS_MARK is non\-zero, this is just the NIL byte.
 
 .br
 \fBConstant: \fR USTR_END_FIXEDx
@@ -369,12 +369,12 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This macro is a constant C-style string of the last bytes of a fixed Ustr.
+  This macro is a constant C\-style string of the last bytes of a fixed Ustr.
 .sp
 \fBNote:\fR
 
 .br
-  Unless USTR_CONF_USE_EOS_MARK is non-zero, this is just the NIL byte.
+  Unless USTR_CONF_USE_EOS_MARK is non\-zero, this is just the NIL byte.
 
 .SH Constants to use with parsing numbers: ustr_parse_uintmaxx, etc.
 .br
@@ -521,7 +521,7 @@ ustr_const - ustr string library constants
 \fBExplanation:\fR
 
 .br
-  This error code means that the number parsed from the Vstr string starts with a '-' (Hyphen) character when it is supposed to be an unsigned number.
+  This error code means that the number parsed from the Vstr string starts with a '\-' (Hyphen) character when it is supposed to be an unsigned number.
 
 .br
 \fBConstant: \fR USTR_TYPE_PARSE_NUM_ERR_BEG_ZERO
@@ -920,7 +920,7 @@ Type\fB[1]\fR: unsigned int
 \fBNote:\fR
 
 .br
-  The default is a small non-zero value, as it's significantly common to have very short lived ustr's ... however this doesn't mean that you can't forget to take references even with pool allocated ustrs.
+  The default is a small non\-zero value, as it's significantly common to have very short lived ustr's ... however this doesn't mean that you can't forget to take references even with pool allocated ustrs.
 
 .br
 \fBConstant: \fR USTR_POOL_LL_CNTL_GET_REALLOC
