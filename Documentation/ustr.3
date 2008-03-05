@@ -1244,7 +1244,7 @@ that use stack space upto a certain amount.
 55% overhead over strdup(), for strings in the range of 0 to 20 bytes. Or, to
 put it another way it only uses 8 bytes to store a 2 byte string where
 strdup() uses 3.
-.SH Creating read-only Ustr functions
+.SH Creating read\-only Ustr functions
 .ti -2
 .br
 \fBFunction: \fR USTR()
@@ -2580,7 +2580,7 @@ Returns: A pointer to a Ustr string
 Type: struct Ustr *
 
 .br
-Parameter\fB[1]\fR: Pointer to constant C-style string
+Parameter\fB[1]\fR: Pointer to constant C\-style string
 .br
 Type\fB[1]\fR: const char *
 
@@ -2619,7 +2619,7 @@ Parameter\fB[4]\fR: ENOMEM, memory error flag
 Type\fB[4]\fR: int
 
 .br
-Parameter\fB[5]\fR: Pointer to constant C-style string
+Parameter\fB[5]\fR: Pointer to constant C\-style string
 .br
 Type\fB[5]\fR: const char *
 
@@ -2638,7 +2638,7 @@ Returns: A pointer to a Ustr string
 Type: struct Ustr *
 
 .br
-Parameter\fB[1]\fR: A constant C-style string
+Parameter\fB[1]\fR: A constant C\-style string
 .br
 Type\fB[1]\fR: const char []
 
@@ -3438,7 +3438,7 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: Pointer to constant C-style string
+Parameter\fB[2]\fR: Pointer to constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -3462,7 +3462,7 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A constant C-style string
+Parameter\fB[2]\fR: A constant C\-style string
 .br
 Type\fB[2]\fR: const char []
 
@@ -3685,7 +3685,7 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -3709,7 +3709,7 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A constant C-style string
+Parameter\fB[2]\fR: A constant C\-style string
 .br
 Type\fB[2]\fR: const char []
 
@@ -3918,7 +3918,7 @@ Parameter\fB[2]\fR: Position after which the data should be added
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Pointer to constant C-style string
+Parameter\fB[3]\fR: Pointer to constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -3947,7 +3947,7 @@ Parameter\fB[2]\fR: Position after which the data should be added
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A constant C-style string
+Parameter\fB[3]\fR: A constant C\-style string
 .br
 Type\fB[3]\fR: const char []
 
@@ -4113,7 +4113,7 @@ Parameter\fB[2]\fR: Limit of data to add
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4142,7 +4142,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -4176,7 +4176,7 @@ Parameter\fB[2]\fR: Limit of data to add
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4205,7 +4205,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -4443,7 +4443,7 @@ Parameter\fB[2]\fR: Limit of data to set
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4472,7 +4472,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -4506,7 +4506,7 @@ Parameter\fB[2]\fR: Limit of data to set
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4535,7 +4535,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -4574,7 +4574,7 @@ Parameter\fB[3]\fR: Limit of data to insert
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string
+Parameter\fB[4]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[4]\fR: const char *
 
@@ -4608,7 +4608,7 @@ Parameter\fB[2]\fR: Position after which the data should be added
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4647,7 +4647,7 @@ Parameter\fB[3]\fR: Limit of data to insert
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string
+Parameter\fB[4]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[4]\fR: const char *
 
@@ -4681,7 +4681,7 @@ Parameter\fB[2]\fR: Position after which the data should be added
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4720,7 +4720,7 @@ Parameter\fB[3]\fR: Limit of data to substitute
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string
+Parameter\fB[4]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[4]\fR: const char *
 
@@ -4754,7 +4754,7 @@ Parameter\fB[2]\fR: Position where to start substitution
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4793,7 +4793,7 @@ Parameter\fB[3]\fR: Limit of data to substitute
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string
+Parameter\fB[4]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[4]\fR: const char *
 
@@ -4827,7 +4827,7 @@ Parameter\fB[2]\fR: Position where to start substitution
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string
+Parameter\fB[3]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[3]\fR: const char *
 
@@ -4871,7 +4871,7 @@ Parameter\fB[4]\fR: Limit of data to substitute
 Type\fB[4]\fR: size_t
 
 .br
-Parameter\fB[5]\fR: A pointer to a constant C-style string
+Parameter\fB[5]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[5]\fR: const char *
 
@@ -4910,7 +4910,7 @@ Parameter\fB[3]\fR: Length of substitution
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string
+Parameter\fB[4]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[4]\fR: const char *
 
@@ -4954,7 +4954,7 @@ Parameter\fB[4]\fR: Limit of data to substitute
 Type\fB[4]\fR: size_t
 
 .br
-Parameter\fB[5]\fR: A pointer to a constant C-style string
+Parameter\fB[5]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[5]\fR: const char *
 
@@ -4993,7 +4993,7 @@ Parameter\fB[3]\fR: Length of substitution
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string
+Parameter\fB[4]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[4]\fR: const char *
 
@@ -5032,7 +5032,7 @@ Type\fB[1]\fR: const struct Ustr *
 .br
 \fBFunction: \fR ustr_cstr()
 .br
-Returns: Read-only pointer to the start of data in the Ustr
+Returns: Read\-only pointer to the start of data in the Ustr
 .br
 Type: const char *
 
@@ -5607,7 +5607,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -5718,7 +5718,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -5829,7 +5829,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -5940,7 +5940,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -6051,7 +6051,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -6128,7 +6128,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -6239,7 +6239,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -6350,7 +6350,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -6461,7 +6461,7 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string
+Parameter\fB[2]\fR: A pointer to a constant C\-style string
 .br
 Type\fB[2]\fR: const char *
 
@@ -6724,7 +6724,7 @@ Parameter\fB[2]\fR: Offset within string to start searching at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to C-style string data, to search for
+Parameter\fB[3]\fR: A pointer to C\-style string data, to search for
 .br
 Type\fB[3]\fR: const char *
 
@@ -6753,7 +6753,7 @@ Parameter\fB[2]\fR: Offset within string to start searching at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to C-style string data, to search for
+Parameter\fB[3]\fR: A pointer to C\-style string data, to search for
 .br
 Type\fB[3]\fR: const char *
 
@@ -7054,7 +7054,7 @@ Parameter\fB[2]\fR: Offset within string to start searching at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to C-style string data, to search for
+Parameter\fB[3]\fR: A pointer to C\-style string data, to search for
 .br
 Type\fB[3]\fR: const char *
 
@@ -7083,7 +7083,7 @@ Parameter\fB[2]\fR: Offset within string to start searching at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to C-style string data, to search for
+Parameter\fB[3]\fR: A pointer to C\-style string data, to search for
 .br
 Type\fB[3]\fR: const char *
 
@@ -7375,7 +7375,7 @@ Parameter\fB[2]\fR: Offset within string, to start spanning from
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+Parameter\fB[3]\fR: A pointer to a constant C\-style string, containing spanning bytes
 .br
 Type\fB[3]\fR: const char *
 
@@ -7404,7 +7404,7 @@ Parameter\fB[2]\fR: Offset within string, to start spanning from
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+Parameter\fB[3]\fR: A pointer to a constant C\-style string, containing spanning bytes
 .br
 Type\fB[3]\fR: const char *
 
@@ -7617,7 +7617,7 @@ Parameter\fB[2]\fR: Offset within string, to start compliment spanning from
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+Parameter\fB[3]\fR: A pointer to a constant C\-style string, containing spanning bytes
 .br
 Type\fB[3]\fR: const char *
 
@@ -7646,7 +7646,7 @@ Parameter\fB[2]\fR: Offset within string, to start spanning from
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string, containing spanning bytes
+Parameter\fB[3]\fR: A pointer to a constant C\-style string, containing spanning bytes
 .br
 Type\fB[3]\fR: const char *
 
@@ -7660,27 +7660,27 @@ Type\fB[3]\fR: const char *
 .br
 \fBFunction: \fR ustr_utf8_spn_chrs_fwd()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant C\-style UTF\-8 string
 .br
 Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR: Length of the C-style UTF-8 string
+Parameter\fB[4]\fR: Length of the C\-style UTF\-8 string
 .br
 Type\fB[4]\fR: size_t
 
@@ -7699,22 +7699,22 @@ Type\fB[4]\fR: size_t
 .br
 \fBFunction: \fR ustr_utf8_spn_chrs_rev()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant C\-style UTF\-8 string
 .br
 Type\fB[3]\fR: const char *
 
@@ -7738,22 +7738,22 @@ Type\fB[4]\fR: size_t
 .br
 \fBFunction: \fR ustr_utf8_spn_fwd()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[3]\fR: const struct Ustr *
 
@@ -7772,22 +7772,22 @@ Type\fB[3]\fR: const struct Ustr *
 .br
 \fBFunction: \fR ustr_utf8_spn_rev()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[3]\fR: const struct Ustr *
 
@@ -7806,22 +7806,22 @@ Type\fB[3]\fR: const struct Ustr *
 .br
 \fBFunction: \fR ustr_utf8_spn_cstr_fwd()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant C\-style UTF\-8 string
 .br
 Type\fB[3]\fR: const char *
 
@@ -7840,22 +7840,22 @@ Type\fB[3]\fR: const char *
 .br
 \fBFunction: \fR ustr_utf8_spn_cstr_rev()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant C\-style UTF\-8 string
 .br
 Type\fB[3]\fR: const char *
 
@@ -7874,27 +7874,27 @@ Type\fB[3]\fR: const char *
 .br
 \fBFunction: \fR ustr_utf8_cspn_chrs_fwd()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start compliment spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant C\-style UTF\-8 string
 .br
 Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR: Length of the C-style UTF-8 string
+Parameter\fB[4]\fR: Length of the C\-style UTF\-8 string
 .br
 Type\fB[4]\fR: size_t
 
@@ -7913,27 +7913,27 @@ Type\fB[4]\fR: size_t
 .br
 \fBFunction: \fR ustr_utf8_cspn_chrs_rev()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start compliment spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style UTF-8 string
+Parameter\fB[3]\fR: A pointer to a constant C\-style UTF\-8 string
 .br
 Type\fB[3]\fR: const char *
 
 .br
-Parameter\fB[4]\fR: Length of the C-style UTF-8 string
+Parameter\fB[4]\fR: Length of the C\-style UTF\-8 string
 .br
 Type\fB[4]\fR: size_t
 
@@ -7952,22 +7952,22 @@ Type\fB[4]\fR: size_t
 .br
 \fBFunction: \fR ustr_utf8_cspn_fwd()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start compliment spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant Ustr UTF-8 string, containing spanning data
+Parameter\fB[3]\fR: A pointer to a constant Ustr UTF\-8 string, containing spanning data
 .br
 Type\fB[3]\fR: const struct Ustr *
 
@@ -7986,22 +7986,22 @@ Type\fB[3]\fR: const struct Ustr *
 .br
 \fBFunction: \fR ustr_utf8_cspn_rev()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start compliment spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to constant Ustr UTF-8 string data, containing spanning data
+Parameter\fB[3]\fR: A pointer to constant Ustr UTF\-8 string data, containing spanning data
 .br
 Type\fB[3]\fR: const struct Ustr *
 
@@ -8020,22 +8020,22 @@ Type\fB[3]\fR: const struct Ustr *
 .br
 \fBFunction: \fR ustr_utf8_cspn_cstr_fwd()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start compliment spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to constant C-style UTF-8 string data, containing spanning data
+Parameter\fB[3]\fR: A pointer to constant C\-style UTF\-8 string data, containing spanning data
 .br
 Type\fB[3]\fR: const char *
 
@@ -8054,22 +8054,22 @@ Type\fB[3]\fR: const char *
 .br
 \fBFunction: \fR ustr_utf8_cspn_cstr_rev()
 .br
-Returns: Number of UTF-8 characters not in the span
+Returns: Number of UTF\-8 characters not in the span
 .br
 Type: size_t 
 
 .br
-Parameter\fB[1]\fR: A pointer to a constant Ustr UTF-8 string
+Parameter\fB[1]\fR: A pointer to a constant Ustr UTF\-8 string
 .br
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Offset within string, in UTF-8 characters, to start compliment spanning from
+Parameter\fB[2]\fR: Offset within string, in UTF\-8 characters, to start compliment spanning from
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to C-style UTF-8 string data, containing spanning data
+Parameter\fB[3]\fR: A pointer to C\-style UTF\-8 string data, containing spanning data
 .br
 Type\fB[3]\fR: const char *
 
@@ -8162,7 +8162,7 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A C-style string of a filename
+Parameter\fB[2]\fR: A C\-style string of a filename
 .br
 Type\fB[2]\fR: const char *
 
@@ -8362,12 +8362,12 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A C-style string of a filename
+Parameter\fB[2]\fR: A C\-style string of a filename
 .br
 Type\fB[2]\fR: const char *
 
 .br
-Parameter\fB[3]\fR: A C-style string of a filemode (the second argument to fopen)
+Parameter\fB[3]\fR: A C\-style string of a filemode (the second argument to fopen)
 .br
 Type\fB[3]\fR: const char *
 
@@ -8470,7 +8470,7 @@ Parameter\fB[2]\fR: Position where to start substitution
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string, which is the substitution
+Parameter\fB[3]\fR: A pointer to a constant C\-style string, which is the substitution
 .br
 Type\fB[3]\fR: const char *
 
@@ -8499,7 +8499,7 @@ Parameter\fB[2]\fR: Position where to start substitution
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: A constant C-style string
+Parameter\fB[3]\fR: A constant C\-style string
 .br
 Type\fB[3]\fR: const char []
 
@@ -8708,7 +8708,7 @@ Parameter\fB[3]\fR: Length of substitution
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A pointer to a constant C-style string, containing spanning bytes
+Parameter\fB[4]\fR: A pointer to a constant C\-style string, containing spanning bytes
 .br
 Type\fB[4]\fR: const char *
 
@@ -8820,7 +8820,7 @@ Parameter\fB[3]\fR: Length of substitution
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: A constant C-style string
+Parameter\fB[4]\fR: A constant C\-style string
 .br
 Type\fB[4]\fR: const char []
 
@@ -8932,12 +8932,12 @@ Parameter\fB[1]\fR: Pointer to a pointer to a Ustr (haystack)
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string, containing search bytes
+Parameter\fB[2]\fR: A pointer to a constant C\-style string, containing search bytes
 .br
 Type\fB[2]\fR: const char *
 
 .br
-Parameter\fB[3]\fR: A pointer to a constant C-style string, containing replacement bytes
+Parameter\fB[3]\fR: A pointer to a constant C\-style string, containing replacement bytes
 .br
 Type\fB[3]\fR: const char *
 
@@ -9339,7 +9339,7 @@ Type\fB[5]\fR: unsigned int
 .br
   Works like ustr_split_spn_chrs() but takes a Ustr as the split chars instead.
 
-.SH Dealing with UTF-8 in a Ustr
+.SH Dealing with UTF\-8 in a Ustr
 .ti -2
 .br
 \fBFunction: \fR ustr_utf8_valid()
@@ -9363,7 +9363,7 @@ Type\fB[1]\fR: const struct Ustr *
 .br
 \fBFunction: \fR ustr_utf8_len()
 .br
-Returns: The number of the utf-8 characters in the Ustr
+Returns: The number of the utf\-8 characters in the Ustr
 .br
 Type: size_t 
 
@@ -9416,12 +9416,12 @@ Parameter\fB[1]\fR: A pointer to a constant Ustr string
 Type\fB[1]\fR: const struct Ustr *
 
 .br
-Parameter\fB[2]\fR: Position of a span in utf-8 characters
+Parameter\fB[2]\fR: Position of a span in utf\-8 characters
 .br
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Length of a span in utf-8 characters
+Parameter\fB[3]\fR: Length of a span in utf\-8 characters
 .br
 Type\fB[3]\fR: size_t
 
@@ -9440,7 +9440,7 @@ Type\fB[4]\fR: size_t *
 .br
 \fBFunction: \fR ustr_utf8_bytes2chars()
 .br
-Returns: Returns the position of a span in utf-8 characters
+Returns: Returns the position of a span in utf\-8 characters
 .br
 Type: size_t 
 
@@ -9460,7 +9460,7 @@ Parameter\fB[3]\fR: Length of a span in bytes
 Type\fB[3]\fR: size_t
 
 .br
-Parameter\fB[4]\fR: Returns length of a span in utf-8 characters
+Parameter\fB[4]\fR: Returns length of a span in utf\-8 characters
 .br
 Type\fB[4]\fR: size_t *
 
@@ -9514,7 +9514,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9573,7 +9573,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9617,7 +9617,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9661,7 +9661,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR:  size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR:  unsigned int
 
@@ -9715,7 +9715,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9754,7 +9754,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9793,7 +9793,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9832,7 +9832,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9871,7 +9871,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -9910,7 +9910,7 @@ Parameter\fB[2]\fR: Offset within string to start parsing at
 Type\fB[2]\fR: size_t
 
 .br
-Parameter\fB[3]\fR: Base (2-36) and flags, starting with USTR_FLAG_PARSE_NUM_
+Parameter\fB[3]\fR: Base (2\-36) and flags, starting with USTR_FLAG_PARSE_NUM_
 .br
 Type\fB[3]\fR: unsigned int
 
@@ -10219,7 +10219,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string, containing trimming bytes
+Parameter\fB[2]\fR: A pointer to a constant C\-style string, containing trimming bytes
 .br
 Type\fB[2]\fR: const char *
 
@@ -10296,7 +10296,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string, containing trimming bytes
+Parameter\fB[2]\fR: A pointer to a constant C\-style string, containing trimming bytes
 .br
 Type\fB[2]\fR: const char *
 
@@ -10378,7 +10378,7 @@ Parameter\fB[1]\fR: A pointer to a pointer to a Ustr string
 Type\fB[1]\fR: struct Ustr **
 
 .br
-Parameter\fB[2]\fR: A pointer to a constant C-style string, containing trimming bytes
+Parameter\fB[2]\fR: A pointer to a constant C\-style string, containing trimming bytes
 .br
 Type\fB[2]\fR: const char *
 
