@@ -50,9 +50,9 @@ EOL
 my $man_funcs_desc = <<EOL;
 .ti
 .SH "DESCRIPTION"
- A very simple overview is that you can use ustr_dup_cstr() to convert a C-style
+ A very simple overview is that you can use ustr_dup_cstr() to convert a C\-style
 to a Ustr, and ustr_cstr() to convert it back. You can also use USTR1() to
-create constant/read-only strings, and USTR_SC_INIT_AUTO() to create strings
+create constant/read\-only strings, and USTR_SC_INIT_AUTO() to create strings
 that use stack space upto a certain amount.
  Use is somewhat unique in that, by default, it has an average overhead of only
 55% overhead over strdup(), for strings in the range of 0 to 20 bytes. Or, to
@@ -162,6 +162,7 @@ sub conv_A_refs
     my $raw    = shift;
 
     s/\\/\\\\/g if (!$raw);
+    s/-/\\-/g   if (!$raw);
     s![*]{2}([^*]+)[*]{2}!\\fB$1\\fR!g if ($markup);
   }
 

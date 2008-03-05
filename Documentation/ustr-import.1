@@ -1,24 +1,24 @@
-.TH ustr 1 "03-Aug-2007" "ustr-import 1.0.4" "Ustr String Library, tools"
+.TH ustr 1 "03-Aug-2007" "ustr\-import 1.0.4" "Ustr String Library, tools"
 .SH "NAME"
-ustr-import - ustr string library import tool
+ustr\-import \- ustr string library import tool
 .SH "SYNOPSIS"
 .ad l
 .hy 0
 .HP 5
-\fBustr-import\fR [--32|--64] [-d][d] [-c] [-b x] [-e 1|0] [-s 1|0] section
+\fBustr\-import\fR [\-\-32|\-\-64] [\-d][d] [\-c] [\-b x] [\-e 1|0] [\-s 1|0] section
 .sp
 .ti
 .SH "DESCRIPTION"
- This tool lets you use the Ustr string library without incuring dependancies on the library itself, so API/ABI compatability is 100% (nothing changes unless you do it) and installing your application doesn't require the library to be pre-installed\&.
+ This tool lets you use the Ustr string library without incuring dependancies on the library itself, so API/ABI compatability is 100% (nothing changes unless you do it) and installing your application doesn't require the library to be pre\-installed\&.
 .SH "OPTIONS"
 
 .TP
-\--32
-If you installed with multilib, this runs the 32 bit varient (and installs the variable multilib build code as ustr-conf.h)\&.
+\-\-32
+If you installed with multilib, this runs the 32 bit varient (and installs the variable multilib build code as ustr\-conf.h)\&.
 
 .TP
-\--64
-If you installed with multilib, this runs the 64 bit varient (and installs the variable multilib build code as ustr-conf.h)\&.
+\-\-64
+If you installed with multilib, this runs the 64 bit varient (and installs the variable multilib build code as ustr\-conf.h)\&.
 
 .TP
 \-d
@@ -128,19 +128,19 @@ Working with UTF8\&.
 The default "extern" header files\&.
 
 .TP
-\fI/usr/share/ustr-*/ustr-*-internal\&.h\fR
+\fI/usr/share/ustr\-*/ustr\-*\-internal\&.h\fR
 Internal functions, used the implement the public interfaces\&.
 
 .TP
-\fI/usr/share/ustr-*/ustr-*-code\&.h\fR
+\fI/usr/share/ustr\-*/ustr\-*\-code\&.h\fR
 The code behind the public interfaces\&.
 
 .TP
-\fI/usr/share/ustr-*/ustr-*-code\&.c\fR
+\fI/usr/share/ustr\-*/ustr\-*\-code\&.c\fR
 The C files, which use the code header files to create objects\&.
 
 .TP
-\fI/usr/share/ustr-*/\&.gdbinit\fR
+\fI/usr/share/ustr\-*/\&.gdbinit\fR
 The GDB init file containing macros to help inspect Ustr's in the debugger\&.
 
 .SH "SEE ALSO"
