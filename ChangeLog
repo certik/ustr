@@ -1,3 +1,7 @@
+2008-03-05  James Antill  <james@and.org>
+
+	* NEWS: Release 1.0.4
+
 2008-02-19  James Antill  <james@and.org>
 
 	* ustr-sub-code.h (ustr_sub_subustr): Speedup when subustr == ustr.

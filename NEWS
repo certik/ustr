@@ -1,3 +1,10 @@
+1.0.4 - 2008-03-05
+ Fix bug in ustr_cspn_chr_rev.
+ Added trim/concat functions.
+ Better multilib. support.
+ Make sub/ins/replace work with non-ref'd self.
+ More docs.
+
 1.0.3 - 2008-01-14
  Added trim functions.
  Multi-lib support.
