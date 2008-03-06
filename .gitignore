@@ -12,6 +12,7 @@
 /ustr-conf-debug.h
 /ustr-conf.h
 /ustr-import
+/ustr-import-multilib
 examples/hello_world
 examples/hello_world-s
 examples/netstr
