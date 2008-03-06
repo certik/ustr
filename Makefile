@@ -427,6 +427,9 @@ install-multilib-linux: install autoconf_64b ustr-import-multilib
 		$(HIDE)mv -f $(DESTDIR)$(includedir)/ustr-conf-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf.h
 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import-multilib
 		$(HIDE)mv -f $(DESTDIR)$(bindir)/ustr-import-multilib $(DESTDIR)$(bindir)/ustr-import
+		$(HIDE)touch --reference ustr-conf-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf.h
+		$(HIDE)touch --reference ustr-conf-debug-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf-debug.h
+		$(HIDE)touch --reference ustr-import-multilib $(DESTDIR)$(bindir)/ustr-import
 
 
 clean:
