@@ -91,7 +91,7 @@ make %{?_smp_mflags} all-shared CFLAGS="${CFLAGS:-%optflags}" %{policy_cflags}
 
 %check
 %if %{?chk}%{!?chk:1}
-make check %{policy_cflags}
+make %{?_smp_mflags} check CFLAGS="${CFLAGS:-%optflags}" %{policy_cflags}
 %endif
 
 %install
