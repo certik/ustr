@@ -33,9 +33,9 @@
   </Company_Info>
   <Program_Info>
     <Program_Name>ustr</Program_Name>
-    <Program_Version>1.0.3</Program_Version>
-    <Program_Release_Month>01</Program_Release_Month>
-    <Program_Release_Day>14</Program_Release_Day>
+    <Program_Version>1.0.4</Program_Version>
+    <Program_Release_Month>03</Program_Release_Month>
+    <Program_Release_Day>5</Program_Release_Day>
     <Program_Release_Year>2008</Program_Release_Year>
     <Program_Cost_Dollars>0</Program_Cost_Dollars>
     <Program_Cost_Other_Code>USD</Program_Cost_Other_Code>
@@ -45,7 +45,7 @@
     <Program_Install_Support>Install and Uninstall</Program_Install_Support>
     <Program_OS_Support>Linux,Unix,WinXP,WinNT 4.x,Windows2000,Windows CE,Mac PPC,MS-DOS</Program_OS_Support>
     <Program_Language>English</Program_Language>
-    <Program_Change_Info>Added trim functions and multi-lib. support. Added support to swap out system vsnprintf calls. Don't delete sized Ustr's when we don't need to. Added linecat example.</Program_Change_Info>
+    <Program_Change_Info>Fixed a bug in ustr_cspn_chr_rev. Added join/concat functions. Minor fixes and cleanups.</Program_Change_Info>
     <Program_System_Requirements/>
     <Program_Specific_Category>Development Tools</Program_Specific_Category>
     <Program_Categories/>
@@ -54,12 +54,12 @@
     <Includes_DirectX>N</Includes_DirectX>
     <File_Info>
       <Filename_Generic>ustr</Filename_Generic>
-      <Filename_Versioned>ustr-1.0.3</Filename_Versioned>
-      <Filename_Previous>ustr-1.0.2</Filename_Previous>
-      <Filename_Long>ustr-1.0.3.tar.gz</Filename_Long>
-      <File_Size_Bytes>289217</File_Size_Bytes>
-      <File_Size_K>282.44</File_Size_K>
-      <File_Size_MB>0.28</File_Size_MB>
+      <Filename_Versioned>ustr-1.0.4</Filename_Versioned>
+      <Filename_Previous>ustr-1.0.3</Filename_Previous>
+      <Filename_Long>ustr-1.0.4.tar.gz</Filename_Long>
+      <File_Size_Bytes>300032</File_Size_Bytes>
+      <File_Size_K>293.00</File_Size_K>
+      <File_Size_MB>0.29</File_Size_MB>
     </File_Info>
     <Expire_Info>
       <Has_Expire_Info>N</Has_Expire_Info>
