@@ -440,6 +440,7 @@ clean:
 		$(HIDE)rm -f perf-sizes perf-sizes32 perf-sizes64
 		$(HIDE)rm -f *.gcda *.gcno *.gcov
 		$(HIDE)rm -f tst_*.c ctst_*.c otst_*.c octst_*.c
+		$(HIDE)rm -f ustr-import-multilib
 
 distclean: clean
 		rm -f ustr-import
