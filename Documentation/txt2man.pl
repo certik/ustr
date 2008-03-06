@@ -169,6 +169,7 @@ sub conv_A_refs
 sub convert()
   {
     my $in_pre_tag = "";
+    my $in_pre = 0;
     my $in_const = 0;
 
     while (<IN>)
@@ -231,23 +232,28 @@ sub convert()
 	    if (/\.\.\.$/)
 	      {
 		conv_A_refs(1, 1, 0);
-		$_ = ".Ve\n$_.Vb 4\n";
-		$in_pre_tag = "\n.Ve";
+#		$_ = ".Ve\n$_.Vb 4\n";
+#		$in_pre_tag = "\n.Ve";
+		$in_pre_tag = "";
+		$in_pre = 1;
 	      }
 	    else
 	      {
 		conv_A_refs(1, 1, 0);
-		$_ = ".Ve\n$_";
+#		$_ = ".Ve\n$_";
 		$in_pre_tag = "";
+		$in_pre = 0;
 	      }
 	  }
 	elsif (/\.\.\.$/)
 	  {
 	    conv_A_refs(1, 1, 0);
-	    $_ = "$_\n.Vb 4";
-	    $in_pre_tag = "\n.Ve";
+#	    $_ = "$_\n.Vb 4";
+#	    $in_pre_tag = "\n.Ve";
+	    $in_pre_tag = "";
+	    $in_pre = 1;
 	  }
-	elsif (!$in_pre_tag)
+	elsif (!$in_pre)
 	  {
 	    if (!/^$/)
 	      {
