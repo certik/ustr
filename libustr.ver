@@ -617,7 +617,7 @@ USTR_1.0.3 {
 
 };
 
-USTR_1.0.3 {
+USTR_1.0.4 {
     global:
 
   ustr_sc_join;
