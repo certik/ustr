@@ -410,7 +410,7 @@ install: all-shared ustr.pc ustr-debug.pc
 		install -pm 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
 
 ustr-import-multilib: ustr-import-multilib.in
-		sed -e 's,@MBINDIR@,$(MBINDIR),g' < $< > $@
+		sed -e 's,@INCLUDEDIR@,$(includedir),g' -e 's,@MBINDIR@,$(MBINDIR),g' < $< > $@
 
 install-multilib-linux: install autoconf_64b ustr-import-multilib
 		install -d $(DESTDIR)$(MBINDIR)
@@ -429,7 +429,7 @@ install-multilib-linux: install autoconf_64b ustr-import-multilib
 		$(HIDE)mv -f $(DESTDIR)$(bindir)/ustr-import-multilib $(DESTDIR)$(bindir)/ustr-import
 		$(HIDE)touch --reference ustr-conf-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf.h
 		$(HIDE)touch --reference ustr-conf-debug-multilib-linux.h $(DESTDIR)$(includedir)/ustr-conf-debug.h
-		$(HIDE)touch --reference ustr-import-multilib $(DESTDIR)$(bindir)/ustr-import
+		$(HIDE)touch --reference ustr-import-multilib.in $(DESTDIR)$(bindir)/ustr-import
 
 
 clean:

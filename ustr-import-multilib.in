@@ -3,30 +3,59 @@
 INCDIR=@INCLUDEDIR@
 MBINDIR=@MBINDIR@
 
+NOT_DONE=1
 inst32()
 {
+  foo=no
+  if [ "x$1" = "xeither" ]; then
+    foo=either
+    shift
+  fi
   if [ -f "$MBINDIR/ustr-import-32" ]; then
     "$MBINDIR/ustr-import-32" "$@"
-  
+    RETVAL=$?
+  fi
+
+  if [ "x$foo" = "xeither" ]; then
     # This assume an installed multilib ustr-conf.h
-    [ $RETVAL -eq 0 ] && mv ustr-conf.h ustr-conf-32.h
-    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf.h" .
-    [ $RETVAL -eq 0 ] && mv ustr-conf-debug.h ustr-conf-debug-32.h
-    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf-debug.h" .
+    if [ $RETVAL -eq 0 ] && [ -f ustr-conf.h ]; then
+        mv ustr-conf.h ustr-conf-32.h
+        cp "$INCDIR/ustr-conf.h" .
+    fi
+    if [ $RETVAL -eq 0 ] && [ -f ustr-conf-debug.h ]; then
+        mv ustr-conf-debug.h ustr-conf-debug-32.h
+        cp "$INCDIR/ustr-conf-debug.h" .
+    fi
+    NOT_DONE=0
+  else
     exit $RETVAL
   fi
 }
 
 inst64()
 {
+  foo=no
+  if [ "x$1" = "xeither" ]; then
+    foo=either
+    shift
+  fi
   if [ -f "$MBINDIR/ustr-import-64" ]; then
     "$MBINDIR/ustr-import-64" "$@"
     RETVAL=$?
+  fi
+
+  if [ "x$foo" = "xeither" ]; then
     # This assume an installed multilib ustr-conf.h
-    [ $RETVAL -eq 0 ] && mv ustr-conf.h ustr-conf-64.h
-    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf.h" .
-    [ $RETVAL -eq 0 ] && mv ustr-conf-debug.h ustr-conf-debug-64.h
-    [ $RETVAL -eq 0 ] && cp "$INCDIR/ustr-conf-debug.h" .
+    if [ $RETVAL -eq 0 ] && [ -f ustr-conf.h ]; then
+        mv ustr-conf.h ustr-conf-64.h
+        cp "$INCDIR/ustr-conf.h" .
+    fi
+    if [ $RETVAL -eq 0 ] && [ -f ustr-conf-debug.h ]; then
+        mv ustr-conf-debug.h ustr-conf-debug-64.h
+        cp "$INCDIR/ustr-conf-debug.h" .
+    fi
+    NOT_DONE=0
+  else
     exit $RETVAL
   fi
 }
@@ -41,7 +70,7 @@ if [ "x$1" = "x--64" ]; then
   inst64 $@
 fi
 
-inst64 $@
-inst32 $@
+inst64 either $@
+inst32 either $@
 
-exit 1
+exit $NOT_DONE
