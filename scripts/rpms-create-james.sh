@@ -8,7 +8,7 @@ if [ ! -f ustr-main.h ]; then
   if [ -f ustr/ustr-main.h ]; then
     cd ustr
   else
-    echo "No VERSION, $pkg.spec or configure file." 1&>2
+    echo "No VERSION, $pkg.spec or configure file." 1>&2
     exit 1
   fi
 fi
